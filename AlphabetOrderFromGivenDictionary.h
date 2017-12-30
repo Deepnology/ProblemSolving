@@ -97,7 +97,7 @@ public:
 	}
 
 	//Leetcode: Alien Dictionary, given a word array where words are sorted lexicographically by the rules of this new language
-	std::string alienOrderDFS(std::vector<std::string> & words)
+	std::string alienOrderDFS(const std::vector<std::string> & words)
 	{
 		//1. construct DAG
 		std::unordered_map<int, std::unordered_set<int>> DAG;
@@ -158,7 +158,7 @@ private:
 	}
 
 public:
-	std::string alienOrderBFS(std::vector<std::string> & words)
+	std::string alienOrderBFS(const std::vector<std::string> & words)
 	{
 		std::unordered_map<int, std::unordered_set<int>> DAG;
 		int N = words.size();
