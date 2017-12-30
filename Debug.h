@@ -2,6 +2,7 @@
 #define DEBUG_H
 #include <iostream>
 #include <sstream>
+#include <iterator>
 #include <string>
 #include <vector>
 #include <list>
@@ -25,7 +26,7 @@ namespace Debug
 		Print2D(){}
 		~Print2D(){}
 
-		void operator()(const std::vector<std::vector<T> > & vv, bool columnXrowY = true, bool tab = false)
+		void operator()(const std::vector<std::vector<T>> & vv, bool columnXrowY = true, bool tab = false)
 		{
 			if (vv.empty())
 				return;
@@ -221,9 +222,9 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
-		void operator()(const std::vector<std::stack<T> > & vs, bool columnXrowY = true, bool tab = false, bool topToBottom = false)
+		void operator()(const std::vector<std::stack<T>> & vs, bool columnXrowY = true, bool tab = false, bool topToBottom = false)
 		{
-			std::vector<std::vector<int> > copy;
+			std::vector<std::vector<int>> copy;
 			int N = vs.size();
 			for (int i = 0; i < N; ++i)
 			{
@@ -244,16 +245,16 @@ namespace Debug
 			}
 			this->operator()(copy, columnXrowY, tab);
 		}
-		void operator()(const std::unordered_map<T, std::unordered_map<T, U> > & m)
+		void operator()(const std::unordered_map<T, std::unordered_map<T, U>> & m)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::unordered_map<T, std::unordered_map<T, U> >::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::unordered_map<T, std::unordered_map<T, U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= " << i->first << ": ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::unordered_map<T, U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::unordered_map<T, U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << "[" << j->first << "," << j->second << "]";
 					if (++cnt != M)
@@ -263,16 +264,16 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::unordered_set<U> > & m)
+		void operator()(const std::unordered_map<T, std::unordered_set<U>> & m)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::unordered_map<T, std::unordered_set<U> >::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::unordered_map<T, std::unordered_set<U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= " << i->first << ": ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::unordered_set<U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::unordered_set<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << *j;
 					if (++cnt != M)
@@ -282,16 +283,16 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::multiset<U> > & m)
+		void operator()(const std::unordered_map<T, std::multiset<U>> & m)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::unordered_map<T, std::multiset<U> >::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::unordered_map<T, std::multiset<U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= " << i->first << ": ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::multiset<U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::multiset<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << *j;
 					if (++cnt != M)
@@ -301,16 +302,16 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::set<U> > & m)
+		void operator()(const std::unordered_map<T, std::set<U>> & m)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::unordered_map<T, std::set<U> >::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::unordered_map<T, std::set<U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= " << i->first << ": ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::set<U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::set<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << *j;
 					if (++cnt != M)
@@ -320,16 +321,16 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::map<T, std::vector<U> > & m)
+		void operator()(const std::map<T, std::vector<U>> & m)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::map<T, std::vector<U> >::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::map<T, std::vector<U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= " << i->first << ": ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::vector<U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::vector<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << *j;
 					if (++cnt != M)
@@ -339,16 +340,16 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::map<T, std::unordered_set<U> > & m)
+		void operator()(const std::map<T, std::unordered_set<U>> & m)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::map<T, std::unordered_set<U> >::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::map<T, std::unordered_set<U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= " << i->first << ": ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::unordered_set<U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::unordered_set<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << *j;
 					if (++cnt != M)
@@ -358,16 +359,16 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::map<T, std::set<U> > & m)
+		void operator()(const std::map<T, std::set<U>> & m)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::map<T, std::set<U> >::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::map<T, std::set<U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= " << i->first << ": ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::set<U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::set<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << *j;
 					if (++cnt != M)
@@ -377,16 +378,16 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::vector<U> > & m)
+		void operator()(const std::unordered_map<T, std::vector<U>> & m)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::unordered_map<T, std::vector<U> >::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::unordered_map<T, std::vector<U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= " << i->first << ": ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::vector<U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::vector<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << *j;
 					if (++cnt != M)
@@ -397,7 +398,7 @@ namespace Debug
 			std::cout << oss.str() << std::endl;
 		}
 
-		void operator()(const std::vector<std::vector<std::pair<T, U> > > & vv, bool columnXrowY = true, bool tab = false)
+		void operator()(const std::vector<std::vector<std::pair<T, U>>> & vv, bool columnXrowY = true, bool tab = false)
 		{
 			if (vv.empty())
 				return;
@@ -497,16 +498,16 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
-		void operator()(const std::vector<std::pair<std::pair<T, T>, std::vector<U> > > & vv)
+		void operator()(const std::vector<std::pair<std::pair<T, T>, std::vector<U>>> & vv)
 		{
 			std::ostringstream oss;
 			int count = 0;
-			for (std::vector<std::pair<std::pair<T, T>, std::vector<U> > >::const_iterator i = vv.begin(); i != vv.end(); ++i)
+			for (typename std::vector<std::pair<std::pair<T, T>, std::vector<U>>>::const_iterator i = vv.cbegin(); i != vv.cend(); ++i)
 			{
 				oss << "Row#" << count++ << "	= [" << i->first.first << "," << i->first.second << "]: ";
 				int M = i->second.size();
 				int cnt = 0;
-				for (std::vector<U>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
+				for (typename std::vector<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << *j;
 					if (++cnt != M)
@@ -526,7 +527,7 @@ namespace Debug
 		Print3D(){}
 		~Print3D(){}
 
-		void operator()(const std::vector<std::vector<std::vector<T> > > & vvv, bool colXrowYdepthZ = true)
+		void operator()(const std::vector<std::vector<std::vector<T>>> & vvv, bool colXrowYdepthZ = true)
 		{
 			if (vvv.empty())
 				return;
@@ -654,7 +655,7 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
-		void operator()(const std::vector<std::vector<std::vector<std::pair<T, T> > > > & vvv, bool colXrowYdepthZ = true)
+		void operator()(const std::vector<std::vector<std::vector<std::pair<T, T>>>> & vvv, bool colXrowYdepthZ = true)
 		{
 			if (vvv.empty())
 				return;
@@ -817,25 +818,21 @@ namespace Debug
 		std::string operator()(const std::list<T> & l)
 		{
 			std::ostringstream oss;
-			std::list<T>::const_iterator prevOfEnd = l.end();
-			--prevOfEnd;
-			for (std::list<T>::const_iterator i = l.begin(); i != l.end(); ++i)
+			for (typename std::list<T>::const_iterator i = l.cbegin(); i != l.cend(); ++i)
 			{
 				oss << *i;
-				if (i != prevOfEnd)
+				if (std::next(i) != l.cend())
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::list<std::pair<T, U> > & l)
+		std::string operator()(const std::list<std::pair<T, U>> & l)
 		{
 			std::ostringstream oss;
-			std::list<std::pair<T, U> >::const_iterator prevOfEnd = l.end();
-			--prevOfEnd;
-			for (std::list<std::pair<T, U> >::const_iterator i = l.begin(); i != l.end(); ++i)
+			for (typename std::list<std::pair<T, U>>::const_iterator i = l.cbegin(); i != l.cend(); ++i)
 			{
 				oss << "[" << i->first << "," << i->second << "]";
-				if (i != prevOfEnd)
+				if (std::next(i) != l.cend())
 					oss << ", ";
 			}
 			return oss.str();
@@ -862,75 +859,75 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::vector<T> > & vv)
+		std::string operator()(const std::vector<std::vector<T>> & vv)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::vector<T> >::const_iterator v = vv.begin(); v != vv.end(); ++v)
+			for (typename std::vector<std::vector<T>>::const_iterator v = vv.cbegin(); v != vv.cend(); ++v)
 			{
 				oss << "[";
-				for (std::vector<T>::const_iterator i = v->begin(); i != v->end(); ++i)
+				for (typename std::vector<T>::const_iterator i = v->cbegin(); i != v->cend(); ++i)
 				{
 					oss << *i;
-					if (i != v->end() - 1)
+					if (std::next(i) != v->cend())
 						oss << ",";
 				}
 				oss << "]";
-				if (v != vv.end() - 1)
+				if (std::next(v) != vv.cend())
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<T, U> > & v)
+		std::string operator()(const std::vector<std::pair<T, U>> & v)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::pair<T, U> >::const_iterator i = v.begin(); i != v.end(); ++i)
+			for (typename std::vector<std::pair<T, U>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
 			{
 				oss << "[" << i->first << "," << i->second << "]";
-				if (i != v.end() - 1)
+				if (std::next(i) != v.cend())
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<T, U> > & v, int first, int last)
+		std::string operator()(const std::vector<std::pair<T, U>> & v, int first, int last)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::pair<T, U> >::const_iterator i = v.begin() + first; i != (v.begin() + last + 1); ++i)
+			for (typename std::vector<std::pair<T, U>>::const_iterator i = v.cbegin() + first; i != (v.cbegin() + last + 1); ++i)
 			{
 				oss << "[" << i->first << "," << i->second << "]";
-				if (i != (v.begin() + last))
+				if (i != (v.cbegin() + last))
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<std::pair<T, T>, U> > & v)
+		std::string operator()(const std::vector<std::pair<std::pair<T, T>, U>> & v)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::pair<std::pair<T, T>, U> >::const_iterator i = v.begin(); i != v.end(); ++i)
+			for (typename std::vector<std::pair<std::pair<T, T>, U>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
 			{
 				oss << "[(" << i->first.first << "," << i->first.second << ")," << i->second << "]";
-				if (i != v.end() - 1)
+				if (std::next(i) != v.cend())
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<T, std::pair<U, U> > > & v)
+		std::string operator()(const std::vector<std::pair<T, std::pair<U, U>>> & v)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::pair<T, std::pair<U, U> > >::const_iterator i = v.begin(); i != v.end(); ++i)
+			for (typename std::vector<std::pair<T, std::pair<U, U>>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
 			{
 				oss << "[" << i->first << ",(" << i->second.first << "," << i->second.second << ")]";
-				if (i != v.end() - 1)
+				if (std::next(i) != v.cend())
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<std::pair<T, U>, std::pair<T, U> > > & v)
+		std::string operator()(const std::vector<std::pair<std::pair<T, U>, std::pair<T, U>>> & v)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::pair<std::pair<T, U>, std::pair<T, U> > >::const_iterator i = v.begin(); i != v.end(); ++i)
+			for (typename std::vector<std::pair<std::pair<T, U>, std::pair<T, U>>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
 			{
 				oss << "[(" << i->first.first << "," << i->first.second << "),(" << i->second.first << "," << i->second.second << ")]";
-				if (i != v.end() - 1)
+				if (std::next(i) != v.cend())
 					oss << ", ";
 			}
 			return oss.str();
@@ -955,12 +952,12 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::stack<std::pair<T, U> > & s, bool topToBottom = false)
+		std::string operator()(const std::stack<std::pair<T, U>> & s, bool topToBottom = false)
 		{
-			std::stack<std::pair<T, U> > copy(s);
+			std::stack<std::pair<T, U>> copy(s);
 			if (!topToBottom)
 			{
-				std::stack<std::pair<T, U> > rev;
+				std::stack<std::pair<T, U>> rev;
 				while (!copy.empty())
 					rev.push(copy.top()), copy.pop();
 				rev.swap(copy);
@@ -988,9 +985,9 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::queue<std::pair<T, U> > & q)
+		std::string operator()(const std::queue<std::pair<T, U>> & q)
 		{
-			std::queue<std::pair<T, U> > copy(q);
+			std::queue<std::pair<T, U>> copy(q);
 			std::ostringstream oss;
 			while (!copy.empty())
 			{
@@ -1014,9 +1011,9 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::deque<std::pair<T, U> > & q)
+		std::string operator()(const std::deque<std::pair<T, U>> & q)
 		{
-			std::deque<std::pair<T, U> > copy(q);
+			std::deque<std::pair<T, U>> copy(q);
 			std::ostringstream oss;
 			while (!copy.empty())
 			{
@@ -1032,12 +1029,10 @@ namespace Debug
 			std::ostringstream oss;
 			if (s.empty())
 				return oss.str();
-			std::unordered_set<T>::const_iterator last = s.end();
-			--last;
-			for (std::unordered_set<T>::const_iterator i = s.begin(); i != s.end(); ++i)
+			for (typename std::unordered_set<T>::const_iterator i = s.cbegin(); i != s.cend(); ++i)
 			{
 				oss << *i;
-				if (i != last)
+				if (std::next(i) != s.cend())
 					oss << ", ";
 			}
 			return oss.str();
@@ -1047,12 +1042,10 @@ namespace Debug
 			std::ostringstream oss;
 			if (s.empty())
 				return oss.str();
-			std::set<T>::const_iterator last = s.end();
-			--last;
-			for (std::set<T>::const_iterator i = s.begin(); i != s.end(); ++i)
+			for (typename std::set<T>::const_iterator i = s.cbegin(); i != s.cend(); ++i)
 			{
 				oss << *i;
-				if (i != last)
+				if (std::next(i) != s.cend())
 					oss << ", ";
 			}
 			return oss.str();
@@ -1062,12 +1055,10 @@ namespace Debug
 			std::ostringstream oss;
 			if (s.empty())
 				return oss.str();
-			std::multiset<T>::const_iterator last = s.end();
-			--last;
-			for (std::multiset<T>::const_iterator i = s.begin(); i != s.end(); ++i)
+			for (typename std::multiset<T>::const_iterator i = s.cbegin(); i != s.cend(); ++i)
 			{
 				oss << *i;
-				if (i != last)
+				if (std::next(i) != s.cend())
 					oss << ", ";
 			}
 			return oss.str();
@@ -1077,12 +1068,10 @@ namespace Debug
 			std::ostringstream oss;
 			if (s.empty())
 				return oss.str();
-			std::multiset<std::pair<T, U>>::const_iterator last = s.end();
-			--last;
-			for (std::multiset<std::pair<T, U>>::const_iterator i = s.begin(); i != s.end(); ++i)
+			for (typename std::multiset<std::pair<T, U>>::const_iterator i = s.cbegin(); i != s.cend(); ++i)
 			{
 				oss << "[" << i->first << "," << i->second << "]";
-				if (i != last)
+				if (std::next(i) != s.cend())
 					oss << ", ";
 			}
 			return oss.str();
@@ -1092,12 +1081,10 @@ namespace Debug
 			std::ostringstream oss;
 			if (m.empty())
 				return oss.str();
-			std::unordered_map<T, U>::const_iterator last = m.end();
-			--last;
-			for (std::unordered_map<T, U>::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::unordered_map<T, U>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "[" << i->first << "," << i->second << "]";
-				if (i != last)
+				if (std::next(i) != m.cend())
 					oss << ", ";
 			}
 			return oss.str();
@@ -1107,19 +1094,17 @@ namespace Debug
 			std::ostringstream oss;
 			if (m.empty())
 				return oss.str();
-			std::map<T, U>::const_iterator last = m.end();
-			--last;
-			for (std::map<T, U>::const_iterator i = m.begin(); i != m.end(); ++i)
+			for (typename std::map<T, U>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
 				oss << "[" << i->first << "," << i->second << "]";
-				if (i != last)
+				if (std::next(i) != m.cend())
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::priority_queue<T, std::vector<T>, std::greater<T> > & minHeap)
+		std::string operator()(const std::priority_queue<T, std::vector<T>, std::greater<T>> & minHeap)
 		{
-			std::priority_queue<T, std::vector<T>, std::greater<T> > copy(minHeap);
+			std::priority_queue<T, std::vector<T>, std::greater<T>> copy(minHeap);
 			std::ostringstream oss;
 			while (!copy.empty())
 			{
@@ -1130,9 +1115,9 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::priority_queue<T, std::vector<T>, std::less<T> > & maxHeap)
+		std::string operator()(const std::priority_queue<T, std::vector<T>, std::less<T>> & maxHeap)
 		{
-			std::priority_queue<T, std::vector<T>, std::less<T> > copy(maxHeap);
+			std::priority_queue<T, std::vector<T>, std::less<T>> copy(maxHeap);
 			std::ostringstream oss;
 			while (!copy.empty())
 			{
@@ -1143,9 +1128,9 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::priority_queue<std::pair<T, std::pair<U, U> >, std::vector<std::pair<T, std::pair<U, U> > >, std::greater<std::pair<T, std::pair<U, U> > > > & minHeap)
+		std::string operator()(const std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::greater<std::pair<T, std::pair<U, U>>>> & minHeap)
 		{
-			std::priority_queue < std::pair<T, std::pair<U, U> >, std::vector < std::pair<T, std::pair<U, U> > >, std::greater<std::pair<T, std::pair<U, U> > > > copy(minHeap);
+			std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::greater<std::pair<T, std::pair<U, U>>>> copy(minHeap);
 			std::ostringstream oss;
 			while (!copy.empty())
 			{
@@ -1156,9 +1141,9 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::priority_queue<std::pair<T, std::pair<U, U> >, std::vector<std::pair<T, std::pair<U, U> > >, std::less<std::pair<T, std::pair<U, U> > > > & maxHeap)
+		std::string operator()(const std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::less<std::pair<T, std::pair<U, U>>>> & maxHeap)
 		{
-			std::priority_queue < std::pair<T, std::pair<U, U> >, std::vector < std::pair<T, std::pair<U, U> > >, std::less<std::pair<T, std::pair<U, U> > > > copy(maxHeap);
+			std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::less<std::pair<T, std::pair<U, U>>>> copy(maxHeap);
 			std::ostringstream oss;
 			while (!copy.empty())
 			{
@@ -1176,35 +1161,35 @@ namespace Debug
 	public:
 		ToStr1D_(){}
 		~ToStr1D_(){}
-		std::string operator()(const std::vector<std::pair<std::pair<T, U>, V> > & v)
+		std::string operator()(const std::vector<std::pair<std::pair<T, U>, V>> & v)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::pair<std::pair<T, U>, V> >::const_iterator i = v.begin(); i != v.end(); ++i)
+			for (typename std::vector<std::pair<std::pair<T, U>, V>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
 			{
 				oss << "[(" << i->first.first << "," << i->first.second << ")," << i->second << "]";
-				if (i != v.end() - 1)
+				if (std::next(i) != v.cend())
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<T, std::pair<U, V> > > & v)
+		std::string operator()(const std::vector<std::pair<T, std::pair<U, V>>> & v)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::pair<T, std::pair<U, V> > >::const_iterator i = v.begin(); i != v.end(); ++i)
+			for (typename std::vector<std::pair<T, std::pair<U, V>>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
 			{
 				oss << "[" << i->first << ",(" << i->second.first << "," << i->second.second << ")]";
-				if (i != v.end() - 1)
+				if (std::next(i) != v.cend())
 					oss << ", ";
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<std::pair<T, U>, std::pair<V, W> > > & v)
+		std::string operator()(const std::vector<std::pair<std::pair<T, U>, std::pair<V, W>>> & v)
 		{
 			std::ostringstream oss;
-			for (std::vector<std::pair<std::pair<T, U>, std::pair<V, W> > >::const_iterator i = v.begin(); i != v.end(); ++i)
+			for (typename std::vector<std::pair<std::pair<T, U>, std::pair<V, W>>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
 			{
 				oss << "[(" << i->first.first << "," << i->first.second << "),(" << i->second.first << "," << i->second.second << ")]";
-				if (i != v.end() - 1)
+				if (std::next(i) != v.cend())
 					oss << ", ";
 			}
 			return oss.str();
