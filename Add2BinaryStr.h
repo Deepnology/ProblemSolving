@@ -25,7 +25,7 @@ public:
 	Add2BinaryStr(){}
 	~Add2BinaryStr(){}
 
-	std::string GO(std::string & a, std::string & b)
+	std::string GO(const std::string & a, const std::string & b)
 	{
 		int N = std::max(a.size(), b.size());
 		std::string res(N + 1, '0');
