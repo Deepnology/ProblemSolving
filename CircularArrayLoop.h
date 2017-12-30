@@ -35,7 +35,7 @@ class CircularArrayLoop
 public:
 	CircularArrayLoop() {}
 
-	bool HasLoop(std::vector<int> & nums)
+	bool HasLoop(std::vector<int> && nums)
 	{
 		std::string before = Debug::ToStr1D<int>()(nums);
 
@@ -79,7 +79,7 @@ private:
 
 public:
 	//Leetcode: Array Nesting
-	int LongestLoopLen(std::vector<int>& nums)//nums is a idx-seq array w/ nums in [0:N-1] w/o duplicates. Find a circular loop w/ longest length.
+	int LongestLoopLen(std::vector<int> && nums)//nums is a idx-seq array w/ nums in [0:N-1] w/o duplicates. Find a circular loop w/ longest length.
 	{
 		int N = nums.size();
 		int maxLen = 0;
