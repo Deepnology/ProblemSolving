@@ -32,7 +32,7 @@ public:
 	AltPosNegNumArray(){}
 	~AltPosNegNumArray(){}
 
-	void Stable(std::vector<int> & A)//O(n) time
+	void Stable(std::vector<int> && A)//O(n) time
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
@@ -127,7 +127,7 @@ public:
 		std::cout << "AltPosNegNumArray Stable for \"" << before << "\": " << Debug::ToStr1D<int>()(A) << std::endl;
 	}
 
-	void StablePartition_ModifiedMergeSort(std::vector<int> & v)//O(nlogn) time
+	void StablePartition_ModifiedMergeSort(std::vector<int> && v)//O(nlogn) time
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		int N = v.size();
@@ -149,7 +149,7 @@ public:
 		std::cout << "AltPosNegNumArray StablePartition_ModifiedMergeSort for \"" << before << "\": " << Debug::ToStr1D<int>()(v) << std::endl;
 	}
 
-	void UnStablePartition(std::vector<int> & A)
+	void UnStablePartition(std::vector<int> && A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
