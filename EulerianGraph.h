@@ -119,7 +119,7 @@ public:
 			else if (oddDegreeVertexCount == 0)
 				oss << "Eulerian (has Eulerian Cycle)";
 			else
-				throw std::exception("Invalid Odd Degree Vertex Count");
+				throw std::runtime_error("Invalid Odd Degree Vertex Count");
 		}
 		else
 			oss << "not Eulerian";
