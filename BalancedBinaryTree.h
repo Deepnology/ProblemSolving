@@ -94,7 +94,7 @@ private:
 		if (cur == NULL)//leaf node
 			return true;
 
-		return (std::abs(this->heightRecur(cur->left) - this->heightRecur(cur->right) <= 1)//(left subtree height == right subtree height) || (left subtree height == right subtree height + 1) || (left subtree height + 1 = right subtree height)
+		return ((this->heightRecur(cur->left) - this->heightRecur(cur->right) <= 1)//(left subtree height == right subtree height) || (left subtree height == right subtree height + 1) || (left subtree height + 1 = right subtree height)
 
 			//pre-order: now traverse recursively down after visited this node
 			&& this->isBalancedRecurPre(cur->left)//left subtree balanced?
