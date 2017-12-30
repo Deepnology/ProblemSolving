@@ -18,7 +18,7 @@ class CountAllPalindromeSubstr
 {
 public:
 	CountAllPalindromeSubstr() {}
-	int DP2D(std::string & s)
+	int DP2D(const std::string & s)
 	{
 		int N = s.size();
 		std::vector<std::vector<int>> dp(N, std::vector<int>(N, 0));//dp[i][j]==1: s[i:j] is palindrome
@@ -60,7 +60,7 @@ public:
 	}
 
 	//Leetcode: Palindromic Substrings (count all palindromic substrings w/ length >= 1)
-	int DP2D_(std::string s)
+	int DP2D_(const std::string & s)
 	{
 		int N = s.size();
 		std::vector<std::vector<int>> dp(N, std::vector<int>(N, 0));//dp[i][j]==1: s[i:j] is palindrome
@@ -101,7 +101,7 @@ public:
 		}
 		return dp2[0][N - 1];
 	}
-	int Expand(std::string s)//O(N^2) time
+	int Expand(const std::string & s)//O(N^2) time
 	{
 		int N = s.size();
 		int res = 0;
