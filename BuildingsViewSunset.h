@@ -25,7 +25,7 @@ public:
 	BuildingsViewSunset(){}
 	~BuildingsViewSunset(){}
 
-	std::vector<int> BruteForce(std::vector<int> & v)
+	std::vector<int> BruteForce(const std::vector<int> & v)
 	{
 		int N = v.size();
 		int runningMax = v.back();//keep a running max from right to left
@@ -42,10 +42,10 @@ public:
 		return res;
 	}
 
-	std::vector<int> SortedStack(std::vector<int> & v)
+	std::vector<int> SortedStack(const std::vector<int> & v)
 	{
 		int N = v.size();
-		std::stack<std::pair<int, int> > sortedStk;//first: index, second: height (sorted in strckly decreasing order from left to right)
+		std::stack<std::pair<int, int>> sortedStk;//first: index, second: height (sorted in strckly decreasing order from left to right)
 		for (int i = 0; i < N; ++i)
 		{
 			while (!sortedStk.empty() && sortedStk.top().second <= v[i])
