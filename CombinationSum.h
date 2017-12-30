@@ -105,10 +105,10 @@ public:
 	CombinationSum(){}
 	~CombinationSum(){}
 
-	std::vector<std::vector<int> > FindAllUnique_AllowRepeats_FromNoDupArray_FixRecur(std::vector<int> & nums, int targetSum)//nums are all supposed to be unique
+	std::vector<std::vector<int>> FindAllUnique_AllowRepeats_FromNoDupArray_FixRecur(std::vector<int> && nums, int targetSum)//nums are all supposed to be unique
 	{
 		std::sort(std::begin(nums), std::end(nums));
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		std::vector<int> path;
 		this->FixRecur_AllowRepeats_FromNoDupArray(nums, targetSum, 0, path, res);//all possible ways to pick(combine) ANY COUNT of numbers from nums[0]~nums[N-1]
 
@@ -137,10 +137,10 @@ private:
 		}
 	}
 public:
-	std::vector<std::vector<int> > FindAllUnique_AllowRepeats_FromNoDupArray_InExcludeRecur(std::vector<int> & nums, int targetSum)//nums are all supposed to be unique
+	std::vector<std::vector<int>> FindAllUnique_AllowRepeats_FromNoDupArray_InExcludeRecur(std::vector<int> && nums, int targetSum)//nums are all supposed to be unique
 	{
 		std::sort(std::begin(nums), std::end(nums));
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		std::vector<int> path;
 		this->InExcludeRecur_AllowRepeats_FromNoDupArray(nums, targetSum, 0, path, res);//all possible ways to pick(combine) ANY COUNT of numbers from nums[0]~nums[N-1]
 
@@ -149,7 +149,7 @@ public:
 	}
 private:
 	void InExcludeRecur_AllowRepeats_FromNoDupArray(std::vector<int> & nums, int targetSum, int start
-		, std::vector<int> & path, std::vector<std::vector<int> > & res)
+		, std::vector<int> & path, std::vector<std::vector<int>> & res)
 	{
 		if (targetSum == 0)//found a combination path
 		{
@@ -173,10 +173,10 @@ private:
 	}
 
 public:
-	std::vector<std::vector<int> > FindAllUnique_NoRepeats_FromDupArray_FixRecur(std::vector<int> & nums, int targetSum)//nums might have duplicates
+	std::vector<std::vector<int>> FindAllUnique_NoRepeats_FromDupArray_FixRecur(std::vector<int> && nums, int targetSum)//nums might have duplicates
 	{
 		std::sort(std::begin(nums), std::end(nums));
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		std::vector<int> path;
 		this->FixRecur_NoRepeats_FromDupArray(nums, targetSum, 0, path, res);
 
@@ -185,7 +185,7 @@ public:
 	}
 private:
 	void FixRecur_NoRepeats_FromDupArray(std::vector<int> & nums, int targetSum, int start
-		, std::vector<int> & path, std::vector<std::vector<int> > & res)
+		, std::vector<int> & path, std::vector<std::vector<int>> & res)
 	{
 		if (targetSum == 0)
 		{
@@ -208,10 +208,10 @@ private:
 		}
 	}
 public:
-	std::vector<std::vector<int> > FindAllUnique_NoRepeats_FromDupArray_InExcludeRecur(std::vector<int> & nums, int targetSum)//nums might have duplicates
+	std::vector<std::vector<int>> FindAllUnique_NoRepeats_FromDupArray_InExcludeRecur(std::vector<int> && nums, int targetSum)//nums might have duplicates
 	{
 		std::sort(std::begin(nums), std::end(nums));
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		std::vector<int> path;
 		this->InExcludeRecur_NoRepeats_FromDupArray(nums, targetSum, 0, path, res);
 
@@ -248,7 +248,7 @@ private:
 
 	//Num Of Ways Problem
 public:
-	int NumOfWays_AllowRepeats_FromNoDupArray_Recur(std::vector<int> & nums, int targetSum)
+	int NumOfWays_AllowRepeats_FromNoDupArray_Recur(std::vector<int> && nums, int targetSum)
 	{
 		std::sort(std::begin(nums), std::end(nums));
 		int res = this->numOfWays_Recur_AllowRepeats_FromNoDupArray(nums, targetSum, 0);
@@ -273,7 +273,7 @@ private:
 		return res;
 	}
 public:
-	int NumOfWays_NoRepeats_FromDupArray_Recur(std::vector<int> & nums, int targetSum)
+	int NumOfWays_NoRepeats_FromDupArray_Recur(std::vector<int> && nums, int targetSum)
 	{
 		std::sort(std::begin(nums), std::end(nums));
 		int res = this->numOfWays_Recur_NoRepeats_FromDupArray(nums, targetSum, 0);
@@ -302,10 +302,10 @@ private:
 	}
 
 public:
-	int NumOfWays_AllowRepeats_FromNoDupArray_DP2D(std::vector<int> & nums, int targetSum)
+	int NumOfWays_AllowRepeats_FromNoDupArray_DP2D(const std::vector<int> & nums, int targetSum)
 	{
 		int N = nums.size();
-		std::vector<std::vector<int> > dp(targetSum + 1, std::vector<int>(N + 1, 0));
+		std::vector<std::vector<int>> dp(targetSum + 1, std::vector<int>(N + 1, 0));
 		/*
 		dp[curSumY][curNumX]: count of ways for curSumY in nums[0:curNumX-1]
 		*/
@@ -335,7 +335,7 @@ public:
 		std::cout << "CombinationSum NumOfWays_AllowRepeats_FromNoDupArray_DP2D for \"" << targetSum << "\" in \"" << Debug::ToStr1D<int>()(nums) << "\": " << dp[targetSum][N] << std::endl;
 		return dp[targetSum][N];
 	}
-	int NumOfWays_AllowRepeats_FromNoDupArray_DP1D(std::vector<int> & nums, int targetSum)
+	int NumOfWays_AllowRepeats_FromNoDupArray_DP1D(const std::vector<int> & nums, int targetSum)
 	{
 		int N = nums.size();
 		std::vector<int> dp(targetSum + 1, 0);
@@ -355,7 +355,7 @@ public:
 		std::cout << "CombinationSum NumOfWays_AllowRepeats_FromNoDupArray_DP1D for \"" << targetSum << "\" in \"" << Debug::ToStr1D<int>()(nums) << "\": " << dp[targetSum] << std::endl;
 		return dp[targetSum];
 	}
-	int NumOfDistinctOrderWays_AllowRepeats_FromNoDupArray_DP1D(std::vector<int> & nums, int targetSum)//Special, see also Permutations2.h for recursion, elements of programming interview
+	int NumOfDistinctOrderWays_AllowRepeats_FromNoDupArray_DP1D(const std::vector<int> & nums, int targetSum)//Special, see also Permutations2.h for recursion, elements of programming interview
 	{
 		int N = nums.size();
 		std::vector<int> dp(targetSum + 1, 0);
@@ -401,11 +401,11 @@ public:
 		return res;
 	}
 
-	int NumOfWays_NoRepeats_FromDupArray_DP2D(std::vector<int> & nums, int targetSum)
+	int NumOfWays_NoRepeats_FromDupArray_DP2D(std::vector<int> && nums, int targetSum)
 	{
 		std::sort(nums.begin(), nums.end());//sort is only required to skip duplicated numbers
 		int N = nums.size();
-		std::vector<std::vector<int> > dp(targetSum + 1, std::vector<int>(N + 1, 0));
+		std::vector<std::vector<int>> dp(targetSum + 1, std::vector<int>(N + 1, 0));
 		/*
 		dp[curSumY][curNumX]: count of ways for curSumY in nums[0:curNumX-1]
 		*/
@@ -452,10 +452,10 @@ public:
 		std::cout << "CombinationSum NumOfWays_NoRepeats_FromDupArray_DP2D for \"" << targetSum << "\" in \"" << Debug::ToStr1D<int>()(nums) << "\": " << dp[targetSum][N] << std::endl;
 		return dp[targetSum][N];
 	}
-	int NumOfWays_NoRepeats_FromDupArray_DP2D_DistinguishDups(std::vector<int> & nums, int targetSum)
+	int NumOfWays_NoRepeats_FromDupArray_DP2D_DistinguishDups(const std::vector<int> & nums, int targetSum)
 	{
 		int N = nums.size();
-		std::vector<std::vector<int> > dp(targetSum + 1, std::vector<int>(N + 1, 0));
+		std::vector<std::vector<int>> dp(targetSum + 1, std::vector<int>(N + 1, 0));
 		for (int curSumY = 0; curSumY <= targetSum; ++curSumY)
 		{
 			for (int curNumX = 0; curNumX <= N; ++curNumX)
@@ -482,7 +482,7 @@ public:
 		std::cout << "CombinationSum NumOfWays_NoRepeats_FromDupArray_DP2D_DistinguishDups for \"" << targetSum << "\" in \"" << Debug::ToStr1D<int>()(nums) << "\": " << dp[targetSum][N] << std::endl;
 		return dp[targetSum][N];
 	}
-	int NumOfWays_NoRepeats_FromDupArray_DP1D_DistinguishDups(std::vector<int> & nums, int targetSum)
+	int NumOfWays_NoRepeats_FromDupArray_DP1D_DistinguishDups(const std::vector<int> & nums, int targetSum)
 	{
 		int N = nums.size();
 		std::vector<int> dp(targetSum + 1, 0);
@@ -502,7 +502,7 @@ public:
 		std::cout << "CombinationSum NumOfWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for \"" << targetSum << "\" in \"" << Debug::ToStr1D<int>()(nums) << "\": " << dp[targetSum] << std::endl;
 		return dp[targetSum];
 	}
-	int NumOfDistinctOrderWays_NoRepeats_FromDupArray_DP1D_DistinguishDups(std::vector<int> & nums, int targetSum)//not working now
+	int NumOfDistinctOrderWays_NoRepeats_FromDupArray_DP1D_DistinguishDups(const std::vector<int> & nums, int targetSum)//not working now
 	{
 		int N = nums.size();
 		std::vector<int> dp(targetSum + 1, 0);
@@ -529,7 +529,7 @@ public:
 	int MinCoins_AllowRepeats_FromNoDupArray_DP2D(const std::vector<int> & nums, int targetSum)
 	{
 		int N = nums.size();
-		std::vector<std::vector<long long> > dp(targetSum + 1, std::vector<long long>(N + 1, INT_MAX));
+		std::vector<std::vector<long long>> dp(targetSum + 1, std::vector<long long>(N + 1, INT_MAX));
 		/*
 		dp[curSumY][curNumX]: min coins of nums for curSumY in nums[0:curNumX-1]
 		*/
@@ -561,7 +561,7 @@ public:
 	int MinCoins_NoRepeats_FromDupArray_DP2D(const std::vector<int> & nums, int targetSum)
 	{
 		int N = nums.size();
-		std::vector<std::vector<long long> > dp(targetSum + 1, std::vector<long long>(N + 1, INT_MAX));
+		std::vector<std::vector<long long>> dp(targetSum + 1, std::vector<long long>(N + 1, INT_MAX));
 		/*
 		dp[curSumY][curNumX]: min coins of nums for curSumY in nums[0:curNumX-1]
 		*/
@@ -590,7 +590,7 @@ public:
 		std::cout << "CombinationSum MinCoins_NoRepeats_FromDupArray_DP2D for \"" << targetSum << "\" in \"" << Debug::ToStr1D<int>()(nums) << "\": " << dp[targetSum][N] << std::endl;
 		return (int)dp[targetSum][N];
 	}
-	int MinCoins_AllowRepeats_FromNoDupArray_DP1D(std::vector<int> & nums, int targetSum)
+	int MinCoins_AllowRepeats_FromNoDupArray_DP1D(const std::vector<int> & nums, int targetSum)
 	{
 		int N = nums.size();
 		std::vector<long long> dp(targetSum + 1, INT_MAX);
@@ -606,7 +606,7 @@ public:
 		std::cout << "CombinationSum MinCoins_AllowRepeats_FromDupArray_DP1D for \"" << targetSum << "\" in \"" << Debug::ToStr1D<int>()(nums) << "\": " << (dp[targetSum] == INT_MAX ? -1 : dp[targetSum]) << std::endl;
 		return (int)(dp[targetSum] == INT_MAX ? -1 : dp[targetSum]);
 	}
-	int MinCoins_NoRepeats_FromDupArray_DP1D(std::vector<int> & nums, int targetSum)
+	int MinCoins_NoRepeats_FromDupArray_DP1D(const std::vector<int> & nums, int targetSum)
 	{
 		int N = nums.size();
 		std::vector<long long> dp(targetSum + 1, INT_MAX);
@@ -628,7 +628,7 @@ public:
 	int MinCost_AllowRepeats_FromNoDupArray_DP2D(const std::vector<int> & nums, const std::vector<int> & costs, int targetSum)
 	{
 		int N = nums.size();
-		std::vector<std::vector<long long> > dp(targetSum + 1, std::vector<long long>(N + 1, INT_MAX));
+		std::vector<std::vector<long long>> dp(targetSum + 1, std::vector<long long>(N + 1, INT_MAX));
 		/*
 		dp[curSumY][curNumX]: min cost of nums for curSumY in nums[0:curNumX-1]
 		*/
@@ -660,7 +660,7 @@ public:
 	int MinCost_NoRepeats_FromDupArray_DP2D(const std::vector<int> & nums, const std::vector<int> & costs, int targetSum)
 	{
 		int N = nums.size();
-		std::vector<std::vector<long long> > dp(targetSum + 1, std::vector<long long>(N + 1, INT_MAX));
+		std::vector<std::vector<long long>> dp(targetSum + 1, std::vector<long long>(N + 1, INT_MAX));
 		/*
 		dp[curSumY][curNumX]: min cost of nums for curSumY in nums[0:curNumX-1]
 		*/
