@@ -25,7 +25,7 @@ public:
 	Fair2TaskAssignment(){}
 	~Fair2TaskAssignment(){}
 
-	std::vector<std::pair<int, int> > Partition(std::vector<int> & v)
+	std::vector<std::pair<int, int>> Partition(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		std::sort(v.begin(), v.end(), std::less<int>());
