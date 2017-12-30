@@ -50,7 +50,7 @@ public:
 	BurstBallons() {}
 	~BurstBallons() {}
 
-	int DP2D(std::vector<int> & nums)
+	int DP2D(std::vector<int> && nums)
 	{
 		int N = nums.size();
 		nums.insert(nums.begin(), 1);
@@ -74,7 +74,7 @@ public:
 		return dp[1][N];
 	}
 
-	int Recur(std::vector<int> & nums)
+	int Recur(std::vector<int> && nums)
 	{
 		int N = nums.size();
 		nums.insert(nums.begin(), 1);
