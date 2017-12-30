@@ -28,7 +28,7 @@ class BattleshipsInABoard
 public:
 	BattleshipsInABoard() {}
 
-	int CountUpperLeftCorners(std::vector<std::vector<char>> & board)
+	int CountUpperLeftCorners(const std::vector<std::vector<char>> & board)
 	{
 		int N = board.size();
 		if (N == 0) return 0;
