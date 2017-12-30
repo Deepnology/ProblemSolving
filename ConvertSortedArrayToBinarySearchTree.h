@@ -42,7 +42,7 @@ public:
 	};
 
 	//1. pre-order
-	TreeNode * PreOrder(std::vector<int> & inorder)
+	TreeNode * PreOrder(const std::vector<int> & inorder)
 	{
 		if (inorder.empty())
 			return NULL;
@@ -50,7 +50,7 @@ public:
 		return this->preOrderRecur(inorder, 0, inorder.size() - 1);
 	}
 private:
-	TreeNode * preOrderRecur(std::vector<int> & inorder, int start, int end)
+	TreeNode * preOrderRecur(const std::vector<int> & inorder, int start, int end)
 	{
 		if (start > end)
 			return NULL;
@@ -65,16 +65,16 @@ private:
 
 	//2. in-order (faster: keep track of middle node)
 public:
-	TreeNode * InOrder(std::vector<int> & inorder)
+	TreeNode * InOrder(const std::vector<int> & inorder)
 	{
 		if (inorder.empty())
 			return NULL;
 
-		auto it = inorder.begin();
+		auto it = inorder.cbegin();
 		return this->inOrderRecur(it, 0, inorder.size() - 1);
 	}
 private:
-	TreeNode * inOrderRecur(std::vector<int>::iterator & it, int start, int end)
+	TreeNode * inOrderRecur(std::vector<int>::const_iterator & it, int start, int end)
 	{
 		if (start > end)
 			return NULL;
@@ -89,7 +89,7 @@ private:
 		return cur;
 	}
 public:
-	TreeNode * IteratePreorderStack(std::vector<int> & inorder)
+	TreeNode * IteratePreorderStack(const std::vector<int> & inorder)
 	{
 		int N = inorder.size();
 		if (N == 0) return NULL;
@@ -126,7 +126,7 @@ public:
 		return root;
 	}
 
-	TreeNode * IterateInorderStack(std::vector<int> & inorder)
+	TreeNode * IterateInorderStack(const std::vector<int> & inorder)
 	{
 		int N = inorder.size();
 		if (N == 0) return NULL;
