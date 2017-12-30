@@ -109,7 +109,7 @@ public:
 	const int & FindMin() const
 	{
 		if (this->IsEmpty())
-			throw std::exception("Empty Heap");
+			throw std::runtime_error("Empty Heap");
 		int minIdx = this->findMinIndex();
 		std::cout << "BinomialMinHeap FindMin: " << m_theTrees[minIdx]->val << std::endl;
 		return m_theTrees[minIdx]->val;
@@ -145,7 +145,7 @@ public:
 	void DeleteMin(int & minItem)
 	{
 		if (this->IsEmpty())
-			throw std::exception("DeleteMinFromEmptyHeap");
+			throw std::runtime_error("DeleteMinFromEmptyHeap");
 		//1. find min index
 		int minIdx = this->findMinIndex();
 		minItem = m_theTrees[minIdx]->val;
