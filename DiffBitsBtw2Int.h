@@ -40,15 +40,15 @@ public:
 	int Count_1s_in_XOR(int a, int b)
 	{
 		int count = 0;
-		int xor = a ^ b;
-		while (xor != 0)
+		int XOR = a ^ b;
+		while (XOR != 0)
 		{
-			count += xor & 1;
-			xor >>= 1;
+			count += XOR & 1;
+			XOR >>= 1;
 		}
 		/*
-		for (int xor = a ^ b; xor != 0; xor >>= 1)
-			count += xor & 1;
+		for (int XOR = a ^ b; XOR != 0; XOR >>= 1)
+			count += XOR & 1;
 		*/
 		std::cout << "DiffBitsBtw2Num for \"" << KeyGenAux().UIntToBinStr(a) << "\", \"" << KeyGenAux().UIntToBinStr(b) << "\": " << count << std::endl;
 		return count;
@@ -65,21 +65,21 @@ public:
 	int Count_1s_in_XOR2(int a, int b)
 	{
 		int count = 0;
-		int xor = a ^ b;
-		while (xor != 0)
+		int XOR = a ^ b;
+		while (XOR != 0)
 		{
 			++count;
-			xor &= (xor - 1);
+			XOR &= (XOR - 1);
 		}
 		/*
-		for (int xor = a ^ b; xor != 0; xor &= (xor - 1))
+		for (int XOR = a ^ b; XOR != 0; XOR &= (XOR - 1))
 			++count;
 		*/
 		std::cout << "DiffBitsBtw2Num for \"" << KeyGenAux().UIntToBinStr(a) << "\", \"" << KeyGenAux().UIntToBinStr(b) << "\": " << count << std::endl;
 		return count;
 	}
 
-	int TotalHammingDist(std::vector<int> & nums)//O(32*n) time
+	int TotalHammingDist(const std::vector<int> & nums)//O(32*n) time
 	{
 		int total = 0;
 		int N = nums.size();
