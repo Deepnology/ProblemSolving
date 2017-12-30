@@ -79,7 +79,7 @@ public:
 	CourseSchedule(){}
 	~CourseSchedule(){}
 
-	bool CanFinish(int numCourses, std::vector<std::pair<int, int>> & prerequisites)//first: to, second: from
+	bool CanFinish(int numCourses, const std::vector<std::pair<int, int>> & prerequisites)//first: to, second: from
 	{
 		//1. construct DAG adjacency list (adjacency matrix: memory limit exceeded!)
 		std::unordered_map<int, std::vector<int>> DAG;//first: from, second: a vector of to
@@ -119,7 +119,7 @@ public:
 		std::cout << "CourseSchedule CanFinish for \"" << numCourses << ", " << Debug::ToStr1D<int>()(prerequisites) << "\": " << !hasCycle << std::endl;
 		return !hasCycle;
 	}
-	std::vector<int> FindOrder(int numCourses, std::vector<std::pair<int, int>> & prerequisites)//first: to, second: from
+	std::vector<int> FindOrder(int numCourses, const std::vector<std::pair<int, int>> & prerequisites)//first: to, second: from
 	{
 		//1. construct DAG adjacency list (adjacency matrix: memory limit exceeded!)
 		std::unordered_map<int, std::vector<int>> DAG;//first: from, second: a vector of to
