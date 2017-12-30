@@ -27,7 +27,7 @@ class CountSubArrWSumEqualK
 public:
 	CountSubArrWSumEqualK() {}
 
-	int UsePrefixSumMap(std::vector<int> & nums, int k)
+	int UsePrefixSumMap(const std::vector<int> & nums, int k)
 	{
 		std::unordered_map<int, int> prefixSumCount;
 		prefixSumCount[0] = 1;
@@ -46,7 +46,7 @@ public:
 		return res;
 	}
 
-	std::vector<std::pair<int, int>> FindAll_PrefixSumMap(std::vector<int> & nums, int k)
+	std::vector<std::pair<int, int>> FindAll_PrefixSumMap(const std::vector<int> & nums, int k)
 	{
 		std::unordered_map<int, std::vector<int>> prefixSumIdxArr;//<prefixSum, arr of idxs>
 		prefixSumIdxArr[0] = { -1 };
