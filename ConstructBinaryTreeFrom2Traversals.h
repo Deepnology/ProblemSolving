@@ -46,12 +46,12 @@ public:
 	//the key is to "lookup inorder array to find postorder[cur] node's mid" to decide the inorder indices of its left child [left,mid-1] and right child [mid+1,right] while performing postorder traversal
 
 	//1.1 Brute Force
-	TreeNode * BruteForce_InPost(std::vector<int> & inorder, std::vector<int> & postorder)
+	TreeNode * BruteForce_InPost(const std::vector<int> & inorder, const std::vector<int> & postorder)
 	{
 		return this->bruteForceRecur_InPost(inorder, postorder, postorder.size() - 1, 0, inorder.size() - 1);
 	}
 private:
-	TreeNode * bruteForceRecur_InPost(std::vector<int> & inorder, std::vector<int> & postorder
+	TreeNode * bruteForceRecur_InPost(const std::vector<int> & inorder, const std::vector<int> & postorder
 		, int last, int start, int end)
 	{
 		if (start > end)
@@ -71,7 +71,7 @@ private:
 
 	//1.2 Hash Table
 public:
-	TreeNode * HashTable_InPost(std::vector<int> & inorder, std::vector<int> & postorder)
+	TreeNode * HashTable_InPost(const std::vector<int> & inorder, const std::vector<int> & postorder)
 	{
 		std::unordered_map<int, int> table;
 		for (int i = 0; i < (int)inorder.size(); ++i)
@@ -82,7 +82,7 @@ public:
 		return this->hashTableRecur_InPost(inorder, postorder, table, postorder.size() - 1, 0, inorder.size() - 1);
 	}
 private:
-	TreeNode * hashTableRecur_InPost(std::vector<int> & inorder, std::vector<int> & postorder
+	TreeNode * hashTableRecur_InPost(const std::vector<int> & inorder, const std::vector<int> & postorder
 		, std::unordered_map<int, int> & table, int last, int start, int end)
 	{
 		if (start > end)
@@ -99,7 +99,7 @@ private:
 
 	//1.3 Iterate Stack Hash Table
 public:
-	TreeNode * IterateStack_InPost(std::vector<int> & inorder, std::vector<int> & postorder)
+	TreeNode * IterateStack_InPost(const std::vector<int> & inorder, const std::vector<int> & postorder)
 	{
 		std::unordered_map<int, int> table;
 		for (int i = 0; i < (int)inorder.size(); ++i)
@@ -110,7 +110,8 @@ public:
 		//reverse postorder then perform mirror-preorder
 		int N = postorder.size();
 		if (N == 0) return NULL;
-		std::reverse(postorder.begin(), postorder.end());
+		std::vector<int> rev_postorder(postorder);
+		std::reverse(rev_postorder.begin(), rev_postorder.end());
 		std::stack<std::pair<TreeNode*, std::pair<int, int>>> stk;//<node,<left,right>>
 		TreeNode * root = new TreeNode(0);
 		stk.push({ root,{ 0, N - 1 } });
@@ -120,10 +121,10 @@ public:
 			auto p = stk.top(); stk.pop();
 			++idx;
 			TreeNode * cur = p.first;
-			cur->val = postorder[idx];//update cur node's val in postorder
+			cur->val = rev_postorder[idx];//update cur node's val in postorder
 			int left = p.second.first;
 			int right = p.second.second;
-			int mid = table[postorder[idx]];
+			int mid = table[rev_postorder[idx]];
 			//[left, mid-1]
 			if (mid - 1 >= left)//keep at least 1 element in between inclusive
 			{
@@ -146,12 +147,12 @@ public:
 
 	//2.1 Brute Force
 public:
-	TreeNode * BruteForce_PreIn(std::vector<int> & preorder, std::vector<int> & inorder)
+	TreeNode * BruteForce_PreIn(const std::vector<int> & preorder, const std::vector<int> & inorder)
 	{
 		return this->bruteForceRecur_PreIn(preorder, inorder, 0, 0, inorder.size() - 1);
 	}
 private:
-	TreeNode * bruteForceRecur_PreIn(std::vector<int> & preorder, std::vector<int> & inorder
+	TreeNode * bruteForceRecur_PreIn(const std::vector<int> & preorder, const std::vector<int> & inorder
 		, int first, int start, int end)
 	{
 		if (start > end)
@@ -173,7 +174,7 @@ private:
 
 	//2.2 Hash Table
 public:
-	TreeNode * HashTable_PreIn(std::vector<int> & preorder, std::vector<int> & inorder)
+	TreeNode * HashTable_PreIn(const std::vector<int> & preorder, const std::vector<int> & inorder)
 	{
 		std::unordered_map<int, int> table;
 		for (int i = 0; i < (int)inorder.size(); ++i)
@@ -182,7 +183,7 @@ public:
 		return this->hashTableRecur_PreIn(preorder, inorder, table, 0, 0, inorder.size() - 1);
 	}
 private:
-	TreeNode * hashTableRecur_PreIn(std::vector<int> & preorder, std::vector<int> & inorder
+	TreeNode * hashTableRecur_PreIn(const std::vector<int> & preorder, const std::vector<int> & inorder
 		, std::unordered_map<int, int> & table, int first, int start, int end)
 	{
 		if (start > end)
@@ -199,7 +200,7 @@ private:
 
 	//2.3 Iterate Stack Hash Table
 public:
-	TreeNode * IterateStack_PreIn(std::vector<int> & preorder, std::vector<int> & inorder)
+	TreeNode * IterateStack_PreIn(const std::vector<int> & preorder, const std::vector<int> & inorder)
 	{
 		std::unordered_map<int, int> table;
 		for (int i = 0; i < (int)inorder.size(); ++i)
