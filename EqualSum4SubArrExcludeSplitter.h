@@ -25,7 +25,7 @@ class EqualSum4SubArrExcludeSplitter
 public:
 	EqualSum4SubArrExcludeSplitter() {}
 
-	bool CanSplit(std::vector<int> & v)
+	bool CanSplit(const std::vector<int> & v)
 	{
 		int N = v.size();
 		if (N < 7) return false;//[a,i,b,j,c,k,d]
