@@ -100,7 +100,7 @@ public:
 
 public:
 	typedef std::pair<std::pair<int, int>, int> building;//first.first: begin idx, first.second: end idx, second: height
-	std::vector<building> Recur(std::vector<building> & v)
+	std::vector<building> Recur(std::vector<building> && v)
 	{
 		//sort by begin idx and end idx
 		std::sort(v.begin(), v.end(), [](const building & a, const building & b)->bool
