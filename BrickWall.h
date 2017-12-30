@@ -28,7 +28,7 @@ class BrickWall
 public:
 	BrickWall() {}
 
-	int HashMap(std::vector<std::vector<int>> & wall)
+	int HashMap(const std::vector<std::vector<int>> & wall)
 	{
 		int N = wall.size();
 		std::unordered_map<int, int> holeCount;
