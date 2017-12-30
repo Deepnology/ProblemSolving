@@ -65,7 +65,7 @@ public:
 	}
 
 public:
-	void Sort(std::vector<std::string> & strs)
+	void Sort(std::vector<std::string> && strs)
 	{
 		std::string before = Debug::ToStr1D<std::string>()(strs);
 
@@ -86,7 +86,7 @@ public:
 
 	//Leetcode: Find all anagrams in a string
 	//Special case (fixed length window) of Stormrage
-	std::vector<std::string> FindAllAnagramSubstr(std::string & S, std::string & T)
+	std::vector<std::string> FindAllAnagramSubstr(const std::string & S, const std::string & T)
 	{
 		int N = S.size();
 		int count = T.size();
@@ -127,7 +127,7 @@ public:
 		return res;
 	}
 
-	bool IsAnagram(std::string s, std::string t)
+	bool IsAnagram(const std::string & s, const std::string & t)
 	{
 		std::vector<int> charMap(26, 0);
 		for (int i = 0; i < (int)s.size(); ++i)
