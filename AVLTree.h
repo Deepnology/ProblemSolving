@@ -111,7 +111,7 @@ public:
 	int FindMin() const
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		int min = this->findMinRecur(m_root)->val;
 		std::cout << "AVLTree FindMin: " << min << std::endl;
 		return min;
@@ -119,7 +119,7 @@ public:
 	int FindMax() const
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		int max = this->findMaxRecur(m_root)->val;
 		std::cout << "AVLTree FindMax: " << max << std::endl;
 		return max;
