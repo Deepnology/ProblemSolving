@@ -34,7 +34,7 @@ public:
 	CountingSort2(){}
 	~CountingSort2(){}
 
-	void GroupSameKeys(std::vector<std::pair<int, std::string> > & v)
+	void GroupSameKeys(std::vector<std::pair<int, std::string>> && v)
 	{
 		std::string before = Debug::ToStr1D<int, std::string>()(v);
 		std::unordered_map<int, int> keyToCount;//first: key, second: count of key
@@ -72,7 +72,7 @@ public:
 		std::cout << "CountingSort2 GroupSameKeys for \"" << before << "\": " << std::endl << Debug::ToStr1D<int, std::string>()(v) << std::endl;
 	}
 
-	void SortKeys(std::vector<std::pair<int, std::string> > & v)
+	void SortKeys(std::vector<std::pair<int, std::string>> && v)
 	{
 		std::string before = Debug::ToStr1D<int, std::string>()(v);
 		std::map<int, int> keyToCount;//use map instead of unordered_map. first: key, second: count of the key
