@@ -26,7 +26,7 @@ public:
 	ApplyPermutationOrder(){}
 	~ApplyPermutationOrder(){}
 
-	void MarkVisit(std::vector<int> & v, std::vector<int> & Idx)
+	void MarkVisit(std::vector<int> && v, std::vector<int> Idx)
 	{
 		std::string before1 = Debug::ToStr1D<int>()(v);
 		std::string before2 = Debug::ToStr1D<int>()(Idx);
@@ -58,7 +58,7 @@ public:
 		std::cout << Debug::ToStr1D<int>()(v) << std::endl;
 	}
 
-	void InPlace(std::vector<int> & v, const std::vector<int> & Idx)
+	void InPlace(std::vector<int> && v, const std::vector<int> Idx)
 	{
 		std::string before1 = Debug::ToStr1D<int>()(v);
 		std::string before2 = Debug::ToStr1D<int>()(Idx);
