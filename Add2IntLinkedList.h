@@ -245,7 +245,7 @@ public:
 		}
 	}
 
-	static ListNode * CreateList(std::vector<int> & num)
+	static ListNode * CreateList(const std::vector<int> & num)
 	{
 		ListNode * curNode = NULL;
 		ListNode * head = NULL;
