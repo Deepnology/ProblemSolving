@@ -29,7 +29,7 @@ public:
 	ContainsDuplicate(){}
 	~ContainsDuplicate(){}
 
-	void Solve(std::vector<int> & v, int k, int t)
+	void Solve(const std::vector<int> & v, int k, int t)
 	{
 		bool res1 = this->containsDuplicate(v);
 		bool res2 = this->containsNearbyDuplicate(v, k);
@@ -40,7 +40,7 @@ public:
 		std::cout << "ContainsDuplicate for AtMost \"" << k << "-Indicies, AtMost " << t << "-Diff from " << Debug::ToStr1D<int>()(v) << "\": " << res3 << std::endl;
 	}
 
-	bool containsDuplicate(std::vector<int> & v)
+	bool containsDuplicate(const std::vector<int> & v)
 	{
 		int N = v.size();
 		std::unordered_set<int> s;
@@ -54,7 +54,7 @@ public:
 		return false;
 	}
 
-	bool containsNearbyDuplicate(std::vector<int> & nums, int k)
+	bool containsNearbyDuplicate(const std::vector<int> & nums, int k)
 	{
 		int N = nums.size();
 		std::unordered_map<long, int> toIdx;//first: entry, second: last occurrence index
@@ -75,7 +75,7 @@ public:
 		return false;
 	}
 
-	bool containsNearbyAlmostDuplicate(std::vector<int> & nums, int k, int t)
+	bool containsNearbyAlmostDuplicate(const std::vector<int> & nums, int k, int t)
 	{
 		int N = nums.size();
 		std::map<long, int> toIdx;//first: entry, second: last occurrence index
