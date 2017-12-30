@@ -52,7 +52,7 @@ public:
 	BinPacking2(){}
 	~BinPacking2(){}
 
-	bool Valid_EnumerateAll_Recur(const std::vector<int> & tasks, std::vector<int> & servers)
+	bool Valid_EnumerateAll_Recur(const std::vector<int> & tasks, std::vector<int> && servers)
 	{
 		std::string before = Debug::ToStr1D<int>()(servers);
 		bool res = this->validRecur(tasks, servers, 0);
@@ -82,7 +82,7 @@ private:
 
 public:
 	//find the optimum solution to use as min number of servers as possible
-	int MinBin_EnumerateAll_Recur(const std::vector<int> & tasks, std::vector<int> & servers)
+	int MinBin_EnumerateAll_Recur(const std::vector<int> & tasks, std::vector<int> && servers)
 	{
 		std::string before = Debug::ToStr1D<int>()(servers);
 		int usedBins = 0;
