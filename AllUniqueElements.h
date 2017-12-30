@@ -18,7 +18,7 @@ public:
 	AllUniqueElements(){}
 	~AllUniqueElements(){}
 
-	bool CharArray(std::string & s)
+	bool CharArray(const std::string & s)
 	{
 		bool res = true;
 		std::vector<int> CharSet(256, 0);
@@ -36,7 +36,7 @@ public:
 		std::cout << "AllUniqueElements CharArray for \"" << s << "\": " << res << std::endl;
 		return res;
 	}
-	bool CharArray2(std::string & s)//s should be composed of 'a'-'z'
+	bool CharArray2(const std::string & s)//s should be composed of 'a'-'z'
 	{
 		bool res = true;
 		int BitVec26 = 0;//use the lower 26 bits to represent 'a'-'z'
