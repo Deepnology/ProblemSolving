@@ -22,7 +22,7 @@ class ConvertAllWordsToMinUniqueAbbrs
 public:
 	ConvertAllWordsToMinUniqueAbbrs() {}
 
-	std::vector<std::string> BruteForce(std::vector<std::string> & dict)
+	std::vector<std::string> BruteForce(const std::vector<std::string> & dict)
 	{
 		int N = dict.size();
 		std::vector<std::pair<std::string, int>> dict2;//<entry, original idx>
