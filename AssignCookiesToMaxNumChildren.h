@@ -30,7 +30,7 @@ class AssignCookiesToMaxNumChildren
 public:
 	AssignCookiesToMaxNumChildren() {}
 
-	int SortAndGreedy(std::vector<int> & g, std::vector<int> & s)
+	int SortAndGreedy(std::vector<int> && g, std::vector<int> && s)
 	{
 		std::sort(g.begin(), g.end());
 		std::sort(s.begin(), s.end());
