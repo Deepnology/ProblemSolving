@@ -14,7 +14,7 @@ The size of given string array won't exceed 600.
 Example 1:
 Input: Array = {"10", "0001", "111001", "1", "0"}, m = 5, n = 3
 Output: 4
-Explanation: This are totally 4 strings can be formed by the using of 5 0s and 3 1s, which are ¡§10,¡¨0001¡¨,¡¨1¡¨,¡¨0¡¨
+Explanation: This are totally 4 strings can be formed by the using of 5 0s and 3 1s, which are ï¿½ï¿½10,ï¿½ï¿½0001ï¿½ï¿½,ï¿½ï¿½1ï¿½ï¿½,ï¿½ï¿½0ï¿½ï¿½
 Example 2:
 Input: Array = {"10", "0", "1"}, m = 1, n = 1
 Output: 2
@@ -25,14 +25,14 @@ class BinStrCombinationWGiven0n1Count
 public:
 	BinStrCombinationWGiven0n1Count() {}
 
-	int InExcludeRecur(std::vector<std::string> & strs, int m, int n)
+	int InExcludeRecur(const std::vector<std::string> & strs, int m, int n)
 	{
 		int maxCount = 0;
 		recur(strs, 0, 0, m, n, maxCount);
 		std::cout << "BinStrCombinationWGiven0n1Count InExcludeRecur for \"" << Debug::ToStr1D<std::string>()(strs) << "\", (0,1) count = (" << m << ", " << n << "): " << maxCount << std::endl;
 		return maxCount;
 	}
-	void recur(std::vector<std::string> & v, int begin, int count, int curM, int curN, int & maxCount)//DFS include/exclude
+	void recur(const std::vector<std::string> & v, int begin, int count, int curM, int curN, int & maxCount)//DFS include/exclude
 	{
 		int N = v.size();
 		if (curM < 0 || curN < 0) return;
@@ -54,7 +54,7 @@ public:
 		recur(v, begin + 1, count, curM, curN, maxCount);
 	}
 
-	int DP3D(std::vector<std::string> & strs, int m, int n)
+	int DP3D(const std::vector<std::string> & strs, int m, int n)
 	{
 		int N = strs.size();
 		std::vector<std::vector<std::vector<int>>> dp(N + 1, std::vector<std::vector<int>>(m + 1, std::vector<int>(n + 1, 0)));
@@ -82,7 +82,7 @@ public:
 		return dp[N][m][n];
 	}
 
-	int DP2D(std::vector<std::string> & strs, int m, int n)
+	int DP2D(const std::vector<std::string> & strs, int m, int n)
 	{
 		int N = strs.size();
 		std::vector<std::vector<int>> dp(m + 1, std::vector<int>(n + 1, 0));
