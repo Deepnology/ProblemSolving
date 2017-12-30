@@ -57,7 +57,7 @@ class ArithmeticProgressionSubseq
 public:
 	ArithmeticProgressionSubseq() {}
 
-	int CountArithmeticSubarr(std::vector<int> & A)
+	int CountArithmeticSubarr(const std::vector<int> & A)
 	{
 		//a subarray w/ size >= 3 and diffs between consecutive nums are equal is called an arithmetic slice
 		int N = A.size();
@@ -77,7 +77,7 @@ public:
 		return res;
 	}
 
-	int CountArithmeticSubseq(std::vector<int> & A)
+	int CountArithmeticSubseq(const std::vector<int> & A)
 	{
 		int N = A.size();
 		std::vector<std::unordered_map<long long, int>> dp(N, std::unordered_map<long long, int>());//<diff, diff count at cur idx>
