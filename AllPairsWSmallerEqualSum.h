@@ -31,7 +31,7 @@ public:
 	AllPairsWSmallerEqualSum(){}
 	~AllPairsWSmallerEqualSum(){}
 
-	std::vector<std::pair<int, int> > FindAll(std::vector<int> & v, int t)
+	std::vector<std::pair<int, int> > FindAll(std::vector<int> && v, int t)
 	{
 		int N = v.size();
 		std::vector<std::pair<int, int> > res;
