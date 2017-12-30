@@ -16,7 +16,7 @@ public:
 	double Solve(int hour, int min)
 	{
 		if (hour < 0 || min < 0 || hour > 12 || min > 60)
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		if (hour == 12)
 			hour = 0;
