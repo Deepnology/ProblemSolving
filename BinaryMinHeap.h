@@ -63,7 +63,7 @@ public:
 	void Insert(int value)
 	{
 		if (m_curNodeCount == m_levelOrder.size())
-			throw std::exception("Heap Overflow");
+			throw std::runtime_error("Heap Overflow");
 		++m_curNodeCount;//1. increase the size
 		m_levelOrder[m_curNodeCount - 1] = value;//2. place the new value in the back of the level order array
 		this->bubbleUp_Iterate(m_curNodeCount - 1);//3. bubble up the new value
