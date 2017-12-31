@@ -39,7 +39,7 @@ public:
 		Interval(int s, int e) : start(s), end(e) {}
 	};
 
-	std::vector<int> Sort_BinarySearch(std::vector<Interval> & intervals)
+	std::vector<int> Sort_BinarySearch(const std::vector<Interval> & intervals)
 	{
 		std::ostringstream oss;
 		for (const auto & i : intervals)
