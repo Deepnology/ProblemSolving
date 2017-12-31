@@ -16,7 +16,7 @@ class FindAllDistinctPalindromeSubstr
 public:
 	FindAllDistinctPalindromeSubstr() {}
 
-	std::vector<std::string> Greedy(std::string & s)
+	std::vector<std::string> Greedy(const std::string & s)
 	{
 		int N = s.size();
 		std::unordered_set<std::string> res;
@@ -33,7 +33,7 @@ public:
 		return v;
 	}
 private:
-	void expand(std::string & s, int left, int right, std::unordered_set<std::string> & res)
+	void expand(const std::string & s, int left, int right, std::unordered_set<std::string> & res)
 	{
 		int N = s.size();
 		while (left >= 0 && right < N && s[left] == s[right])
