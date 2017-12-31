@@ -47,7 +47,7 @@ public:
 	FourSum(){}
 	~FourSum(){}
 
-	std::vector<std::vector<int>> FindAll_Sort_Greedy(std::vector<int> & num, int target)
+	std::vector<std::vector<int>> FindAll_Sort_Greedy(std::vector<int> && num, int target)
 	{
 		int N = num.size();
 		std::sort(std::begin(num), std::end(num));
@@ -95,7 +95,7 @@ public:
 	}
 
 	//4Sum II
-	int CountSumTo0_HashMap(std::vector<int> & A, std::vector<int> & B, std::vector<int> & C, std::vector<int> & D)
+	int CountSumTo0_HashMap(const std::vector<int> & A, const std::vector<int> & B, const std::vector<int> & C, const std::vector<int> & D)
 	{
 		std::unordered_map<int, int> sumMap;
 		int a = A.size();
@@ -115,7 +115,7 @@ public:
 		std::cout << "FourSum_CountSumTo0_HashMap for \"" << Debug::ToStr1D<int>()(A) << "\", \"" << Debug::ToStr1D<int>()(B) << "\", \"" << Debug::ToStr1D<int>()(C) << "\", \"" << Debug::ToStr1D<int>()(D) << "\": " << count << std::endl;
 		return count;
 	}
-	int CountSumTo0_2SortedArraysGreedy(std::vector<int> & A, std::vector<int> & B, std::vector<int> & C, std::vector<int> & D)
+	int CountSumTo0_2SortedArraysGreedy(const std::vector<int> & A, const std::vector<int> & B, const std::vector<int> & C, const std::vector<int> & D)
 	{
 		int N = A.size(); if (N == 0) return 0;
 		std::vector<int> AB;
