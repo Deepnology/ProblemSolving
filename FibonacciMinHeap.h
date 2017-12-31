@@ -95,7 +95,7 @@ public:
 	const int & FindMin() const
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		std::cout << "FibonacciHeap FindMin: " << m_minNode->val << std::endl;
 		return m_minNode->val;
 	}
@@ -110,7 +110,7 @@ public:
 	HeapNode * DeleteMin()
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		std::cout << "FibonacciMinHeap DeleteMin: " << m_minNode->val << std::endl;
 		--m_nodeCount;
 		HeapNode * curMinNode = m_minNode;
@@ -179,7 +179,7 @@ public:
 	void DecreaseKey(HeapNode * node, int val)
 	{
 		if (val > node->val)
-			throw std::exception("");
+			throw std::runtime_error("");
 		std::cout << "FibonacciMinHeap DecreaseKey for \"" << node->val << "\": " << val << std::endl;
 		this->decreaseKeyUnchecked(node, val);
 	}
