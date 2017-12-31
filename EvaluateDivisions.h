@@ -30,7 +30,7 @@ class EvaluateDivisions
 public:
 	EvaluateDivisions() {}
 
-	std::vector<double> calcEquation(std::vector<std::pair<std::string, std::string>> equations, std::vector<double> & values, std::vector<std::pair<std::string, std::string>> queries)
+	std::vector<double> calcEquation(const std::vector<std::pair<std::string, std::string>> & equations, const std::vector<double> & values, const std::vector<std::pair<std::string, std::string>> & queries)
 	{
 		//construct DAG
 		std::unordered_map<std::string, std::unordered_map<std::string, double>> DAG;
