@@ -63,7 +63,7 @@ public:
 		return res;
 	}
 
-	std::vector<std::pair<int, int> > MaxHeap_FromISS(std::istringstream & iss, int K)//K: 1-based
+	std::vector<std::pair<int, int> > MaxHeap_FromISS(std::istringstream && iss, int K)//K: 1-based
 	{
 		std::string before = iss.str();
 		std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int> >, SmallerThanComp> maxHeap;
@@ -100,7 +100,7 @@ public:
 		return res;
 	}
 
-	std::vector<int> Selection(std::vector<int> & v, int K)//K: 1-based
+	std::vector<int> Selection(std::vector<int> && v, int K)//K: 1-based
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		int N = v.size();
@@ -139,7 +139,7 @@ public:
 		return res;
 	}
 
-	std::vector<int> STL_Nth_Element(std::vector<int> & v, int K)//K: 1-based
+	std::vector<int> STL_Nth_Element(std::vector<int> && v, int K)//K: 1-based
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 
