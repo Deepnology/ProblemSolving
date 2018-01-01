@@ -31,7 +31,7 @@ private:
 		return std::make_pair(idx / numCol, idx % numCol);
 	}
 public:
-	int OneDQuickSelectIterate(std::vector<std::vector<int> > & A, int K)
+	int OneDQuickSelectIterate(std::vector<std::vector<int>> && A, int K)
 	{
 		int N = A.size();
 		int M = A[0].size();
@@ -66,7 +66,7 @@ public:
 		return res;
 	}
 
-	int OneDPartition(std::vector<std::vector<int> > & A, int lo, int hi, int pivot)
+	int OneDPartition(std::vector<std::vector<int>> & A, int lo, int hi, int pivot)
 	{
 		int N = A.size();
 		int M = A[0].size();
@@ -103,7 +103,7 @@ public:
 		return i;
 	}
 	
-	int OneDPartition2(std::vector<std::vector<int> > & A, int lo, int hi, int pivot)
+	int OneDPartition2(std::vector<std::vector<int>> & A, int lo, int hi, int pivot)
 	{
 		int N = A.size();
 		int M = A[0].size();
