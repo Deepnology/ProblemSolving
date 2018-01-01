@@ -242,7 +242,7 @@ public:
 	}
 
 
-	int TwoD_BFS_MinHeap(std::vector<std::vector<int>> & heightMap)
+	int TwoD_BFS_MinHeap(const std::vector<std::vector<int>> & heightMap)
 	{
 		int N = heightMap.size();
 		if (N == 0) return 0;
