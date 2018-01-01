@@ -27,7 +27,7 @@ public:
 	YoungTableau(){}
 	~YoungTableau(){}
 
-	int Extract_K_Min(std::vector<std::vector<int> > & matrix, int K)
+	int Extract_K_Min(std::vector<std::vector<int>> && matrix, int K)
 	{
 		Debug::Print2D<int>()(matrix, false);
 		int min;
@@ -43,7 +43,7 @@ public:
 		std::cout << "YoungTableau Extract_K_Min for \"" << K << "\": " << min << std::endl;
 		return min;
 	}
-	int ExtractMin(std::vector<std::vector<int> > & matrix)
+	int ExtractMin(std::vector<std::vector<int>> && matrix)
 	{
 		Debug::Print2D<int>()(matrix, false);
 
@@ -56,7 +56,7 @@ public:
 		return min;
 	}
 private:
-	void YoungifyRecur(std::vector<std::vector<int> > & matrix, int rowY, int colX)//bubble down recur
+	void YoungifyRecur(std::vector<std::vector<int>> & matrix, int rowY, int colX)//bubble down recur
 	{
 		int N = matrix.size();
 		int M = matrix[0].size();
@@ -96,7 +96,7 @@ private:
 	}
 
 public:
-	void Insert(std::vector<std::vector<int> > & matrix, const std::vector<int> & vals)
+	void Insert(std::vector<std::vector<int>> && matrix, const std::vector<int> & vals)
 	{
 		Debug::Print2D<int>()(matrix, false);
 
@@ -113,7 +113,7 @@ public:
 		Debug::Print2D<int>()(matrix, false);
 		std::cout << "YoungTableau Insert for \"" << Debug::ToStr1D<int>()(vals) << "\": see above" << std::endl;
 	}
-	void Insert(std::vector<std::vector<int> > & matrix, int val)
+	void Insert(std::vector<std::vector<int>> && matrix, int val)
 	{
 		Debug::Print2D<int>()(matrix, false);
 
@@ -126,7 +126,7 @@ public:
 		std::cout << "YoungTableau Insert for \"" << val << "\": see above" << std::endl;
 	}
 private:
-	void DecreaseKeyRecur(std::vector<std::vector<int> > & matrix, int rowY, int colX)//bubble up recur
+	void DecreaseKeyRecur(std::vector<std::vector<int>> & matrix, int rowY, int colX)//bubble up recur
 	{
 		int N = matrix.size();
 		int M = matrix[0].size();
@@ -167,7 +167,7 @@ private:
 
 
 public:
-	void Sort(std::vector<int> & v)
+	void Sort(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 
