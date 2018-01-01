@@ -172,7 +172,8 @@ void Test()
 		std::cout << "Test SyncProducersConsumers ProducerConsumerQueue:" << std::endl;
 		boost::shared_ptr<ProducerConsumerQueue> pcq(new ProducerConsumerQueue(7));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 60; ++i)
 		{
 			if (i & 1)
@@ -180,13 +181,15 @@ void Test()
 			else
 				m.Dispatch(std::bind(Consumer, pcq));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 	}
 	{
 		std::cout << "Test SyncProducersConsumers ProducerConsumerQueue2:" << std::endl;
 		boost::shared_ptr<ProducerConsumerQueue2> pcq(new ProducerConsumerQueue2(7));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 60; ++i)
 		{
 			if (i & 1)
@@ -194,7 +197,8 @@ void Test()
 			else
 				m.Dispatch(std::bind(Consumer2, pcq));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 	}
 }
 
