@@ -93,10 +93,10 @@ public:
 		return res;
 	}
 
-	std::vector<int> EnhancedMergeSort(std::vector<int> & v)
+	std::vector<int> EnhancedMergeSort(const std::vector<int> & v)
 	{
 		int N = v.size();
-		std::vector<std::pair<int, int> > v2;//first: value, second: original index before sorting
+		std::vector<std::pair<int, int>> v2;//first: value, second: original index before sorting
 		for (int i = 0; i < N; ++i)
 		{
 			v2.push_back(std::make_pair(v[i], i));
@@ -108,7 +108,7 @@ public:
 		return res;
 	}
 private:
-	void MergeSortRecur(std::vector<std::pair<int, int> > & v2, int left, int right, std::vector<std::pair<int, int> > & tmp, std::vector<int> & res)
+	void MergeSortRecur(std::vector<std::pair<int, int>> & v2, int left, int right, std::vector<std::pair<int, int> > & tmp, std::vector<int> & res)
 	{
 		if (left >= right)
 			return;
@@ -152,7 +152,7 @@ private:
 		}
 	}
 public:
-	std::vector<int> UsePrefixSums(std::vector<int> & v)//O(n^2) time
+	std::vector<int> UsePrefixSums(std::vector<int> && v)//O(n^2) time
 	{
 		if (v.empty()) return std::vector<int>();
 		int N = v.size();
@@ -175,7 +175,7 @@ public:
 		return res;
 	}
 
-	std::vector<int> UseBinaryIndexedTree(std::vector<int> & v)//O(nlogn) time
+	std::vector<int> UseBinaryIndexedTree(std::vector<int> && v)//O(nlogn) time
 	{
 		if (v.empty()) return std::vector<int>();
 		int N = v.size();
@@ -196,7 +196,7 @@ public:
 		return res;
 	}
 private:
-	int prefixSum(std::vector<int> & bit, int idx)
+	int prefixSum(const std::vector<int> & bit, int idx)
 	{
 		int sum = 0;
 		for (int i = idx + 1; i > 0; i -= i&(-i))
@@ -211,7 +211,7 @@ private:
 	}
 
 public:
-	int CountTotal_MergeSort2(std::vector<int> & v)
+	int CountTotal_MergeSort2(std::vector<int> && v)
 	{
 		int N = v.size();
 		std::vector<int> tmp(N);
