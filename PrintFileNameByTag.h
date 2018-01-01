@@ -19,7 +19,13 @@ class PrintFileNameByTag
 {
 	std::unordered_map<std::string, std::set<std::string>> tagToFileNames;
 public:
-	explicit PrintFileNameByTag(const std::string path = std::string("./Collections/"))
+	explicit PrintFileNameByTag(const std::string path = std::string(
+#ifdef _WIN32
+            "./Collections/"
+#else
+			"../"
+#endif
+	))
 	{
 		tagToFileNames.insert({ "Recur", std::set<std::string>() });
 		tagToFileNames.insert({ "Greedy", std::set<std::string>() });
