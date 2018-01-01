@@ -25,14 +25,14 @@ class RemoveBoxes
 public:
 	RemoveBoxes() {}
 
-	int Recur(std::vector<int> & boxes)
+	int Recur(const std::vector<int> & boxes)
 	{
 		int res = recur(boxes);
 		std::cout << "RemoveBoxes Recur for \"" << Debug::ToStr1D<int>()(boxes) << "\": " << res << std::endl;
 		return res;
 	}
 private:
-	int recur(std::vector<int> boxes)
+	int recur(const std::vector<int> boxes)
 	{
 		int N = boxes.size();
 		if (N == 0) return 0;
@@ -55,7 +55,7 @@ private:
 	}
 
 public:
-	int RecurDP3D(std::vector<int> & boxes)
+	int RecurDP3D(const std::vector<int> & boxes)
 	{
 		int N = boxes.size();
 		std::vector<std::vector<std::vector<int>>> dp(N, std::vector<std::vector<int>>(N, std::vector<int>(N, 0)));
@@ -65,7 +65,7 @@ public:
 	}
 private:
 	//rSame: count of same boxes[right] on the right side of boxes[right] which doesn't include boxes[right]
-	int recur(std::vector<int> & boxes, int left, int right, int rSame, std::vector<std::vector<std::vector<int>>> & dp)
+	int recur(const std::vector<int> & boxes, int left, int right, int rSame, std::vector<std::vector<std::vector<int>>> & dp)
 	{
 		if (left > right) return 0;
 		if (dp[left][right][rSame] != 0) return dp[left][right][rSame];
