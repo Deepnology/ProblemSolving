@@ -47,7 +47,7 @@ public:
 	Uses binary search via std::upper_bound() to find the insertion position in logarithmic time
 	, then performs the insertion via std::rotate(), in linear time.
 	*/
-	void GO(std::vector<int> & v)
+	void GO(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 
