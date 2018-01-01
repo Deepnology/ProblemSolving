@@ -13,7 +13,7 @@ public:
 	ReplaceAllSpacesWPercent20(){}
 	~ReplaceAllSpacesWPercent20(){}
 
-	void InPlace(std::string & s)
+	void InPlace(std::string && s)
 	{
 		std::string before = s;
 		int N = s.size();
