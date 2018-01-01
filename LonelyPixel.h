@@ -44,7 +44,7 @@ class LonelyPixel
 public:
 	LonelyPixel() {}
 
-	int CountLonelyB(std::vector<std::vector<char>> & picture)
+	int CountLonelyB(const std::vector<std::vector<char>> & picture)
 	{
 		int N = picture.size();
 		if (N == 0) return 0;
@@ -78,7 +78,7 @@ public:
 		return res;
 	}
 
-	int CountLonelyB(std::vector<std::vector<char>> & picture, int n)
+	int CountLonelyB(const std::vector<std::vector<char>> & picture, int n)
 	{
 		int N = picture.size();
 		if (N == 0) return 0;
