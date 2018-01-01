@@ -49,7 +49,7 @@ public:
 	RemoveDuplicatesFromSortedArray(){}
 	~RemoveDuplicatesFromSortedArray(){}
 
-	int AtMostOnce(std::vector<int> & A)
+	int AtMostOnce(std::vector<int> && A)
 	{
 		int n = A.size();
 		if (n < 2)
@@ -67,7 +67,7 @@ public:
 		return newEnd;//newEnd is the size after removal
 	}
 
-	int AtMostTwice(std::vector<int> & A)
+	int AtMostTwice(std::vector<int> && A)
 	{
 		int n = A.size();
 		if (n < 2)
@@ -94,7 +94,7 @@ public:
 		return newEnd;//newEnd is the size after removal
 	}
 
-	void EraseUnique(std::vector<int> & v)
+	void EraseUnique(std::vector<int> && v)
 	{
 		/*v is sorted (identical elements are neighbors)*/
 		std::string before = Debug::ToStr1D<int>()(v);
