@@ -114,7 +114,7 @@ public:
 		int targetStart, int targetEnd, int totalCount) //fixed array var
 	{
 		if (targetStart < 0 || targetEnd > totalCount - 1 || targetStart > targetEnd)
-			throw std::exception("Invalid Input");
+			throw std::runtime_error("Invalid Input");
 		int min = this->QueryRangeRecur(segmentTree, 0, 0, totalCount - 1, targetStart, targetEnd);
 		std::cout << "RangeMinQuerySegmentTree QueryRange for \"" << targetStart << "," << targetEnd << "\": " << min << std::endl;
 		return min;
@@ -143,7 +143,7 @@ public:
 	{
 		int N = A.size();
 		if (targetIndex < 0 || targetIndex > N - 1)
-			throw std::exception("Invalid Input");
+			throw std::runtime_error("Invalid Input");
 		A[targetIndex] = targetVal;
 		this->UpdateValueRecur(segmentTree, 0, 0, N - 1, targetIndex, targetVal);
 		std::cout << "RangeMinQuerySegmentTree UpdateValue for index,val = \"" << targetIndex << "," << targetVal << "\": " << Debug::ToStr1D<int>()(segmentTree) << std::endl;
