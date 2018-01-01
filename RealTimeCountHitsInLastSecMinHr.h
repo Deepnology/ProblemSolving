@@ -76,13 +76,18 @@ private:
 public:
 	void Solve()
 	{
+		std::cout << "RealTimeCountHitsInLastSecMinHr: " << std::endl;
+		std::cout << "Press ENTER to Count Hits." << std::endl;
+		std::cout << "Press \"e\"+ENTER to exit." << std::endl;
+
 		std::thread t(std::bind(&RealTimeCountHitsInLastSecMinHr::Update, this));
 
 		std::string s;
 		while (true)
 		{
-			std::getline(std::cin, s);
-			if (s.compare("exit") == 0)
+			std::getline(std::cin, s);//cin: the cin buffer is refreshed every few seconds, only after pressing ENTER will the cin buffer be read to s
+			std::cout << "Entered: " << s << std::endl;
+			if (s.compare("e") == 0)
 			{
 				std::unique_lock<std::mutex> lock(m_mutex);
 				m_break = true;
