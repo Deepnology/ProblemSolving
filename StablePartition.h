@@ -28,6 +28,10 @@ public:
 	StablePartition(){}
 	~StablePartition(){}
 
+	void ModifyMergeSort(std::vector<int> && A)
+	{
+		ModifyMergeSort(A);
+	}
 	void ModifyMergeSort(std::vector<int> & A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
@@ -76,7 +80,7 @@ private:
 	}
 
 public:
-	void QuadraticTime(std::vector<int> & A)
+	void QuadraticTime(std::vector<int> && A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
@@ -99,7 +103,7 @@ public:
 		std::cout << "StablePartition QuadraticTime for \"" << before << "\": " << Debug::ToStr1D<int>()(A) << std::endl;
 	}
 
-	void LinearTimeLinearSpace(std::vector<int> & A)
+	void LinearTimeLinearSpace(std::vector<int> && A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		std::vector<int> tempPositives;
@@ -130,7 +134,7 @@ public:
 		std::cout << "StablePartition LinearTimeLinearSpace for \"" << before << "\": " << Debug::ToStr1D<int>()(A) << std::endl;
 	}
 
-	void STL(std::vector<int> & A)
+	void STL(std::vector<int> && A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		std::stable_partition(A.begin(), A.end(),
