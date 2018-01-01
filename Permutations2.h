@@ -36,10 +36,10 @@ public:
 
 	//1. Permutation FromNoDupArray: n!
 	//1.1 Iterate
-	std::vector<std::vector<int> > FindAll_FromNoDupArray_InPlace_Iterate(std::vector<int> & num)//num are all supposed to be unique
+	std::vector<std::vector<int>> FindAll_FromNoDupArray_InPlace_Iterate(std::vector<int> && num)//num are all supposed to be unique
 	{
 		std::sort(std::begin(num), std::end(num));
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		do
 		{
 			res.push_back(num);
@@ -49,16 +49,16 @@ public:
 		return res;
 	}
 	//1.2 Back Track
-	std::vector<std::vector<int> > FindAll_FromNoDupArray_InPlace_Recur(std::vector<int> & num)//num are all supposed to be unique
+	std::vector<std::vector<int>> FindAll_FromNoDupArray_InPlace_Recur(std::vector<int> && num)//num are all supposed to be unique
 	{
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		this->PermuteRecur(num, 0, res);
 
 		std::cout << "Permutations2 FindAll_FromNoDupArray_InPlace_Recur for \"" << Debug::ToStr1D<int>()(num) << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
 private:
-	void PermuteRecur(std::vector<int> & num, int begin, std::vector<std::vector<int> > & res)
+	void PermuteRecur(std::vector<int> & num, int begin, std::vector<std::vector<int>> & res)
 	{
 		int N = num.size();
 		if (begin == N)//the next level of the depth
@@ -78,7 +78,7 @@ private:
 public:
 	//2. Permutation FromDupArray: n! / ((dupCount_1)! * (dupCount_2)! * (dupCount_3)! * ... * (dupCount_DistinctNumCount)!)
 	//2.1 Iterate
-	std::vector<std::vector<int> > FindAllUnique_FromDupArray_InPlace_Iterate(std::vector<int> & num)//num might have duplicates
+	std::vector<std::vector<int>> FindAllUnique_FromDupArray_InPlace_Iterate(std::vector<int> && num)//num might have duplicates
 	{
 		std::sort(std::begin(num), std::end(num));
 		std::vector<std::vector<int> > res;
@@ -91,16 +91,16 @@ public:
 		return res;
 	}
 	//2.2 Back Track
-	std::vector<std::vector<int> > FindAllUnique_FromDupArray_InPlace_Recur(std::vector<int> & num)//num might have duplicates
+	std::vector<std::vector<int>> FindAllUnique_FromDupArray_InPlace_Recur(std::vector<int> && num)//num might have duplicates
 	{
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		this->PermuteUniqueRecur(num, 0, res);
 
 		std::cout << "Permutations2 FindAllUnique_FromDupArray_InPlace_Recur for \"" << Debug::ToStr1D<int>()(num) << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
 private:
-	void PermuteUniqueRecur(std::vector<int> & num, int begin, std::vector<std::vector<int> > & res)
+	void PermuteUniqueRecur(std::vector<int> & num, int begin, std::vector<std::vector<int>> & res)
 	{
 		int N = num.size();
 		if (begin == N)
@@ -124,7 +124,7 @@ private:
 
 public:
 	//2.3 Formula: n! / ((dupCount_1)! * (dupCount_2)! * (dupCount_3)! * ... * (dupCount_DistinctNumCount)!)
-	int Count_FromDupArray_Formula(std::vector<int> & num)
+	int Count_FromDupArray_Formula(std::vector<int> && num)
 	{
 		int N = num.size();
 
