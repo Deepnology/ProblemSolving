@@ -37,7 +37,7 @@ public:
 
 	int Size() const
 	{
-		return N:
+		return N;
 	}
 	bool Contains(const std::string & key) const
 	{
