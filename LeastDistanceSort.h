@@ -21,11 +21,11 @@ public:
 	LeastDistanceSort(){}
 	~LeastDistanceSort(){}
 
-	void IndirectAndPermute(std::vector<int> & v)
+	void IndirectAndPermute(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		int N = v.size();
-		std::vector<std::pair<const int*, int> > permutation;
+		std::vector<std::pair<const int*, int>> permutation;
 		for (int i = 0; i < N; ++i)
 			permutation.push_back(std::make_pair(&v[i], i + 1));
 		std::sort(permutation.begin(), permutation.end(), [](const std::pair<const int *, int> & a, const std::pair<const int *, int> & b)->bool
