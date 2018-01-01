@@ -32,7 +32,7 @@ Then later Chris gave Alice $5 for a taxi ride. We can model each transaction as
 Assuming Alice, Bill, and Chris are person 0, 1, and 2 respectively (0, 1, 2 are the person's ID), the transactions can be represented as [[0, 1, 10], [2, 0, 5]].
 Given a list of transactions between a group of people, return the minimum number of transactions required to settle the debt.
 Note:
-A transaction will be given as a tuple (x, y, z). Note that x ¡Ú y and z > 0.
+A transaction will be given as a tuple (x, y, z). Note that x ï¿½ï¿½ y and z > 0.
 Person's IDs may not be linear, e.g. we could have the persons 0, 1, 2 or we could also have the persons 0, 2, 6.
 Example 1:
 Input:
@@ -106,7 +106,7 @@ private:
 
 public:
 	//Leetcode: Optimal Account Balancing
-	int MinTransfers(std::vector<std::vector<int>> & transactions)
+	int MinTransfers(const std::vector<std::vector<int>> & transactions)
 	{
 		int maxIdx = 0;
 		for (auto & v : transactions)
