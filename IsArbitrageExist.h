@@ -34,7 +34,7 @@ public:
 	IsArbitrageExist(){}
 	~IsArbitrageExist(){}
 
-	bool BellmanFord_ExistNegativeWeightCycle(std::vector<std::vector<double> > & DAGadjMatrix)
+	bool BellmanFord_ExistNegativeWeightCycle(std::vector<std::vector<double>> && DAGadjMatrix)
 	{
 		Debug::Print2D<double>()(DAGadjMatrix, false);
 		//1. transform the DAG
