@@ -27,7 +27,7 @@ class Minesweeper
 {
 public:
 	Minesweeper() {}
-	std::vector<std::vector<char>> UpdateBoard(std::vector<std::vector<char>> & board, std::vector<int> & click)
+	std::vector<std::vector<char>> UpdateBoard(std::vector<std::vector<char>> && board, const std::vector<int> & click)
 	{
 		Debug::Print2D<char>()(board, false);
 		recur(board, click[0], click[1]);
@@ -46,7 +46,7 @@ public:
 
 		int N = board.size();
 		int M = board[0].size();
-		std::vector<std::vector<int>> dir = { { -1,0 },{ 1,0 },{ 0,-1 },{ 0,1 },{ -1,-1 },{ 1,-1 },{ -1,1 },{ 1,1 } };
+		static std::vector<std::vector<int>> dir = { { -1,0 },{ 1,0 },{ 0,-1 },{ 0,1 },{ -1,-1 },{ 1,-1 },{ -1,1 },{ 1,1 } };
 		int countM = 0;
 		for (int k = 0; k < 8; ++k)
 		{
