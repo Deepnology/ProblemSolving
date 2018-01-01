@@ -24,7 +24,7 @@ public:
 	large must have a larger array space than small
 	but large's elements count is not necessarily larger than samll
 	*/
-	void Solve_InPlace(std::vector<int> & large, const std::vector<int> & small)
+	void Solve_InPlace(std::vector<int> && large, const std::vector<int> && small)
 	{
 		std::string before = Debug::ToStr1D<int>()(large);
 		int N = large.size();
@@ -42,7 +42,7 @@ public:
 		std::cout << "Merge2SortedArray InPlace for \"" << before << "\", and \"" << Debug::ToStr1D<int>()(small) << "\": " << Debug::ToStr1D<int>()(large) << std::endl;
 	}
 
-	void Solve_InPlace2(std::vector<int> & large, const std::vector<int> & small)
+	void Solve_InPlace2(std::vector<int> && large, const std::vector<int> && small)
 	{
 		std::string before = Debug::ToStr1D<int>()(large);
 		int N = large.size();
