@@ -24,7 +24,7 @@ public:
 		}
 	};
 public:
-	int FindMaxXOR_BinaryTrie(std::vector<int> & v)
+	int FindMaxXOR_BinaryTrie(const std::vector<int> & v)
 	{
 		int N = v.size();
 
