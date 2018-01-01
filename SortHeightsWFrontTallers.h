@@ -54,7 +54,7 @@ public:
 	SortHeightsWFrontTallers(){}
 	~SortHeightsWFrontTallers(){}
 
-	std::vector<std::pair<int,int>> Sort_Insert(std::vector<std::pair<int,int>> & heightsWCounts)
+	std::vector<std::pair<int,int>> Sort_Insert(std::vector<std::pair<int,int>> && heightsWCounts)
 	{
 		int N = heightsWCounts.size();
 
@@ -83,7 +83,7 @@ public:
 		RopeNode * right;
 		int leftCountPlus1;
 	};
-	std::vector<std::pair<int,int>> Sort_RopeInsertion_Inorder(std::vector<std::pair<int,int>> & heightsWCounts)
+	std::vector<std::pair<int,int>> Sort_RopeInsertion_Inorder(std::vector<std::pair<int,int>> && heightsWCounts)
 	{
 		int N = heightsWCounts.size();
 		
