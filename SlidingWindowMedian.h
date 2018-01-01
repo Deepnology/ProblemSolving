@@ -35,7 +35,7 @@ class SlidingWindowMedian
 {
 public:
 	SlidingWindowMedian() {}
-	std::vector<double> UseSortedMultiSetWindow(std::vector<int> & nums, int k)
+	std::vector<double> UseSortedMultiSetWindow(const std::vector<int> & nums, int k)
 	{
 		int N = nums.size();
 		std::multiset<int> window;
