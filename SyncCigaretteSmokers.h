@@ -99,12 +99,14 @@ void Test()
 	std::cout << "Test SyncCigaretteSmokers:" << std::endl;
 	boost::shared_ptr<CigaretteSmoker> cs(new CigaretteSmoker());
 	thread_mgr::ThreadMgr m;
-	system("pause");
+	std::cout << "Hit ENTER to continue ..." << std::endl;
+	std::cin.ignore();
 	m.Dispatch(std::bind(Arbiter, cs));
 	m.Dispatch(std::bind(Smoker, cs, 0));
 	m.Dispatch(std::bind(Smoker, cs, 1));
 	m.Dispatch(std::bind(Smoker, cs, 2));
-	system("pause");
+	std::cout << "Hit ENTER to continue ..." << std::endl;
+	std::cin.ignore();
 }
 
 }
