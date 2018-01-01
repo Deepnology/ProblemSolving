@@ -91,7 +91,7 @@ class NumberOfIslandsInMatrix
 public:
 	NumberOfIslandsInMatrix(){}
 	~NumberOfIslandsInMatrix(){}
-	void Count_DFS(std::vector<std::vector<char> > board)
+	void Count_DFS(std::vector<std::vector<char>> && board)
 	{
 		if (board.empty() || board[0].empty())
 			return;
@@ -112,7 +112,7 @@ public:
 		std::cout << "NumberOfIslandsInMatrix Count_DFS: " << count << std::endl;
 	}
 private:
-	bool DFSRecur(std::vector<std::vector<char> > & board, int x, int y)
+	bool DFSRecur(std::vector<std::vector<char>> & board, int x, int y)
 	{
 		int N = board.size();//num of rows
 		int M = board[0].size();//num of cols
@@ -229,7 +229,7 @@ class NumberOfDistinctIslandsInMatrix
 public:
 	NumberOfDistinctIslandsInMatrix() {}
 
-	int Count_DFSHashMap(std::vector<std::vector<int>> & grid)
+	int Count_DFSHashMap(const std::vector<std::vector<int>> & grid)
 	{
 		int N = grid.size();
 		if (N == 0) return 0;
@@ -258,7 +258,7 @@ public:
 		return shapes.size();
 	}
 private:
-	void DFS(std::vector<std::vector<int>> & grid, int initIdx, int i, int j, std::vector<std::vector<int>> & visit, std::string & shape)
+	void DFS(const std::vector<std::vector<int>> & grid, int initIdx, int i, int j, std::vector<std::vector<int>> & visit, std::string & shape)
 	{
 		int N = grid.size();
 		int M = grid[0].size();
@@ -293,7 +293,7 @@ class NumberOfDistinctIslandsAfterRotationInMatrix
 public:
 	NumberOfDistinctIslandsAfterRotationInMatrix() {}
 	
-	int Count_DFS_HashMap(std::vector<std::vector<int>> & grid)
+	int Count_DFS_HashMap(const std::vector<std::vector<int>> & grid)
 	{
 		int N = grid.size();
 		if (N == 0) return 0;
@@ -315,7 +315,7 @@ public:
 		return normShapes.size();
 	}
 private:
-	void DFS(std::vector<std::vector<int>> & grid, int i, int j, std::vector<std::vector<int>> & visit, std::vector<std::pair<int, int>> & shape)
+	void DFS(const std::vector<std::vector<int>> & grid, int i, int j, std::vector<std::vector<int>> & visit, std::vector<std::pair<int, int>> & shape)
 	{
 		int N = grid.size();
 		int M = grid[0].size();
@@ -332,11 +332,11 @@ private:
 			}
 		}
 	}
-	std::vector<std::pair<int, int>> Norm(std::vector<std::pair<int, int>> & shape)
+	std::vector<std::pair<int, int>> Norm(const std::vector<std::pair<int, int>> & shape)
 	{
 		std::vector<std::vector<std::pair<int, int>>> res(8, std::vector<std::pair<int, int>>());
 		//compute rotations/reflections
-		for (auto & p : shape)
+		for (const auto & p : shape)
 		{
 			int x = p.first;
 			int y = p.second;
@@ -367,7 +367,7 @@ class MaxAreaOfIslandsInMatrix
 public:
 	MaxAreaOfIslandsInMatrix() {}
 
-	int DFS_FindMaxIsland(std::vector<std::vector<int>> & grid)
+	int DFS_FindMaxIsland(const std::vector<std::vector<int>> & grid)
 	{
 		int N = grid.size();
 		if (N == 0) return 0;
@@ -389,7 +389,7 @@ public:
 		return res;
 	}
 private:
-	void DFS(std::vector<std::vector<int>> & grid, int i, int j, int & area, std::vector<std::vector<int>> & visit)
+	void DFS(const std::vector<std::vector<int>> & grid, int i, int j, int & area, std::vector<std::vector<int>> & visit)
 	{
 		int N = grid.size();
 		int M = grid[0].size();
