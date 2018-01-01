@@ -66,7 +66,7 @@ public:
 	{
 		int N = v.size();
 		if (N == 0)
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		//1. advance slow ptr 1 node, fast ptr 2 nodes
 		//they will meet at some node in the middle of the cycle
