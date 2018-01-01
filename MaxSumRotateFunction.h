@@ -32,7 +32,7 @@ class MaxSumRotateFunction
 public:
 	MaxSumRotateFunction() {}
 
-	int LinearTime(std::vector<int> & A)//O(n) time
+	int LinearTime(const std::vector<int> & A)//O(n) time
 	{
 		int N = A.size();
 		int sum = 0;
