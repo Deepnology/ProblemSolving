@@ -75,7 +75,7 @@ private:
 	}
 
 public:
-	std::vector<std::string> BucketSort_Trie(std::vector<std::string> & words, int k)//O(n) time, O(n) space
+	std::vector<std::string> BucketSort_Trie(const std::vector<std::string> & words, int k)//O(n) time, O(n) space
 	{
 		std::unordered_map<std::string, int> map;
 		for (auto & s : words)
@@ -112,7 +112,7 @@ public:
 			return a.first != b.first ? a.first > b.first : a.second < b.second;
 		}
 	};
-	std::vector<std::string> MinHeap(std::vector<std::string> & words, int k)//O(nlogk) time, O(n) space
+	std::vector<std::string> MinHeap(const std::vector<std::string> & words, int k)//O(nlogk) time, O(n) space
 	{
 		std::unordered_map<std::string,int> map;
         for (auto & s : words)
