@@ -37,7 +37,7 @@ public:
 	ThreeSumClosest(){}
 	~ThreeSumClosest(){}
 
-	int Sort_Greedy(std::vector<int> & num, int target)
+	int Sort_Greedy(std::vector<int> && num, int target)
 	{
 		int N = num.size();
 		std::sort(std::begin(num), std::end(num));
@@ -71,7 +71,7 @@ class ThreeSumSmaller
 public:
 	ThreeSumSmaller() {}
 	~ThreeSumSmaller() {}
-	int Sort_Greedy(std::vector<int> & num, int target)
+	int Sort_Greedy(std::vector<int> && num, int target)
 	{
 		int N = num.size();
 		std::sort(std::begin(num), std::end(num));
