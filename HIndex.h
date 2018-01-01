@@ -31,7 +31,7 @@ public:
 	~HIndex() {}
 
 	//I. O(nlogn) time
-	int Sort_LinearScan(std::vector<int> & citations)
+	int Sort_LinearScan(std::vector<int> && citations)
 	{
 		int N = citations.size();
 		std::sort(citations.begin(), citations.end());//sort in ascending order
@@ -49,7 +49,7 @@ public:
 		return h;
 	}
 	//O(n) time
-	int LinearTimeExtraSpace(std::vector<int> & citations)
+	int LinearTimeExtraSpace(const std::vector<int> & citations)
 	{
 		int N = citations.size();
 		std::vector<int> cnt(N + 1, 0);//index: citation number, value: number of papers
@@ -74,7 +74,7 @@ public:
 	//QuickSelect: O(n) time const space
 	//partition the nums that are greater than pivotVal to left side
 	//we want to maximize the count of nums in left side where each num is >= count of nums in left side
-	int QuickSelect(std::vector<int> & citations)
+	int QuickSelect(std::vector<int> && citations)
 	{
 		int N = citations.size();
 		if (N == 0) return 0;
