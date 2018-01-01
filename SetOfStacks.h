@@ -50,7 +50,7 @@ public:
 	{
 		std::stack<int> * last = this->GetLastStack();
 		if (last == NULL || last->size() == 0)
-			throw std::exception("SetOfStacks Null Stack");
+			throw std::runtime_error("SetOfStacks Null Stack");
 		return last->top();
 	}
 	void Pop()
@@ -76,7 +76,7 @@ public:
 		{
 			return m_stacks[index]->top();
 		}
-		throw std::exception("SetOfStacks NULL Stack");
+		throw std::runtime_error("SetOfStacks NULL Stack");
 	}
 
 	int Size() const
