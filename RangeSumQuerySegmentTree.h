@@ -65,7 +65,7 @@ public:
 		int targetStart, int targetEnd, int totalCount) //fixed array var
 	{
 		if (targetStart < 0 || targetEnd > totalCount - 1 || targetStart > targetEnd)
-			throw std::exception("Invalid Input");
+			throw std::runtime_error("Invalid Input");
 		int sum = this->QueryRangeRecur(segmentTree, 0, 0, totalCount - 1, targetStart, targetEnd);
 		std::cout << "RangeSumQuerySegmentTree QueryRange for \"" << targetStart << "," << targetEnd << "\": " << sum << std::endl;
 		return sum;
@@ -94,7 +94,7 @@ public:
 	{
 		int N = A.size();
 		if (targetIndex < 0 || targetIndex > N - 1)
-			throw std::exception("Invalid Input");
+			throw std::runtime_error("Invalid Input");
 		A[targetIndex] = targetVal;
 		this->UpdateValueRecur(segmentTree, 0, 0, N - 1, targetIndex, targetVal);
 		std::cout << "RangeSumQuerySegmentTree UpdateValue for index,val = \"" << targetIndex << "," << targetVal << "\": " << Debug::ToStr1D<int>()(segmentTree) << std::endl;
