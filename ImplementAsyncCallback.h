@@ -59,8 +59,8 @@ namespace ImplementAsyncCallback
 	static boost::shared_ptr<Future> Dispatch(boost::function0<std::string> f)
 	{
 		FuncWrapper fw;
-		fw.m_f.swap(boost::shared_ptr<boost::function0<std::string>>(new boost::function0<std::string>(f)));
-		fw.m_future.swap(boost::shared_ptr<Future>(new Future));
+		boost::shared_ptr<boost::function0<std::string>>(new boost::function0<std::string>(f)).swap(fw.m_f);
+		boost::shared_ptr<Future>(new Future).swap(fw.m_future);
 		boost::thread t(std::bind(&FuncWrapper::operator(), &fw));
 		t.detach();//detach the thread so that it continues to run after the thread object is getting destroyed
 		std::cout << "Detached" << std::endl;
@@ -92,8 +92,8 @@ namespace ImplementAsyncCallback
 	{
 		FuncWrapperWTimeOut fw;
 		fw.m_sec = sec;
-		fw.m_f.swap(boost::shared_ptr<boost::function0<std::string>>(new boost::function0<std::string>(f)));
-		fw.m_future.swap(boost::shared_ptr<Future>(new Future));
+		boost::shared_ptr<boost::function0<std::string>>(new boost::function0<std::string>(f)).swap(fw.m_f);
+		boost::shared_ptr<Future>(new Future).swap(fw.m_future);
 		boost::thread t(std::bind(&FuncWrapperWTimeOut::operator(), &fw));
 		t.detach();//detach the thread so that it continues to run after the thread object is getting destroyed
 		std::cout << "Detached" << std::endl;
@@ -115,12 +115,14 @@ namespace ImplementAsyncCallback
 	}
 	void Test()
 	{
-		std::cout << "ImplementAsyncCallback, Dispatch:" << std::endl;
+		std::cout << "Hit ENTER -> ImplementAsyncCallback, Dispatch:" << std::endl;
+		std::cin.ignore();
 		boost::shared_ptr<Future> future1 = Dispatch(boost::bind(aLoop, std::string("v"), 70000));
-		system("pause");
-		std::cout << "ImplementAsyncCallback, Dispatch_WTimeOout:" << std::endl;
+		std::cout << "Hit ENTER -> ImplementAsyncCallback, Dispatch_WTimeOut:" << std::endl;
+		std::cin.ignore();
 		boost::shared_ptr<Future> future2 = Dispatch_WTimeOut(boost::bind(aLoop, std::string("v"), 70000), 1);
-		system("pause");
+		std::cout << "Hit ENTER" << std::endl;
+		std::cin.ignore();
 	}
 }
 
