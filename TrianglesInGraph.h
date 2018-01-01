@@ -77,7 +77,7 @@ public:
 		return count;
 	}
 
-	int Count_AdjacencyList(std::vector<std::vector<int > > & graph)//graph[i][j]: the j-th adjacent vertex of vertex graph[i]
+	int Count_AdjacencyList(const std::vector<std::vector<int>> & graph)//graph[i][j]: the j-th adjacent vertex of vertex graph[i]
 	{
 		int count = 0;
 		int N = graph.size();//num of vertices in graph
@@ -111,7 +111,7 @@ public:
 	}
 
 	//adjacencyMatrix of an undirected graph must be diagonally symmetric
-	int Count_AdjacencyMatrix(std::vector<std::vector<int> > & graph)//graph[i][j]: 1, vertex i has edge with vertex j, otherwise, 0
+	int Count_AdjacencyMatrix(const std::vector<std::vector<int>> & graph)//graph[i][j]: 1, vertex i has edge with vertex j, otherwise, 0
 	{
 		int count = 0;
 		int N = graph.size();//num of vertices in graph
