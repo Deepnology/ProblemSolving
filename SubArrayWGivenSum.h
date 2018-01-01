@@ -74,14 +74,14 @@ public:
 	Output: True
 	Explanation: Because [23, 2, 6, 4, 7] is an continuous subarray of size 5 and sums up to 42.
 	*/
-	bool ExistSubArrSum_MultipleOfK(std::vector<int> & v, int k)
+	bool ExistSubArrSum_MultipleOfK(const std::vector<int> & v, int k)
 	{
 		bool res = existSubArrSum_MultipleOfK(v, k);
 		std::cout << "SubArrayWGivenSum ExistSubArrSum_MultipleOfK for k=" << k << ", \"" << Debug::ToStr1D<int>()(v) << "\": " << res << std::endl;
 		return res;
 	}
 private:
-	bool existSubArrSum_MultipleOfK(std::vector<int> & v, int k)
+	bool existSubArrSum_MultipleOfK(const std::vector<int> & v, int k)
 	{
 		//modified from LongestSubArrWEqualSum.h
 		std::unordered_map<int, int> prefixSumMap;//<prefixSum%k, first occur idx>
