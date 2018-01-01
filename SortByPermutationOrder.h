@@ -28,7 +28,7 @@ public:
 	SortByPermutationOrder(){}
 	~SortByPermutationOrder(){}
 
-	void InPlace_2Pass(std::vector<int> & v, std::vector<int> & Idx)
+	void InPlace_2Pass(std::vector<int> && v, std::vector<int> Idx)
 	{
 		std::string before1 = Debug::ToStr1D<int>()(v);
 		std::string before2 = Debug::ToStr1D<int>()(Idx);
@@ -43,7 +43,7 @@ public:
 		std::cout << Debug::ToStr1D<int>()(v) << std::endl;
 	}
 
-	void InPlace_Swap(std::vector<int> & v, std::vector<int> & Idx)
+	void InPlace_Swap(std::vector<int> && v, std::vector<int> Idx)
 	{
 		std::string before1 = Debug::ToStr1D<int>()(v);
 		std::string before2 = Debug::ToStr1D<int>()(Idx);
