@@ -19,7 +19,7 @@ class NumOfBoomerangs
 public:
 	NumOfBoomerangs() {}
 
-	int HashMap(std::vector<std::pair<int, int>> & points)
+	int HashMap(const std::vector<std::pair<int, int>> & points)
 	{
 		int N = points.size();
 		int res = 0;
