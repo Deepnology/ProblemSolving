@@ -56,7 +56,7 @@ public:
 	~WordLadder(){}
 
 	//1. find an arbitrary shortest path
-	int FindShortestLadderLengthBFS(std::string start, std::string end, std::unordered_set<std::string> dict)//dict will be modified
+	int FindShortestLadderLengthBFS(const std::string & start, const std::string & end, std::unordered_set<std::string> dict)//dict will be modified
 	{
 		std::string dictBefore = Debug::ToStr1D<std::string>()(dict);
 		std::cout << "WordLadder FindShortestLadderLengthBFS for \"" << start << "\", \"" << end << "\" from \"" << dictBefore << "\": ";
@@ -105,7 +105,7 @@ public:
 	}
 
 	//2. enumerate all diff shortest paths instead of enumerating all diff result configurations with a shortest path
-	std::vector<std::vector<std::string>> FindAllShortestLaddersBFS(std::string start, std::string end, std::unordered_set<std::string> dict)//better
+	std::vector<std::vector<std::string>> FindAllShortestLaddersBFS(const std::string & start, const std::string & end, std::unordered_set<std::string> dict)//better
 	{
 		std::string dictBefore = Debug::ToStr1D<std::string>()(dict);
 
@@ -179,7 +179,7 @@ public:
 		return res;
 	}
 
-	std::vector<std::vector<std::string>> FindAllShortestLaddersDFS(std::string start, std::string end, std::unordered_set<std::string> dict)//Time Limit Exceeded
+	std::vector<std::vector<std::string>> FindAllShortestLaddersDFS(const std::string & start, const std::string & end, std::unordered_set<std::string> dict)//Time Limit Exceeded
 	{
 		std::string dictBefore = Debug::ToStr1D<std::string>()(dict);
 
@@ -239,13 +239,13 @@ public:
 
 
 	//faster but harder to memo
-	std::vector<std::vector<std::string> > FindAllShortestLadders(std::string start, std::string end, std::unordered_set<std::string> dict)
+	std::vector<std::vector<std::string>> FindAllShortestLadders(const std::string & start, const std::string & end, std::unordered_set<std::string> dict)
 	{
 		std::cout << "WordLadder FindAllShortestLadders for \"" << start << "\", \"" << end << "\" from \"" << Debug::ToStr1D<std::string>()(dict) << "\": " << std::endl;
 
 		//key: next 1-letter-diff-word in dict or "end"
 		//value: a vector of all the prev 1-letter-diff-word in dict
-		std::unordered_map<std::string, std::vector<std::string> > ladderWordMap;
+		std::unordered_map<std::string, std::vector<std::string>> ladderWordMap;
 
 		std::vector<std::vector<std::string> > res;
 		std::unordered_set<std::string> currLadderWords;//all 1-letter-diff-words in curr level
@@ -318,8 +318,8 @@ public:
 private:
 	//start: a prev word in start's prev word vector in ladderWordMap
 	//end: the target beginning of the ladder
-	void getPathRecur_DFS_FromBack(std::string & start, std::string & end, std::unordered_map<std::string, std::vector<std::string> > & map
-		, std::vector<std::string> & path, std::vector<std::vector<std::string> > & res)
+	void getPathRecur_DFS_FromBack(const std::string & start, const std::string & end, std::unordered_map<std::string, std::vector<std::string>> & map
+		, std::vector<std::string> & path, std::vector<std::vector<std::string>> & res)
 	{
 		path.push_back(start);//form the path vector backward
 
@@ -337,10 +337,10 @@ private:
 		path.pop_back();
 	}
 
-	void printLadderWordMap(const std::unordered_map<std::string, std::vector<std::string> > & map)
+	void printLadderWordMap(const std::unordered_map<std::string, std::vector<std::string>> & map)
 	{
 		std::ostringstream oss;
-		for (std::unordered_map<std::string, std::vector<std::string> >::const_iterator i = map.begin(); i != map.end(); ++i)
+		for (std::unordered_map<std::string, std::vector<std::string>>::const_iterator i = map.begin(); i != map.end(); ++i)
 		{
 			oss << i->first << ": ";
 			for (std::vector<std::string>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
@@ -430,7 +430,7 @@ class MinGeneticMutation
 public:
 	MinGeneticMutation() {}
 
-	int CountMinMutation_BFS(std::string start, std::string end, std::vector<std::string> & bank)
+	int CountMinMutation_BFS(const std::string & start, const std::string & end, const std::vector<std::string> & bank)
 	{
 		std::unordered_set<std::string> dict;
 		for (const auto & s : bank)
