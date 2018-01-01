@@ -52,7 +52,11 @@ public:
 	RotateImage(){}
 	~RotateImage(){}
 
-	void Clockwise_Iterate(std::vector<std::vector<int> > & matrix)//[rowY][columnX]
+	void Clockwise_Iterate(std::vector<std::vector<int>> && matrix)//[rowY][columnX]
+	{
+		Clockwise_Iterate(matrix);
+	}
+	void Clockwise_Iterate(std::vector<std::vector<int>> & matrix)//[rowY][columnX]
 	{
 		if (matrix.empty())
 			return;
@@ -82,7 +86,7 @@ private:
 
 
 public:
-	RotateImage(const std::vector<std::vector<int> > & matrix) : m_matrix(matrix) {}
+	RotateImage(const std::vector<std::vector<int>> & matrix) : m_matrix(matrix) {}
 	int Read(int rowY, int colX) const
 	{
 		return m_matrix[m_matrix.size() - 1 - colX][rowY];//bottom left
@@ -92,7 +96,7 @@ public:
 		m_matrix[m_matrix.size() - 1 - colX][rowY] = val;
 	}
 private:
-	std::vector<std::vector<int> > m_matrix;
+	std::vector<std::vector<int>> m_matrix;
 
 };
 /*
