@@ -28,7 +28,7 @@ class LongestSubArrWSameChars_AtMostKReplace
 public:
 	LongestSubArrWSameChars_AtMostKReplace() {}
 
-	int SlideWindow(std::string s, int k)
+	int SlideWindow(const std::string & s, int k)
 	{
 		int N = s.size();
 		if (N <= 1) return N;
@@ -80,7 +80,7 @@ class LongestConsecu1s_AtMost1Replace
 public:
 	LongestConsecu1s_AtMost1Replace() {}
 
-	int SlideWindow(std::vector<int> & nums)
+	int SlideWindow(const std::vector<int> & nums)
 	{
 		int N = nums.size();
 		if (N == 0) return 0;
@@ -104,7 +104,7 @@ public:
 		return res;
 	}
 
-	int FromStream(std::vector<int> & nums)
+	int FromStream(const std::vector<int> & nums)
 	{
 		int N = nums.size();
 		if (N == 0) return 0;
