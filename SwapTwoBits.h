@@ -22,8 +22,8 @@ public:
 			res = n;
 		else
 		{
-			int xor = ((n >> idx1) ^ (n >> idx2)) & 1;/*the xor of the two isolated-bit numbers. 1: different, 0: same*/
-			res = n ^ (xor << idx1) ^ (xor << idx2);
+			int XOR = ((n >> idx1) ^ (n >> idx2)) & 1;/*the xor of the two isolated-bit numbers. 1: different, 0: same*/
+			res = n ^ (XOR << idx1) ^ (XOR << idx2);
 			/*
 			The irrelevant bits xor 0s will remain unchanged.
 			The target bit xor 0 will remain unchanged.
