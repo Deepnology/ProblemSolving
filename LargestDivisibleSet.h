@@ -27,7 +27,7 @@ public:
 	LargestDivisibleSet() {}
 	~LargestDivisibleSet() {}
 
-	std::vector<int> DP(std::vector<int> & nums)
+	std::vector<int> DP(std::vector<int> && nums)
 	{
 		std::sort(nums.begin(), nums.end());
 		int N = nums.size();
