@@ -19,7 +19,7 @@ public:
 	PaintAllSameColorPixels(){}
 	~PaintAllSameColorPixels(){}
 
-	bool DFSRecur(std::vector<std::vector<int> > & board, int rowY, int colX, int newColor)
+	bool DFSRecur(std::vector<std::vector<int>> && board, int rowY, int colX, int newColor)
 	{
 		if (board[rowY][colX] == newColor)
 			return false;
@@ -30,7 +30,7 @@ public:
 		return res;
 	}
 private:
-	bool dFSRecur(std::vector<std::vector<int> > & board, int rowY, int colX, int originalColor, int newColor)
+	bool dFSRecur(std::vector<std::vector<int>> & board, int rowY, int colX, int originalColor, int newColor)
 	{
 		int N = board.size();
 		int M = board[0].size();
@@ -48,7 +48,7 @@ private:
 	}
 
 public:
-	bool BFSIterate(std::vector<std::vector<int> > & board, int rowY, int colX, int newColor)
+	bool BFSIterate(std::vector<std::vector<int>> && board, int rowY, int colX, int newColor)
 	{
 		if (board[rowY][colX] == newColor)
 			return false;
@@ -58,7 +58,7 @@ public:
 		int M = board[0].size();
 
 		int originalColor = board[rowY][colX];
-		std::queue<std::pair<int, int> > que;
+		std::queue<std::pair<int, int>> que;
 		que.push({ rowY, colX });
 		while (!que.empty())
 		{
