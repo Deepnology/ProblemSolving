@@ -62,7 +62,7 @@ private:
 	http://rosettacode.org/wiki/Sorting_algorithms/Merge_sort
 	*/
 public:
-	void GO_STL(std::vector<int> & A)
+	void GO_STL(std::vector<int> && A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		this->MergeSortSTLRecur(A.begin(), A.end());
