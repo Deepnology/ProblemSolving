@@ -21,7 +21,7 @@ class IslandPerimeter
 public:
 	IslandPerimeter() {}
 
-	int Count(std::vector<std::vector<int>> & grid)
+	int Count(const std::vector<std::vector<int>> & grid)
 	{
 		int N = grid.size();
 		if (N == 0) return 0;
