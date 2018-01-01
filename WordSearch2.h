@@ -165,7 +165,7 @@ public:
 	WordSearch2(){}
 	~WordSearch2(){}
 
-	std::vector<std::string> DFS_ConstSpace_Trie(std::vector<std::vector<char> > & board, std::vector<std::string> & words)//[rowY][columnX]
+	std::vector<std::string> DFS_ConstSpace_Trie(std::vector<std::vector<char>> && board, const std::vector<std::string> & words)//[rowY][columnX]
 	{
 		if (board.empty() || board[0].empty() || words.empty())
 			return std::vector<std::string>();
@@ -197,7 +197,7 @@ public:
 		return res;
 	}
 private:
-	void dfs_ConstSpace_Recur(std::vector<std::vector<char> > & board
+	void dfs_ConstSpace_Recur(std::vector<std::vector<char>> & board
 		, int curRow, int curCol, Trie & trie, std::string & path, std::vector<std::string> & res)
 	{
 		if (!trie.startsWith(path))
