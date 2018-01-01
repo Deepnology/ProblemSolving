@@ -40,7 +40,7 @@ public:
 		std::string minStr;
 		std::string maxStr;
 	};
-	std::string RecurDP(std::vector<int> & nums)
+	std::string RecurDP(const std::vector<int> & nums)
 	{
 		int N = nums.size();
 		std::vector<std::vector<data>> dp(N, std::vector<data>(N));
@@ -49,7 +49,7 @@ public:
 		return res.maxStr;
 	}
 private:
-	data recur(std::vector<int> & nums, int left, int right, std::vector<std::vector<data>> & dp)
+	data recur(const std::vector<int> & nums, int left, int right, std::vector<std::vector<data>> & dp)
 	{
 		if (dp[left][right].maxVal != INT_MIN || dp[left][right].minVal != INT_MAX) return dp[left][right];
 		data res;
@@ -87,7 +87,7 @@ private:
 	}
 
 public:
-	std::string Math(std::vector<int> & nums)
+	std::string Math(const std::vector<int> & nums)
 	{
 		//a -> a
 		//a/b -> a/b
