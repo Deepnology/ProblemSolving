@@ -33,7 +33,7 @@ class MinDistTo0In01Matrix
 public:
 	MinDistTo0In01Matrix() {}
 
-	std::vector<std::vector<int>> BFS(std::vector<std::vector<int>> & matrix)//Time Limit Exceeded
+	std::vector<std::vector<int>> BFS(std::vector<std::vector<int>> && matrix)//Time Limit Exceeded
 	{
 		Debug::Print2D<int>()(matrix, false);
 		int N = matrix.size();
@@ -86,7 +86,7 @@ public:
 		return matrix;
 	}
 
-	std::vector<std::vector<int>> DP(std::vector<std::vector<int>> & matrix)
+	std::vector<std::vector<int>> DP(const std::vector<std::vector<int>> & matrix)
 	{
 		int N = matrix.size();
 		int M = matrix[0].size();
