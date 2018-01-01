@@ -34,7 +34,7 @@ return "blue is sky the".
 Could you do it in-place without allocating extra space?
 */
 /*
-Let the input string be ¡§i like this program very much¡¨. The function should change the string to ¡§much very program this like i¡¨
+Let the input string be ï¿½ï¿½i like this program very muchï¿½ï¿½. The function should change the string to ï¿½ï¿½much very program this like iï¿½ï¿½
 1) Reverse the individual words, we get the below string.
 "i ekil siht margorp yrev hcum"
 2) Reverse the whole string from start to end and you get the desired output.
@@ -85,7 +85,7 @@ public:
 	}
 
 	//Leetcode: Reverse Words in a String
-	void ReverseWordsInPlace_RemoveExtraSpace(std::string & s)
+	void ReverseWordsInPlace_RemoveExtraSpace(std::string && s)
 	{
 		std::string before(s);
 		/*
@@ -158,7 +158,7 @@ public:
 	}
 
 	//Leetcode: Reverse Words in a String II
-	void ReverseWordsInPlace_KeepExtraSpace(std::string & s)
+	void ReverseWordsInPlace_KeepExtraSpace(std::string && s)
 	{
 		std::string before(s);
 		/*
@@ -197,7 +197,7 @@ public:
 	}
 
 	//Leetcode: Reverse Words in a String III
-	void ReverseCharsInWordsInPlace_KeepExtraSpace(std::string & s)
+	void ReverseCharsInWordsInPlace_KeepExtraSpace(std::string && s)
 	{
 		std::string before(s);
 		int N = s.size();
