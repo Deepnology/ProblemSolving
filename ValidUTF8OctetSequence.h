@@ -37,14 +37,14 @@ class ValidUTF8OctetSequence
 public:
 	ValidUTF8OctetSequence() {}
 
-	bool Validate(std::vector<int> & data)
+	bool Validate(const std::vector<int> & data)
 	{
 		bool res = validUtf8(data);
 		std::cout << "ValidUTF8OctetSequence for \"" << Debug::ToStr1D<int>()(data) << "\": " << res << std::endl;
 		return res;
 	}
 
-	bool validUtf8(std::vector<int>& data)
+	bool validUtf8(const std::vector<int> & data)
 	{
 		int N = data.size();
 		if (N == 0) return false;
