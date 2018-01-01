@@ -24,7 +24,7 @@ public:
 	~MaxPermutedConcatNum(){}
 
 
-	std::string BySort(std::vector<int> & v)
+	std::string BySort(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		int N = v.size();
