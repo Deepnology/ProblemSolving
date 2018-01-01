@@ -347,7 +347,8 @@ void Test()
 		std::cout << "Test SyncReadersWriters PreferReader:" << std::endl;
 		boost::shared_ptr<PreferReader> pr(new PreferReader(""));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 60; ++i)
 		{
 			if (i & 1)
@@ -355,13 +356,15 @@ void Test()
 			else
 				m.Dispatch(std::bind(Writer1, pr));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 	}
 	{
 		std::cout << "Test SyncReadersWriters PreferWriter:" << std::endl;
 		boost::shared_ptr<PreferWriter> pw(new PreferWriter(""));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 60; ++i)
 		{
 			if (i & 1)
@@ -369,13 +372,15 @@ void Test()
 			else
 				m.Dispatch(std::bind(Writer2, pw));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 	}
 	{
 		std::cout << "Test SyncReadersWriters FairReaderWriter:" << std::endl;
 		boost::shared_ptr<FairReaderWriter> frw(new FairReaderWriter(""));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 60; ++i)
 		{
 			if (i & 1)
@@ -383,13 +388,15 @@ void Test()
 			else
 				m.Dispatch(std::bind(Writer3, frw));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 	}
 	{
 		std::cout << "Test SyncReadersWriters SimpleReaderWriter:" << std::endl;
 		boost::shared_ptr<SimpleReaderWriter> srw(new SimpleReaderWriter(""));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 60; ++i)
 		{
 			if (i & 1)
@@ -397,7 +404,8 @@ void Test()
 			else
 				m.Dispatch(std::bind(Writer4, srw));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 	}
 }
 
