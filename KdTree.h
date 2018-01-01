@@ -82,7 +82,7 @@ public:
 	find nodes in a circle centered at point with radius
 	sqrt(deltaX*deltaX+deltaY*deltaY) <= radius
 	*/
-	std::vector<std::vector<int>> FindRange(std::vector<int> & point, double radius)//worst case: O(N) time, avg case: O(logN) time
+	std::vector<std::vector<int>> FindRange(const std::vector<int> & point, double radius)//worst case: O(N) time, avg case: O(logN) time
 	{
 		std::vector<std::vector<int> > res;
 		this->findRangeRecur(m_root, 0, point, radius, res);//preorder traversal
@@ -91,7 +91,7 @@ public:
 		return res;
 	}
 
-	std::vector<int> FindNearest(std::vector<int> & point)//worst case: O(N) time, avg case: O(logN) time
+	std::vector<int> FindNearest(const std::vector<int> & point)//worst case: O(N) time, avg case: O(logN) time
 	{
 		std::vector<int> res;
 		double minDist = INT_MAX;
@@ -166,7 +166,7 @@ private:
 		if (high[dimension] >= curNode->val[dimension])//2. check higher boundary: if cur->xORy is covered by tgt xORy higher boundary, need to search right (too small: go right)
 			this->findRangeRecur(low, high, curNode->right, depth + 1, res);
 	}
-	void findRangeRecur(TreeNode * cur, int depth, std::vector<int> & origin, double radius, std::vector<std::vector<int>> & res)
+	void findRangeRecur(TreeNode * cur, int depth, const std::vector<int> & origin, double radius, std::vector<std::vector<int>> & res)
 	{
 		int dimension = depth % K;
 		if (cur == NULL) return;
@@ -183,7 +183,7 @@ private:
 		if (origin[dimension] + radius >= cur->val[dimension])//2. check higher boundary: if cur->xORy is covered by tgt xORy higher boundary, need to search right (too small: go right)
 			findRangeRecur(cur->right, depth + 1, origin, radius, res);
 	}
-	void findNearestRecur(TreeNode * cur, int depth, std::vector<int> & point, double & minDist, std::vector<int> & res)//similar to findRangeRecur w/ a center and radius
+	void findNearestRecur(TreeNode * cur, int depth, const std::vector<int> & point, double & minDist, std::vector<int> & res)//similar to findRangeRecur w/ a center and radius
 	{
 		int dimension = depth % K;
 		if (cur == NULL) return;
