@@ -36,7 +36,7 @@ class FrogJump
 public:
 	FrogJump() {}
 
-	bool DP(std::vector<int> & stones)
+	bool DP(const std::vector<int> & stones)
 	{
 		int N = stones.size();
 		std::vector<std::unordered_set<int>> dp(N, std::unordered_set<int>());
@@ -61,7 +61,7 @@ public:
 		return dp[N - 1].size() > 0;
 	}
 
-	bool Recur(std::vector<int> & stones)
+	bool Recur(const std::vector<int> & stones)
 	{
 		int N = stones.size();
 		std::vector<std::unordered_map<int, bool>> dp(N, std::unordered_map<int, bool>());
@@ -70,7 +70,7 @@ public:
 		return res;
 	}
 private:
-	bool recur(std::vector<int> & stones, int begin, int diff, std::vector<std::unordered_map<int, bool>> & dp)
+	bool recur(const std::vector<int> & stones, int begin, int diff, std::vector<std::unordered_map<int, bool>> & dp)
 	{
 
 		int N = stones.size();
