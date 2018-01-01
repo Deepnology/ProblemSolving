@@ -23,7 +23,7 @@ public:
 	HighestAffinityPair(){}
 	~HighestAffinityPair(){}
 
-	std::pair<std::string, std::string> HashTable(std::vector<std::pair<std::string, std::string> > & v)//first: website, second: username
+	std::pair<std::string, std::string> HashTable(const std::vector<std::pair<std::string, std::string>> & v)//first: website, second: username
 	{
 		//1. build a website hash map
 		std::unordered_map<std::string, std::set<std::string> > hashMap;//first: website, second: a sorted set of distinct usernames
