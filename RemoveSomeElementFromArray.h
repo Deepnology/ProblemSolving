@@ -53,7 +53,7 @@ public:
 		std::cout << "RemoveSomeElementFromArray InPlace \"" << val << "\" in \"" << before << "\": " << after << std::endl;
 		return newEnd;
 	}
-	int InPlace(std::vector<int> & A, int val)
+	int InPlace(std::vector<int> && A, int val)
 	{
 		int n = A.size();
 		std::string before = Debug::ToStr1D<int>()(A);
