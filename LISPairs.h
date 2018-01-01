@@ -23,7 +23,7 @@ public:
 	LISPairs(){}
 	~LISPairs(){}
 
-	int Len_DP1D_Quadratic(const std::vector<std::pair<int, int> > & v)
+	int Len_DP1D_Quadratic(const std::vector<std::pair<int, int>> & v)
 	{
 		int N = v.size();
 		if (N == 0) return 0;
