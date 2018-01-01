@@ -28,7 +28,7 @@ class PacificAtlanticWaterFlow
 public:
 	PacificAtlanticWaterFlow() {}
 
-	std::vector<std::pair<int, int>> Recur(std::vector<std::vector<int>> & matrix)
+	std::vector<std::pair<int, int>> Recur(const std::vector<std::vector<int>> & matrix)
 	{
 		std::vector<std::pair<int, int>> res;
 		int N = matrix.size();
@@ -55,7 +55,7 @@ public:
 		return res;
 	}
 private:
-	void recur(std::vector<std::vector<int>> & matrix, int i, int j, std::vector<std::vector<int>> & dp, int mark)
+	void recur(const std::vector<std::vector<int>> & matrix, int i, int j, std::vector<std::vector<int>> & dp, int mark)
 	{
 		dp[i][j] |= mark;
 		int N = matrix.size();
