@@ -138,7 +138,7 @@ public:
 	const int & FindMax()
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		//1. Find Rmost
 		TreeNode * Rmost = m_root;
 		while (Rmost->right != m_nullNode)
@@ -151,7 +151,7 @@ public:
 	const int & FindMin()
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		//1. Find Lmost
 		TreeNode * Lmost = m_root;
 		while (Lmost->left != m_nullNode)
@@ -239,7 +239,7 @@ private:
 	/*
                 y                                     x
                / \     Zig (Right Rotation)          /  \
-              x   T3   ¡V - ¡V - ¡V - ¡V - - ->         T1   y 
+              x   T3   ï¿½V - ï¿½V - ï¿½V - ï¿½V - - ->         T1   y 
              / \       < - - - - - - - - -              / \
             T1  T2     Zag (Left Rotation)            T2   T3
 	*/
