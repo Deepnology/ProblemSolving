@@ -32,7 +32,7 @@ public:
 		Interval() : start(0), end(0) {}
 		Interval(int s, int e) : start(s), end(e) {}
 	};
-	int Greedy(std::vector<Interval> & intervals)
+	int Greedy(std::vector<Interval> && intervals)
 	{
 		std::ostringstream oss;
 		for (const auto & i : intervals)
@@ -64,7 +64,7 @@ public:
 	}
 
 	//this problem is equivalent to: count max number of non-overlapping intervals (Interval Scheduling)
-	int Greedy2(std::vector<Interval> & intervals)
+	int Greedy2(std::vector<Interval> && intervals)
 	{
 		std::ostringstream oss;
 		for (const auto & i : intervals)
