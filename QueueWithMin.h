@@ -48,7 +48,7 @@ public:
 	void Pop()
 	{
 		if (this->Empty())
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		int v = m_que.front();
 		if (v == m_sortedQue.front().first)
@@ -62,14 +62,14 @@ public:
 	int Front()
 	{
 		if (this->Empty())
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		return m_que.front();
 	}
 	int Min()
 	{
 		if (this->Empty())
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		return m_sortedQue.front().first;
 	}
