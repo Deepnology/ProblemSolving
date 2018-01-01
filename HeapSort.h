@@ -25,7 +25,7 @@ public:
 	HeapSort(){}
 	~HeapSort(){}
 
-	void GO(std::vector<int> & A)
+	void GO(std::vector<int> && A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
@@ -78,7 +78,7 @@ private:
 	}
 
 public:
-	void GO2(std::vector<int> & v)
+	void GO2(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		/*
@@ -101,7 +101,7 @@ public:
 		std::cout << "HeapSort2 wSTL for \"" << before << "\": " << Debug::ToStr1D<int>()(v) << std::endl;
 	}
 
-	void GO3(std::vector<int> & v)
+	void GO3(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		/*
