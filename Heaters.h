@@ -25,7 +25,7 @@ class Heaters
 public:
 	Heaters() {}
 
-	int MinRadius(std::vector<int> & houses, std::vector<int> & heaters)
+	int MinRadius(const std::vector<int> & houses, std::vector<int> && heaters)
 	{
 		std::sort(heaters.begin(), heaters.end());
 		int N = houses.size();
