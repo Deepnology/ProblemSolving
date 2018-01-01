@@ -72,7 +72,7 @@ public:
 	{
 #ifndef NO_CHECK
 		if (index < 0 || index >= size())
-			throw std::exception("");
+			throw std::runtime_error("");
 #endif
 		return m_objects[index];
 	}
@@ -81,7 +81,7 @@ public:
 	{
 #ifndef NO_CHECK
 		if (index < 0 || index >= size())
-			throw std::exception("");
+			throw std::runtime_error("");
 #endif
 		return m_objects[index];
 	}
@@ -125,14 +125,14 @@ public:
 	void pop_back()
 	{
 		if (this->empty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		--m_size;
 	}
 
 	const Object & back() const
 	{
 		if (this->empty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		return m_objects[m_size - 1];
 	}
 
