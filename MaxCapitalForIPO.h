@@ -30,7 +30,7 @@ class MaxCapitalForIPO
 public:
 	MaxCapitalForIPO() {}
 
-	int SortAndMaxHeap(int k, int W, std::vector<int> & Profits, std::vector<int> & Capital)
+	int SortAndMaxHeap(int k, int W, const std::vector<int> & Profits, const std::vector<int> & Capital)
 	{
 		std::vector<std::pair<int, int>> pc;
 		int N = Profits.size();
