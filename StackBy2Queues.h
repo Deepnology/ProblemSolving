@@ -43,7 +43,7 @@ public:
 	T Pop()
 	{
 		if (this->Size() == 0)
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		//1. find the last one in reversed
 		while (reversed.size() > 1)
@@ -98,7 +98,7 @@ public:
 	T Pop()//efficient pop and top
 	{
 		if (this->Size() == 0)
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		T res = nonReversed.front();
 		nonReversed.pop();
