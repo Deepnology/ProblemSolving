@@ -94,19 +94,19 @@ namespace TestCase
 		return T();
 	}
 	template<>
-	static int RandNum(int low, int high)
+	int RandNum(int low, int high)
 	{
 		std::uniform_int_distribution<int> distributation(low, high);
 		return distributation(Private::Generator);
 	}
 	template<>
-	static unsigned long long RandNum(unsigned long long low, unsigned long long high)
+	unsigned long long RandNum(unsigned long long low, unsigned long long high)
 	{
 		std::uniform_int_distribution<unsigned long long> distributation(low, high);
 		return distributation(Private::Generator);
 	}
 	template<>
-	static double RandNum(double low, double high)
+	double RandNum(double low, double high)
 	{
 		std::uniform_real_distribution<double> distributation(low, high);
 		return distributation(Private::Generator);
