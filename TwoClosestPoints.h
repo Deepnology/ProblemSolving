@@ -47,7 +47,7 @@ public:
 	~TwoClosestPoints(){}
 	typedef std::pair<int, int> Point;//first: x, second: y
 
-	std::tuple<Point, Point, double> DivideConquerRecur(std::vector<Point> & v)
+	std::tuple<Point, Point, double> DivideConquerRecur(std::vector<Point> && v)
 	{
 		std::sort(v.begin(), v.end(), [](const Point & a, const Point & b)->bool
 		{
