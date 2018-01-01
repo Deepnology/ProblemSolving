@@ -21,7 +21,7 @@ class MatchOrderBtwMatrixArray
 {
 public:
 	MatchOrderBtwMatrixArray() {}
-	bool BruteForce(std::vector<std::vector<std::string>> & matrix, std::vector<std::string> & v)
+	bool BruteForce(const std::vector<std::vector<std::string>> & matrix, const std::vector<std::string> & v)
 	{
 		bool res = bruteforce(matrix, v);
 		Debug::Print2D<std::string>()(matrix, false);
@@ -29,7 +29,7 @@ public:
 		return res;
 	}
 private:
-	bool bruteforce(std::vector<std::vector<std::string>> & matrix, std::vector<std::string> & v)
+	bool bruteforce(const std::vector<std::vector<std::string>> & matrix, const std::vector<std::string> & v)
 	{
 		int N = v.size();
 		for (int i = 0; i < N; ++i)
