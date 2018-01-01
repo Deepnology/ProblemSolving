@@ -34,7 +34,7 @@ public:
 	T Pop()
 	{
 		if (this->Size() == 0)
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		if (nonReversed.empty())
 		{
@@ -86,7 +86,7 @@ public:
 	T Pop()//efficient pop and front
 	{
 		if (this->Size() == 0)
-			throw std::exception("");
+			throw std::runtime_error("");
 
 		T res = nonReversed.top();
 		nonReversed.pop();
