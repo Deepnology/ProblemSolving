@@ -24,14 +24,14 @@ class Pattern132
 public:
 	Pattern132() {}
 
-	void SolveStack(std::vector<int> & nums)
+	void SolveStack(const std::vector<int> & nums)
 	{
 		bool res1 = ForwardStack(nums);
 		bool res2 = BackwardStack(nums);
 		std::cout << "Pattern132 ForwardStack and BackwardStack for \"" << Debug::ToStr1D<int>()(nums) << "\": " << res1 << ", " << res2 << std::endl;
 	}
 
-	bool ForwardStack(std::vector<int> & nums)
+	bool ForwardStack(const std::vector<int> & nums)
 	{
 		std::stack<std::pair<int, int>> stk;//prev [curNum,curMin] pairs where curMin sorted in decr order, exclude the current curMin
 		//curNum1>curMin1,curMin1>=curNum2,curNum2>curMin2
@@ -57,7 +57,7 @@ public:
 		return false;
 	}
 
-	bool BackwardStack(std::vector<int> & nums)
+	bool BackwardStack(const std::vector<int> & nums)
 	{
 		std::stack<int> stk;//sorted in decr order from right to left (bottom to top) that keeps track of [cur:curMax]
 		int max2 = INT_MIN;//keeps track of curMax's (if available, which means there must at least 1 smaller num on the right of curMax) next smaller num on its right
