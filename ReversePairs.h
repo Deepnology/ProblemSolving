@@ -24,7 +24,7 @@ class ReversePairs
 public:
 	ReversePairs() {}
 
-	int UseMergeSort(std::vector<int> & v)
+	int UseMergeSort(std::vector<int> && v)
 	{
 		int N = v.size();
 		int res = 0;
