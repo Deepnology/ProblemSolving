@@ -12,7 +12,7 @@ class PerfectRectangle
 public:
 	PerfectRectangle() {}
 
-	bool IsRectangleCover(std::vector<std::vector<int>> & rectangles)
+	bool IsRectangleCover(const std::vector<std::vector<int>> & rectangles)
 	{
 		bool res = UseHashMap(rectangles);
 		Debug::Print2D<int>()(rectangles, false);
@@ -20,7 +20,7 @@ public:
 		return res;
 	}
 
-	bool UseHashMap(std::vector<std::vector<int>> & rectangles)
+	bool UseHashMap(const std::vector<std::vector<int>> & rectangles)
 	{
 		//1. sum of all areas of sub-rectangles must be equal to area of large rectangle
 		//2. the 4 points at corners of large rectange must occur exactly once
