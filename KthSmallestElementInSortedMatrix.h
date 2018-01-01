@@ -46,12 +46,12 @@ public:
 	~KthSmallestElementInSortedMatrix(){}
 	struct CompGreater
 	{
-		bool operator()(const std::pair<int, std::pair<int, int> > & a, const std::pair<int, std::pair<int, int> > & b)
+		bool operator()(const std::pair<int, std::pair<int, int>> & a, const std::pair<int, std::pair<int, int>> & b)
 		{
 			return a.first > b.first;
 		}
 	};
-	int MinHeap_InPlace(std::vector<std::vector<int> > & matrix, int K)
+	int MinHeap_InPlace(std::vector<std::vector<int>> && matrix, int K)
 	{
 		Debug::Print2D<int>()(matrix, false);
 
@@ -90,7 +90,7 @@ public:
 		return res;
 	}
 
-	int MinHeap(const std::vector<std::vector<int> > & board, int K)
+	int MinHeap(const std::vector<std::vector<int>> & board, int K)
 	{
 		int N = board.size();
 		int M = board[0].size();
@@ -129,7 +129,7 @@ public:
 		return curMin.first;
 	}
 
-	int ExtractMin(std::vector<std::vector<int> > & matrix, int K)
+	int ExtractMin(std::vector<std::vector<int>> && matrix, int K)
 	{
 		Debug::Print2D<int>()(matrix, false);
 
@@ -144,7 +144,7 @@ public:
 		return matrix[0][0];
 	}
 private:
-	void ExtractMinRecur(std::vector<std::vector<int> > & matrix, int rowY, int colX)
+	void ExtractMinRecur(std::vector<std::vector<int>> & matrix, int rowY, int colX)
 	{
 		int N = matrix.size();
 		int M = matrix[0].size();
