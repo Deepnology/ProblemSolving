@@ -112,7 +112,7 @@ public:
 	const int & FindMin() const//find the leftmost node
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		TreapNode * LmostNode = m_root;
 		while (LmostNode->left != m_nullNode)
 			LmostNode = LmostNode->left;
@@ -122,7 +122,7 @@ public:
 	const int & FindMax() const//find the rightmost node
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		TreapNode * RmostNode = m_root;
 		while (RmostNode->right != m_nullNode)
 			RmostNode = RmostNode->right;
