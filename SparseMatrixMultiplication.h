@@ -116,7 +116,7 @@ public:
 	//Sparse Array Dot Product
 	//naive: [a1,a2,a3] dot [b1,b2,b3] = a1*b1+a2*b2+a3*b3
 	//hash table: save (idx,non-0-Val) pairs in two hash table
-	int SparseArrayDotProduct_ModifiedMergeTwoSortedArrays(std::vector<int> & A, std::vector<int> & B)
+	int SparseArrayDotProduct_ModifiedMergeTwoSortedArrays(const std::vector<int> & A, const std::vector<int> & B)
 	{
 		std::vector<std::pair<int, int>> a;
 		std::vector<std::pair<int, int>> b;
@@ -139,7 +139,7 @@ public:
 				++i;
 			else if (a[i].first > b[j].first)
 				++j;
-			else//a[i].first == b[i].first (intersection)
+			else//a[i].first == b[j].first (intersection)
 			{
 				res += a[i].second * b[j].second;
 				++i;
