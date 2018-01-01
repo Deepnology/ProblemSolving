@@ -41,7 +41,7 @@ public:
 		return res;
 	}
 
-	void InPlace_Recur(std::stack<int> & s)
+	void InPlace_Recur(std::stack<int> && s)
 	{
 		std::string before = Debug::ToStr1D<int>()(s);
 		this->sortRecur(s);
