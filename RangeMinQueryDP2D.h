@@ -53,7 +53,7 @@ public:
 	{
 		int N = DP2D.size();
 		if (targetStart < 0 || targetEnd > N - 1 || targetStart > targetEnd)
-			throw std::exception("Invalid Input");
+			throw std::runtime_error("Invalid Input");
 		int res = DP2D[targetStart][targetEnd];
 		std::cout << "RangeMinQueryDP2D QueryRange for \"" << targetStart << "," << targetEnd << "\": " << res << std::endl;
 		return res;
