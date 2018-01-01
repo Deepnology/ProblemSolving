@@ -27,7 +27,7 @@ public:
 	SortNearlySortedArray(){}
 	~SortNearlySortedArray(){}
 
-	void Solve_MinHeap(std::vector<int> & A, int K)
+	void Solve_MinHeap(std::vector<int> && A, int K)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
@@ -50,7 +50,7 @@ public:
 		std::cout << "SortNearlySortedArray for \"" << K << "-away\" in \"" << before << "\": " << Debug::ToStr1D<int>()(A) << std::endl;
 	}
 
-	void Solve_InsertionSort(std::vector<int> & A)
+	void Solve_InsertionSort(std::vector<int> && A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
