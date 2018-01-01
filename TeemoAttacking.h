@@ -30,7 +30,7 @@ class TeemoAttacking
 public:
 	TeemoAttacking() {}
 
-	int FindPoisonedDuration(std::vector<int>& timeSeries, int duration)
+	int FindPoisonedDuration(const std::vector<int> & timeSeries, int duration)
 	{
 		int N = timeSeries.size();
 		if (N == 0) return 0;
