@@ -20,7 +20,7 @@ public:
 	MatchingNutsBoltsProblem(){}
 	~MatchingNutsBoltsProblem(){}
 
-	void RandomizedQuickSort(std::vector<int> & nuts, std::vector<int> & bolts)
+	void RandomizedQuickSort(std::vector<int> && nuts, std::vector<int> && bolts)
 	{
 		std::string nutsBefore = Debug::ToStr1D<int>()(nuts);
 		std::string boltsBefore = Debug::ToStr1D<int>()(bolts);
