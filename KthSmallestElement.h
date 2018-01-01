@@ -194,7 +194,7 @@ public:
 	}
 
 	//3. STL Nth Element
-	int STL_Nth_Element(std::vector<int> & A, int K)//K: 1-based
+	int STL_Nth_Element(std::vector<int> && A, int K)//K: 1-based
 	{
 		int n = A.size();
 		if (K < 1 || K > n)
