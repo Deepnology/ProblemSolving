@@ -79,7 +79,7 @@ class WordSquare
 {
 public:
 	WordSquare() {}
-	bool Valid(std::vector<std::string> & words)
+	bool Valid(const std::vector<std::string> & words)
 	{
 		bool res = valid(words);
 		Debug::Print2D<std::string>()(words, false);
@@ -87,7 +87,7 @@ public:
 		return res;
 	}
 private:
-	bool valid(std::vector<std::string> & words)
+	bool valid(const std::vector<std::string> & words)
 	{
 		int N = words.size();
 		for (int i = 0; i < N; ++i)
@@ -105,7 +105,7 @@ private:
 	}
 
 public:
-	std::vector<std::vector<std::string>> FindAllCombinationPermutation_AllowRepeat(std::vector<std::string> & words)
+	std::vector<std::vector<std::string>> FindAllCombinationPermutation_AllowRepeat(const std::vector<std::string> & words)
 	{
 		std::vector<std::vector<std::string>> res;
 		std::vector<std::string> path;
@@ -150,7 +150,7 @@ private:
 		std::vector<Trie*> children;
 		bool isWord;
 	};
-	Trie * Insert(Trie * root, std::string & word)
+	Trie * Insert(Trie * root, const std::string & word)
 	{
 		if (root == NULL)
 			root = new Trie();
@@ -208,12 +208,12 @@ private:
 		}
 	}
 public:
-	std::vector<std::vector<std::string>> FindAllCombinationPermutation_AllowRepeat_Trie(std::vector<std::string> & words)
+	std::vector<std::vector<std::string>> FindAllCombinationPermutation_AllowRepeat_Trie(const std::vector<std::string> & words)
 	{
 		std::vector<std::vector<std::string>> res;
 		std::vector<std::string> path;
 		Trie * root = new Trie();
-		for (auto & s : words)
+		for (const auto & s : words)
 			Insert(root, s);
 		recur2(words, root, path, res);
 		Debug::Print2D<std::string>()(words, false);
@@ -222,7 +222,7 @@ public:
 		return res;
 	}
 private:
-	void recur2(std::vector<std::string> & words, Trie * root, std::vector<std::string> & path, std::vector<std::vector<std::string>> & res)
+	void recur2(const std::vector<std::string> & words, Trie * root, std::vector<std::string> & path, std::vector<std::vector<std::string>> & res)
 	{
 		int M = words[0].size();
 		if (path.size() == M)
