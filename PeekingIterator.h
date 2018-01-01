@@ -29,9 +29,9 @@ public:
 	PeekingIteratorBase(const PeekingIteratorBase & iter) {}
 	virtual ~PeekingIteratorBase() {}
 	// Returns the next element in the iteration.
-	int next() {}
+	int next() { return 0; }
 	// Returns true if the iteration has more elements.
-	bool hasNext() const {}
+	bool hasNext() const { return false; }
 };
 
 
