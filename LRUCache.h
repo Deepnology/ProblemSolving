@@ -51,7 +51,7 @@ public:
 	V Get(K key)
 	{
 		if (!m_itrMap.count(key))
-			throw std::exception("empty LRU Cache");
+			throw std::runtime_error("empty LRU Cache");
 		CacheNode cur = *m_itrMap[key];
 		m_list.erase(m_itrMap[key]);
 		m_list.push_front(cur);
