@@ -89,7 +89,7 @@ public:
 	const int & FindMin() const
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		std::cout << "PairingMinHeap FindMin: " << m_root->val << std::endl;
 		return m_root->val;
 	}
@@ -110,7 +110,7 @@ public:
 	void DeleteMin(int & val)
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		val = m_root->val;
 		HeapNode * oldRoot = m_root;
 		if (m_root->leftChild == nullptr)
@@ -129,7 +129,7 @@ public:
 	void DecreaseKey(HeapNode * p, const int & val)
 	{
 		if (p->val < val)
-			throw std::exception("new val too large");
+			throw std::runtime_error("new val too large");
 		std::cout << "PairingMinHeap DecreaseKey for \"" << p->val << "\": " << val << std::endl;
 		p->val = val;
 		if (p != m_root)
