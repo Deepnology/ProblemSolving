@@ -61,7 +61,8 @@ public:
 	~LongestIncreasingPairs(){}
 
 	//this method is working now !!! pay attention to the comparison of the second element in sort
-	int Len_Greedy_LowerBound(std::vector<std::pair<int, int>> && A)
+	int Len_Greedy_LowerBound(std::vector<std::pair<int, int>> && A) { return Len_Greedy_LowerBound(A); }
+	int Len_Greedy_LowerBound(std::vector<std::pair<int, int>> & A)
 	{
 		int N = A.size();
 		//1. sort the array based on the first elements
@@ -90,7 +91,8 @@ public:
 		return res;
 	}
 
-	int Len_DP1D_Quadratic(std::vector<std::pair<int, int>> && v)
+    int Len_DP1D_Quadratic(std::vector<std::pair<int, int>> && v) { return Len_DP1D_Quadratic(v); }
+	int Len_DP1D_Quadratic(std::vector<std::pair<int, int>> & v)
 	{
 		std::cout << "LongestIncreasingPairs Len_DP1D_Quadratic for \"" << Debug::ToStr1D<int>()(v) << "\": see LISPairs.Len_DP1D_Quadratic:" << std::endl;
 
