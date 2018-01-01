@@ -199,18 +199,18 @@ public:
 	int UseXOR(const std::vector<int> & A)//Leetcode: Missing Number
 	{
 		int N = A.size();
-		int xor = 0;
+		int XOR = 0;
 		for (int i = 0; i < N; ++i)
 		{
-			xor ^= A[i];
+			XOR ^= A[i];
 		}
 		for (int i = 0; i <= N; ++i)
 		{
-			xor ^= i;
+			XOR ^= i;
 		}
 
-		std::cout << "MissingBitIntegerInIdxSeqArray UseXOR for \"" << Debug::ToStr1D<int>()(A) << "\": " << xor << std::endl;
-		return xor;
+		std::cout << "MissingBitIntegerInIdxSeqArray UseXOR for \"" << Debug::ToStr1D<int>()(A) << "\": " << XOR << std::endl;
+		return XOR;
 	}
 };
 /*
