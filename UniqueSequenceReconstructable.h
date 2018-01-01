@@ -42,7 +42,7 @@ class UniqueSequenceReconstructable
 
 public:
 	UniqueSequenceReconstructable() {}
-	void IsUniquelyReconstructable(std::vector<int> & org, std::vector<std::vector<int>> & seqs)
+	void IsUniquelyReconstructable(const std::vector<int> & org, const std::vector<std::vector<int>> & seqs)
 	{
 		bool dfs = this->IsUniquelyReconstructableDFS(org, seqs);
 		bool bfs = this->IsUniquelyReconstructableBFS(org, seqs);
@@ -50,7 +50,7 @@ public:
 		std::cout << "UniqueSequenceReconstructable for \"" << Debug::ToStr1D<int>()(org) << "\" from above seqs: DFS=" << dfs << ", BFS=" << bfs << std::endl;
 	}
 
-	bool IsUniquelyReconstructableDFS(std::vector<int> & org, std::vector<std::vector<int>> & seqs)
+	bool IsUniquelyReconstructableDFS(const std::vector<int> & org, const std::vector<std::vector<int>> & seqs)
 	{
 		if (seqs.empty()) return false;
 		std::unordered_map<int, std::unordered_set<int>> DAG;
@@ -112,7 +112,7 @@ private:
 	}
 
 public:
-	bool IsUniquelyReconstructableBFS(std::vector<int> & org, std::vector<std::vector<int>> & seqs)
+	bool IsUniquelyReconstructableBFS(const std::vector<int> & org, const std::vector<std::vector<int>> & seqs)
 	{
 		if (seqs.empty()) return false;
 		std::unordered_map<int, std::unordered_set<int>> DAG;
