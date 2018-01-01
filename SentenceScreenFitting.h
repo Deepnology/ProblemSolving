@@ -48,7 +48,7 @@ class SentenceScreenFitting
 public:
 	SentenceScreenFitting() {}
 
-	int DP(std::vector<std::string> & sentence, int rows, int cols)
+	int DP(const std::vector<std::string> & sentence, int rows, int cols)
 	{
 		int totalCount = 0;
 		int idx = 0;
@@ -86,7 +86,7 @@ public:
 	}
 
 	//this is very fast
-	int FillFromBack(std::vector<std::string> & sentence, int rows, int cols)
+	int FillFromBack(const std::vector<std::string> & sentence, int rows, int cols)
 	{
 		std::string s;
 		for (const auto & str : sentence)
