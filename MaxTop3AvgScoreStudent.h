@@ -22,7 +22,7 @@ public:
 	MaxTop3AvgScoreStudent(){}
 	~MaxTop3AvgScoreStudent(){}
 
-	std::string Find(std::istringstream & iss)
+	std::string Find(std::istringstream && iss)
 	{
 		std::string before = iss.str();
 		std::unordered_map<std::string, std::multiset<int> > nameToScores;
