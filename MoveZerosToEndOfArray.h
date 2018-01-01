@@ -10,7 +10,7 @@ class MoveZerosToEndOfArray
 public:
 	MoveZerosToEndOfArray() {}
 
-	void InPlace(std::vector<int> & v)
+	void InPlace(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 
