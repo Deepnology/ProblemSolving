@@ -18,7 +18,7 @@ public:
 	RemoveReplaceElementFromArr(){}
 	~RemoveReplaceElementFromArr(){}
 
-	void InPlace_Remove_b_Replace_a_dd(std::string & s)
+	void InPlace_Remove_b_Replace_a_dd(std::string && s)
 	{
 		std::string before = s;
 		/*1. forward iteration: remove b and count num of a*/
