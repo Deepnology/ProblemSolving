@@ -28,7 +28,7 @@ public:
 	RemoveDupsFromUnsortedArray(){}
 	~RemoveDupsFromUnsortedArray(){}
 
-	void InPlace_QuadraticTime(std::string & s)//O(n^2) time
+	void InPlace_QuadraticTime(std::string && s)//O(n^2) time
 	{
 		int N = s.size();
 		if (N < 2)
@@ -52,7 +52,7 @@ public:
 		std::cout << "RemoveDupsFromUnsortedArray InPlace_QuadraticTime for \"" << before << "\": " << s << std::endl;
 	}
 
-	void CharVec_LinearTime(std::string & s)
+	void CharVec_LinearTime(std::string && s)
 	{
 		int N = s.size();
 		if (N < 2)
