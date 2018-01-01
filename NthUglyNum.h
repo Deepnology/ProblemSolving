@@ -124,7 +124,7 @@ public:
 		return n;
 	}
 
-	unsigned int MinHeap_MultiPrimes(int n, std::vector<unsigned int> & primes)
+	unsigned int MinHeap_MultiPrimes(int n, const std::vector<unsigned int> & primes)
 	{
 		std::priority_queue<std::pair<unsigned int, unsigned int>, std::vector<std::pair<unsigned int, unsigned int>>, std::greater<std::pair<unsigned int, unsigned int>>> minHeap;//first: nxtPrimeMultiples val, second: prime index
 		int N = primes.size();
@@ -154,7 +154,7 @@ public:
 	}
 
 	//this is faster
-	unsigned int MultiPrimes(int n, std::vector<unsigned int> & primes)
+	unsigned int MultiPrimes(int n, const std::vector<unsigned int> & primes)
 	{
 		std::vector<std::pair<unsigned int, unsigned int>> nxtPrimeMul;//first: nxtPrimeMultiples val, second: idx of nxtPrimeMultiple in res
 		int N = primes.size();
