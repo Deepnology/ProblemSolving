@@ -47,7 +47,7 @@ public:
 
 	//2. rotate one by one
 public:
-	void ToLeft_OneByOne(std::vector<int> & A, int D)
+	void ToLeft_OneByOne(std::vector<int> && A, int D)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
@@ -68,7 +68,7 @@ private:
 
 	//3. a juggling algorithm
 public:
-	void ToLeft_MoveSets(std::vector<int> & A, int D)
+	void ToLeft_MoveSets(std::vector<int> && A, int D)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
@@ -100,7 +100,7 @@ public:
 		std::cout << "RotateArray ToLeft_MoveSets for \"" << D << "\" in \"" << before << "\": " << Debug::ToStr1D<int>()(A) << std::endl;
 	}
 private:
-	int GCD_Recur(int a, int b)//Greatest Common Divisor 最大公因數
+	int GCD_Recur(int a, int b)//Greatest Common Divisor 嚙諒大嚙踝蕭嚙稽嚙踝蕭
 	{
 		if (b == 0)
 			return a;
@@ -110,7 +110,7 @@ private:
 
 	//4. swap and reverse 2 subarrays
 public:
-	void ToLeft_SwapReverse2Subarr(std::vector<int> & A, int D)
+	void ToLeft_SwapReverse2Subarr(std::vector<int> && A, int D)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
@@ -126,7 +126,7 @@ public:
 
 
 	//Rotate To Right...
-	void ToRight_MoveSets(std::vector<int> & A, int D)
+	void ToRight_MoveSets(std::vector<int> && A, int D)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
@@ -153,7 +153,7 @@ public:
 		}
 		std::cout << "RotateArray ToRight_MoveSets for \"" << D << "\" in \"" << before << "\": " << Debug::ToStr1D<int>()(A) << std::endl;
 	}
-	void ToRight_SwapReverse2Subarr(std::vector<int> & A, int D)
+	void ToRight_SwapReverse2Subarr(std::vector<int> && A, int D)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		int N = A.size();
