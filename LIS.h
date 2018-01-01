@@ -126,7 +126,7 @@ public:
 	}
 
 	//to count LIS, just collect dp[i] where dpMaxLen[i]==maxLen
-	int Count_IS_DP1D_Quadratic(std::vector<int> & v)
+	int Count_IS_DP1D_Quadratic(const std::vector<int> & v)
 	{
 		int N = v.size();
 		std::vector<int> dp(N, 1);//dp[i]: count of incr subseq ending at i
@@ -148,7 +148,7 @@ public:
 		std::cout << "LIS Count_IS_DP1D_Quadratic for \"" << Debug::ToStr1D<int>()(v) << "\": " << res << std::endl;
 		return res;
 	}
-	int Count_IS_DP1D_Linear(std::string & s)//assume s contains only lower case chars
+	int Count_IS_DP1D_Linear(const std::string & s)//assume s contains only lower case chars
 	{
 		std::vector<int> dp(26, 0);//dp[i]: count of incr subseq ending at char i+'a'
 		int N = s.size();
@@ -168,7 +168,7 @@ public:
 		return res;
 	}
 	//Leetcode: Number of Longest Increasing Subsequence
-	int Count_LIS_DP1D(std::vector<int> & v)
+	int Count_LIS_DP1D(const std::vector<int> & v)
 	{
 		int N = v.size();
 		std::vector<int> dp(N, 1);//dp[i]: len of longest incr subseq ending at i
