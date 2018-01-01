@@ -79,8 +79,8 @@ public:
 				while (!adjSet[stk.top()].empty())
 				{
 					std::string top = stk.top();
-					stk.push(*(--adjSet[top].end()));
-					adjSet[top].erase((--adjSet[top].end()));
+					stk.push(*adjSet[top].begin());//note: cannot access std::prev(unordered_map::end())
+					adjSet[top].erase(adjSet[top].begin());
 				}
 				//now visit cur node in reversed preorder
 				std::string curNode = stk.top();
