@@ -19,7 +19,7 @@ public:
 	PlusOne(){}
 	~PlusOne(){}
 
-	void NonNegative(std::vector<int> & v)
+	void NonNegative(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 
