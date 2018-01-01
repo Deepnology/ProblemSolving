@@ -61,7 +61,7 @@ public:
 		std::cout << "MajorityElement MooresVotingAlgo for \"" << Debug::ToStr1D<int>()(A) << "\": " << candidate << std::endl;
 		return candidate;
 	}
-	std::string MooresVotingAlgo_FromInputStream(std::istringstream & sin)
+	std::string MooresVotingAlgo_FromInputStream(std::istringstream && sin)
 	{
 		std::string candidate;
 		std::string buf;
@@ -118,7 +118,7 @@ public:
 		std::cout << "MajorityElement MooresVotingAlgo2 for \"" << Debug::ToStr1D<int>()(A) << "\": " << oss.str() << std::endl;
 	}
 
-	void RepeatExclude2DiffElements(std::vector<int> & A)
+	void RepeatExclude2DiffElements(std::vector<int> && A)
 	{
 		int N = A.size();
 		std::string before = Debug::ToStr1D<int>()(A);
