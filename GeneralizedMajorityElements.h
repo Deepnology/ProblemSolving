@@ -27,7 +27,7 @@ public:
 	~GeneralizedMajorityElements(){}
 
 	//majority element appears at least N/k times, which means it must appear at least once in every k distinct elements in average
-	std::vector<std::string> FromInputStream(std::istringstream & sin, int k)
+	std::vector<std::string> FromInputStream(std::istringstream && sin, int k)
 	{
 		std::string buf;
 		std::unordered_map<std::string, int> candidates;//first: entry, second: count (keep track of at most k distinct entries)
