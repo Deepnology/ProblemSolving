@@ -24,7 +24,7 @@ class MatchsticksToSquare
 public:
 	MatchsticksToSquare() {}
 
-	bool CanMakeSquare(std::vector<int> & nums)
+	bool CanMakeSquare(std::vector<int> && nums)
 	{
 		bool res = Recur(nums);
 		std::cout << "MatchsticksToSquare CanMakeSquareRecur for \"" << Debug::ToStr1D<int>()(nums) << "\": " << res << std::endl;
@@ -43,7 +43,7 @@ public:
 		return recur(nums, 0, sides, width);
 	}
 private:
-	bool recur(std::vector<int> & nums, int cur, std::vector<int> sides, int width)
+	bool recur(const std::vector<int> & nums, int cur, std::vector<int> sides, int width)
 	{
 		int N = nums.size();
 		if (cur == N)
