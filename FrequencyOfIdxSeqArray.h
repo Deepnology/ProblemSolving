@@ -30,7 +30,7 @@ public:
 	~FrequencyOfIdxSeqArray(){}
 
 	/*transform original array to an array of element counts in negative numbers*/
-	void Transform(std::vector<int> & v)
+	void Transform(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 
