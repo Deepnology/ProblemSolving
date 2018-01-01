@@ -1,5 +1,5 @@
 #ifndef GENERIC_PARTITION_H
-#define gENERIC_PARTITION_H
+#define GENERIC_PARTITION_H
 #include "Debug.h"
 /*
 Bloomberg
@@ -20,7 +20,7 @@ class GenericPartition
 public:
 	GenericPartition() {}
 
-	void GroupSame(std::vector<int> & v, std::function<bool(int a, int b)> f)
+	void GroupSame(std::vector<int> && v, std::function<bool(int a, int b)> f)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		int N = v.size();
