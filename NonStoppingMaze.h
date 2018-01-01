@@ -43,7 +43,7 @@ class NonStoppingMaze
 public:
 	NonStoppingMaze() {}
 
-	bool HasPath_BFS(std::vector<std::vector<int>> & maze, std::vector<int> & start, std::vector<int> & destination)
+	bool HasPath_BFS(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & destination)
 	{
 		int N = maze.size();
 		if (N == 0) return 0;
@@ -93,7 +93,7 @@ public:
 		}
 	};
 public:
-	int ShortestDist_BFS(std::vector<std::vector<int>> & maze, std::vector<int>& start, std::vector<int>& destination)
+	int ShortestDist_BFS(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & destination)
 	{
 		int N = maze.size();
 		if (N == 0) return 0;
@@ -142,7 +142,7 @@ public:
 		}
 	};
 public:
-	std::string ShortestWayToHole_BFS(std::vector<std::vector<int>> & maze, std::vector<int>& start, std::vector<int>& hole)
+	std::string ShortestWayToHole_BFS(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & hole)
 	{
 		int N = maze.size();
 		if (N == 0) return "impossible";
