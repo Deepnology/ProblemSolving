@@ -26,7 +26,7 @@ public:
 	SudokuSolver(){}
 	~SudokuSolver(){}
 
-	void BacktrackRecur(std::vector<std::vector<char> > & board)//[rowY][columnX]
+	void BacktrackRecur(std::vector<std::vector<char>> && board)//[rowY][columnX]
 	{
 		std::cout << "SudokuSolver1 Before and After:" << std::endl;
 		Debug::Print2D<char>()(board, false);
@@ -34,7 +34,7 @@ public:
 		Debug::Print2D<char>()(board, false);
 	}
 private:
-	bool recur(std::vector<std::vector<char> > & board, int curRow, int curCol)
+	bool recur(std::vector<std::vector<char>> & board, int curRow, int curCol)
 	{
 		int N = board.size();
 		if (curCol == N)
@@ -61,7 +61,7 @@ private:
 		board[curRow][curCol] = '.';//restore
 		return false;
 	}
-	bool valid(std::vector<std::vector<char> > & board, int curRow, int curCol, int val)
+	bool valid(const std::vector<std::vector<char>> & board, int curRow, int curCol, int val)
 	{
 		int N = board.size();
 		//1. check row constraints (see if duplicate of val presents)
@@ -86,7 +86,7 @@ private:
 	}
 
 public:
-	void Solve(std::vector<std::vector<char> > & board)//[rowY][columnX]
+	void Solve(std::vector<std::vector<char>> & board)//[rowY][columnX]
 	{
 		std::cout << "SudokuSolver2 Before and After:" << std::endl;
 		Debug::Print2D<char>()(board, false);
@@ -94,7 +94,7 @@ public:
 		Debug::Print2D<char>()(board, false);
 	}
 private:
-	bool solveRecur(std::vector<std::vector<char> > & board, int curRow, int curCol)//backtracking
+	bool solveRecur(std::vector<std::vector<char>> & board, int curRow, int curCol)//backtracking
 	{
 		if (!this->getNextDotPos(board, curRow, curCol))//get next dot pos from left to right, top to down
 			return true;//reach the end of recursion when there is no more dot after [curRow][curCol]
@@ -112,7 +112,7 @@ private:
 		return false;//the dot at [curRow][curCol] doesn't have a solution
 	}
 	/*scan from left to right, top to down*/
-	bool getNextDotPos(std::vector<std::vector<char> > & board, int & curRow, int & curCol)
+	bool getNextDotPos(std::vector<std::vector<char>> & board, int & curRow, int & curCol)
 	{
 		while (curRow < 9)
 		{
@@ -128,7 +128,7 @@ private:
 		}
 		return false;//(curRow == 9) but can't find a dot
 	}
-	std::vector<char> getPossible(std::vector<std::vector<char> > & board, int curRow, int curCol)
+	std::vector<char> getPossible(std::vector<std::vector<char>> & board, int curRow, int curCol)
 	{
 		bool visit[9];//an array of 1-9 numbers with bool values to indicate that number already appeared in either same row, same column, or same local 3x3 grid
 		memset(visit, 0, sizeof(visit));//init visit with all 0s
