@@ -20,7 +20,7 @@ public:
 	MinSumOf2IntFromADigitArr(){}
 	~MinSumOf2IntFromADigitArr(){}
 
-	int Sort_And_Alternate(std::vector<int> & v)
+	int Sort_And_Alternate(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		int N = v.size();
