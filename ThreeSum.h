@@ -31,11 +31,11 @@ public:
 	ThreeSum(){}
 	~ThreeSum(){}
 
-	std::vector<std::vector<int> > FindAll_Sort_Greedy(std::vector<int> & num, int target)
+	std::vector<std::vector<int> > FindAll_Sort_Greedy(std::vector<int> && num, int target)
 	{
 		int N = num.size();
 		std::sort(std::begin(num), std::end(num));
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 
 		for (int i = 0; i < N - 2; ++i)
 		{
