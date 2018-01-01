@@ -121,7 +121,7 @@ class FriendCircle
 public:
 	FriendCircle() {}
 
-	int DFS(std::vector<std::vector<int>>& adjM)
+	int DFS(const std::vector<std::vector<int>> & adjM)
 	{
 		int N = adjM.size();
 		if (N == 0) return 0;
@@ -138,7 +138,7 @@ public:
 		return count;
 	}
 private:
-	void recur(std::vector<std::vector<int>> & adjM, int cur, std::vector<int> & visit)
+	void recur(const std::vector<std::vector<int>> & adjM, int cur, std::vector<int> & visit)
 	{
 		int N = adjM.size();
 		visit[cur] = 1;
@@ -152,7 +152,7 @@ private:
 	}
 
 public:
-	int UnionFind(std::vector<std::vector<int>> & adjM)
+	int UnionFind(const std::vector<std::vector<int>> & adjM)
 	{
 		int N = adjM.size();
 		if (N == 0) return 0;
