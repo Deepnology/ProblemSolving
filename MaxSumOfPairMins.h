@@ -21,7 +21,7 @@ class MaxSumOfPairMins
 public:
 	MaxSumOfPairMins() {}
 
-	int Sort(std::vector<int> & nums)
+	int Sort(std::vector<int> && nums)
 	{
 		std::sort(nums.begin(), nums.end());
 		int res = 0;
