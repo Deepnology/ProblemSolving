@@ -34,7 +34,7 @@ public:
 	KthSmallestElementUnknownLength(){}
 	~KthSmallestElementUnknownLength(){}
 
-	int BruteForce_MaxHeap(std::istringstream & iss, int K)
+	int BruteForce_MaxHeap(std::istringstream && iss, int K)
 	{
 		std::string before = iss.str();
 		std::priority_queue<int, std::vector<int>, std::less<int> > maxHeap;
@@ -55,7 +55,7 @@ public:
 		return maxHeap.top();
 	}
 
-	int ModifiedSelection(std::istringstream & iss, int K)
+	int ModifiedSelection(std::istringstream && iss, int K)
 	{
 		std::string before = iss.str();
 		std::vector<int> KthSmallest;
