@@ -107,7 +107,7 @@ void Worker::Accept(boost::function0<std::string> f, boost::shared_ptr<Future> f
 {
 	/*critical section: f*/
 	boost::mutex::scoped_lock lock(*m_mutex_f);
-	m_f.swap(boost::shared_ptr<boost::function0<std::string>>(new boost::function0<std::string>(f)));
+	boost::shared_ptr<boost::function0<std::string>>(new boost::function0<std::string>(f)).swap(m_f);
 	m_future.swap(future);
 	m_condition_f->notify_one();
 }
@@ -223,22 +223,22 @@ std::string aLoop(std::string arg, size_t count)
 }
 void Test()
 {
-	std::cout << "ThreadPool: init for 5 threads in pool. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadPool: init for 5 threads in pool. ";
+	std::cin.ignore();
 	ThreadPool p(5);
-	std::cout << "ThreadPool: dispatch 200 tasks with random number of loops in [1:150]. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadPool: dispatch 200 tasks with random number of loops in [1:150]. ";
+	std::cin.ignore();
 	std::vector<boost::shared_ptr<Future> > res;
 	for (size_t i = 0; i < 200; ++i)
 		res.push_back(p.Dispatch(std::bind(aLoop, std::to_string(i), rand() % 150 + 1)));
 	std::cout << "ThreadPool: print 200 tasks' results [task_id,thread_id,loop_count]. ";
-	system("pause");
+	std::cin.ignore();
 	std::ostringstream oss;
 	for (const auto & p : res)
 		oss << (*p).result << ",";
 	std::cout << oss.str() << std::endl;
-	std::cout << "ThreadPool: detach all threads in pool. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadPool: detach all threads in pool. ";
+	std::cin.ignore();
 }
 
 }
