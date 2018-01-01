@@ -20,7 +20,7 @@ public:
 	SalaryThresholdForSmallerBudget(){}
 	~SalaryThresholdForSmallerBudget(){}
 
-	double Solve(std::vector<double> & v, double budget)
+	double Solve(std::vector<double> && v, double budget)
 	{
 		int N = v.size();
 
