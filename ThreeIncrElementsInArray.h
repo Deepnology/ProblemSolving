@@ -287,7 +287,7 @@ class ThirdMaximumNumber
 public:
 	ThirdMaximumNumber() {}
 
-	int Solve(std::vector<int> & nums)//note: max1, max2, max3 is NOT necessarily a subseq of the input array
+	int Solve(const std::vector<int> & nums)//note: max1, max2, max3 is NOT necessarily a subseq of the input array
 	{
 		int N = nums.size();
 
