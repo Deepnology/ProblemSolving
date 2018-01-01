@@ -47,7 +47,7 @@ public:
 	~LargestRectHistogram(){}
 
 	//enumerate all possible pairs of heights
-	int BruteForce(std::vector<int> & heights)
+	int BruteForce(const std::vector<int> & heights)
 	{
 		std::cout << "LargestRectHistogram BruteForce for \"" << Debug::ToStr1D<int>()(heights) << "\": " << std::endl;
 		int res = 0;
@@ -69,7 +69,7 @@ public:
 		return res;
 	}
 
-	int SortedStack(std::vector<int> heights)
+	int SortedStack(std::vector<int> && heights)
 	{
 		if (heights.empty())
 			return 0;
