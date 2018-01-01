@@ -156,7 +156,7 @@ public:
 	const int & FindMin() const
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		TreeNode * Lmost = m_header->right;
 		while (Lmost->left != m_nullNode)
 			Lmost = Lmost->left;
@@ -165,7 +165,7 @@ public:
 	const int & FindMax() const
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		TreeNode * Rmost = m_header->right;
 		while (Rmost->right != m_nullNode)
 			Rmost = Rmost->right;
