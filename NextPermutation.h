@@ -38,7 +38,7 @@ public:
 	NextPermutation(){}
 	~NextPermutation(){}
 
-	void Next(std::vector<int> & num)
+	void Next(std::vector<int> && num)
 	{
 		std::string before = Debug::ToStr1D<int>()(num);
 		
