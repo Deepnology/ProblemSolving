@@ -207,16 +207,16 @@ std::string aLoop(std::string arg, size_t count)
 }
 void Test()
 {
-	std::cout << "ThreadMgr: construct the ThreadMgr object. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadMgr: construct the ThreadMgr object. ";
+	std::cin.ignore();
 	ThreadMgr m;
-	std::cout << "ThreadMgr: dispatch 80 parallel tasks with random number of loops in [1:150]. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadMgr: dispatch 80 parallel tasks with random number of loops in [1:150]. ";
+	std::cin.ignore();
 	std::vector<boost::shared_ptr<Future> > res;
 	for (size_t i = 0; i < 80; ++i)
 		res.push_back(m.Dispatch(std::bind(aLoop, std::to_string(i), rand() % 150 + 1)));
-	std::cout << "ThreadMgr: print 80 tasks' results [task_id,thread_id,loop_count]. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadMgr: print 80 tasks' results [task_id,thread_id,loop_count]. ";
+	std::cin.ignore();
 	std::ostringstream oss;
 	std::map<std::string, size_t> tMap;//first: thread id, second: count
 	for (const auto & p : res)
@@ -233,15 +233,15 @@ void Test()
 	}
 	std::cout << oss.str() << std::endl;
 	oss.str(std::string());
-	std::cout << "ThreadMgr: print [thread_id,occurrence_count]. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadMgr: print [thread_id,occurrence_count]. ";
+	std::cin.ignore();
 	for (const auto & p : tMap)
 	{
 		oss << "[" << p.first << "," << p.second << "],";
 	}
 	std::cout << oss.str() << std::endl;
-	std::cout << "ThreadMgr: destroy the ThreadMgr object. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadMgr: destroy the ThreadMgr object. ";
+	std::cin.ignore();
 }
 
 }
