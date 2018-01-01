@@ -116,7 +116,7 @@ public:
 		return res;
 	}
 
-	bool InPlace(std::vector<int> & preorder)
+	bool InPlace(std::vector<int> && preorder)
 	{
 		std::vector<int> copy(preorder);
 		int N = preorder.size();
