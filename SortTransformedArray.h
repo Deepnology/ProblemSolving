@@ -85,7 +85,7 @@ public:
 	Given a sorted integer array, output a sorted array that are composed of squares of the input array nums.
 	input = [-4,1,3,5], output = [1,9,16,25]
 	*/
-	std::vector<int> TransformToSortedSquares_Greedy(std::vector<int> & v)
+	std::vector<int> TransformToSortedSquares_Greedy(const std::vector<int> & v)
 	{
 		int N = v.size();
 		std::vector<int> res(N);
