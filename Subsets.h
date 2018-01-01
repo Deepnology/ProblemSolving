@@ -63,19 +63,19 @@ public:
 
 	//1. FromNoDupArray
 	//1.1 FixRecur
-	std::vector<std::vector<int> > FindAll_FromNoDupArray_FixReucr(std::vector<int> & S)//S has no duplicates
+	std::vector<std::vector<int>> FindAll_FromNoDupArray_FixReucr(std::vector<int> && S)//S has no duplicates
 	{
 		std::sort(std::begin(S), std::end(S));
 		std::vector<int> path;
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		this->FixRecur(S, 0, path, res);
 
 		std::cout << "Subsets FindAll_FromNoDupArray_FixRecur" << " for \"" << Debug::ToStr1D<int>()(S) << "\" are: " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
 private:
-	void FixRecur(std::vector<int> & S, int begin, std::vector<int> & path
-		, std::vector<std::vector<int> > & res)
+	void FixRecur(const std::vector<int> & S, int begin, std::vector<int> & path
+		, std::vector<std::vector<int>> & res)
 	{
 		res.push_back(path);
 		int end = S.size();
@@ -88,19 +88,19 @@ private:
 	}
 public:
 	//1.2 InExcludeRecur
-	std::vector<std::vector<int> > FindAll_FromNoDupArray_InExcludeReucr(std::vector<int> & S)//S has no duplicates
+	std::vector<std::vector<int>> FindAll_FromNoDupArray_InExcludeReucr(std::vector<int> && S)//S has no duplicates
 	{
 		std::sort(std::begin(S), std::end(S));
 		std::vector<int> path;
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		this->InExcludeRecur(S, 0, path, res);
 
 		std::cout << "Subsets FindAll_FromNoDupArray_InExcludeRecur" << " for \"" << Debug::ToStr1D<int>()(S) << "\" are: " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
 private:
-	void InExcludeRecur(std::vector<int> & S, int begin, std::vector<int> & path
-		, std::vector<std::vector<int> > & res)
+	void InExcludeRecur(const std::vector<int> & S, int begin, std::vector<int> & path
+		, std::vector<std::vector<int>> & res)
 	{
 		int end = S.size();
 		if (begin == end)
@@ -118,10 +118,10 @@ private:
 
 public:
 	//1.3 Iterate
-	std::vector<std::vector<int> > FindAll_FromNoDupArray_Iterate(std::vector<int> & S)//S has no duplicates
+	std::vector<std::vector<int>> FindAll_FromNoDupArray_Iterate(std::vector<int> && S)//S has no duplicates
 	{
 		std::sort(std::begin(S), std::end(S));
-		std::vector<std::vector<int> > res(1, std::vector<int>());//the first subset is an empty subset
+		std::vector<std::vector<int>> res(1, std::vector<int>());//the first subset is an empty subset
 		int N = S.size();
 
 		for (int i = 0; i < N; ++i)
@@ -146,7 +146,7 @@ public:
 	These indices are determined by first isolating the lowest set bit by computing y = x&~(x-1) and then getting the index by computing log2(y).
 	O(n*2^n) time, where each set takes O(n) time
 	*/
-	std::vector<std::vector<int> > FindAll_FromNoDupArray_Iterate_BitArray(std::vector<int> & S)
+	std::vector<std::vector<int>> FindAll_FromNoDupArray_Iterate_BitArray(const std::vector<int> & S)
 	{
 		int N = S.size();
 		std::vector<std::vector<int>> res;
@@ -170,18 +170,18 @@ public:
 
 	//2. FromDupArray
 	//2.1 FixRecur
-	std::vector<std::vector<int> > FindAllUnique_FromDupArray_FixRecur(std::vector<int> & S)//S might have duplicates
+	std::vector<std::vector<int>> FindAllUnique_FromDupArray_FixRecur(std::vector<int> && S)//S might have duplicates
 	{
 		std::sort(std::begin(S), std::end(S));
 		std::vector<int> path;
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		this->FixRecurUnique(S, 0, path, res);
 
 		std::cout << "Subsets FindAllUnique_FromDupArray_FixRecur" << " for \"" << Debug::ToStr1D<int>()(S) << "\" are: " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
 private:
-	void FixRecurUnique(std::vector<int> & S, int begin, std::vector<int> & path, std::vector<std::vector<int> > & res)
+	void FixRecurUnique(const std::vector<int> & S, int begin, std::vector<int> & path, std::vector<std::vector<int>> & res)
 	{
 		res.push_back(path);
 		int end = S.size();
@@ -197,18 +197,18 @@ private:
 	}
 public:
 	//2.2 InExcludeRecur
-	std::vector<std::vector<int> > FindAllUnique_FromDupArray_InExcludeRecur(std::vector<int> & S)//S might have duplicates
+	std::vector<std::vector<int>> FindAllUnique_FromDupArray_InExcludeRecur(std::vector<int> && S)//S might have duplicates
 	{
 		std::sort(std::begin(S), std::end(S));
 		std::vector<int> path;
-		std::vector<std::vector<int> > res;
+		std::vector<std::vector<int>> res;
 		this->InExcludeRecurUnique(S, 0, path, res);
 
 		std::cout << "Subsets FindAllUnique_FromDupArray_InExcludeRecur" << " for \"" << Debug::ToStr1D<int>()(S) << "\" are: " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
 private:
-	void InExcludeRecurUnique(std::vector<int> & S, int begin, std::vector<int> & path, std::vector<std::vector<int> > & res)//better
+	void InExcludeRecurUnique(const std::vector<int> & S, int begin, std::vector<int> & path, std::vector<std::vector<int>> & res)//better
 	{
 		int end = S.size();
 		if (begin == end)
@@ -226,7 +226,7 @@ private:
 			++stride;
 		this->InExcludeRecurUnique(S, begin + stride, path, res);
 	}
-	void InExcludeRecurUnique2(std::vector<int> & S, int begin, std::vector<int> & path, std::vector<std::vector<int> > & res)
+	void InExcludeRecurUnique2(const std::vector<int> & S, int begin, std::vector<int> & path, std::vector<std::vector<int>> & res)
 	{
 		int end = S.size();
 		if (begin == end)
@@ -255,10 +255,10 @@ private:
 
 public:
 	//2.3 Iterate
-	std::vector<std::vector<int> > FindAllUnique_FromDupArray_Iterate(std::vector<int> & S)//S might have duplicates
+	std::vector<std::vector<int>> FindAllUnique_FromDupArray_Iterate(std::vector<int> && S)//S might have duplicates
 	{
 		std::sort(std::begin(S), std::end(S));
-		std::vector<std::vector<int> > res(1, std::vector<int>());//the first subset is an empty subset
+		std::vector<std::vector<int>> res(1, std::vector<int>());//the first subset is an empty subset
 		int duplicateCount = 0;
 
 		for (int i = 0; i < (int)S.size(); ++i)
