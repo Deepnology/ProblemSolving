@@ -25,7 +25,7 @@ public:
 	QuickSort(){}
 	~QuickSort(){}
 	
-	void GO_STL(std::vector<int> & A)
+	void GO_STL(std::vector<int> && A)
 	{
 		std::string before = Debug::ToStr1D<int>()(A);
 		this->RecurSTL(A, 0, A.size() - 1);
