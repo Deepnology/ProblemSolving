@@ -31,7 +31,7 @@ public:
 	~RearrangeToWaveArray(){}
 
 	//I.
-	void WiggleSort(std::vector<int> & v)
+	void WiggleSort(std::vector<int> && v)
 	{
 		int N = v.size();
 		std::string before = Debug::ToStr1D<int>()(v);
@@ -56,7 +56,7 @@ public:
 	}
 
 	//II.
-	void WiggleSortII(std::vector<int> & nums)
+	void WiggleSortII(std::vector<int> && nums)
 	{
 		std::string original = Debug::ToStr1D<int>()(nums);
 		int N = nums.size();
