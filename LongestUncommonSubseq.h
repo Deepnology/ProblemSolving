@@ -32,14 +32,14 @@ class LongestUncommonSubseq
 public:
 	LongestUncommonSubseq() {}
 
-	int LUSOf2(std::string a, std::string b)
+	int LUSOf2(std::string && a, std::string && b)
 	{
 		int res = FindLUSlength(a, b);
 		std::cout << "LongestUncommonSubseq LUSof2 for \"" << a << "\", \"" << b << "\": " << res << std::endl;
 		return res;
 	}
 private:
-	int FindLUSlength(std::string a, std::string b)
+	int FindLUSlength(std::string & a, std::string & b)
 	{
 		if (a.size() < b.size())
 			std::swap(a, b);
@@ -52,10 +52,11 @@ private:
 	}
 
 public:
-	int LUSOfArray(std::vector<std::string> &strs)
+	int LUSOfArray(std::vector<std::string> && strs)
 	{
+		std::vector<std::string> before = strs;
 		int res = FindLUSlength(strs);
-		std::cout << "LongestUncommonSubseq LUSofArray for \"" << Debug::ToStr1D<std::string>()(strs) << "\": " << res << std::endl;
+		std::cout << "LongestUncommonSubseq LUSofArray for \"" << Debug::ToStr1D<std::string>()(before) << "\": " << res << std::endl;
 		return res;
 	}
 private:
