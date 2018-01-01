@@ -34,7 +34,7 @@ public:
 	~Swap0ConvertPermutation(){}
 
 	//O(n^2) time, O(1) space
-	int Count_BruteForce(const std::vector<int> & tgt, std::vector<int> & src)
+	int Count_BruteForce(const std::vector<int> & tgt, std::vector<int> && src)
 	{
 		int N = tgt.size();
 		if (N != (int)src.size())
@@ -86,7 +86,7 @@ public:
 	}
 
 	//O(n^2) time, O(1) space
-	int Count_Better(const std::vector<int> & tgt, std::vector<int> & src)
+	int Count_Better(const std::vector<int> & tgt, std::vector<int> && src)
 	{
 		int N = tgt.size();
 		if (N != (int)src.size())
@@ -148,7 +148,7 @@ public:
 	}
 
 	//O(n) time, O(n) space
-	int Count_BruteForce_HashMap(const std::vector<int> & tgt, std::vector<int> & src)
+	int Count_BruteForce_HashMap(const std::vector<int> & tgt, std::vector<int> && src)
 	{
 		int N = tgt.size();
 		if (N != (int)src.size())
