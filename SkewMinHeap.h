@@ -91,7 +91,7 @@ public:
 	const int & FindMin() const
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		std::cout << "SkewMinHeap FindMin: " << m_root->val << std::endl;
 		return m_root->val;
 	}
@@ -109,7 +109,7 @@ public:
 	void DeleteMin(int & minItem)
 	{
 		if (this->IsEmpty())
-			throw std::exception("");
+			throw std::runtime_error("");
 		minItem = m_root->val;
 		HeapNode * oldRoot = m_root;
 
