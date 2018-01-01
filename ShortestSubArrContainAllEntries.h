@@ -79,7 +79,7 @@ public:
 	}
 
 	//in this case, we can't keep track of the begin ptr
-	std::pair<int, int> FromStream_DistinctEntries(std::istringstream & iss, const std::vector<std::string> & entries)
+	std::pair<int, int> FromStream_DistinctEntries(std::istringstream && iss, const std::vector<std::string> & entries)
 	{
 		std::list<int> lastIdxQue;//keep track of distinct entries' last occurrence index
 		std::unordered_map<std::string, std::list<int>::iterator> wordToItr;//first: entry, second: itr to entry's last occurrence index
