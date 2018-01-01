@@ -24,7 +24,7 @@ public:
 	MinWaitingTime(){}
 	~MinWaitingTime(){}
 
-	int Schedule(std::vector<int> & serviceTime)
+	int Schedule(std::vector<int> && serviceTime)
 	{
 		std::string before = Debug::ToStr1D<int>()(serviceTime);
 		int N = serviceTime.size();
