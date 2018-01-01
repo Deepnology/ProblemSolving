@@ -17,7 +17,7 @@ public:
 	ReverseVowelsOfString() {}
 	~ReverseVowelsOfString() {}
 
-	void reverseVowels(std::string & s)
+	void reverseVowels(std::string && s)
 	{
 		std::string before(s);
 		int i = 0;
