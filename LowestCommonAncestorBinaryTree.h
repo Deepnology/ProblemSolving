@@ -324,11 +324,11 @@ public:
 		this->computePathSumPreorderRecur(root, 0, 0, maxDepth);
 
 		//3. compute xor of a's path sum and b's path sum
-		int xor = a->val ^ b->val;
+		int XOR = a->val ^ b->val;
 
 		//4. the LCA node's path sum is: the highest common bits of a's path sum and b's path sum + digit_1 + padded 0s
 		int posHighestBitSet = 0;
-		int xor1 = xor;
+		int xor1 = XOR;
 		while (xor1 >>= 1)
 			++posHighestBitSet;
 
