@@ -93,7 +93,7 @@ public:
 
 			//eating
 			std::ostringstream oss;
-			oss << "<" << id << ">";
+			oss << "[" << id << "]";
 			std::cout << oss.str();
 
 			m_semaphoreChopstick[id]->Signal();
@@ -132,7 +132,7 @@ public:
 
 		//eating
 		std::ostringstream oss;
-		oss << "<" << id << ">";
+		oss << "{" << id << "}";
 		std::cout << oss.str();
 
 		m_semaphoreChopstick[id]->Signal();
@@ -184,34 +184,41 @@ void Test()
 		std::cout << "Test SyncDiningPhilosophers DiningPhilosophers1:" << std::endl;
 		boost::shared_ptr<DiningPhilosophers1> dp(new DiningPhilosophers1(5));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 5; ++i)
 		{
 			m.Dispatch(std::bind(Philosopher1, dp, i));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
+
 	}
 	{
 		std::cout << "Test SyncDiningPhilosophers DiningPhilosophers2:" << std::endl;
 		boost::shared_ptr<DiningPhilosophers2> dp(new DiningPhilosophers2(5));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 5; ++i)
 		{
 			m.Dispatch(std::bind(Philosopher2, dp, i));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 	}
 	{
 		std::cout << "Test SyncDiningPhilosophers DiningPhilosophers3:" << std::endl;
 		boost::shared_ptr<DiningPhilosophers3> dp(new DiningPhilosophers3(5));
 		thread_mgr::ThreadMgr m;
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 		for (int i = 0; i < 5; ++i)
 		{
 			m.Dispatch(std::bind(Philosopher3, dp, i));
 		}
-		system("pause");
+		std::cout << "Hit ENTER to continue ..." << std::endl;
+		std::cin.ignore();
 	}
 }
 
