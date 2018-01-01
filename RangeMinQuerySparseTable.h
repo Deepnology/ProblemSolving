@@ -62,7 +62,7 @@ public:
 	{
 		int N = sparseTable.size();
 		if (targetStart < 0 || targetEnd > N - 1 || targetStart > targetEnd)
-			throw std::exception("Invalid Input");
+			throw std::runtime_error("Invalid Input");
 		/*
 		lookup the table, compare 2 elements and get the min of them:
 		1. find the colX that represents the length of the queried range
