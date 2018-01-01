@@ -41,7 +41,7 @@ public:
 	LongestSubArrWEqualSum() {}
 	~LongestSubArrWEqualSum() {}
 
-	int HashMap(std::vector<int> & v, int k)
+	int HashMap(const std::vector<int> & v, int k)
 	{
 		std::unordered_map<int, int> prefixSumMap;//first: a prefix sum, second: the running sum's first occurrence index
 		int maxLen = 0;
