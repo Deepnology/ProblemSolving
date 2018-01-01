@@ -28,7 +28,7 @@ class FreedomTrail
 public:
 	FreedomTrail() {}
 
-	int DP2D(std::string & ring, std::string & key)
+	int DP2D(const std::string & ring, const std::string & key)
 	{
 		int N = key.size();
 		int M = ring.size();
@@ -62,7 +62,7 @@ public:
 		return res + N;
 	}
 public:
-	int DFS_DP(std::string & ring, std::string & key)
+	int DFS_DP(const std::string & ring, const std::string & key)
 	{
 		std::unordered_map<std::string, std::unordered_map<int, int>> dp;
 		int res = recur(ring, key, 0, dp);
@@ -95,7 +95,7 @@ private:
 	}
 public:
 	//BFS is too slow to pass online judge
-	int BFS_DP(std::string & ring, std::string & key)
+	int BFS_DP(const std::string & ring, const std::string & key)
 	{
 		int N = key.size();
 		int M = ring.size();
