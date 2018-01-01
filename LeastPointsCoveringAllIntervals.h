@@ -37,7 +37,7 @@ public:
 			return a->second != b->second ? a->second < b->second : a->first < b->first;
 		}
 	};
-	std::vector<int> TwoSortedSets(const std::vector<std::pair<int, int> > & v)
+	std::vector<int> TwoSortedSets(const std::vector<std::pair<int, int>> & v)
 	{
 		int N = v.size();
 		std::set<const std::pair<int, int> *, StartComp> startSorted;
@@ -70,7 +70,7 @@ public:
 		return res;
 	}
 
-	int Count_SortGreedy(std::vector<std::pair<int, int>> & v)
+	int Count_SortGreedy(std::vector<std::pair<int, int>> && v)
 	{
 		int N = v.size();
 		std::sort(v.begin(), v.end(), [](const std::pair<int, int> & a, const std::pair<int, int> & b)->bool
