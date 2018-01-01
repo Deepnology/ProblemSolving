@@ -70,7 +70,7 @@ public:
 		return res;
 	}
 
-	bool Sort(std::string & s)
+	bool Sort(std::string && s)
 	{
 		std::string before = s;
 		int N = s.size();
