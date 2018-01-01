@@ -59,7 +59,7 @@ public:
 	MinHeightTreesInGraph() {}
 	~MinHeightTreesInGraph() {}
 
-	std::vector<int> BFS(int n, std::vector<std::pair<int, int>>& edges)
+	std::vector<int> BFS(int n, const std::vector<std::pair<int, int>> & edges)
 	{
 		if (n == 1)
 			return{ 0 };
