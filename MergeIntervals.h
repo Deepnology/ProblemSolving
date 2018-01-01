@@ -32,7 +32,7 @@ public:
 		int start;
 		int end;
 	};
-	std::vector<Interval> Merge(std::vector<Interval> & intervals)
+	std::vector<Interval> Merge(std::vector<Interval> && intervals)
 	{
 		std::cout << "MergeIntervals for \"" << this->IntervalVecToString(intervals) << "\": ";
 		std::vector<Interval> res;
@@ -66,21 +66,21 @@ public:
 	}
 
 	//both start and end points of an interval have a bool field to indicate that point is included (closed) or excluded (open)
-	std::vector<std::pair<std::pair<int, bool>, std::pair<int, bool> > > Merge_OpenClosedPoints(std::vector<std::pair<std::pair<int, bool>, std::pair<int, bool> > > & intervals)
+	std::vector<std::pair<std::pair<int, bool>, std::pair<int, bool>>> Merge_OpenClosedPoints(std::vector<std::pair<std::pair<int, bool>, std::pair<int, bool>>> && intervals)
 	{
 		//first.first: start point value, first.second: start point is closed (true) or not (false)
 		//second.first: end point value, second.second: end point is closed(true) or not (false)
 		int N = intervals.size();
-		std::vector<std::pair<std::pair<int, bool>, std::pair<int, bool> > > res;
+		std::vector<std::pair<std::pair<int, bool>, std::pair<int, bool>>> res;
 		if (intervals.empty())
 			return res;
 
 		//sort start points in non-descending order
-		std::sort(intervals.begin(), intervals.end(), [](const std::pair<std::pair<int, bool>, std::pair<int, bool> > & a, const std::pair<std::pair<int, bool>, std::pair<int, bool> > & b)->bool
+		std::sort(intervals.begin(), intervals.end(), [](const std::pair<std::pair<int, bool>, std::pair<int, bool>> & a, const std::pair<std::pair<int, bool>, std::pair<int, bool>> & b)->bool
 		{
 			return a.first.first != b.first.first ? a.first.first < b.first.first : (a.first.second && !b.first.second);//closed point always comes first
 		});
-		std::pair<std::pair<int, bool>, std::pair<int, bool> > pre = intervals[0];
+		std::pair<std::pair<int, bool>, std::pair<int, bool>> pre = intervals[0];
 		for (int i = 1; i < N; ++i)
 		{
 			if (pre.second.first > intervals[i].first.first || (pre.second.first == intervals[i].first.first && (pre.second.second || intervals[i].first.second)))
