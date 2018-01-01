@@ -12,7 +12,7 @@
 #include "Debug.h"
 /*
 Elements of programming interview, Graph: compute a shortest path with fewest edges
-°ö¾i»PÁëÁå
+ï¿½ï¿½ï¿½iï¿½Pï¿½ï¿½ï¿½ï¿½
 http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/
 Bellman Ford works for negative weight cycle
 If there exists a negative edge in a graph, the shortest path for any two vertices in the graph is meaningful only when the graph is a DAG.
@@ -138,7 +138,7 @@ public:
 		return dist;
 	}
 
-	std::vector<int> Dijkstra_UndirectedAdjacencyMatrix(std::vector<std::vector<int>> & adjMatrix, int source)
+	std::vector<int> Dijkstra_UndirectedAdjacencyMatrix(const std::vector<std::vector<int>> & adjMatrix, int source)
 	{
 		Debug::Print2D<int>()(adjMatrix, false);
 		int N = adjMatrix.size();
@@ -177,7 +177,7 @@ public:
 		return dist;
 	}
 	//similar to Prim in MinSpanningTree.h
-	std::vector<int> Dijkstra_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int>> & adjMatrix, int source)
+	std::vector<int> Dijkstra_MinHeap_UndirectedAdjacencyMatrix(const std::vector<std::vector<int>> & adjMatrix, int source)
 	{
 		Debug::Print2D<int>()(adjMatrix, false);
 		int N = adjMatrix.size();
@@ -213,7 +213,7 @@ public:
 	}
 
 
-	std::vector<int> Dijkstra_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int>> & graph, int source, int target)
+	std::vector<int> Dijkstra_MinHeap_UndirectedAdjacencyMatrix(const std::vector<std::vector<int>> & graph, int source, int target)
 	{
 		Debug::Print2D<int>()(graph, false);
 		int N = graph.size();
@@ -251,7 +251,7 @@ public:
 
 
 	//key: distance, value: adjacent vertex
-	std::vector<int> Dijkstra_MinHeap_UndirectedAdjacencyList(std::vector<std::vector<std::pair<int, int>>> & graph, int source, int target)
+	std::vector<int> Dijkstra_MinHeap_UndirectedAdjacencyList(const std::vector<std::vector<std::pair<int, int>>> & graph, int source, int target)
 	{
 		Debug::Print2D<int>()(graph, false);
 		int N = graph.size();
@@ -293,7 +293,7 @@ public:
 			return a.first.first != b.first.first ? a.first.first < b.first.first : a.first.second < b.first.second;//first.first: distance from source, first.second: edge count from source, second: adjacent vertex
 		}
 	};
-	std::vector<int> Dijkstra_MinEdges_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int>> & graph, int source, int target)
+	std::vector<int> Dijkstra_MinEdges_MinHeap_UndirectedAdjacencyMatrix(const std::vector<std::vector<int>> & graph, int source, int target)
 	{
 		Debug::Print2D<int>()(graph, false);
 		int N = graph.size();
