@@ -14,7 +14,7 @@ class StackReproduceDiffOrderArray
 public:
 	StackReproduceDiffOrderArray() {}
 
-	bool UseStack(std::vector<int> & A, std::vector<int> & B)
+	bool UseStack(const std::vector<int> & A, const std::vector<int> & B)
 	{
 		int N = A.size();
 		if (N != B.size()) return false;
