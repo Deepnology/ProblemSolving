@@ -32,7 +32,7 @@ class SuperWashingMachines
 public:
 	SuperWashingMachines() {}
 
-	int FindMinMoves(std::vector<int> & machines)
+	int FindMinMoves(const std::vector<int> & machines)
 	{
 		int N = machines.size();
 		int sum = std::accumulate(machines.begin(), machines.end(), 0);
