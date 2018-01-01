@@ -23,7 +23,7 @@ public:
 	ShuffleArray(){}
 	~ShuffleArray(){}
 
-	void OnlineIterate(std::vector<int> & cards)
+	void OnlineIterate(std::vector<int> && cards)
 	{
 		std::string before = Debug::ToStr1D<int>()(cards);
 		int N = cards.size();
@@ -38,7 +38,7 @@ public:
 		std::cout << "ShuffleArray OnlineIterate for \"" << before << "\": " << Debug::ToStr1D<int>()(cards) << std::endl;
 	}
 
-	void OnlineRecur(std::vector<int> & cards)
+	void OnlineRecur(std::vector<int> && cards)
 	{
 		std::string before = Debug::ToStr1D<int>()(cards);
 		srand((unsigned int)time(NULL));
@@ -58,7 +58,7 @@ private:
 	}
 
 public:
-	void OfflineIterate(std::vector<int> & cards)
+	void OfflineIterate(std::vector<int> && cards)
 	{
 		std::string before = Debug::ToStr1D<int>()(cards);
 		int N = cards.size();
