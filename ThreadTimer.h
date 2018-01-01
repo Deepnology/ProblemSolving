@@ -284,11 +284,11 @@ std::string aLoop(std::string arg, int time, int count)
 }
 void Test()
 {
-	std::cout << "ThreadTimer: construct a ThreadTimer object. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadTimer: construct a ThreadTimer object. ";
+	std::cin.ignore();
 	ThreadTimer t;
-	std::cout << "ThreadTimer: dispatch 80 parallel tasks in a random starting time of [3:12] seconds. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadTimer: dispatch 80 parallel tasks in a random starting time of [3:12] seconds. ";
+	std::cin.ignore();
 	std::vector<boost::shared_ptr<Future> > res;
 	std::map<int, std::vector<int>> timeMap;//first: time, second: nums to print at that time
 	for (int i = 0; i < 80; ++i)
@@ -297,8 +297,8 @@ void Test()
 		res.push_back(t.Dispatch(std::bind(aLoop, std::to_string(i), time, 1), time));
 		timeMap[time].push_back(i);
 	}
-	std::cout << "ThreadTimer: print 80 tasks' results [task_id,thread_id,starting_time,loop_count]. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadTimer: print 80 tasks' results [task_id,thread_id,starting_time,loop_count]. ";
+	std::cin.ignore();
 	std::ostringstream oss;
 	std::map<std::string, int> tMap;//first: thread id, second: count
 	for (const auto & p : res)
@@ -315,8 +315,8 @@ void Test()
 	}
 	std::cout << oss.str() << std::endl;
 	oss.str(std::string());
-	std::cout << "ThreadTimer: print starting_time and corresponding task_ids. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadTimer: print starting_time and corresponding task_ids. ";
+	std::cin.ignore();
 	for (const auto & p : timeMap)
 	{
 		oss << p.first << ": ";
@@ -328,15 +328,15 @@ void Test()
 	}
 	std::cout << oss.str() << std::endl;
 	oss.str(std::string());
-	std::cout << "ThreadTimer: print [thread_id,occurrence_count]. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadTimer: print [thread_id,occurrence_count]. ";
+	std::cin.ignore();
 	for (const auto & p : tMap)
 	{
 		oss << "[" << p.first << "," << p.second << "],";
 	}
 	std::cout << oss.str() << std::endl;
-	std::cout << "ThreadTimer: destroy the ThreadTimer object. ";
-	system("pause");
+	std::cout << "Hit ENTER -> ThreadTimer: destroy the ThreadTimer object. ";
+	std::cin.ignore();
 }
 }
 #endif
