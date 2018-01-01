@@ -29,7 +29,7 @@ Only two moves are needed (remember each move increments or decrements one eleme
 class MinMovesToEqualArrayElements
 {
 public:
-	int MinMovesI_IncrNminus1Nums(std::vector<int> & nums)
+	int MinMovesI_IncrNminus1Nums(const std::vector<int> & nums)
 	{
 		//equivalent to subtract 1 from only 1 element at a time until all elements are equal
 		//=> all elements will be equal when all elements are equal to the min element
@@ -45,7 +45,7 @@ public:
 		return sum - min * N;
 	}
 
-	int MinMovesII_IncrDecr1Num_UseMedian(std::vector<int> & nums)
+	int MinMovesII_IncrDecr1Num_UseMedian(std::vector<int> && nums)
 	{
 		std::string before = Debug::ToStr1D<int>()(nums);
 		int N = nums.size();
@@ -58,7 +58,7 @@ public:
 		std::cout << "MinMovesToEqualArrayElements IncrDecr1Num UseMedian for \"" << before << "\": " << res << std::endl;
 		return res;
 	}
-	int MinMovesII_IncrDecr1Num_UseSort(std::vector<int> & nums)
+	int MinMovesII_IncrDecr1Num_UseSort(std::vector<int> && nums)
 	{
 		std::string before = Debug::ToStr1D<int>()(nums);
 		int N = nums.size();
