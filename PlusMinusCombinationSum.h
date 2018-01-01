@@ -28,7 +28,7 @@ class PlusMinusCombinationSum
 public:
 	PlusMinusCombinationSum() {}
 
-	int NumOfWaysRecur(std::vector<int> & nums, int S)
+	int NumOfWaysRecur(const std::vector<int> & nums, int S)
 	{
 		int res = 0;
 		recur(nums, 0, 0, S, res);
@@ -49,7 +49,7 @@ private:
 		recur(v, i + 1, curSum - v[i], sum, count);
 	}
 public:
-	int NumOfWaysRecurDP(std::vector<int> & nums, int S)
+	int NumOfWaysRecurDP(const std::vector<int> & nums, int S)
 	{
 		int N = nums.size();
 		std::vector<std::unordered_map<int, int>> dp(N, std::unordered_map<int, int>());
@@ -74,7 +74,7 @@ private:
 		return dp[i][curSum] = (a + b);
 	}
 public:
-	int NumOfWaysDP2D(std::vector<int> & nums, int S)
+	int NumOfWaysDP2D(const std::vector<int> & nums, int S)
 	{
 		int N = nums.size();
 		std::vector<std::unordered_map<int,int>> dp(N + 1, std::unordered_map<int,int>());
