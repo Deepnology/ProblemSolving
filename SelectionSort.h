@@ -48,7 +48,7 @@ public:
 		std::cout << "SelectionSort for \"" << before << "\" is: " << after << std::endl;
 	}
 
-	void GO(std::vector<int> & v)
+	void GO(std::vector<int> && v)
 	{
 		std::string before = Debug::ToStr1D<int>()(v);
 		for (std::vector<int>::iterator i = v.begin(); i != v.end(); ++i)
