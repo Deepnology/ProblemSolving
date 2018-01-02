@@ -1,23 +1,23 @@
-//#define _HashMap_
-//#define _Design_
-//#define _Math_
-//#define _BitNumberOperation_
-//#define _Random_
-//#define _StackQueue_
-//#define _1DArray_
-//#define _SortSearchSelect_
-//#define _Interval_
-//#define _PermuteCombinePartition_
-//#define _TrieSuffixArray_
+#define _HashMap_
+#define _Design_
+#define _Math_
+#define _BitNumberOperation_
+#define _Random_
+#define _StackQueue_
+#define _1DArray_
+#define _SortSearchSelect_
+#define _Interval_
+#define _PermuteCombinePartition_
+#define _TrieSuffixArray_
 #define _FindSubstringSubsequence_
-//#define _CompareString_
-//#define _TextLines_
-//#define _LinkedList_
-//#define _2DGrid_
-//#define _BinaryTree_
-//#define _Heap_
-//#define _Graph_
-//#define _RMQLCA_
+#define _CompareString_
+#define _TextLines_
+#define _LinkedList_
+#define _2DGrid_
+#define _BinaryTree_
+#define _Heap_
+#define _Graph_
+#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _PrintFileNameByTag_
 //#define _PrintVSSolutionTree_
@@ -634,7 +634,7 @@
 #include "CompleteBinaryTree.h"
 #include "ValidBinarySearchTree.h"
 #include "BinaryTreePreOrderTraversal.h"
-#include "BinaryTreeInorderTraversal.h"
+#include "BinaryTreeInOrderTraversal.h"
 #include "BinaryTreePostOrderTraversal.h"
 #include "BinaryTreeLevelOrderTraversal.h"
 #include "ConstructBinaryTreeFrom2Traversals.h"
@@ -2445,7 +2445,7 @@ int main()
 		OddOccurNum().FindOneOccur_FromThreeOccurArray2(std::vector<int>({ 3, 3, 2, 3 }));
 		OddOccurNum().FindOneOccur_FromThreeOccurArray3(std::vector<int>({ 3, 3, 2, 3 }));
 
-		/*
+        /*
 		std::cout << KeyGenAux().UIntToBinStrTrunc(0) << std::endl;
 		std::cout << KeyGenAux().UIntToBinStr(0) << std::endl;
 		std::cout << KeyGenAux().UIntToBinStrTrunc(1) << std::endl;
@@ -2474,7 +2474,7 @@ int main()
 		AllStockSpans().SortedStack(std::vector<int>({ 9, 7, 4, 5, 4, 5, 8 }));
 	}
 	{
-		MaxBandwidthOverWindowTimeInterval().ByQueueWithMax(std::vector<std::pair<int, int> >({ { 0, 1 }, { 2, 2 }, { 3, 3 }, { 5, 1 }, { 6, 2 }, { 8, 2 }, { 9, 1 } }), 3);
+		MaxBandwidthOverWindowTimeInterval().ByQueueWithMax(std::vector<std::pair<int, int>>({ { 0, 1 }, { 2, 2 }, { 3, 3 }, { 5, 1 }, { 6, 2 }, { 8, 2 }, { 9, 1 } }), 3);
 	}
 	{
 		SingleDupInIdxSeqArray().Find_CycleBegin(std::vector<int>({ 9, 5, 2, 7, 3, 11, 1, 13, 14, 10, 7, 12, 4, 8, 6 }));//value range: 1-14, size: 15
@@ -2629,7 +2629,7 @@ int main()
 			{ 15, 20, 10 },
 			{ 19, 24, 8 },
 		}));
-		//DrawSkylineOfBuildings().Recur(std::vector<std::pair<std::pair<int, int>, int> >(
+		//DrawSkylineOfBuildings().Recur(std::vector<std::pair<std::pair<int, int>, int>>(
 		//{
 		//	{ { 2, 9 }, 10 },{ { 3, 7 }, 15 },{ { 5, 12 }, 12 },{ { 15, 20 }, 10 },{ { 19, 24 }, 8 }
 		//}));
@@ -2641,7 +2641,7 @@ int main()
 			{ 10, 14, 3 },
 			{ 12, 16, 2 },
 		}));
-		//DrawSkylineOfBuildings().Recur(std::vector<std::pair<std::pair<int, int>, int> >(
+		//DrawSkylineOfBuildings().Recur(std::vector<std::pair<std::pair<int, int>, int>>(
 		//{
 		//	{ { 0, 5 }, 2 },{ { 3, 7 }, 1 },{ { 10, 14 }, 3 },{ { 12, 16 }, 2 }
 		//}));
@@ -2657,7 +2657,7 @@ int main()
 			{ 7, 14, 3 },
 			{ 1, 6, 3 },
 		}));
-		DrawSkylineOfBuildings().Recur(std::vector<std::pair<std::pair<int, int>, int> >(
+		DrawSkylineOfBuildings().Recur(std::vector<std::pair<std::pair<int, int>, int>>(
 		{
 			{ { 11, 17 }, 1 }, { { 13, 16 }, 2 }, { { 10, 12 }, 5 }, { { 5, 9 }, 2 }, { { 0, 3 }, 1 }, { { 4, 8 }, 4 }, { { 7, 14 }, 3 }, { { 1, 6 }, 3 }
 		}));
@@ -3202,49 +3202,49 @@ int main()
 		SearchInsertionPos().LowerBound(std::vector<int>({ 3, 4, 5, 5, 5, 6, 7, 7, 7, 8, 8 }), 7);
 	}
 	{
-		MinRangeOverKSortedLists().Solve_MinHeap(std::vector < std::vector<int> >(
+		MinRangeOverKSortedLists().Solve_MinHeap(std::vector < std::vector<int>>(
 		{
 			{ 4, 10, 15, 24, 26 },
 			{ 0, 9, 12, 20 },
 			{ 5, 18, 22, 30 }
 		}));
-		MinRangeOverKSortedLists().Solve_SortedSet(std::vector < std::vector<int> >(
+		MinRangeOverKSortedLists().Solve_SortedSet(std::vector < std::vector<int>>(
 		{
 			{ 4, 10, 15, 24, 26 },
 			{ 0, 9, 12, 20 },
 			{ 5, 18, 22, 30 }
 		}));
-		MinRangeOverKSortedLists().Solve_MinHeap(std::vector < std::vector<int> >(
+		MinRangeOverKSortedLists().Solve_MinHeap(std::vector < std::vector<int>>(
 		{
 			{ 3, 5, 7, 8, 12, 26, 27, 31 },
 			{ 9, 10, 15, 22, 24, 28 },
 			{ 16, 17, 18, 21, 23 }
 		}));
-		MinRangeOverKSortedLists().Solve_SortedSet(std::vector < std::vector<int> >(
+		MinRangeOverKSortedLists().Solve_SortedSet(std::vector < std::vector<int>>(
 		{
 			{ 3, 5, 7, 8, 12, 26, 27, 31 },
 			{ 9, 10, 15, 22, 24, 28 },
 			{ 16, 17, 18, 21, 23 }
 		}));
-		MinRangeOverKSortedLists().Solve_MinHeap(std::vector < std::vector<int> >(
+		MinRangeOverKSortedLists().Solve_MinHeap(std::vector < std::vector<int>>(
 		{
 			{ 1, 2, 3, 80 },
 			{ 1, 2, 3, 90, 200 },
 			{ 1, 2, 3, 99, 300 }
 		}));
-		MinRangeOverKSortedLists().Solve_SortedSet(std::vector < std::vector<int> >(
+		MinRangeOverKSortedLists().Solve_SortedSet(std::vector < std::vector<int>>(
 		{
 			{ 1, 2, 3, 80 },
 			{ 1, 2, 3, 90, 200 },
 			{ 1, 2, 3, 99, 300 }
 		}));
-		MinRangeOverKSortedLists().Solve_MinHeap(std::vector < std::vector<int> >(
+		MinRangeOverKSortedLists().Solve_MinHeap(std::vector < std::vector<int>>(
 		{
 			{ 1, 10, 15, 24, 26 },
 			{ 0, 9, 12, 18 },
 			{ 2, 18, 22, 30 }
 		}));
-		MinRangeOverKSortedLists().Solve_SortedSet(std::vector < std::vector<int> >(
+		MinRangeOverKSortedLists().Solve_SortedSet(std::vector < std::vector<int>>(
 		{
 			{ 1, 10, 15, 24, 26 },
 			{ 0, 9, 12, 18 },
@@ -3252,25 +3252,25 @@ int main()
 		}));
 	}
 	{
-		KwayMergeSort().Solve_MinHeap(std::vector < std::vector<int> >(
+		KwayMergeSort().Solve_MinHeap(std::vector < std::vector<int>>(
 		{
 			{ 4, 10, 15, 24, 26 },
 			{ 0, 9, 12, 20, 32 },
 			{ 5, 18, 22, 30, 42 }
 		}));
-		KwayMergeSort().Solve_MinHeap(std::vector < std::vector<int> >(
+		KwayMergeSort().Solve_MinHeap(std::vector < std::vector<int>>(
 		{
 			{ 3, 5, 7, 8, 12, 26, 27, 31 },
 			{ 9, 10, 15, 22, 24, 28, 34, 43 },
 			{ 16, 17, 18, 21, 23, 32, 38, 47 }
 		}));
-		KwayMergeSort().Solve_MinHeap(std::vector < std::vector<int> >(
+		KwayMergeSort().Solve_MinHeap(std::vector < std::vector<int>>(
 		{
 			{ 1, 2, 3, 80, 88 },
 			{ 1, 2, 3, 90, 200 },
 			{ 1, 2, 3, 99, 300 }
 		}));
-		KwayMergeSort().Solve_MinHeap(std::vector < std::vector<int> >(
+		KwayMergeSort().Solve_MinHeap(std::vector < std::vector<int>>(
 		{
 			{ 1, 10, 15, 24, 26 },
 			{ 0, 9, 12, 18, 31 },
@@ -3353,8 +3353,7 @@ int main()
 		InversePermutationArray().InPlace(std::vector<int>({ 3, 4, 2, 1 }));
 		for (int i = 0; i < 5; ++i)
 		{
-			std::vector<int> v = TestCase::RandUniqueVec<int>(10, 1, 10);
-			InversePermutationArray().InPlace(v);
+			InversePermutationArray().InPlace(TestCase::RandUniqueVec<int>(10, 1, 10));
 		}
 	}
 	{
@@ -3454,8 +3453,7 @@ int main()
 	}
 	{
 		FirstKClosestStars().MaxHeap(std::vector<int>({ 65, 93, 94, 81, 63, 48, 53, 74, 60, 59, 30, 29, 88, 77, 23, 54, 26, 18, 37, 59, 32, 72 }), 5);
-		std::istringstream iss("65, 0\n93, 1\n94, 2\n81, 3\n63, 4\n48, 5\n53, 6\n74, 7\n60, 8\n59, 9\n30, 10\n29, 11\n88, 12\n77, 13\n23, 14\n54, 15\n26, 16\n18, 17\n37, 18\n59, 19\n32, 20\n72, 21");
-		FirstKClosestStars().MaxHeap_FromISS(iss, 5);
+		FirstKClosestStars().MaxHeap_FromISS(std::istringstream("65, 0\n93, 1\n94, 2\n81, 3\n63, 4\n48, 5\n53, 6\n74, 7\n60, 8\n59, 9\n30, 10\n29, 11\n88, 12\n77, 13\n23, 14\n54, 15\n26, 16\n18, 17\n37, 18\n59, 19\n32, 20\n72, 21"), 5);
 		FirstKClosestStars().Selection(std::vector<int>({ 65, 93, 94, 81, 63, 48, 53, 74, 60, 59, 30, 29, 88, 77, 23, 54, 26, 18, 37, 59, 32, 72 }), 5);
 		FirstKClosestStars().STL_Nth_Element(std::vector<int>({ 65, 93, 94, 81, 63, 48, 53, 74, 60, 59, 30, 29, 88, 77, 23, 54, 26, 18, 37, 59, 32, 72 }), 5);
 	}
@@ -3503,11 +3501,11 @@ int main()
 		}
 	}
 	{
-		CountingSort2().GroupSameKeys(std::vector<std::pair<int, std::string> >(
+		CountingSort2().GroupSameKeys(std::vector<std::pair<int, std::string>>(
 		{
 			{ 5, "a" }, { 2, "b" }, { 6, "c" }, { 9, "d" }, { 4, "e" }, { 5, "f" }, { 9, "g" }, { 2, "h" }, { 5, "i" }, { 7, "j" }, { 8, "k" }, { 6, "l" }, { 7, "m" }, { 2, "n" }, { 9, "o" }, { 4, "p" }, { 7, "q" }, { 8, "r" }, { 5, "t" }
 		}));
-		CountingSort2().SortKeys(std::vector<std::pair<int, std::string> >(
+		CountingSort2().SortKeys(std::vector<std::pair<int, std::string>>(
 		{
 			{ 5, "a" }, { 2, "b" }, { 6, "c" }, { 9, "d" }, { 4, "e" }, { 5, "f" }, { 9, "g" }, { 2, "h" }, { 5, "i" }, { 7, "j" }, { 8, "k" }, { 6, "l" }, { 7, "m" }, { 2, "n" }, { 9, "o" }, { 4, "p" }, { 7, "q" }, { 8, "r" }, { 5, "t" }
 		}));
@@ -3540,7 +3538,7 @@ int main()
 	}
 	{
 		for (int i = 1; i <= 35; i += 20)
-			KthSmallestElementInMatrix().OneDQuickSelectIterate(std::vector<std::vector<int> >(
+			KthSmallestElementInMatrix().OneDQuickSelectIterate(std::vector<std::vector<int>>(
 		{
 			{ 21, 34, 4, 24, 18, 27, 1 },
 			{ 25, 17, 35, 29, 13, 3, 31 },
@@ -3552,7 +3550,7 @@ int main()
 	}
 	{
 		for (int i = 11; i <= 35; i += 11)
-			KthSmallestElementInSortedMatrix().MinHeap_InPlace(std::vector<std::vector<int> >(
+			KthSmallestElementInSortedMatrix().MinHeap_InPlace(std::vector<std::vector<int>>(
 		{
 			{ 1, 3, 4, 8, 12, 22, 25 },
 			{ 2, 5, 6, 9, 18, 27, 30 },
@@ -3561,7 +3559,7 @@ int main()
 			{ 14, 16, 19, 24, 29, 33, 35 },
 		}), i);
 		for (int i = 11; i <= 35; i += 11)
-			KthSmallestElementInSortedMatrix().MinHeap(std::vector<std::vector<int> >(
+			KthSmallestElementInSortedMatrix().MinHeap(std::vector<std::vector<int>>(
 		{
 			{  1,  3,  4,  8, 12, 22, 25 },
 			{  2,  5,  6,  9, 18, 27, 30 },
@@ -3570,7 +3568,7 @@ int main()
 			{ 14, 16, 19, 24, 29, 33, 35 },
 		}), i);
 		for (int i = 11; i <= 35; i += 11)
-			KthSmallestElementInSortedMatrix().ExtractMin(std::vector<std::vector<int> >(
+			KthSmallestElementInSortedMatrix().ExtractMin(std::vector<std::vector<int>>(
 		{
 			{ 1, 3, 4, 8, 12, 22, 25 },
 			{ 2, 5, 6, 9, 18, 27, 30 },
@@ -3579,19 +3577,19 @@ int main()
 			{ 14, 16, 19, 24, 29, 33, 35 },
 		}), i);
 
-		KthSmallestElementInSortedMatrix().MinHeap_InPlace(std::vector<std::vector<int> >(
+		KthSmallestElementInSortedMatrix().MinHeap_InPlace(std::vector<std::vector<int>>(
 		{
 			{ 1,5,9 },
 			{ 10,11,13 },
 			{ 12,13,15 },
 		}), 8);
-		KthSmallestElementInSortedMatrix().MinHeap(std::vector<std::vector<int> >(
+		KthSmallestElementInSortedMatrix().MinHeap(std::vector<std::vector<int>>(
 		{
 			{ 1,5,9 },
 			{ 10,11,13 },
 			{ 12,13,15 },
 		}), 8);
-		KthSmallestElementInSortedMatrix().ExtractMin(std::vector<std::vector<int> >(
+		KthSmallestElementInSortedMatrix().ExtractMin(std::vector<std::vector<int>>(
 		{
 			{ 1,5,9 },
 			{ 10,11,13 },
@@ -3599,7 +3597,7 @@ int main()
 		}), 8);
 	}
 	{
-		std::vector<std::vector<int> > search2dMatrixGrid(
+		std::vector<std::vector<int>> search2dMatrixGrid(
 		{
 			{ 11, 12, 13, 14, 15, 16, 17 },
 			{ 21, 22, 23, 24, 25, 26, 27 },
@@ -3614,7 +3612,7 @@ int main()
 		Search2dSortedMatrix().TwoDBinarySearchRecur(search2dMatrixGrid, 67);
 		Search2dSortedMatrix().TwoDBinarySearchRecur2(search2dMatrixGrid, 47);
 
-		std::vector<std::vector<int> > search2dMatrixGrid2(
+		std::vector<std::vector<int>> search2dMatrixGrid2(
 		{
 			{ 2, 2, 3, 5 },
 			{ 3, 4, 6, 6 },
@@ -3628,7 +3626,7 @@ int main()
 		SaddlebackSearchSortedMatrix().Count(search2dMatrixGrid2, 6);
 
 		//2d matrix where the first integer of each row is NOT necessarily greater than the last integer of the previous row.
-		std::vector<std::vector<int> > search2dMatrixGrid3(
+		std::vector<std::vector<int>> search2dMatrixGrid3(
 		{
 			{ 1, 4, 7, 11, 15 },
 			{ 2, 5, 8, 12, 19 },
@@ -3647,7 +3645,7 @@ int main()
 		}
 	}
 	{
-		YoungTableau().ExtractMin(std::vector<std::vector<int> >(
+		YoungTableau().ExtractMin(std::vector<std::vector<int>>(
 		{
 			{ 1, 3, 4, 8, 12, 22, 25 },
 			{ 2, 5, 6, 9, 18, 27, 30 },
@@ -3655,7 +3653,7 @@ int main()
 			{ 10, 13, 17, 21, 26, 31, 34 },
 			{ 14, 16, 19, 24, 29, 33, 35 },
 		}));
-		YoungTableau().Extract_K_Min(std::vector<std::vector<int> >(
+		YoungTableau().Extract_K_Min(std::vector<std::vector<int>>(
 		{
 			{ 1, 3, 4, 8, 12, 22, 25 },
 			{ 2, 5, 6, 9, 18, 27, 30 },
@@ -3664,7 +3662,7 @@ int main()
 			{ 14, 16, 19, 24, 29, 33, 35 },
 		}), 17);
 
-		YoungTableau().Insert(std::vector<std::vector<int> >(
+		YoungTableau().Insert(std::vector<std::vector<int>>(
 		{
 			{ 11, 13, 14, 19, INT_MAX, INT_MAX, INT_MAX },
 			{ 12, 15, 16, 32, INT_MAX, INT_MAX, INT_MAX },
@@ -3672,7 +3670,7 @@ int main()
 			{ 20, 35, 36, 39, INT_MAX, INT_MAX, INT_MAX },
 			{ 31, 37, 38, 40, INT_MAX, INT_MAX, INT_MAX },
 		}), 1);
-		YoungTableau().Insert(std::vector<std::vector<int> >(
+		YoungTableau().Insert(std::vector<std::vector<int>>(
 		{
 			{ 11, 13, 14, 19, INT_MAX, INT_MAX, INT_MAX },
 			{ 12, 15, 16, 32, INT_MAX, INT_MAX, INT_MAX },
@@ -3792,8 +3790,7 @@ int main()
 
 		for (int i = 0; i < 10; ++i)
 		{
-			std::vector<int> v = TestCase::RandVec<int>(20, 1, 10);
-			GenericPartition().GroupSame(v
+			GenericPartition().GroupSame(TestCase::RandVec<int>(20, 1, 10)
 				, std::function<bool(int a, int b)>([](int a, int b) { return a % 3 == b % 3; }));
 		}
 	}
@@ -3806,14 +3803,14 @@ int main()
 	{
 		MergeIntervals().Merge(std::vector<MergeIntervals::Interval>(
 		{ MergeIntervals::Interval(9, 11), MergeIntervals::Interval(5, 7), MergeIntervals::Interval(4, 6), MergeIntervals::Interval(1, 2), MergeIntervals::Interval(7, 8), MergeIntervals::Interval(3, 5) }));
-		MergeIntervals().Merge_OpenClosedPoints(std::vector<std::pair<std::pair<int, bool>, std::pair<int, bool> > >(
+		MergeIntervals().Merge_OpenClosedPoints(std::vector<std::pair<std::pair<int, bool>, std::pair<int, bool>>>(
 		{ 
 			{ { 2, true }, { 4, true } }, { { 8, true }, { 11, false } }, { { 13, false }, { 15, false } }, { { 16, false }, { 17, false } },
 			{ { 1, true }, { 1, true } }, { { 3, true }, { 4, false } }, { { 7, true }, { 8, false } }, { { 12, false }, { 16, true } },
 			{ { 0, false }, { 3, false } }, { { 5, true }, { 7, false } }, { { 9, false }, { 11, true } }, { { 12, true }, { 14, true } },
 		}));
 
-		InsertInterval().Insert(std::vector<std::pair<int, int> >({ { 1, 3 }, { 4, 6 }, { 7, 8 }, { 12, 14 }, { 17, 18 }, { 20, 24 } }), { 5, 19 });
+		InsertInterval().Insert(std::vector<std::pair<int, int>>({ { 1, 3 }, { 4, 6 }, { 7, 8 }, { 12, 14 }, { 17, 18 }, { 20, 24 } }), { 5, 19 });
 		InsertInterval().Insert(std::vector<InsertInterval::Interval>(
 		{ InsertInterval::Interval(1, 3), InsertInterval::Interval(4, 6), InsertInterval::Interval(7, 8), InsertInterval::Interval(12, 14), InsertInterval::Interval(17, 18), InsertInterval::Interval(20, 24) }),
 		InsertInterval::Interval(5, 19));
@@ -3822,22 +3819,22 @@ int main()
 		IntersectionOfIntervals().CountTotal(std::vector<int>({ 2, 2, 2, 1, 2, 2, 1 }));
 		IntersectionOfIntervals().CountTotal(std::vector<int>({ 1, 5, 2, 1, 4, 0 }));
 
-		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int> >({ { -2, 2 }, { -1, 3 }, { 0, 4 }, { 2, 4 }, { 2, 6 }, { 3, 7 }, { 5, 7 } }));
-		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int> >({ { -4, 6 }, { -1, 1 }, { 0, 4 }, { 0, 8 }, { 2, 4 }, { 5, 5 } }));
-		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int> >({ { 10, 19 }, { 2, 10 } }));
+		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int>>({ { -2, 2 }, { -1, 3 }, { 0, 4 }, { 2, 4 }, { 2, 6 }, { 3, 7 }, { 5, 7 } }));
+		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int>>({ { -4, 6 }, { -1, 1 }, { 0, 4 }, { 0, 8 }, { 2, 4 }, { 5, 5 } }));
+		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int>>({ { 10, 19 }, { 2, 10 } }));
 
-		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int> >({ { -2, 2 },{ -1, 3 },{ 0, 4 },{ 2, 4 },{ 2, 6 },{ 3, 7 },{ 5, 7 } }));
-		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int> >({ { -4, 6 },{ -1, 1 },{ 0, 4 },{ 0, 8 },{ 2, 4 },{ 5, 5 } }));
-		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int> >({ { 10, 19 },{ 2, 10 } }));
+		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { -2, 2 },{ -1, 3 },{ 0, 4 },{ 2, 4 },{ 2, 6 },{ 3, 7 },{ 5, 7 } }));
+		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { -4, 6 },{ -1, 1 },{ 0, 4 },{ 0, 8 },{ 2, 4 },{ 5, 5 } }));
+		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { 10, 19 },{ 2, 10 } }));
 	}
 	{
-		LeastPointsCoveringAllIntervals().TwoSortedSets(std::vector<std::pair<int, int> >({ { -2, 2 }, { -1, 3 }, { 0, 4 }, { 2, 4 }, { 2, 6 }, { 5, 7 } }));
-		LeastPointsCoveringAllIntervals().Count_SortGreedy(std::vector<std::pair<int, int> >({ { -2, 2 },{ -1, 3 },{ 0, 4 },{ 2, 4 },{ 2, 6 },{ 5, 7 } }));
-		LeastPointsCoveringAllIntervals().TwoSortedSets(std::vector<std::pair<int, int> >({ { -4, 6 }, { -1, 1 }, { 0, 4 }, { 0, 8 }, { 2, 4 }, { 5, 5 } }));
-		LeastPointsCoveringAllIntervals().Count_SortGreedy(std::vector<std::pair<int, int> >({ { -4, 6 },{ -1, 1 },{ 0, 4 },{ 0, 8 },{ 2, 4 },{ 5, 5 } }));
+		LeastPointsCoveringAllIntervals().TwoSortedSets(std::vector<std::pair<int, int>>({ { -2, 2 }, { -1, 3 }, { 0, 4 }, { 2, 4 }, { 2, 6 }, { 5, 7 } }));
+		LeastPointsCoveringAllIntervals().Count_SortGreedy(std::vector<std::pair<int, int>>({ { -2, 2 },{ -1, 3 },{ 0, 4 },{ 2, 4 },{ 2, 6 },{ 5, 7 } }));
+		LeastPointsCoveringAllIntervals().TwoSortedSets(std::vector<std::pair<int, int>>({ { -4, 6 }, { -1, 1 }, { 0, 4 }, { 0, 8 }, { 2, 4 }, { 5, 5 } }));
+		LeastPointsCoveringAllIntervals().Count_SortGreedy(std::vector<std::pair<int, int>>({ { -4, 6 },{ -1, 1 },{ 0, 4 },{ 0, 8 },{ 2, 4 },{ 5, 5 } }));
 	}
 	{
-		ViewFromAboveIntervals().SortedEndPoints(std::vector<std::pair<std::pair<int, int>, std::pair<int, int> > >(
+		ViewFromAboveIntervals().SortedEndPoints(std::vector<std::pair<std::pair<int, int>, std::pair<int, int>>>(
 		{
 			{ { 0, 4 }, { 1, 101 } }, { { 5, 7 }, { 1, 102 } }, { { 9, 18 }, { 1, 103 } },
 			{ { 2, 7 }, { 2, 104 } }, { { 8, 9 }, { 2, 105 } }, { { 12, 15 }, { 2, 106 } },
@@ -3948,7 +3945,7 @@ int main()
 		Combinations().Count_AllowRepeats_DP2D(7, 7);
 		Combinations().Count_AllowRepeats_DP2D(9, 9);
 
-		Combinations2().Recur(std::vector<std::vector<std::string> >(
+		Combinations2().Recur(std::vector<std::vector<std::string>>(
 		{
 			{ "quick", "medium", "slow" },
 			{ "brown", "red", "silver" },
@@ -4080,7 +4077,7 @@ int main()
 		Knapsack().MaxVal_NoRepeats_DP1D(&std::vector<int>({ 2, 1, 3, 2 })[0], &std::vector<int>({ 3, 2, 4, 2 })[0], 4, 5);
 		Knapsack().MaxVal_AllowRepeats_DP1D(&std::vector<int>({ 3, 4, 2 })[0], &std::vector<int>({ 4, 5, 3 })[0], 3, 7);
 
-		FractionalKnapsack().Greedy(std::vector<std::pair<double, double> >({ { 2.0, 140 }, { 3.0, 240 }, { 5.0, 150.0 }, { 1.0, 200.0 } }), 5.0);
+		FractionalKnapsack().Greedy(std::vector<std::pair<double, double>>({ { 2.0, 140 }, { 3.0, 240 }, { 5.0, 150.0 }, { 1.0, 200.0 } }), 5.0);
 	}
 	{
 		MatrixChainMultiplication().Recur(std::vector<int>({ 40, 20, 30, 10, 30 }));
@@ -4097,8 +4094,8 @@ int main()
 		MaxSumParenthesizeArithmeticExpr().DP2D(std::vector<int>({ -8, 4, 2, 3, -2, 5 }), std::vector<int>({ 1, 1, 0, 1, 1 }));
 		MaxSumParenthesizeArithmeticExpr().DP2D(std::vector<int>({ -8, 2, -3, 5 }), std::vector<int>({ 1, 0, 1 }));
 
-		MinCostPolygonTriangulation().Recur(std::vector<std::pair<int, int> >({ std::make_pair(0, 0), std::make_pair(1, 0), std::make_pair(2, 1), std::make_pair(1, 2), std::make_pair(0, 2) }));
-		MinCostPolygonTriangulation().DP2D(std::vector<std::pair<int, int> >({ std::make_pair(0, 0), std::make_pair(1, 0), std::make_pair(2, 1), std::make_pair(1, 2), std::make_pair(0, 2) }));
+		MinCostPolygonTriangulation().Recur(std::vector<std::pair<int, int>>({ std::make_pair(0, 0), std::make_pair(1, 0), std::make_pair(2, 1), std::make_pair(1, 2), std::make_pair(0, 2) }));
+		MinCostPolygonTriangulation().DP2D(std::vector<std::pair<int, int>>({ std::make_pair(0, 0), std::make_pair(1, 0), std::make_pair(2, 1), std::make_pair(1, 2), std::make_pair(0, 2) }));
 	}
 	{
 		ParenthesizeBoolExpr().CountRecur(std::string("1|1&0^0"), true);
@@ -4164,8 +4161,8 @@ int main()
 		BalancedPartitionWEqual2Sum().DP2D(std::vector<int>({ 1, 5, 3 }));
 	}
 	{
-		BinPacking().MinCount_DP3D(5, 3, 3, 5, 2, 7, 10);//5­Ó for size of 3, 3­Ó for size of 5, 2­Ó for size of 7, capacity of bin is 10
-		BinPacking().MinCount_DP3D(1, 2, 1, 3, 1, 4, 5);//1­Ó for size of 2, 1­Ó for size of 3, 1­Ó for size of 4, capacity of bin is 5
+		BinPacking().MinCount_DP3D(5, 3, 3, 5, 2, 7, 10);//5ï¿½ï¿½ for size of 3, 3ï¿½ï¿½ for size of 5, 2ï¿½ï¿½ for size of 7, capacity of bin is 10
+		BinPacking().MinCount_DP3D(1, 2, 1, 3, 1, 4, 5);//1ï¿½ï¿½ for size of 2, 1ï¿½ï¿½ for size of 3, 1ï¿½ï¿½ for size of 4, capacity of bin is 5
 	}
 	{
 		BinPacking2().Valid_EnumerateAll_Recur(std::vector<int>({ 2, 3, 4 }), std::vector<int>({ 4, 5 }));
@@ -4186,10 +4183,10 @@ int main()
 		MinNonSubsetSumSortedArray().Find2(std::vector<int>({ 1, 2, 5, 10 }));
 	}
 	{
-		MeasureWithDefectiveJugs().FindAllUnique_AllowRepeats_FromNoDupArr_FixRecur(std::vector<std::pair<int, int> >({ { 230, 240 }, { 290, 310 }, { 500, 515 } }), 2100, 2300);
-		MeasureWithDefectiveJugs().FindAllUnique_AllowRepeats_FromNoDupArr_InExcludeRecur(std::vector<std::pair<int, int> >({ { 230, 240 }, { 290, 310 }, { 500, 515 } }), 2100, 2300);
+		MeasureWithDefectiveJugs().FindAllUnique_AllowRepeats_FromNoDupArr_FixRecur(std::vector<std::pair<int, int>>({ { 230, 240 }, { 290, 310 }, { 500, 515 } }), 2100, 2300);
+		MeasureWithDefectiveJugs().FindAllUnique_AllowRepeats_FromNoDupArr_InExcludeRecur(std::vector<std::pair<int, int>>({ { 230, 240 }, { 290, 310 }, { 500, 515 } }), 2100, 2300);
 
-		MeasureWithDefectiveJugs().CheckFeasible(std::vector<std::pair<int, int> >({ { 230, 240 }, { 290, 310 }, { 500, 515 } }), 2100, 2300);
+		MeasureWithDefectiveJugs().CheckFeasible(std::vector<std::pair<int, int>>({ { 230, 240 }, { 290, 310 }, { 500, 515 } }), 2100, 2300);
 	}
 	{
 		MonotoneDecimalNums().Count_DP2D(10);
@@ -4319,12 +4316,12 @@ int main()
 		HouseRobber().Circular_DP1D(std::vector<int>({ 2, 7, 9, 3, 1 }));
 	}
 	{
-		TwoAssemblyLineScheduling().DP1D(std::vector<std::vector<int> >(
+		TwoAssemblyLineScheduling().DP1D(std::vector<std::vector<int>>(
 		{
 			{ 4, 5, 3, 2 },//station time of line1
 			{ 2, 10, 1, 4 }//station time of line2
 		}),
-			std::vector<std::vector<int> >(
+			std::vector<std::vector<int>>(
 			{
 				{ 0, 7, 4, 5 },//transfer time of line1
 				{ 0, 9, 2, 8 }//transfer time of line2
@@ -4749,16 +4746,16 @@ int main()
 		LBS().Len_DP1D_Quadratic(std::vector<int>({ 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15 }));
 	}
 	{
-		LISPairs().Len_DP1D_Quadratic(std::vector<std::pair<int, int> >({ { 3, 3 },{ 1, 0 },{ 5, 4 },{ 7, 5 },{ 6, 7 },{ 8, 3 },{ 2, 5 },{ -5, -3 },{ 4, 6 },{ -4, -1 },{ 5, 7 },{ -3, 0 },{ 6, 8 },{ -2, 1 },{ 7, 9 },{ -1, 3 } }));
-		LISPairs().Len_DP1D_Quadratic(std::vector<std::pair<int, int> >({ { 1, 2 },{ 1, 3 },{ 2, 3 },{ 4, 5 },{ 4, 6 },{ 4, 6 },{ 4, 7 },{ 5, 6 },{ 6, 7 },{ 10, 12 },{ 10, 32 },{ 12, 32 } }));
+		LISPairs().Len_DP1D_Quadratic(std::vector<std::pair<int, int>>({ { 3, 3 },{ 1, 0 },{ 5, 4 },{ 7, 5 },{ 6, 7 },{ 8, 3 },{ 2, 5 },{ -5, -3 },{ 4, 6 },{ -4, -1 },{ 5, 7 },{ -3, 0 },{ 6, 8 },{ -2, 1 },{ 7, 9 },{ -1, 3 } }));
+		LISPairs().Len_DP1D_Quadratic(std::vector<std::pair<int, int>>({ { 1, 2 },{ 1, 3 },{ 2, 3 },{ 4, 5 },{ 4, 6 },{ 4, 6 },{ 4, 7 },{ 5, 6 },{ 6, 7 },{ 10, 12 },{ 10, 32 },{ 12, 32 } }));
 		std::cout << "LongestIncreasingPairs===>" << std::endl;
-		LongestIncreasingPairs().Len_Greedy_LowerBound(std::vector<std::pair<int, int> >({ { 3, 3 },{ 1, 0 },{ 5, 4 },{ 7, 5 },{ 6, 7 },{ 8, 3 },{ 2, 5 },{ -5, -3 },{ 4, 6 },{ -4, -1 },{ 5, 7 },{ -3, 0 },{ 6, 8 },{ -2, 1 },{ 7, 9 },{ -1, 3 } }));
-		LongestIncreasingPairs().Len_DP1D_Quadratic(std::vector<std::pair<int, int> >({ { 3, 3 },{ 1, 0 },{ 5, 4 },{ 7, 5 },{ 6, 7 },{ 8, 3 },{ 2, 5 },{ -5, -3 },{ 4, 6 },{ -4, -1 },{ 5, 7 },{ -3, 0 },{ 6, 8 },{ -2, 1 },{ 7, 9 },{ -1, 3 } }));
-		LongestIncreasingPairs().Len_Greedy_LowerBound(std::vector<std::pair<int, int> >({ { 1, 2 },{ 1, 3 },{ 2, 3 },{ 4, 5 },{ 4, 6 },{ 4, 6 },{ 4, 7 },{ 5, 6 },{ 6, 7 },{ 10, 12 },{ 10, 32 },{ 12, 32 } }));
-		LongestIncreasingPairs().Len_DP1D_Quadratic(std::vector<std::pair<int, int> >({ { 1, 2 },{ 1, 3 },{ 2, 3 },{ 4, 5 },{ 4, 6 },{ 4, 6 },{ 4, 7 },{ 5, 6 },{ 6, 7 },{ 10, 12 },{ 10, 32 },{ 12, 32 } }));
+		LongestIncreasingPairs().Len_Greedy_LowerBound(std::vector<std::pair<int, int>>({ { 3, 3 },{ 1, 0 },{ 5, 4 },{ 7, 5 },{ 6, 7 },{ 8, 3 },{ 2, 5 },{ -5, -3 },{ 4, 6 },{ -4, -1 },{ 5, 7 },{ -3, 0 },{ 6, 8 },{ -2, 1 },{ 7, 9 },{ -1, 3 } }));
+		LongestIncreasingPairs().Len_DP1D_Quadratic(std::vector<std::pair<int, int>>({ { 3, 3 },{ 1, 0 },{ 5, 4 },{ 7, 5 },{ 6, 7 },{ 8, 3 },{ 2, 5 },{ -5, -3 },{ 4, 6 },{ -4, -1 },{ 5, 7 },{ -3, 0 },{ 6, 8 },{ -2, 1 },{ 7, 9 },{ -1, 3 } }));
+		LongestIncreasingPairs().Len_Greedy_LowerBound(std::vector<std::pair<int, int>>({ { 1, 2 },{ 1, 3 },{ 2, 3 },{ 4, 5 },{ 4, 6 },{ 4, 6 },{ 4, 7 },{ 5, 6 },{ 6, 7 },{ 10, 12 },{ 10, 32 },{ 12, 32 } }));
+		LongestIncreasingPairs().Len_DP1D_Quadratic(std::vector<std::pair<int, int>>({ { 1, 2 },{ 1, 3 },{ 2, 3 },{ 4, 5 },{ 4, 6 },{ 4, 6 },{ 4, 7 },{ 5, 6 },{ 6, 7 },{ 10, 12 },{ 10, 32 },{ 12, 32 } }));
 		for (int i = 0; i < 10; ++i)
 		{
-			std::vector<std::pair<int, int> > test = TestCase::RandVecPair<int>(20, 0, 99);
+			std::vector<std::pair<int, int>> test = TestCase::RandVecPair<int>(20, 0, 99);
 			int a = LongestIncreasingPairs().Len_Greedy_LowerBound(test);
 			int b = LongestIncreasingPairs().Len_DP1D_Quadratic(test);
 			if (a != b)
@@ -4769,7 +4766,7 @@ int main()
 	{
 		for (int i = 0; i < 1; ++i)
 		{
-			std::vector<std::pair<int, int> > test = TestCase::RandVecPair<int>(20, 0, 99);
+			std::vector<std::pair<int, int>> test = TestCase::RandVecPair<int>(20, 0, 99);
 			for (auto & p : test)
 				if (p.first > p.second)
 					std::swap(p.first, p.second);
@@ -4777,7 +4774,7 @@ int main()
 		}
 	}
 	{
-		BoxStacking().Solve(std::vector<std::pair<std::pair<int, int>, int> >({ { { 4, 6 }, 7 }, { { 1, 3 }, 2 }, { { 4, 5 }, 6 }, { { 10, 12 }, 32 } }));
+		BoxStacking().Solve(std::vector<std::pair<std::pair<int, int>, int>>({ { { 4, 6 }, 7 }, { { 1, 3 }, 2 }, { { 4, 5 }, 6 }, { { 10, 12 }, 32 } }));
 	}
 	{
 		MaxSumIncrSubseq().DP1D_Quadratic(std::vector<int>({ 5, 105, 10, 15, 100, 20, 25 }));
@@ -4912,7 +4909,7 @@ int main()
 		//	MaxSubArraySumCircular().Math(v);
 		//}
 
-		MaxIncrSubArraySum().Kadane_2Pass(std::vector<std::pair<int, int> >(
+		MaxIncrSubArraySum().Kadane_2Pass(std::vector<std::pair<int, int>>(
 		{ std::make_pair(0, -3), std::make_pair(1, 3), std::make_pair(4, -1), std::make_pair(6, 4), std::make_pair(5, 7), std::make_pair(6, -2), std::make_pair(7, 4), std::make_pair(8, -2), std::make_pair(7, 8), std::make_pair(9, -9), std::make_pair(10, 8), std::make_pair(11, 2), std::make_pair(12, -1) }
 		), begin, end);
 
@@ -5140,8 +5137,8 @@ int main()
 		LCSubstr().Len_3Str_SuffixArray("abababca", "aababc", "aaababca");
 	}
 	{
-		char * psTxt = "AABAACAADAABAAABAA";
-		char * psPat = "AABA";
+		const char * psTxt = "AABAACAADAABAAABAA";
+		const char * psPat = "AABA";
 		PatternSearching().BruteForce(psPat, psTxt);
 		PatternSearching().BruteForceModified(psPat, psTxt);
 		PatternSearching().KMP(psPat, psTxt);
@@ -5465,11 +5462,11 @@ int main()
 		ClosestRepetition().Iterate_HashTable(std::vector<std::string>({ "All", "work", "and", "no", "play", "makes", "for", "no", "work", "no", "fun", "and", "no", "results" }));
 	}
 	{
-		HighestAffinityPair().HashTable(std::vector<std::pair<std::string, std::string> >({ { "yahoo", "ap42" },{ "google", "ap42" },{ "twitter", "th1" },{ "google", "aa314" },{ "google", "aa314" },{ "google", "th1" },{ "twitter", "aa314" },{ "twitter", "ap42" },{ "yahoo", "aa314" }, }));
+		HighestAffinityPair().HashTable(std::vector<std::pair<std::string, std::string>>({ { "yahoo", "ap42" },{ "google", "ap42" },{ "twitter", "th1" },{ "google", "aa314" },{ "google", "aa314" },{ "google", "th1" },{ "twitter", "aa314" },{ "twitter", "ap42" },{ "yahoo", "aa314" }, }));
 	}
 	{
 		MinDistBtw2WordsInFile().OneScan(std::vector<std::string>({ "ace", "tea", "and", "ad", "eat", "kk", "eat", "dan", "ate", "tea", "abc", "eat", "xyz" }), std::string("tea"), std::string("eat"));
-		std::unordered_map<std::string, std::vector<int> > wordMap = MinDistBtw2WordsInFile().BuildWordMap(std::vector<std::string>({ "ace", "tea", "and", "ad", "eat", "kk", "eat", "dan", "ate", "tea", "abc", "eat", "xyz" }));
+		std::unordered_map<std::string, std::vector<int>> wordMap = MinDistBtw2WordsInFile().BuildWordMap(std::vector<std::string>({ "ace", "tea", "and", "ad", "eat", "kk", "eat", "dan", "ate", "tea", "abc", "eat", "xyz" }));
 		MinDistBtw2WordsInFile().QueryFromWordMap(wordMap, std::string("tea"), std::string("eat"));
 		MinDistBtw2WordsInFile().OneScan2(std::vector<std::string>({ "ace", "tea", "and", "ad", "eat", "kk", "eat", "dan", "ate", "tea", "abc", "eat", "xyz" }), std::string("eat"), std::string("eat"));
 	}
@@ -6363,7 +6360,7 @@ int main()
 	RdCout ? redirect_cout::to_file("Out_2DGrid.txt") : redirect_cout::to_cout();
 	PrintH("2D Grid");
 	{
-		std::vector<std::vector<char> > maxRectangleGrid(
+		std::vector<std::vector<char>> maxRectangleGrid(
 		{
 			{ '0', '1', '1', '1', '0', '0', '0' },
 			{ '0', '1', '1', '1', '0', '1', '1' },
@@ -6377,7 +6374,7 @@ int main()
 		MaxRectangle().BruteForce(maxRectangleGrid);
 		MaxRectangle().DP2D_SquareSubmatrix(maxRectangleGrid);
 
-		std::vector<std::vector<char> > maxRectangleGrid2(
+		std::vector<std::vector<char>> maxRectangleGrid2(
 		{
 			{ '1', '1', '1', '0', '0', '0', '0', '0', '0', '0' },
 			{ '1', '1', '1', '1', '1', '0', '0', '0', '0', '0' },
@@ -6393,7 +6390,7 @@ int main()
 		MaxRectangle().DP2D_SquareSubmatrix(maxRectangleGrid2);
 	}
 	{
-		MaxSubSquareBorder().BruteForce(std::vector<std::vector<int> >(
+		MaxSubSquareBorder().BruteForce(std::vector<std::vector<int>>(
 		{
 			{ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
@@ -6406,7 +6403,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
 			{ 0, 0, 0, 1, 1, 1, 1, 1, 1, 1 },
 		}));
-		MaxSubSquareBorder().Preprocess(std::vector<std::vector<int> >(
+		MaxSubSquareBorder().Preprocess(std::vector<std::vector<int>>(
 		{
 			{ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
@@ -6421,7 +6418,7 @@ int main()
 		}));
 	}
 	{
-		std::vector<std::vector<char> > surroundedRegionsGrid(
+		std::vector<std::vector<char>> surroundedRegionsGrid(
 		{
 			{ 'X', 'X', 'X', 'X' },
 			{ 'X', 'O', 'O', 'X' },
@@ -6430,12 +6427,12 @@ int main()
 			{ 'O', 'O', 'X', 'O' },
 		}
 		);
-		std::vector<std::vector<char> > surroundedRegionsGrid2(surroundedRegionsGrid);
+		std::vector<std::vector<char>> surroundedRegionsGrid2(surroundedRegionsGrid);
 		SurroundedRegions().FlipAll_BFS(surroundedRegionsGrid);
 		SurroundedRegions().FlipAll_DFS(surroundedRegionsGrid2);
 	}
 	{
-		std::vector<std::vector<int> > setMatrixZerosGrid(
+		std::vector<std::vector<int>> setMatrixZerosGrid(
 		{
 			{ 1, 0, 3, 7 },
 			{ 9, 0, 1, 2 },
@@ -6443,12 +6440,12 @@ int main()
 			{ 7, 8, 6, 9 }
 		}
 		);
-		std::vector<std::vector<int> > setMatrixZerosGrid2(setMatrixZerosGrid);
+		std::vector<std::vector<int>> setMatrixZerosGrid2(setMatrixZerosGrid);
 		SetColRowZerosInMatrix().SetZeros_LinearSpace(setMatrixZerosGrid);
 		SetColRowZerosInMatrix().SetZeros_ConstantSpace(setMatrixZerosGrid2);
 	}
 	{
-		std::vector<std::vector<int> > minPathSumGrid(
+		std::vector<std::vector<int>> minPathSumGrid(
 		{
 			{ 1, 7, 3, 7 },
 			{ 9, 6, 1, 2 },
@@ -6459,7 +6456,7 @@ int main()
 		MinPathSum().DP_1D(minPathSumGrid);
 	}
 	{
-		std::vector<std::vector<int> > triangleGrid(
+		std::vector<std::vector<int>> triangleGrid(
 		{
 			{ 2 },
 			{ 3, 4 },
@@ -6476,7 +6473,7 @@ int main()
 		UniquePath().DP_2D(4, 3);
 		UniquePath().DP_1D(4, 3);
 		UniquePath().Math(4, 3);
-		std::vector<std::vector<int> > uniquePathGridObstacle(
+		std::vector<std::vector<int>> uniquePathGridObstacle(
 		{
 			{ 0, 0, 0, 0 },
 			{ 0, 0, 1, 0 },
@@ -6490,11 +6487,11 @@ int main()
 		char wordSearchRow0[] = { 'A', 'B', 'C', 'E' };
 		char wordSearchRow1[] = { 'S', 'F', 'C', 'S' };
 		char wordSearchRow2[] = { 'A', 'D', 'E', 'E' };
-		std::vector<std::vector<char> > wordSearchBoard;
+		std::vector<std::vector<char>> wordSearchBoard;
 		wordSearchBoard.push_back(std::vector<char>(wordSearchRow0, wordSearchRow0 + sizeof(wordSearchRow0) / sizeof(char)));
 		wordSearchBoard.push_back(std::vector<char>(wordSearchRow1, wordSearchRow1 + sizeof(wordSearchRow1) / sizeof(char)));
 		wordSearchBoard.push_back(std::vector<char>(wordSearchRow2, wordSearchRow2 + sizeof(wordSearchRow2) / sizeof(char)));
-		std::vector<std::vector<char> > wordSearchBoard2 = wordSearchBoard;
+		std::vector<std::vector<char>> wordSearchBoard2 = wordSearchBoard;
 		WordSearch().DFS_LinearSpace(wordSearchBoard, "ABCCED");
 		WordSearch().DFS_LinearSpace(wordSearchBoard, "SEE");
 		WordSearch().DFS_LinearSpace(wordSearchBoard, "ABCB");
@@ -6512,7 +6509,7 @@ int main()
 		}), std::vector<std::string>({ "oath", "pea", "eat", "rain" }));
 	}
 	{
-		std::vector<std::vector<char> > sudokuBoard;
+		std::vector<std::vector<char>> sudokuBoard;
 		char sudoku0[] = { '5', '3', '.', '.', '7', '.', '.', '.', '.' };
 		char sudoku1[] = { '6', '.', '.', '1', '9', '5', '.', '.', '.' };
 		char sudoku2[] = { '.', '9', '8', '.', '.', '.', '.', '6', '.' };
@@ -6533,7 +6530,7 @@ int main()
 		sudokuBoard.push_back(std::vector<char>(sudoku8, sudoku8 + sizeof(sudoku8) / sizeof(char)));
 		ValidSudoku().GO(sudokuBoard);
 		SudokuSolver().Solve(sudokuBoard);
-		SudokuSolver().BacktrackRecur(std::vector<std::vector<char> >(
+		SudokuSolver().BacktrackRecur(std::vector<std::vector<char>>(
 		{
 			{ '5', '3', '.', '.', '7', '.', '.', '.', '.' },
 			{ '6', '.', '.', '1', '9', '5', '.', '.', '.' },
@@ -6547,7 +6544,7 @@ int main()
 		}));
 	}
 	{
-		std::vector<std::vector<int> > rotateImageGrid(
+		std::vector<std::vector<int>> rotateImageGrid(
 		{
 			{ 11, 12, 13, 14, 15 },
 			{ 21, 22, 23, 24, 25 },
@@ -6586,7 +6583,7 @@ int main()
 		}));
 	}
 	{
-		std::vector<std::vector<int> > rotateImageGrid(
+		std::vector<std::vector<int>> rotateImageGrid(
 		{
 			{ 11, 12, 13, 14, 15 },
 			{ 21, 22, 23, 24, 25 },
@@ -6596,7 +6593,7 @@ int main()
 			{ 61, 62, 63, 64, 65 },
 		});
 		RotateMatrix180().Rotate(rotateImageGrid);
-		RotateMatrix180().IsSame(std::vector<std::vector<int> >(
+		RotateMatrix180().IsSame(std::vector<std::vector<int>>(
 		{
 			{ 11, 12, 13, 14, 15 },
 			{ 21, 22, 23, 24, 25 },
@@ -6606,7 +6603,7 @@ int main()
 		}));
 	}
 	{
-		std::vector<std::vector<int> > spiralMatrixGrid(
+		std::vector<std::vector<int>> spiralMatrixGrid(
 		{
 			{ 11, 12, 13, 14, 15 },
 			{ 21, 22, 23, 24, 25 },
@@ -6615,7 +6612,7 @@ int main()
 		});
 		SpiralMatrix().Iterate(spiralMatrixGrid);
 		SpiralMatrix().Recur(spiralMatrixGrid);
-		std::vector<std::vector<int> > spiralMatrixGrid2(
+		std::vector<std::vector<int>> spiralMatrixGrid2(
 		{
 			{ 11, 12, 13, 14 },
 			{ 21, 22, 23, 24 },
@@ -6643,30 +6640,30 @@ int main()
 		NQueens().TotalQueens2(6);
 	}
 	{
-		IterateMatrixDiagonal().Solve_NxN(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().Solve_NxN(std::vector<std::vector<int>>(
 		{
 			{ 11, 12, 13, 14 },
 			{ 21, 22, 23, 24 },
 			{ 31, 32, 33, 34 },
 			{ 41, 42, 43, 44 }
 		}));
-		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11, 12, 13, 14, 15 },
 			{ 21, 22, 23, 24, 25 },
 			{ 31, 32, 33, 34, 35 },
 			{ 41, 42, 43, 44, 45 }
 		}));
-		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11, 12, 13, 14, 15, 16 },
 			{ 21, 22, 23, 24, 25, 26 }
 		}));
-		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11, 12, 13, 14, 15, 16 }
 		}));
-		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11, 12 },
 			{ 21, 22 },
@@ -6675,7 +6672,7 @@ int main()
 			{ 51, 52 },
 			{ 61, 62 }
 		}));
-		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().Solve_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11 },
 			{ 21 },
@@ -6685,23 +6682,23 @@ int main()
 			{ 61 }
 		}));
 
-		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11, 12, 13, 14, 15 },
 			{ 21, 22, 23, 24, 25 },
 			{ 31, 32, 33, 34, 35 },
 			{ 41, 42, 43, 44, 45 }
 		}));
-		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11, 12, 13, 14, 15, 16 },
 			{ 21, 22, 23, 24, 25, 26 }
 		}));
-		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11, 12, 13, 14, 15, 16 }
 		}));
-		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11, 12 },
 			{ 21, 22 },
@@ -6710,7 +6707,7 @@ int main()
 			{ 51, 52 },
 			{ 61, 62 }
 		}));
-		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int> >(
+		IterateMatrixDiagonal().ReverseDiag_NxM(std::vector<std::vector<int>>(
 		{
 			{ 11 },
 			{ 21 },
@@ -6721,7 +6718,7 @@ int main()
 		}));
 	}
 	{
-		AllDistinctSubAreasInMatrix().FindAll_DFS(std::vector<std::vector<int> >(
+		AllDistinctSubAreasInMatrix().FindAll_DFS(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 1, 1, 0, 0, 0, 0, 0, 0 },
 			{ 0, 1, 1, 1, 1, 0, 1, 1, 1, 0 },
@@ -6731,7 +6728,7 @@ int main()
 			{ 0, 0, 0, 0, 1, 1, 0, 0, 1, 0 },
 			{ 0, 0, 0, 0, 0, 1, 1, 1, 1, 0 }
 		}));
-		AllDistinctSubAreasInMatrix().FindAll_BFS(std::vector<std::vector<int> >(
+		AllDistinctSubAreasInMatrix().FindAll_BFS(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 1, 1, 0, 0, 0, 0, 0, 0 },
 			{ 0, 1, 1, 1, 1, 0, 1, 1, 1, 0 },
@@ -6782,7 +6779,7 @@ int main()
 		ProbToStepInsideMatrix().SolveDFS(5, 3, 2, 2);
 	}
 	{
-		AllShortestPathsInMatrix().BFS(std::vector<std::vector<char> >(
+		AllShortestPathsInMatrix().BFS(std::vector<std::vector<char>>(
 		{
 			{ '.', '.', '.', '.', '.', '.', '.' },
 			{ '.', '.', '.', '.', '.', 'S', '.' },
@@ -6791,7 +6788,7 @@ int main()
 			{ '.', '.', '.', '.', '.', '.', '.' },
 			{ '.', '.', '.', '.', '.', '.', '.' },
 		}));
-		AllShortestPathsInMatrix().BFS(std::vector<std::vector<char> >(
+		AllShortestPathsInMatrix().BFS(std::vector<std::vector<char>>(
 		{
 			{ '#', 'S', '#', '#', '#', '#', '#', '#', '.', '#' },
 			{ '.', '.', '.', '.', '.', '.', '#', '.', '.', '#' },
@@ -6806,7 +6803,7 @@ int main()
 		}));
 	}
 	{
-		SearchAMaze().DFSRecur(std::vector<std::vector<char> >(
+		SearchAMaze().DFSRecur(std::vector<std::vector<char>>(
 		{
 			{ '#', '.', '#', '#', '#', '#', '#', '#', '.', '#' },
 			{ '.', '.', '.', '.', '.', '.', '#', '.', '.', '#' },
@@ -6856,7 +6853,7 @@ int main()
 		}));
 	}
 	{
-		TwoClosestPoints().DivideConquerRecur(std::vector<std::pair<int, int> >(
+		TwoClosestPoints().DivideConquerRecur(std::vector<std::pair<int, int>>(
 		{
 			{ 2, 3 }, { 12, 30 }, { 40, 50 }, { 5, 1 }, { 12, 10 }, { 3, 4 }
 		}));
@@ -6871,19 +6868,19 @@ int main()
 		t.move(1, 0, 2);
 		t.move(2, 1, 1);
 
-		TicTacToeGame().Board3x3_HashTable(std::vector<std::vector<char> >(
+		TicTacToeGame().Board3x3_HashTable(std::vector<std::vector<char>>(
 		{
 			{ 'O', 'O', 'X' },
 			{ 'O', 'X', 'X' },
 			{ 'X', '.', 'O' },
 		}));
-		TicTacToeGame().Board3x3(std::vector<std::vector<char> >(
+		TicTacToeGame().Board3x3(std::vector<std::vector<char>>(
 		{
 			{ 'O', 'O', 'X' },
 			{ 'O', 'X', 'X' },
 			{ 'X', '.', 'O' },
 		}));
-		TicTacToeGame().BoardNxN(std::vector<std::vector<char> >(
+		TicTacToeGame().BoardNxN(std::vector<std::vector<char>>(
 		{
 			{ 'O', 'O', 'X' },
 			{ 'O', 'X', 'X' },
@@ -6891,14 +6888,14 @@ int main()
 		}));
 	}
 	{
-		MaxSubMatrixSum().BruteForce(std::vector<std::vector<int> >(
+		MaxSubMatrixSum().BruteForce(std::vector<std::vector<int>>(
 		{
 			{ 1, 2, -1, -4, -20 },
 			{ -8, -3, 4, 2, 1 },
 			{ 3, 8, 10, 1, 3 },
 			{ -4, -1, 1, 7, -6 }
 		}));
-		MaxSubMatrixSum().UseKandane(std::vector<std::vector<int> >(
+		MaxSubMatrixSum().UseKandane(std::vector<std::vector<int>>(
 		{
 			{ 1, 2, -1, -4, -20 },
 			{ -8, -3, 4, 2, 1 },
@@ -6907,7 +6904,7 @@ int main()
 		}));
 	}
 	{
-		PaintAllSameColorPixels().DFSRecur(std::vector<std::vector<int> >(
+		PaintAllSameColorPixels().DFSRecur(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -6920,7 +6917,7 @@ int main()
 			{ 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 },
 			{ 1, 1, 0, 0, 0, 0, 0, 1, 1, 1 },
 		}), 4, 4, 7);
-		PaintAllSameColorPixels().BFSIterate(std::vector<std::vector<int> >(
+		PaintAllSameColorPixels().BFSIterate(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -6935,7 +6932,7 @@ int main()
 		}), 4, 4, 7);
 	}
 	{
-		LongestIncrAdjConsecuNumSeqInMatrix().DFS_DP2D(std::vector<std::vector<int> >(
+		LongestIncrAdjConsecuNumSeqInMatrix().DFS_DP2D(std::vector<std::vector<int>>(
 		{
 			{ 20, 13, 12, 11, 10 },
 			{ 21, 14,  6,  5,  4 },
@@ -6949,14 +6946,14 @@ int main()
 		KeyPressSeqInMatrix().Solve(std::string("zdzoz"));
 	}
 	{
-		KeyPressCombinationsInMatrix().DFS_Recur(std::vector<std::vector<char> >(
+		KeyPressCombinationsInMatrix().DFS_Recur(std::vector<std::vector<char>>(
 		{
 			{ '1', '2', '3' },
 			{ '4', '5', '6' },
 			{ '7', '8', '9' },
 			{ '*', '0', '#' },
 		}), 3);
-		KeyPressCombinationsInMatrix().DP3D(std::vector<std::vector<char> >(
+		KeyPressCombinationsInMatrix().DP3D(std::vector<std::vector<char>>(
 		{
 			{ '1', '2', '3' },
 			{ '4', '5', '6' },
@@ -6965,27 +6962,27 @@ int main()
 		}), 3);
 	}
 	{
-		TileChessboardWDominos().Count_Recur(std::vector<std::vector<int> >(
+		TileChessboardWDominos().Count_Recur(std::vector<std::vector<int>>(
 		{
 			{0, 0, 0},
 			{0, 1, 0},
 			{0, 0, 0}
 		}));
-		TileChessboardWDominos().Count_Recur(std::vector<std::vector<int> >(
+		TileChessboardWDominos().Count_Recur(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0 },
 			{ 0, 0, 0, 0 },
 			{ 0, 0, 0, 0 },
 			{ 0, 0, 0, 0 },
 		}));
-		TileChessboardWDominos().Count_Recur(std::vector<std::vector<int> >(
+		TileChessboardWDominos().Count_Recur(std::vector<std::vector<int>>(
 		{
 			{ 0, 0 },
 			{ 0, 0 },
 			{ 0, 0 },
 			{ 0, 0 },
 		}));
-		TileChessboardWDominos().Count_Recur(std::vector<std::vector<int> >(
+		TileChessboardWDominos().Count_Recur(std::vector<std::vector<int>>(
 		{
 			{0, 0, 0, 0, 0, 0, 0},
 			{0, 0, 0, 0, 0, 0, 0},
@@ -6996,7 +6993,7 @@ int main()
 		TileChessboardWDominos().ClimbStairRecur_2xn(7);
 	}
 	{
-		AllSubSquareSumsInMatrix().FindAll_Preprocess(std::vector<std::vector<int> >(
+		AllSubSquareSumsInMatrix().FindAll_Preprocess(std::vector<std::vector<int>>(
 		{
 			{ 1, 1, 1, 1, 1 },
 			{ 2, 2, 2, 2, 2 },
@@ -8311,14 +8308,14 @@ int main()
 		ConvertBSTtoCircularDoublyLinkedList::DeleteTree(root);
 	}
 	{
-		KdTree t(2, std::vector<std::vector<int> >({ { 38, 23 }, { 40, 26 }, { 29, 16 }, { 30, 11 }, { 27, 28 }, { 31, 85 }, { 7, 39 }, { 15, 61 }, { 32, 29 }, { 53, 14 },
+		KdTree t(2, std::vector<std::vector<int>>({ { 38, 23 }, { 40, 26 }, { 29, 16 }, { 30, 11 }, { 27, 28 }, { 31, 85 }, { 7, 39 }, { 15, 61 }, { 32, 29 }, { 53, 14 },
 		{ 70, 3 }, { 67, 51 }, { 99, 90 }, { 82, 64 }, { 73, 75 } }));
 		t.Print();
 		t.FindRange(std::vector<int>({ 13, 34 }), std::vector<int>({ 76, 80 }));
-		t.FindRange(std::vector<int>({ 50, 50 }), 50);
-		t.FindRange(std::vector<int>({ 50, 50 }), 26);
-		t.FindRange(std::vector<int>({ 50, 50 }), 18);
-		t.FindRange(std::vector<int>({ 50, 50 }), 5);
+		t.FindRange(std::vector<int>({ 50, 50 }), 50.0);
+		t.FindRange(std::vector<int>({ 50, 50 }), 26.0);
+		t.FindRange(std::vector<int>({ 50, 50 }), 18.0);
+		t.FindRange(std::vector<int>({ 50, 50 }), 5.0);
 		t.FindNearest(std::vector<int>({ 50, 50 }));
 		t.FindNearest(std::vector<int>({ 39, 24 }));
 		t.FindNearest(std::vector<int>({ 41, 25 }));
@@ -8663,14 +8660,15 @@ int main()
 		InBetweenAncestorDescendantBST::DeleteTree(root);
 	}
 	{
-		HuffmanCoding().Encode(std::vector<std::pair<std::pair<char, double>, std::string> >(
-		{
-			{ { 'a', 8.17 }, "" }, { { 'b', 1.49 }, "" }, { { 'c', 2.78 }, "" }, { { 'd', 4.25 }, "" }, { { 'e', 12.70 }, "" }, { { 'f', 2.23 }, "" },
-			{ { 'g', 2.02 }, "" }, { { 'h', 6.09 }, "" }, { { 'i', 6.97 }, "" }, { { 'j', 0.15 }, "" }, { { 'k', 0.77 }, "" }, { { 'l', 4.03 }, "" },
-			{ { 'm', 2.41 }, "" }, { { 'n', 6.75 }, "" }, { { 'o', 7.51 }, "" }, { { 'p', 1.93 }, "" }, { { 'q', 0.10 }, "" }, { { 'r', 5.99 }, "" },
-			{ { 's', 6.33 }, "" }, { { 't', 9.06 }, "" }, { { 'u', 2.76 }, "" }, { { 'v', 0.98 }, "" }, { { 'w', 2.36 }, "" }, { { 'x', 0.15 }, "" },
-			{ { 'y', 1.97 }, "" }, { { 'z', 0.07 }, "" }
-		}));
+        auto v = std::vector<std::pair<std::pair<char, double>, std::string>>(
+        {
+            { { 'a', 8.17 }, "" }, { { 'b', 1.49 }, "" }, { { 'c', 2.78 }, "" }, { { 'd', 4.25 }, "" }, { { 'e', 12.70 }, "" }, { { 'f', 2.23 }, "" },
+            { { 'g', 2.02 }, "" }, { { 'h', 6.09 }, "" }, { { 'i', 6.97 }, "" }, { { 'j', 0.15 }, "" }, { { 'k', 0.77 }, "" }, { { 'l', 4.03 }, "" },
+            { { 'm', 2.41 }, "" }, { { 'n', 6.75 }, "" }, { { 'o', 7.51 }, "" }, { { 'p', 1.93 }, "" }, { { 'q', 0.10 }, "" }, { { 'r', 5.99 }, "" },
+            { { 's', 6.33 }, "" }, { { 't', 9.06 }, "" }, { { 'u', 2.76 }, "" }, { { 'v', 0.98 }, "" }, { { 'w', 2.36 }, "" }, { { 'x', 0.15 }, "" },
+            { { 'y', 1.97 }, "" }, { { 'z', 0.07 }, "" }
+        });
+		HuffmanCoding().Encode(v);
 	}
 	{
 		ConnectBinaryTreeLeaves::TreeNode * cbt = new ConnectBinaryTreeLeaves::TreeNode(0);
@@ -9318,7 +9316,7 @@ int main()
 		TrianglesInGraph().Count_BFS(graph2[0]);
 		TrianglesInGraph::DeleteGraph(graph2[0]);
 
-		TrianglesInGraph().Count_AdjacencyList(std::vector<std::vector<int > >(
+		TrianglesInGraph().Count_AdjacencyList(std::vector<std::vector<int >>(
 		{
 			{ 1, 2 },//vertex 0
 			{ 0, 2, 4 },//vertex 1
@@ -9326,7 +9324,7 @@ int main()
 			{ },//vertex 3
 			{ 1 }//vertex 4
 		}));
-		TrianglesInGraph().Count_AdjacencyList(std::vector<std::vector<int > >(
+		TrianglesInGraph().Count_AdjacencyList(std::vector<std::vector<int >>(
 		{
 			{ 1, 2, 3, 6 },//vertex 0
 			{ 0, 2, 4, 5 },//vertex 1
@@ -9337,7 +9335,7 @@ int main()
 			{ 0, 4, 5 }//vertex 6
 		}));
 
-		TrianglesInGraph().Count_AdjacencyMatrix(std::vector<std::vector<int > >(
+		TrianglesInGraph().Count_AdjacencyMatrix(std::vector<std::vector<int >>(
 		{
 			{0, 1, 1, 0},//vertex 0
 			{1, 0, 1, 1},//vertex 1
@@ -9345,7 +9343,7 @@ int main()
 			{0, 0, 0, 0},//vertex 3
 			{0, 1, 0, 0}//vertex 4
 		}));
-		TrianglesInGraph().Count_AdjacencyMatrix(std::vector<std::vector<int > >(
+		TrianglesInGraph().Count_AdjacencyMatrix(std::vector<std::vector<int >>(
 		{
 			{ 0, 1, 1, 1, 0, 0, 1 },//vertex 0
 			{ 1, 0, 1, 0, 1, 1, 0 },//vertex 1
@@ -9365,7 +9363,7 @@ int main()
 		      \
 		       5----7
 		*/
-		GraphSearch().BFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		GraphSearch().BFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -9376,7 +9374,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 0, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 7
 		}));
-		GraphSearch().DFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		GraphSearch().DFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -9396,7 +9394,7 @@ int main()
 		|     |   \ | /     /
 		5-----6-----7-----0
 		*/
-		GraphSearch().BFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		GraphSearch().BFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -9410,7 +9408,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 },//vertex 9
 			{ 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0 },//vertex 10
 		}));
-		GraphSearch().DFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		GraphSearch().DFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -9431,7 +9429,7 @@ int main()
 		           \
 				    5----7
 		*/
-		GraphSearch().DFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		GraphSearch().DFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9449,7 +9447,7 @@ int main()
 		           \  /
 		            5----7
 		*/
-		GraphSearch().DFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		GraphSearch().DFS_Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9472,7 +9470,7 @@ int main()
 					 v|    v   |
 		              5--->7---
 		*/
-		GraphSearch().DFS_Directed_AdjacencyMatrix(std::vector<std::vector<int> >(
+		GraphSearch().DFS_Directed_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9483,7 +9481,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 0, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 0, 0, 1 },//vertex 7
 		}));
-		StronglyConnectedComponents().Tarjan_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		StronglyConnectedComponents().Tarjan_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9494,7 +9492,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 0, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 0, 0, 1 },//vertex 7
 		}));
-		StronglyConnectedComponents().Kosaraju_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		StronglyConnectedComponents().Kosaraju_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9514,7 +9512,7 @@ int main()
 		               |   |
                         ---
 		*/
-		GraphSearch().DFS_Directed_AdjacencyMatrix(std::vector<std::vector<int> >(
+		GraphSearch().DFS_Directed_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9525,7 +9523,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 1, 0, 1, 1 },//vertex 7
 		}));
-		StronglyConnectedComponents().Tarjan_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		StronglyConnectedComponents().Tarjan_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9536,7 +9534,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 1, 0, 1, 1 },//vertex 7
 		}));
-		StronglyConnectedComponents().Kosaraju_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		StronglyConnectedComponents().Kosaraju_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9554,7 +9552,7 @@ int main()
 		| /     |
 		2       4
 		*/
-		EulerianGraph().Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0 },//vertex 1
@@ -9563,7 +9561,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 0 },//vertex 4
 			{ 0, 0, 0, 0, 0, 0 },//vertex 5
 		}));
-		EulerianGraph().Fleury_FindEulerPath_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Fleury_FindEulerPath_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0 },//vertex 1
@@ -9577,7 +9575,7 @@ int main()
 		| /   \ |
 		2       4
 		*/
-		EulerianGraph().Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 1, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0 },//vertex 1
@@ -9586,7 +9584,7 @@ int main()
 			{ 1, 0, 0, 1, 0, 0 },//vertex 4
 			{ 0, 0, 0, 0, 0, 0 },//vertex 5
 		}));
-		EulerianGraph().Fleury_FindEulerPath_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Fleury_FindEulerPath_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 1, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0 },//vertex 1
@@ -9602,7 +9600,7 @@ int main()
 		| /     |
 		2       4
 		*/
-		EulerianGraph().Undirected_AdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Undirected_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0 },//vertex 0
 			{ 1, 0, 1, 1, 0, 0 },//vertex 1
@@ -9623,7 +9621,7 @@ int main()
 		            v|
 		             5--->7
 		*/
-		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9643,7 +9641,7 @@ int main()
 		               |   |
 		                ---
 		*/
-		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -9661,7 +9659,7 @@ int main()
 		v/      |
 		2       4
 		*/
-		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0 },//vertex 1
@@ -9677,7 +9675,7 @@ int main()
 		v/     v|
 		2       4
 		*/
-		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 1, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0 },//vertex 1
@@ -9696,7 +9694,7 @@ int main()
 		v/      |
 		2       4
 		*/
-		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int> >(
+		EulerianGraph().Directed_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 1, 0, 0 },//vertex 1
@@ -9749,7 +9747,7 @@ int main()
 		v           v
 		2---->3---->1
 		*/
-		std::vector<int> topoOrdering1 = TopologicalSortDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		std::vector<int> topoOrdering1 = TopologicalSortDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -9758,7 +9756,7 @@ int main()
 			{ 1, 1, 0, 0, 0, 0 },//vertex 4
 			{ 1, 0, 1, 0, 0, 0 },//vertex 5
 		}));
-		UniqueTopologicalOrdering().CheckMissedEdges(topoOrdering1, std::vector<std::vector<int> >(
+		UniqueTopologicalOrdering().CheckMissedEdges(topoOrdering1, std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -9777,7 +9775,7 @@ int main()
 		v         v         |
 		2-------->4<--------0
 		*/
-		std::vector<int> topoOrdering2 = TopologicalSortDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		std::vector<int> topoOrdering2 = TopologicalSortDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 1 },//vertex 0
 			{ 0, 0, 1, 1, 1 },//vertex 1
@@ -9785,7 +9783,7 @@ int main()
 			{ 0, 0, 0, 0, 1 },//vertex 3
 			{ 0, 0, 0, 0, 0 },//vertex 4
 		}));
-		UniqueTopologicalOrdering().CheckMissedEdges(topoOrdering2, std::vector<std::vector<int> >(
+		UniqueTopologicalOrdering().CheckMissedEdges(topoOrdering2, std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 1 },//vertex 0
 			{ 0, 0, 1, 1, 1 },//vertex 1
@@ -9807,7 +9805,7 @@ int main()
 		        v       |
 		        0------>1
 		*/
-		//TopologicalSortDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		//TopologicalSortDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		//{
 		//	//{1},//vertex 0
 		//	//{3},//vertex 1
@@ -9829,7 +9827,7 @@ int main()
 		|       | \ |
 		2       4   6
 		*/
-		CyclicGraph().Undirected_UnionFind_AdjacencyMatrix(std::vector<std::vector<int> >(
+		CyclicGraph().Undirected_UnionFind_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0 },//vertex 1
@@ -9839,7 +9837,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 0, 1 },//vertex 5
 			{ 0, 0, 0, 1, 0, 1, 0 },//vertex 6
 		}));
-		CyclicGraph().Undirected_UnionFindOptimized_AdjacencyMatrix(std::vector<std::vector<int> >(
+		CyclicGraph().Undirected_UnionFindOptimized_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0 },//vertex 1
@@ -9849,7 +9847,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 0, 1 },//vertex 5
 			{ 0, 0, 0, 1, 0, 1, 0 },//vertex 6
 		}));
-		CyclicGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		CyclicGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0 },//vertex 1
@@ -9866,7 +9864,7 @@ int main()
 		v         v v
 		2---->3---->1
 		*/
-		CyclicGraph().Directed_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		CyclicGraph().Directed_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -9894,7 +9892,7 @@ int main()
 		             5----7
 		               60
 		*/
-		MinSpanningTree().Kruskal_UnionFind_AdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSpanningTree().Kruskal_UnionFind_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 11, 48, 0, 0, 0, 0, 0 },//vertex 0
 			{ 11, 0, 46, 24, 0, 0, 0, 0 },//vertex 1
@@ -9905,7 +9903,7 @@ int main()
 			{ 0, 0, 0, 39, 31, 0, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 60, 0, 0 },//vertex 7
 		}));
-		MinSpanningTree().Kruskal_UnionFind2_AdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSpanningTree().Kruskal_UnionFind2_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 11, 48, 0, 0, 0, 0, 0 },//vertex 0
 			{ 11, 0, 46, 24, 0, 0, 0, 0 },//vertex 1
@@ -9916,7 +9914,7 @@ int main()
 			{ 0, 0, 0, 39, 31, 0, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 60, 0, 0 },//vertex 7
 		}));
-		MinSpanningTree().Prim_AdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSpanningTree().Prim_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 11, 48, 0, 0, 0, 0, 0 },//vertex 0
 			{ 11, 0, 46, 24, 0, 0, 0, 0 },//vertex 1
@@ -9950,7 +9948,7 @@ int main()
 		    7---6---5
 			  1   2
 		*/
-		MinSpanningTree().Kruskal_UnionFind_AdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSpanningTree().Kruskal_UnionFind_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 4, 0, 0, 0, 0, 0, 8, 0 },//vertex 0
 			{ 4, 8, 0, 0, 0, 0, 0, 11, 0 },//vertex 1
@@ -9962,7 +9960,7 @@ int main()
 			{ 8, 11, 0, 0, 0, 0, 1, 0, 7 },//vertex 7
 			{ 0, 0, 2, 0, 0, 0, 6, 7, 0 },//vertex 8
 		}));
-		MinSpanningTree().Kruskal_UnionFind2_AdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSpanningTree().Kruskal_UnionFind2_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 4, 0, 0, 0, 0, 0, 8, 0 },//vertex 0
 			{ 4, 8, 0, 0, 0, 0, 0, 11, 0 },//vertex 1
@@ -9974,7 +9972,7 @@ int main()
 			{ 8, 11, 0, 0, 0, 0, 1, 0, 7 },//vertex 7
 			{ 0, 0, 2, 0, 0, 0, 6, 7, 0 },//vertex 8
 		}));
-		MinSpanningTree().Prim_AdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSpanningTree().Prim_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 4, 0, 0, 0, 0, 0, 8, 0 },//vertex 0
 			{ 4, 8, 0, 0, 0, 0, 0, 11, 0 },//vertex 1
@@ -9986,7 +9984,7 @@ int main()
 			{ 8, 11, 0, 0, 0, 0, 1, 0, 7 },//vertex 7
 			{ 0, 0, 2, 0, 0, 0, 6, 7, 0 },//vertex 8
 		}), 3);
-		MinSpanningTree().Prim_AdjacencyList(std::vector<std::vector<std::pair<int, int> > >(
+		MinSpanningTree().Prim_AdjacencyList(std::vector<std::vector<std::pair<int, int>>>(
 		{
 			{ { 4, 1 }, { 8, 7 } },//vertex 0
 			{ { 4, 0 }, { 8, 1 }, { 11, 7 } },//vertex 1
@@ -10014,7 +10012,7 @@ int main()
 		       1------3
 		          15
 		*/
-		ShortestPathInGraph().BellmanFord_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		ShortestPathInGraph().BellmanFord_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 7, 0, 10, 15, 0, 0 },//vertex 1
@@ -10036,7 +10034,7 @@ int main()
 		       1----->3
 		          15
 		*/
-		ShortestPathInGraph().BellmanFord_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		ShortestPathInGraph().BellmanFord_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 0, 0, 0, 15, 0, 0 },//vertex 1
@@ -10045,7 +10043,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0 },//vertex 4
 			{ 0, 0, 0, 0, 9, 0 },//vertex 5
 		}), 0);
-		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 0, 0, 0, 15, 0, 0 },//vertex 1
@@ -10054,7 +10052,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0 },//vertex 4
 			{ 0, 0, 0, 0, 9, 0 },//vertex 5
 		}));
-		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 0, 0, 0, 15, 0, 0 },//vertex 1
@@ -10076,7 +10074,7 @@ int main()
 		       1------3
 		          15
 		*/
-		ShortestPathInGraph().BellmanFord_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		ShortestPathInGraph().BellmanFord_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 7, 0, 10, 15, 0, 0 },//vertex 1
@@ -10085,7 +10083,7 @@ int main()
 			{ 0, 0, 0, 6, 0, 9 },//vertex 4
 			{ 14, 0, 2, 0, 9, 0 },//vertex 5
 		}), 0);
-		ShortestPathInGraph().Dijkstra_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		ShortestPathInGraph().Dijkstra_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 7, 0, 10, 15, 0, 0 },//vertex 1
@@ -10094,7 +10092,7 @@ int main()
 			{ 0, 0, 0, 6, 0, 9 },//vertex 4
 			{ 14, 0, 2, 0, 9, 0 },//vertex 5
 		}), 0);
-		ShortestPathInGraph().Dijkstra_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		ShortestPathInGraph().Dijkstra_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 7, 0, 10, 15, 0, 0 },//vertex 1
@@ -10103,7 +10101,7 @@ int main()
 			{ 0, 0, 0, 6, 0, 9 },//vertex 4
 			{ 14, 0, 2, 0, 9, 0 },//vertex 5
 		}), 0);
-		ShortestPathInGraph().Dijkstra_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		ShortestPathInGraph().Dijkstra_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 7, 0, 10, 15, 0, 0 },//vertex 1
@@ -10112,7 +10110,7 @@ int main()
 			{ 0, 0, 0, 6, 0, 9 },//vertex 4
 			{ 14, 0, 2, 0, 9, 0 },//vertex 5
 		}), 0, 4);
-		ShortestPathInGraph().Dijkstra_MinHeap_UndirectedAdjacencyList(std::vector<std::vector<std::pair<int, int> > >(
+		ShortestPathInGraph().Dijkstra_MinHeap_UndirectedAdjacencyList(std::vector<std::vector<std::pair<int, int>>>(
 		{
 			{ { 7, 1 }, { 9, 2 }, { 14, 5 } },//vertex 0
 			{ { 7, 0 }, { 10, 2 }, { 15, 3 } },//vertex 1
@@ -10135,7 +10133,7 @@ int main()
 		       1------3
 		          15
 		*/
-		ShortestPathInGraph().Dijkstra_MinEdges_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		ShortestPathInGraph().Dijkstra_MinEdges_MinHeap_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 11 },//vertex 0
 			{ 7, 0, 10, 15, 0, 0 },//vertex 1
@@ -10145,7 +10143,7 @@ int main()
 			{ 11, 0, 2, 0, 9, 0 },//vertex 5
 		}), 0, 4);
 
-		AllPairsShortestPaths().FloydWarshall_DP2D_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().FloydWarshall_DP2D_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 7, 0, 10, 15, 0, 0 },//vertex 1
@@ -10154,7 +10152,7 @@ int main()
 			{ 0, 0, 0, 6, 0, 9 },//vertex 4
 			{ 14, 0, 2, 0, 9, 0 },//vertex 5
 		}));
-		AllPairsShortestPaths().Johnson_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().Johnson_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 9, 0, 0, 14 },//vertex 0
 			{ 7, 0, 10, 15, 0, 0 },//vertex 1
@@ -10176,7 +10174,7 @@ int main()
 		2<---5<--------9
 		   1       6
 		*/
-		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10190,7 +10188,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 6, 0, 5, 0, 0, 0 },//vertex 9
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 3, 9, 0 },//vertex 10
 		}));
-		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10214,14 +10212,14 @@ int main()
 		3<---------2
 		     1
 		*/
-		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, -5, 2, 3 },//vertex 0
 			{ 0, 0, 4, 0 },//vertex 1
 			{ 0, 0, 0, 1 },//vertex 2
 			{ 0, 0, 0, 0 },//vertex 3
 		}));
-		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, -5, 2, 3 },//vertex 0
 			{ 0, 0, 4, 0 },//vertex 1
@@ -10238,14 +10236,14 @@ int main()
 		1<--------0
 		      3
 		*/
-		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 3, 0, 6 },//vertex 0
 			{ 0, 0, 5, 4 },//vertex 1
 			{ -7, -3, 0, 0 },//vertex 2
 			{ 0, 0, 2, 0 },//vertex 3
 		}));
-		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 3, 0, 6 },//vertex 0
 			{ 0, 0, 5, 4 },//vertex 1
@@ -10264,7 +10262,7 @@ int main()
 		1------>2
 		    6
 		*/
-		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, -4, 0, 3, 8 },//vertex 0
 			{ 0, 0, 6, 0, 0 },//vertex 1
@@ -10272,7 +10270,7 @@ int main()
 			{ 0, 7, 1, 0, 0 },//vertex 3
 			{ 0, 0, 0, 4, 0 },//vertex 4
 		}));
-		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, -4, 0, 3, 8 },//vertex 0
 			{ 0, 0, 6, 0, 0 },//vertex 1
@@ -10292,7 +10290,7 @@ int main()
 		1------>2
 		    6
 		*/
-		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().FloydWarshall_DP2D_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, -4, 0, 3, 8 },//vertex 0
 			{ 0, 0, 6, 0, 0 },//vertex 1
@@ -10300,7 +10298,7 @@ int main()
 			{ 0, 7, -1, 0, 0 },//vertex 3
 			{ 0, 0, 0, -4, 0 },//vertex 4
 		}));
-		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int> >(
+		AllPairsShortestPaths().Johnson_DAGAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, -4, 0, 3, 8 },//vertex 0
 			{ 0, 0, 6, 0, 0 },//vertex 1
@@ -10325,7 +10323,7 @@ int main()
 		2<---5<--------9
 		   1       6
 		*/
-		LongestPathInDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		LongestPathInDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10351,7 +10349,7 @@ int main()
 		vv  6 v  5 vv
 		2---->5---->7
 		*/
-		LongestPathInDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		LongestPathInDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			//0, 1, 2, 3, 4, 5, 6, 7, 8
 			{ 0, 0, 9, 5, 0, 0, 0, 0, 0 },//vertex 0
@@ -10375,7 +10373,7 @@ int main()
 		|     |   \ | /     /
 		5-----6-----7-----0
 		*/
-		VertexColoring().WelshPowell_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		VertexColoring().WelshPowell_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10389,7 +10387,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 },//vertex 9
 			{ 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0 },//vertex 10
 		}));
-		VertexColoring().BacktrackRecur_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		VertexColoring().BacktrackRecur_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10403,7 +10401,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1 },//vertex 9
 			{ 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0 },//vertex 10
 		}), 3);
-		VertexColoring().GreedyIterate_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		VertexColoring().GreedyIterate_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10426,7 +10424,7 @@ int main()
 		 \     /
 		  5---4
 		*/
-		BipartiteGraph().BFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BipartiteGraph().BFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 1 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0 },//vertex 1
@@ -10435,7 +10433,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 1 },//vertex 4
 			{ 1, 0, 0, 0, 1, 0 },//vertex 5
 		}));
-		BipartiteGraph().DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BipartiteGraph().DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 1 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0 },//vertex 1
@@ -10451,7 +10449,7 @@ int main()
 		 \    |
 		  4---3
 		*/
-		BipartiteGraph().BFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BipartiteGraph().BFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 1 },//vertex 0
 			{ 1, 0, 1, 0, 0 },//vertex 1
@@ -10459,7 +10457,7 @@ int main()
 			{ 0, 0, 1, 0, 1 },//vertex 3
 			{ 1, 0, 0, 1, 0 },//vertex 4
 		}));
-		BipartiteGraph().DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BipartiteGraph().DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 1 },//vertex 0
 			{ 1, 0, 1, 0, 0 },//vertex 1
@@ -10475,7 +10473,7 @@ int main()
 		| /     |       |   |
 		2       4       7   9---10
 		*/
-		BridgesInGraph().FindAll_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BridgesInGraph().FindAll_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10489,7 +10487,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },//vertex 9
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },//vertex 10
 		}));
-		BridgesInGraph().FindAll_Tarjan_DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BridgesInGraph().FindAll_Tarjan_DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10503,7 +10501,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },//vertex 9
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },//vertex 10
 		}));
-		CutVerticesInGraph().FindAll_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		CutVerticesInGraph().FindAll_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10517,7 +10515,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },//vertex 9
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },//vertex 10
 		}));
-		CutVerticesInGraph().FindAll_Tarjan_DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		CutVerticesInGraph().FindAll_Tarjan_DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10531,7 +10529,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },//vertex 9
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },//vertex 10
 		}));
-		BiconnectedGraph().DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BiconnectedGraph().DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10552,7 +10550,7 @@ int main()
 		           \  /
 		            5----7
 		*/
-		BridgesInGraph().FindAll_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BridgesInGraph().FindAll_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -10563,7 +10561,7 @@ int main()
 			{ 0, 0, 0, 0, 1, 1, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 7
 		}));
-		BridgesInGraph().FindAll_Tarjan_DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BridgesInGraph().FindAll_Tarjan_DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -10574,7 +10572,7 @@ int main()
 			{ 0, 0, 0, 0, 1, 1, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 7
 		}));
-		CutVerticesInGraph().FindAll_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		CutVerticesInGraph().FindAll_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -10585,7 +10583,7 @@ int main()
 			{ 0, 0, 0, 0, 1, 1, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 7
 		}));
-		CutVerticesInGraph().FindAll_Tarjan_DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		CutVerticesInGraph().FindAll_Tarjan_DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -10596,7 +10594,7 @@ int main()
 			{ 0, 0, 0, 0, 1, 1, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 7
 		}));
-		BiconnectedGraph().DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		BiconnectedGraph().DFS_UndirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -10629,14 +10627,14 @@ int main()
 		 0\      v     /0
 		    ---> 2 ---
 		*/
-		MaxFlowInFlowNetwork().FordFulkerson_ConnectedDirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		MaxFlowInFlowNetwork().FordFulkerson_ConnectedDirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 10, 10, 0 },//vertex 0
 			{ 0, 0, 1, 9 },//vertex 1
 			{ 0, 0, 0, 11 },//vertex 2
 			{ 0, 0, 0, 0 },//vertex 3
 		}), 0, 3);
-		MinSTCutInFlowNetwork().FindAll_ConnectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSTCutInFlowNetwork().FindAll_ConnectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 10, 10, 0 },//vertex 0
 			{ 0, 0, 1, 9 },//vertex 1
@@ -10669,7 +10667,7 @@ int main()
 		    ---> 2 ---> 4 ---
 			        3
 		*/
-		MaxFlowInFlowNetwork().FordFulkerson_ConnectedDirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		MaxFlowInFlowNetwork().FordFulkerson_ConnectedDirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 10, 15, 0, 0, 0, 5, 0 },//vertex 0
 			{ 0, 0, 0, 9, 0, 0, 4, 15 },//vertex 1
@@ -10680,7 +10678,7 @@ int main()
 			{ 0, 0, 4, 0, 0, 0, 0, 8 },//vertex 6
 			{ 0, 0, 0, 0, 15, 10, 0, 0 },//vertex 7
 		}), 0, 5);
-		MinSTCutInFlowNetwork().FindAll_ConnectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSTCutInFlowNetwork().FindAll_ConnectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 10, 15, 0, 0, 0, 5, 0 },//vertex 0
 			{ 0, 0, 0, 9, 0, 0, 4, 15 },//vertex 1
@@ -10715,7 +10713,7 @@ int main()
 		    ---> 2 ---> 4 ---
 			        3
 		*/
-		MaxFlowInFlowNetwork().FordFulkerson_ConnectedDirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		MaxFlowInFlowNetwork().FordFulkerson_ConnectedDirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 16, 13, 0, 0, 0 },//vertex 0
 			{ 0, 0, 10, 12, 0, 0 },//vertex 1
@@ -10724,7 +10722,7 @@ int main()
 			{ 0, 0, 0, 7, 0, 4 },//vertex 4
 			{ 0, 0, 0, 0, 0, 0 },//vertex 5
 		}), 0, 5);
-		MinSTCutInFlowNetwork().FindAll_ConnectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		MinSTCutInFlowNetwork().FindAll_ConnectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 16, 13, 0, 0, 0 },//vertex 0
 			{ 0, 0, 10, 12, 0, 0 },//vertex 1
@@ -10735,7 +10733,7 @@ int main()
 		}), 0, 5);
 	}
 	{
-		MaxBipartiteMatching().MaxApplicantJobMatching_BipartiteMatrix(std::vector<std::vector<int> >(
+		MaxBipartiteMatching().MaxApplicantJobMatching_BipartiteMatrix(std::vector<std::vector<int>>(
 		{
 		//job:0, 1, 2, 3, 4, 5
 			{ 0, 1, 1, 0, 0, 0 },//applicant 0
@@ -10758,7 +10756,7 @@ int main()
 			 vv    v|/
 		      3---->6
 		*/
-		MaxNumEdgeDisjointPaths().FordFulkerson_ConnectedDirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		MaxNumEdgeDisjointPaths().FordFulkerson_ConnectedDirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 0, 0, 0 },//vertex 0
 			{ 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -10771,7 +10769,7 @@ int main()
 		}), 0, 7);
 	}
 	{
-		AlphabetOrderFromGivenDictionary().SolveFor5Chars(std::vector<std::pair<int, int> >(
+		AlphabetOrderFromGivenDictionary().SolveFor5Chars(std::vector<std::pair<int, int>>(
 		{
 			std::make_pair(2, 4), std::make_pair(2, 3), std::make_pair(3, 4), std::make_pair(1, 2),
 			std::make_pair(1, 4), std::make_pair(1, 3), std::make_pair(0, 2), std::make_pair(0, 4), 
@@ -10799,7 +10797,7 @@ int main()
 		v / | \ |
 		2-->5-->7
 		*/
-		KEdgePathsInDigraph().FindAll_DFS_DirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		KEdgePathsInDigraph().FindAll_DFS_DirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			//0, 1, 2, 3, 4, 5, 6, 7, 8
 			{ 0, 1, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
@@ -10812,7 +10810,7 @@ int main()
 			{ 0, 0, 0, 1, 0, 0, 0, 0, 1 },//vertex 7
 			{ 0, 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 8
 		}), 0, 3, 4);
-		KEdgePathsInDigraph().CountAll_DP3D_DirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		KEdgePathsInDigraph().CountAll_DP3D_DirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			//0, 1, 2, 3, 4, 5, 6, 7, 8
 			{ 0, 1, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
@@ -10834,7 +10832,7 @@ int main()
 		vv  v  vv
 		2-->5-->7
 		*/
-		KEdgePathsInDigraph().FindAll_DFS_DirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		KEdgePathsInDigraph().FindAll_DFS_DirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			//0, 1, 2, 3, 4, 5, 6, 7, 8
 			{ 0, 0, 4, 7, 0, 0, 0, 0, 0 },//vertex 0
@@ -10847,7 +10845,7 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 7
 			{ 0, 0, 0, 0, 0, 0, 0, 6, 0 },//vertex 8
 		}), 1, 7, 3);
-		KEdgePathsInDigraph().CountShortestPathWeight_DP3D_DirectedAdjacencyMatrix(std::vector<std::vector<int> >(
+		KEdgePathsInDigraph().CountShortestPathWeight_DP3D_DirectedAdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			//0, 1, 2, 3, 4, 5, 6, 7, 8
 			{ 0, 0, 4, 7, 0, 0, 0, 0, 0 },//vertex 0
@@ -10862,7 +10860,7 @@ int main()
 		}), 1, 7, 3);
 	}
 	{
-		TheCelebrityProblem().Use2Ptrs(std::vector<std::vector<int> >(
+		TheCelebrityProblem().Use2Ptrs(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 1 },//vertex 0
 			{ 1, 0, 0, 1, 1, 1 },//vertex 1
@@ -10871,7 +10869,7 @@ int main()
 			{ 1, 0, 1, 1, 0, 1 },//vertex 4
 			{ 0, 1, 0, 1, 1, 0 },//vertex 5
 		}));
-		TheCelebrityProblem().Use2PtrsII(std::vector<std::vector<int> >(
+		TheCelebrityProblem().Use2PtrsII(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 1 },//vertex 0
 			{ 1, 0, 0, 1, 1, 1 },//vertex 1
@@ -10880,7 +10878,7 @@ int main()
 			{ 1, 0, 1, 1, 0, 1 },//vertex 4
 			{ 0, 1, 0, 1, 1, 0 },//vertex 5
 		}));
-		TheCelebrityProblem().UsingStack(std::vector<std::vector<int> >(
+		TheCelebrityProblem().UsingStack(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 1 },//vertex 0
 			{ 1, 0, 0, 1, 1, 1 },//vertex 1
@@ -10889,7 +10887,7 @@ int main()
 			{ 1, 0, 1, 1, 0, 1 },//vertex 4
 			{ 0, 1, 0, 1, 1, 0 },//vertex 5
 		}));
-		TheCelebrityProblem().BruteForce(std::vector<std::vector<int> >(
+		TheCelebrityProblem().BruteForce(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 1, 0, 1 },//vertex 0
 			{ 1, 0, 0, 1, 1, 1 },//vertex 1
@@ -10901,7 +10899,7 @@ int main()
 	}
 	{
 		//see elements of programming interview p.127
-		DiameterOfTree().DivideConquerRecur_DiAdjMatrix(std::vector<std::vector<int> >(
+		DiameterOfTree().DivideConquerRecur_DiAdjMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 0, 0, 0, 14, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//0
 			{ 0, 0, 4, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//1
@@ -10929,7 +10927,7 @@ int main()
 		           \
 				    5----7
 		*/
-		TwoExistConnectedGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		TwoExistConnectedGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -10947,7 +10945,7 @@ int main()
 		           \  /
 		            5----7
 		*/
-		TwoExistConnectedGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		TwoExistConnectedGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 1, 0, 0, 0, 0, 0 },//vertex 0
 			{ 1, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
@@ -10969,7 +10967,7 @@ int main()
 		|     |   \ | /     /
 		5-----6-----7-----0
 		*/
-		TwoForAllConnectedGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		TwoForAllConnectedGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -10992,7 +10990,7 @@ int main()
 		|     |   \ | /     /
 		5-----6-----7-----0
 		*/
-		TwoForAllConnectedGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int> >(
+		TwoForAllConnectedGraph().Undirected_DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0 },//vertex 0
 			{ 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 1
@@ -11021,16 +11019,16 @@ int main()
 		       1------3
 		          15
 		*/
-		HighwayNetworkProposal().ShortestPath(std::vector<std::pair<std::pair<int, int>, double> >(
+		HighwayNetworkProposal().ShortestPath(std::vector<std::pair<std::pair<int, int>, double>>(
 		{
 			{ { 0, 1 }, 7.0 }, { { 0, 2 }, 9.0 }, { { 0, 5 }, 11.0 }, { { 1, 2 }, 10.0 }, { { 1, 3 }, 15.0 }, { { 2, 3 }, 11.0 }, { { 2, 5 }, 2.0 }, { { 3, 4 }, 6.0 }, { { 4, 5 }, 9.0 },
-		}), std::vector<std::pair<std::pair<int, int>, double> >(
+		}), std::vector<std::pair<std::pair<int, int>, double>>(
 		{
 			{ { 3, 5 }, 2.0 }, { { 0, 4 }, 21.0 }, { { 2, 4 }, 12.0 }, { { 1, 4 }, 11.0 }, { { 0, 3 }, 11.0 }, { { 1, 5 }, 11.0 },
 		}), 0, 4, 6);
 	}
 	{
-		IsArbitrageExist().BellmanFord_ExistNegativeWeightCycle(std::vector<std::vector<double> >(
+		IsArbitrageExist().BellmanFord_ExistNegativeWeightCycle(std::vector<std::vector<double>>(
 		{
 			{ 1.0, 0.8123, 0.6404, 78.125, 0.9784, 0.9924, 0.9465 },
 			{ 1.2275, 1.0, 0.7860, 96.55, 1.2010, 1.2182, 1.1616 },
@@ -11079,7 +11077,7 @@ int main()
 		  	|		 1         3         |
 			|____________________________|
 		*/
-		TeamPhoto2().LongestTeamSequenceDAG(std::vector<std::vector<int> >(
+		TeamPhoto2().LongestTeamSequenceDAG(std::vector<std::vector<int>>(
 		{
 			{ 41, 42, 43, 44, 45, 46, 47 },//0
 			{ 1, 2, 3, 17, 18, 19, 20 },//1
@@ -11195,7 +11193,7 @@ int main()
 		//GeneralTowerOfHanoi().DFS(startConfig5, endConfig5, 4, 4);//too long runtime
 	}
 	{
-		TreeFromParentChildPairs().TraverseDFS(std::list<std::pair<std::string, std::string> >(
+		TreeFromParentChildPairs().TraverseDFS(std::list<std::pair<std::string, std::string>>(
 		{
 			{ "animal", "mammal" },
 			{ "animal", "bird" },
@@ -11233,7 +11231,7 @@ int main()
 			{ "Brand", "America" },
 			{ "Brand", "Japan" },
 		}));
-		TreeFromParentChildPairs().TraverseBFS(std::list<std::pair<std::string, std::string> >(
+		TreeFromParentChildPairs().TraverseBFS(std::list<std::pair<std::string, std::string>>(
 		{
 			{ "animal", "mammal" },
 			{ "animal", "bird" },
@@ -11271,7 +11269,7 @@ int main()
 			{ "Brand", "America" },
 			{ "Brand", "Japan" },
 		}));
-		TreeFromParentChildPairs().TraverseDFS(std::list<std::pair<std::string, std::string> >(
+		TreeFromParentChildPairs().TraverseDFS(std::list<std::pair<std::string, std::string>>(
 		{
 			{ "Mercedes", "4Matic" },
 			{ "4Matic", "CLA45Amg" },
@@ -11518,7 +11516,7 @@ int main()
 		RangeMinQuerySegmentTree().QueryRange(segmentTree, 1, 5, A.size());
 	}
 	{
-		std::vector<std::vector<int> > board(
+		std::vector<std::vector<int>> board(
 		{
 			{ 23, 18, 7, 45, 42, 26 },
 			{ 37, 22, 32, 24, 25, 38 },
@@ -11529,7 +11527,7 @@ int main()
 			{ 24, 16, 36, 1, 33, 17 },
 			{ 15, 21, 8, 34, 55, 28 },
 		});
-		std::vector<std::vector<int> > segmentTree2D = RMQ2DSegmentTree2D().Construct(board);
+		std::vector<std::vector<int>> segmentTree2D = RMQ2DSegmentTree2D().Construct(board);
 		RMQ2DSegmentTree2D().QueryRange(segmentTree2D, 0, 7, 8, 0, 5, 6);//(0,0),(7,5)
 		RMQ2DSegmentTree2D().QueryRange(segmentTree2D, 4, 7, 8, 0, 2, 6);//(4,0),(7,2)
 		RMQ2DSegmentTree2D().QueryRange(segmentTree2D, 0, 5, 8, 1, 5, 6);//(0,1),(5,5)
@@ -11676,11 +11674,11 @@ int main()
 		}
 	}
 	{
-		std::vector<std::vector<int> > dp2d = RangeMinQueryDP2D().Construct(std::vector<int>({ 16, 18, 33, 98 }));
+		std::vector<std::vector<int>> dp2d = RangeMinQueryDP2D().Construct(std::vector<int>({ 16, 18, 33, 98 }));
 		RangeMinQueryDP2D().QueryRange(dp2d, 1, 3);
 	}
 	{
-		std::vector<std::vector<int> > sparseTable = RangeMinQuerySparseTable().Construct(std::vector<int>({ 31, 41, 88, 26, 53, 77, 66, 47, 17 }));
+		std::vector<std::vector<int>> sparseTable = RangeMinQuerySparseTable().Construct(std::vector<int>({ 31, 41, 88, 26, 53, 77, 66, 47, 17 }));
 		RangeMinQuerySparseTable().QueryRange(sparseTable, 1, 3);
 		RangeMinQuerySparseTable().QueryRange(sparseTable, 0, 8);
 		RangeMinQuerySparseTable().QueryRange(sparseTable, 4, 8);
@@ -11771,7 +11769,7 @@ int main()
 		root->children[1]->children[2]->children.push_back(new LowestCommonAncestorUnionFind::TreeNode(11));
 		root->children[1]->children[2]->children[0]->children.push_back(new LowestCommonAncestorUnionFind::TreeNode(12));
 		root->children[1]->children[2]->children[0]->children.push_back(new LowestCommonAncestorUnionFind::TreeNode(13));
-		std::vector<std::pair<LowestCommonAncestorUnionFind::TreeNode*, LowestCommonAncestorUnionFind::TreeNode*> > targetNodePairs;
+		std::vector<std::pair<LowestCommonAncestorUnionFind::TreeNode*, LowestCommonAncestorUnionFind::TreeNode*>> targetNodePairs;
 		targetNodePairs.push_back(std::make_pair(root->children[1]->children[1]->children[1], root->children[1]->children[2]->children[0]->children[0]));
 		targetNodePairs.push_back(std::make_pair(root->children[1]->children[2]->children[0]->children[1], root->children[1]->children[2]->children[1]));
 		targetNodePairs.push_back(std::make_pair(root->children[0], root->children[1]->children[2]->children[0]));
@@ -11844,7 +11842,7 @@ int main()
 		std::unordered_map<LowestCommonAncestorDP2D::TreeNode *, int> nodeIdxMap;
 		std::vector<int> dad;
 		std::vector<int> level;
-		std::vector<std::vector<int> > dp2d;
+		std::vector<std::vector<int>> dp2d;
 		LowestCommonAncestorDP2D().Construct(root, dfsNodes, nodeIdxMap, dad, level, dp2d);
 		LowestCommonAncestorDP2D().Query(dfsNodes, nodeIdxMap, dad, level, dp2d, root->children[1]->children[1]->children[1], root->children[1]->children[2]->children[0]->children[0]);//9, 12
 		LowestCommonAncestorDP2D().Query(dfsNodes, nodeIdxMap, dad, level, dp2d, root->children[1]->children[2]->children[0]->children[1], root->children[1]->children[2]->children[1]);//13, 11
@@ -11859,7 +11857,7 @@ int main()
 	//RdCout ? redirect_cout::to_file("Out_ThreadSafe.txt") : redirect_cout::to_cout();
 	PrintH("ThreadSafe");
 	{
-		//RealTimeCountHitsInLastSecMinHr().Solve();//enter "exit" to exit
+		//RealTimeCountHitsInLastSecMinHr().Solve();//press "e"+ENTER to exit
 	}
 	{
 		//Sync2InterleavingThreads::Solve();
@@ -11899,7 +11897,10 @@ int main()
 		PrintVSSolutionTree p;
 	}
 #endif
-	system("pause");
+
+    redirect_cout::to_cout();
+    std::cout << "Hit ENTER to continue ..." << std::endl;
+    std::cin.ignore();
 	return 0;
 }
 
