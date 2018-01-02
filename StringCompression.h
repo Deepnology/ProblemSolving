@@ -37,8 +37,9 @@ class StringCompression
 public:
 	StringCompression() {}
 
-	int InPlace_Better(std::vector<char>& chars)
+	int InPlace_Better(std::vector<char> && chars)
 	{
+        std::vector<char> before(chars);
 		int N = chars.size();
 		if (N == 0) return 0;
 		int i = 0;
@@ -63,11 +64,14 @@ public:
 			}
 			i = end;
 		}
+
+		std::cout << "StringCompression InPlace_Better for \"" << Debug::ToStr1D<char>()(before) << "\": " << Debug::ToStr1D<char>()(chars, 0, j-1) << std::endl;
 		return j;
 	}
 
-	int InPlace(std::vector<char> & chars)
+	int InPlace(std::vector<char> && chars)
 	{
+        std::vector<char> before(chars);
 		int N = chars.size();
 		if (N == 0) return 0;
 		char cur;
@@ -117,7 +121,12 @@ public:
 				chars[j++] = *itr;
 		}
 
+        std::cout << "StringCompression InPlace for \"" << Debug::ToStr1D<char>()(before) << "\": " << Debug::ToStr1D<char>()(chars, 0, j-1) << std::endl;
 		return j;
 	}
 };
+/*
+StringCompression InPlace_Better for "a, b, b, b, b, b, b, b, b, b, b, b, b": a, b, 1, 2
+StringCompression InPlace for "a, b, b, b, b, b, b, b, b, b, b, b, b": a, b, 1, 2
+ */
 #endif
