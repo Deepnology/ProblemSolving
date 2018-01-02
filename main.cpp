@@ -145,6 +145,7 @@
 #include "ComplexNumberMultiplication.h"
 #include "LargestPalindromeProduct.h"
 #include "PoorPigs.h"
+#include "StringCompression.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -1899,6 +1900,10 @@ int main()
 		PoorPigs().MinNumPigs(8, 15, 40);
 		PoorPigs().MinNumPigs(1000, 15, 60);
 	}
+    {
+        StringCompression().InPlace_Better(std::vector<char>({'a','b','b','b','b','b','b','b','b','b','b','b','b'}));
+        StringCompression().InPlace(std::vector<char>({'a','b','b','b','b','b','b','b','b','b','b','b','b'}));
+    }
 
 #endif
 #ifdef _Random_
