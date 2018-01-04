@@ -1,23 +1,23 @@
-#define _HashMap_
-#define _Design_
-#define _Math_
-#define _BitNumberOperation_
-#define _Random_
-#define _StackQueue_
-#define _1DArray_
-#define _SortSearchSelect_
-#define _Interval_
-#define _PermuteCombinePartition_
-#define _TrieSuffixArray_
+//#define _HashMap_
+//#define _Design_
+//#define _Math_
+//#define _BitNumberOperation_
+//#define _Random_
+//#define _StackQueue_
+//#define _1DArray_
+//#define _SortSearchSelect_
+//#define _Interval_
+//#define _PermuteCombinePartition_
+//#define _TrieSuffixArray_
 #define _FindSubstringSubsequence_
-#define _CompareString_
-#define _TextLines_
-#define _LinkedList_
-#define _2DGrid_
-#define _BinaryTree_
-#define _Heap_
-#define _Graph_
-#define _RMQLCA_
+//#define _CompareString_
+//#define _TextLines_
+//#define _LinkedList_
+//#define _2DGrid_
+//#define _BinaryTree_
+//#define _Heap_
+//#define _Graph_
+//#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _PrintFileNameByTag_
 //#define _PrintVSSolutionTree_
@@ -491,6 +491,7 @@
 #include "LCSubstr.h"
 #include "PatternSearching.h"
 #include "ImplementStrStr2.h"
+#include "RepeatedStringMatch.h"
 #include "Kmismatch.h"
 #include "LongestCommonPrefix.h"
 #include "ShortestUniquePrefix.h"
@@ -5373,6 +5374,12 @@ int main()
 			{ "papaya","anything" },
 		}), std::vector<std::string>({ "banana","orange","guava","apple","apricot","papaya","kiwi" }));
 	}
+    {
+        RepeatedStringMatch().BruteForce(std::string("abcd"), std::string("cdabcdab"));
+        RepeatedStringMatch().BruteForce(std::string("abaabaa"), std::string("abaababaab"));
+        RepeatedStringMatch().UseKMP(std::string("abcd"), std::string("cdabcdab"));
+        RepeatedStringMatch().UseKMP(std::string("abaabaa"), std::string("abaababaab"));
+    }
 
 #endif
 #ifdef _CompareString_
