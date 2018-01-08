@@ -1,5 +1,5 @@
 //#define _HashMap_
-//#define _Design_
+#define _Design_
 //#define _Math_
 //#define _BitNumberOperation_
 //#define _Random_
@@ -16,7 +16,7 @@
 //#define _2DGrid_
 //#define _BinaryTree_
 //#define _Heap_
-#define _Graph_
+//#define _Graph_
 //#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _PrintFileNameByTag_
@@ -37,6 +37,7 @@
 #include "InsertDeleteGetRandom.h"
 #include "DesignSearchAutocompleteSystem.h"
 #include "DesignLogStorageSystem.h"
+#include "ExcelSumFormula.h"
 
 /*Math*/
 #include "EggDrop.h"
@@ -630,7 +631,6 @@
 #include "BrickWall.h"
 #include "NumOfBoomerangs.h"
 #include "MostSquareDimensionXY.h"
-#include "ExcelSumFormula.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -1042,6 +1042,12 @@ int main()
 		r2.remove(1);
 		r2.getRandom();
 	}
+    {
+        ExcelSumFormula e(3, 'C');
+        e.set(1, 'A', 2);
+        e.sum(3, 'C', std::vector<std::string>({"A1", "A1:B2"}));
+        e.set(2, 'B', 2);
+    }
 
 #endif
 #ifdef _Math_
@@ -11519,12 +11525,7 @@ int main()
 			{ 0,0,1 }
 		}));
 	}
-    {
-        ExcelSumFormula e(3, 'C');
-        e.set(1, 'A', 2);
-        e.sum(3, 'C', std::vector<std::string>({"A1", "A1:B2"}));
-        e.set(2, 'B', 2);
-    }
+
 
 #endif
 #ifdef _RMQLCA_
