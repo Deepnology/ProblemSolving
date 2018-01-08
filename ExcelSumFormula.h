@@ -1,4 +1,4 @@
-/*Graph*/
+/*Design*/
 #ifndef EXCEL_SUM_FORMULA_H
 #define EXCEL_SUM_FORMULA_H
 #include "Debug.h"
