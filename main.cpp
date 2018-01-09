@@ -1,5 +1,5 @@
 //#define _HashMap_
-#define _Design_
+//#define _Design_
 //#define _Math_
 //#define _BitNumberOperation_
 //#define _Random_
@@ -10,7 +10,7 @@
 //#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
 //#define _FindSubstringSubsequence_
-//#define _CompareString_
+#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
@@ -532,6 +532,7 @@
 #include "HighestAffinityPair.h"
 #include "ClosestRepetition.h"
 #include "MinDistBtw2WordsInFile.h"
+#include "SentenceSimilarity.h"
 
 /*Text Lines*/
 #include "NeatPrintWordWrap.h"
@@ -5493,6 +5494,9 @@ int main()
 		MinDistBtw2WordsInFile().QueryFromWordMap(wordMap, std::string("tea"), std::string("eat"));
 		MinDistBtw2WordsInFile().OneScan2(std::vector<std::string>({ "ace", "tea", "and", "ad", "eat", "kk", "eat", "dan", "ate", "tea", "abc", "eat", "xyz" }), std::string("eat"), std::string("eat"));
 	}
+    {
+        SentenceSimilarity().Test(std::vector<std::string>({"great", "acting", "skills"}), std::vector<std::string>({"fine", "drama", "talent"}), std::vector<std::pair<std::string,std::string>>({{"great", "good"}, {"fine", "good"}, {"acting","drama"}, {"skills","talent"}}));
+    }
 
 #endif
 #ifdef _TextLines_
