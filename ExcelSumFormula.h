@@ -88,7 +88,7 @@ public:
     {
         //1. update all cells' values starting from (r,c)
         updateAllValuesBFS(r, c, v);
-        //2. clean formulas that involve (r,c)
+        //2. clean all formulas that involve (r,c)
         cleanFormulas(r, c);
 
         std::cout << "ExcelSumFormula set [" << r << "," << c << "]=" << v << ":" << std::endl;
@@ -103,9 +103,9 @@ public:
 
     int sum(int r, char c, std::vector<std::string> strs)
     {
-        //1. clean formulas that involve (r,c)
+        //1. clean all formulas that involve (r,c)
         cleanFormulas(r, c);
-        //2. add cur formulas that sum to (r,c); compute formula sum to (r,c)
+        //2. add cur formula that sum to (r,c); compute formula sum to (r,c)
         int curKey = toKey(r,c);
         int res = 0;
         std::vector<int> keys = getAllCellKeys(strs);
