@@ -10,13 +10,13 @@
 //#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
 //#define _FindSubstringSubsequence_
-#define _CompareString_
+//#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
 //#define _BinaryTree_
 //#define _Heap_
-//#define _Graph_
+#define _Graph_
 //#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _PrintFileNameByTag_
@@ -763,6 +763,7 @@
 #include "MinHeightTreesInGraph.h"
 #include "RemoveInvalidParentheses.h"
 #include "FreedomTrail.h"
+#include "MergeAccounts.h"
 
 /*RMQ LCA*/
 #include "RangeSumQuerySegmentTree.h"
@@ -11529,6 +11530,16 @@ int main()
 			{ 0,0,1 }
 		}));
 	}
+    {
+        MergeAccounts().UnionFind(std::vector<std::vector<std::string>>(
+        {
+            {"David","David0@m.co","David1@m.co"},
+            {"David","David3@m.co","David4@m.co"},
+            {"David","David4@m.co","David5@m.co"},
+            {"David","David2@m.co","David3@m.co"},
+            {"David","David1@m.co","David2@m.co"}
+        }));
+    }
 
 
 #endif
