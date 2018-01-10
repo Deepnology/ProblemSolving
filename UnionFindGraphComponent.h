@@ -81,6 +81,7 @@ public:
 	
 	//3. simple iterative version path comopression: O(logn) time (rootIndex are init to be {index}s.)
 	//union-find is specially suited for input is edge list !!!
+	//note: rootIndex[i] finally points to one of i's ancestor only, not necessarily i's root (call Find() again to get i's root).
 	int FindIterate(std::vector<int> & rootIndex, int idx)
 	{
 		while (rootIndex[idx] != idx)
