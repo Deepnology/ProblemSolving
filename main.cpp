@@ -14,9 +14,9 @@
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
-//#define _BinaryTree_
+#define _BinaryTree_
 //#define _Heap_
-#define _Graph_
+//#define _Graph_
 //#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _PrintFileNameByTag_
@@ -705,6 +705,7 @@
 #include "EncodeShortestNestedString.h"
 #include "ParseNestedListString.h"
 #include "ParseNestedTernaryExpression.h"
+#include "FindNearestLeafNodeBinaryTree.h"
 
 /*Heap*/
 #include "BinaryMinHeap.h"
@@ -9134,6 +9135,37 @@ int main()
 		ParseNestedTernaryExpression().Recur("F?1:T?4:5");
 		ParseNestedTernaryExpression().Recur("T?T?F:5:3");
 	}
+    {
+        FindNearestLeafNodeBinaryTree::TreeNode * root = new FindNearestLeafNodeBinaryTree::TreeNode(1);
+        root->left = new FindNearestLeafNodeBinaryTree::TreeNode(2);
+        root->left->left = new FindNearestLeafNodeBinaryTree::TreeNode(4);
+        root->left->left->left = new FindNearestLeafNodeBinaryTree::TreeNode(5);
+        root->left->left->left->left = new FindNearestLeafNodeBinaryTree::TreeNode(6);
+        root->right = new FindNearestLeafNodeBinaryTree::TreeNode(3);
+        PrintBinaryTree<FindNearestLeafNodeBinaryTree::TreeNode, std::ostringstream>(root, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        FindNearestLeafNodeBinaryTree().Recur(root, 2);
+        FindNearestLeafNodeBinaryTree::DeleteTree(root);
+        bstOss.str(std::string());
+
+        root = new FindNearestLeafNodeBinaryTree::TreeNode(1);
+        root->left = new FindNearestLeafNodeBinaryTree::TreeNode(2);
+        root->right = new FindNearestLeafNodeBinaryTree::TreeNode(3);
+        root->right->left = new FindNearestLeafNodeBinaryTree::TreeNode(4);
+        root->right->left->left = new FindNearestLeafNodeBinaryTree::TreeNode(6);
+        root->right->left->left->left = new FindNearestLeafNodeBinaryTree::TreeNode(8);
+        root->right->left->left->right = new FindNearestLeafNodeBinaryTree::TreeNode(9);
+        root->right->right = new FindNearestLeafNodeBinaryTree::TreeNode(5);
+        root->right->right->right = new FindNearestLeafNodeBinaryTree::TreeNode(7);
+        root->right->right->right->left = new FindNearestLeafNodeBinaryTree::TreeNode(10);
+        PrintBinaryTree<FindNearestLeafNodeBinaryTree::TreeNode, std::ostringstream>(root, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        FindNearestLeafNodeBinaryTree().Recur(root, 3);
+        FindNearestLeafNodeBinaryTree().Recur(root, 7);
+        FindNearestLeafNodeBinaryTree().Recur(root, 4);
+        FindNearestLeafNodeBinaryTree::DeleteTree(root);
+        bstOss.str(std::string());
+    }
 
 #endif
 #ifdef _Heap_
