@@ -3,7 +3,7 @@
 //#define _Math_
 //#define _BitNumberOperation_
 //#define _Random_
-//#define _StackQueue_
+#define _StackQueue_
 //#define _1DArray_
 //#define _SortSearchSelect_
 //#define _Interval_
@@ -14,7 +14,7 @@
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
-#define _BinaryTree_
+//#define _BinaryTree_
 //#define _Heap_
 //#define _Graph_
 //#define _RMQLCA_
@@ -185,6 +185,7 @@
 #include "BasicCalculator.h"
 #include "MovingAvgFromDataStream.h"
 #include "StackReproduceDiffOrderArray.h"
+#include "StackWithMax.h"
 
 /*1D Array*/
 #include "AllUniqueElements.h"
@@ -2312,6 +2313,18 @@ int main()
 		for (int i = 0; i < 10; ++i)
 			StackReproduceDiffOrderArray().UseStack(TestCase::RandUniqueVec<int>(7, 0, 6), TestCase::RandUniqueVec<int>(7, 0, 6));
 	}
+    {
+        StackWithMax s;
+        s.push(5);
+        s.push(1);
+        s.push(5);
+        s.top();
+        s.popMax();
+        s.top();
+        s.peekMax();
+        s.pop();
+        s.top();
+    }
 
 #endif
 #ifdef _1DArray_
