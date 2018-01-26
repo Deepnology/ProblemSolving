@@ -41,5 +41,17 @@ public:
 		if (charList.empty()) return -1;
 		return charList.front();
 	}
+
+	int UseHashMap(std::string s)
+	{
+		std::vector<int> count(26, 0);
+		int N = s.size();
+		for (int i = 0; i < N; ++i)
+			++count[s[i]-'a'];
+		for (int i = 0; i < N; ++i)
+			if (count[s[i]-'a'] == 1)
+				return i;
+		return -1;
+	}
 };
 #endif
