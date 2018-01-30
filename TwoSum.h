@@ -248,6 +248,36 @@ public:
 		std::cout << "TwoSumIII: " << Debug::ToStr1D<int>()(m_map) << std::endl;
 	}
 };
+
+//given an integer array, count number of pairs whose sum equal to k.
+//pairs with same values but from different index are counted separated
+//{1,1,1}, k=2: there are 3 pairs not 1 pair
+class CountPairWSumEqualK
+{
+public:
+	CountPairWSumEqualK(){}
+
+	int HashMap(const std::vector<int> & v, int k)
+	{
+		int N = v.size();
+		std::unordered_map<int, int> count;//<entry, count>
+		for (int i = 0; i < N; ++i)
+			++count[v[i]];
+		int res = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			if (count.count(k-v[i]))
+				res += count[k-v[i]];
+			if (v[i]+v[i] == k)
+				--res;
+		}
+		//now res is twice count
+		res /= 2;
+
+		std::cout << "TwoSum CountPairSumEqualK HashMap for \"" << Debug::ToStr1D<int>()(v) << "\", k=" << k << ": " << res << std::endl;
+		return res;
+	}
+};
 /*
 TwoSum ExistPairSumTo0_Sort_Greedy for "3, -6, -4, 2, -7, 9, 4, 1, 2": 1 [-4,4]
 TwoSum FindPair_BruteForce for "7" from "6, 4, -3, 0, 3, 7": 2, 5
@@ -257,5 +287,6 @@ TwoSum FindPair_Sort_Greedy for "7" from "6, 4, -3, 0, 3, 7": 4, 6
 TwoSumIII: [4,1], [8,2], [3,2], [5,2], [2,1], [10,2]
 TwoSumIII Find "5": 1
 TwoSumIII Find "18": 1
+TwoSum CountPairSumEqualK HashMap for "1, 1, 1", k=2: 3
 */
 #endif
