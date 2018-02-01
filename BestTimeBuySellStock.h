@@ -34,7 +34,8 @@ A transaction is a pair of (buy,sell) operations.
 
 5.
 Say you have an array for which the ith element is the price of a given stock on day i.
-Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times) with the following restrictions:
+Design an algorithm to find the maximum profit.
+You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times) with the following restrictions:
 You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
 After you sell your stock, you cannot buy stock on next day. (ie, cooldown 1 day)
 Example:
@@ -274,7 +275,128 @@ public:
 		std::cout << "BestTimeBuySellStock MaxProfit_Cooldown1DayAfterSell for \"" << Debug::ToStr1D<int>()(prices) << "\": " << res << std::endl;
 		return res;
 	}
+};
+class BestTimeBuySellStock2 //better!
+{
+public:
+	BestTimeBuySellStock2(){}
+	~BestTimeBuySellStock2(){}
 
+	//1. only 1 transaction
+	int MaxProfit_OneTransaction(const std::vector<int> & prices)
+	{
+		int N = prices.size();
+		int hold0 = 0;
+		int hold1 = INT_MIN;
+		for (int i = 0; i < N; ++i)
+		{
+			hold0 = std::max(hold0, hold1 + prices[i]);//after action we hold 0 stock: can rest or sell
+			hold1 = std::max(hold1, -prices[i]);//after action we hold 1 stock: can rest or buy
+		}
+
+		std::cout << "BestTimeBuySellStock2 MaxProfit_OneTransaction for \"" << Debug::ToStr1D<int>()(prices) << "\": " << hold0 << std::endl;
+		return hold0;
+	}
+
+
+	//2. unlimited transactions
+	int MaxProfit_UnlimitedTransactions(const std::vector<int> & prices)
+	{
+		int N = prices.size();
+		int hold0 = 0;
+		int hold1 = INT_MIN;
+		for (int i = 0; i < N; ++i)
+		{
+			int hold0_old = hold0;
+			hold0 = std::max(hold0, hold1 + prices[i]);//after action we hold 0 stock: can rest or sell
+			hold1 = std::max(hold1, hold0_old - prices[i]);//after action we hold 1 stock: can rest or buy
+		}
+
+		std::cout << "BestTimeBuySellStock2 MaxProfit_UnlimitedTransactions for \"" << Debug::ToStr1D<int>()(prices) << "\": " << hold0 << std::endl;
+		return hold0;
+	}
+
+
+	//3. at most 2 transactions
+	int MaxProfit_AtMost2Transactions(const std::vector<int> & prices)
+	{
+		int N = prices.size();
+		int hold0_1 = 0;//1st transaction
+		int hold1_1 = INT_MIN;//1st transaction
+		int hold0_2 = 0;//2nd transaction
+		int hold1_2 = INT_MIN;//2nd transaction
+		for (int i = 0; i < N; ++i)
+		{
+			hold0_2 = std::max(hold0_2, hold1_2 + prices[i]);//after action we hold 0 stock: can rest or sell
+			hold1_2 = std::max(hold1_2, hold0_1 - prices[i]);//after action we hold 1 stock: can rest or buy
+			hold0_1 = std::max(hold0_1, hold1_1 + prices[i]);//after action we hold 0 stock: can rest or sell
+			hold1_1 = std::max(hold1_1, - prices[i]);//after action we hold 1 stock: can rest or buy
+		}
+
+		std::cout << "BestTimeBuySellStock2 MaxProfit_AtMost2Transactions for \"" << Debug::ToStr1D<int>()(prices) << "\": " << hold0_2 << std::endl;
+		return hold0_2;
+	}
+
+
+	//4. at most k transactions
+	int MaxProfit_AtMostKTransactions(const std::vector<int> & prices, int k)
+	{
+		int N = prices.size();
+		if (k >= N/2)
+			return MaxProfit_UnlimitedTransactions(prices);
+
+		std::vector<int> hold0(k+1, 0);
+		std::vector<int> hold1(k+1, INT_MIN);
+		for (int i = 0; i < N; ++i)
+		{
+			for (int j = k; j > 0; --j)
+			{
+				hold0[j] = std::max(hold0[j], hold1[j] + prices[i]);
+				hold1[j] = std::max(hold1[j], hold0[j-1] - prices[i]);
+			}
+		}
+
+		std::cout << "BestTimeBuySellStock2 MaxProfit_AtMostKTransactions for \"" << k << "\" in \"" << Debug::ToStr1D<int>()(prices) << "\": " << hold0[k] << std::endl;
+		return hold0[k];
+	}
+
+
+	//5. cooldown 1 day after sell
+	int MaxProfit_Cooldown1DayAfterSell(const std::vector<int> & prices)
+	{
+		int N = prices.size();
+		int preHold0 = 0;
+		int hold0 = 0;
+		int hold1 = INT_MIN;
+		for (int i = 0; i < N; ++i)
+		{
+			int hold0_old = hold0;
+			hold0 = std::max(hold0, hold1 + prices[i]);//after action we hold 0 stock: can rest or sell
+			hold1 = std::max(hold1, preHold0 - prices[i]);//after action we hold 1 stock: can rest or buy
+			preHold0 = hold0_old;
+		}
+
+		std::cout << "BestTimeBuySellStock2 MaxProfit_Cooldown1DayAfterSell for \"" << Debug::ToStr1D<int>()(prices) << "\": " << hold0 << std::endl;
+		return hold0;
+	}
+
+
+	//6. unlimited transaction with transaction fee
+	int MaxProfit_UnlimitedTransactionsWithTransactionFee(const std::vector<int> & prices, int fee)
+	{
+		int N = prices.size();
+		int hold0 = 0;
+		int hold1 = INT_MIN;
+		for (int i = 0; i < N; ++i)
+		{
+			int hold0_old = hold0;
+			hold0 = std::max(hold0, hold1 + prices[i] - fee);
+			hold1 = std::max(hold1, hold0_old - prices[i]);
+		}
+
+		std::cout << "BestTimeBuySellStock2 MaxProfit_UnlimitedTransactionsWithTransactionFee for \"" << Debug::ToStr1D<int>()(prices) << "\", fee=" << fee << ": " << hold0 << std::endl;
+		return hold0;
+	}
 };
 /*
 BestTimeBuySellStock MaxProfit_OneTransaction for "15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18": 18
@@ -413,5 +535,12 @@ local:	0, 0, 8, 13, 15
 global:	0, 8, 13, 15, 15
 BestTimeBuySellStock MaxProfit_AtMostKTransactions_DP1D_2 for "4" in "1, 2, 4, 2, 5, 7, 2, 4, 9, 0": 15
 BestTimeBuySellStock MaxProfit_Cooldown1DayAfterSell for "1, 2, 3, 0, 2": 3
+
+BestTimeBuySellStock2 MaxProfit_OneTransaction for "15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18": 18
+BestTimeBuySellStock2 MaxProfit_UnlimitedTransactions for "15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18": 47
+BestTimeBuySellStock2 MaxProfit_AtMost2Transactions for "15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18": 31
+BestTimeBuySellStock2 MaxProfit_AtMostKTransactions for "5" in "15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18": 47
+BestTimeBuySellStock2 MaxProfit_Cooldown1DayAfterSell for "15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18": 34
+BestTimeBuySellStock2 MaxProfit_UnlimitedTransactionsWithTransactionFee for "15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18", fee=10: 11
 */
 #endif
