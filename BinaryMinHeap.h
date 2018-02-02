@@ -117,7 +117,7 @@ private:
 		int leftChildIdx = this->GetLeftChildIndex(nodeIndex);
 		int rightChildIdx = this->GetRightChildIndex(nodeIndex);
 		int minChildIdx = -1;
-		if (leftChildIdx < m_curNodeCount && rightChildIdx < m_curNodeCount)
+		if (rightChildIdx < m_curNodeCount)
 		{
 			minChildIdx = m_levelOrder[leftChildIdx] - m_levelOrder[rightChildIdx] < 0 ? leftChildIdx : rightChildIdx;
 		}
@@ -125,16 +125,11 @@ private:
 		{
 			minChildIdx = leftChildIdx;
 		}
-		else if (rightChildIdx < m_curNodeCount)
-		{
-			minChildIdx = rightChildIdx;
-		}
 		else
 			return;
 
 		//2. swap current node value with smaller child value, and recur down
-		if (minChildIdx >= 0 &&
-			m_levelOrder[minChildIdx] < m_levelOrder[nodeIndex])
+		if (m_levelOrder[minChildIdx] < m_levelOrder[nodeIndex])
 		{
 			std::swap(m_levelOrder[minChildIdx], m_levelOrder[nodeIndex]);
 			this->bubbleDown_Recur(minChildIdx);
@@ -147,17 +142,13 @@ private:
 			int leftChildIdx = this->GetLeftChildIndex(nodeIndex);
 			int rightChildIdx = this->GetRightChildIndex(nodeIndex);
 			int minChildIdx;
-			if (leftChildIdx < m_curNodeCount && rightChildIdx < m_curNodeCount)
+			if (rightChildIdx < m_curNodeCount)
 			{
 				minChildIdx = m_levelOrder[leftChildIdx] - m_levelOrder[rightChildIdx] < 0 ? leftChildIdx : rightChildIdx;
 			}
 			else if (leftChildIdx < m_curNodeCount)
 			{
 				minChildIdx = leftChildIdx;
-			}
-			else if (rightChildIdx < m_curNodeCount)
-			{
-				minChildIdx = rightChildIdx;
 			}
 			else
 				break;
