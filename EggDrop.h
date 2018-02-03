@@ -185,6 +185,27 @@ private:
 		return dp[N][D];
 	}
 };
+/*
+EggDrop MinTrialsWorstCase_Formula_2Eggs for "100" floors: 14
+EggDrop MinTrialsWorstCase_Recur for "2" eggs, "10" floors: 4
+[rY][cX]
+Row#0	= -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+Row#1	= 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1
+Row#2	= 0, 1, 2, 2, 3, 3, 3, 4, 4, 4, -1
 
+EggDrop MinTrialsWorstCase_DP2D_Recur for "2" eggs, "10" floors: 4
+[rY][cX]
+Row#0	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#1	= 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+Row#2	= 0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4
+
+EggDrop MinTrialsWorstCase_DP2D_Iterate for "2" eggs, "10" floors: 4
+[rY][cX]
+Row#0	= -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+Row#1	= -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+Row#2	= -1, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105
+
+EggDrop MaxFloorsWorstCase_DP2D_Recur for "2" eggs, "14" drops: 105
+ */
 
 #endif
