@@ -19,7 +19,7 @@ Design a strategy to calculate the minimum trials required to find out floor X i
 The perfect "load balance in the worst case" strategy is the sum of trails of egg1 and trails of egg2 should be always the same.
 
 Suppose we drop 1st egg at floor X. If it breaks, then drop 2nd egg from floor 1 to at most floor X-1. This requires at most X-1 trials for 2nd egg.
-If it doesn't break, then jump up another X-1 floors. If it breaks, then drop 2nd egg from floor X+1, X+2, ..., to at most floor X-1-1. This requires at most X-2 trials for 2nd egg.
+If it doesn't break, then jump up another X-1 floors. If it breaks, then drop 2nd egg from floor X+1, X+2, ..., to at most floor 2*X-2. This requires at most X-2 trials for 2nd egg.
 If it doesn't break, then jump up another X-2 floors. If it breaks, then it requires at most X-3 trials for 2nd egg.
 ...
 If it doesn't break, then jump up another 1 floor. Now we already have made (X-1)+(X-2)+...+1 trials, and it must reach or exceed 100 floors. If it breaks, then it requires at most 0 trials for 2nd egg. (This would be the worst case)
