@@ -3,7 +3,7 @@
 //#define _Math_
 //#define _BitNumberOperation_
 //#define _Random_
-#define _StackQueue_
+//#define _StackQueue_
 //#define _1DArray_
 //#define _SortSearchSelect_
 //#define _Interval_
@@ -13,7 +13,7 @@
 //#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
-//#define _2DGrid_
+#define _2DGrid_
 //#define _BinaryTree_
 //#define _Heap_
 //#define _Graph_
@@ -337,6 +337,7 @@
 #include "AssignCookiesToMaxNumChildren.h"
 #include "ArrangeCoinsStaircaseShape.h"
 #include "GenericPartition.h"
+#include "FindAnagramMappings.h"
 
 /*Interval*/
 #include "MergeIntervals.h"
@@ -349,6 +350,7 @@
 #include "FindRightInterval.h"
 #include "TeemoAttacking.h"
 #include "Heaters.h"
+#include "CalendarInterval.h"
 
 /*Permute Combine Partition*/
 #include "Permutations.h"
@@ -514,9 +516,13 @@
 #include "UniqueSubstrInWraproundStr.h"
 #include "LongestUncommonSubseq.h"
 #include "CountAllPalindromeSubstr.h"
+#include "CountAllPalindromeSubseq.h"
 #include "FindAllDistinctPalindromeSubstr.h"
 #include "CountSubArrWSumEqualK.h"
 #include "MatchOrderBtwMatrixArray.h"
+#include "ShortestSubArrContainMaxFreqNums.h"
+#include "FindFirstDayContainKEmptySlots.h"
+#include "MaxMSubArrSumWSizeK.h"
 
 /*Compare String*/
 #include "EditDistance.h"
@@ -633,6 +639,7 @@
 #include "BrickWall.h"
 #include "NumOfBoomerangs.h"
 #include "MostSquareDimensionXY.h"
+#include "CountSquaresIn2DGrid.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -659,6 +666,7 @@
 #include "SumRootToLeafNums.h"
 #include "SameBinaryTree.h"
 #include "BinaryTreePathSum.h"
+#include "BinaryTreePreOrderSucc.h"
 #include "BinaryTreeInorderSucc.h"
 #include "BinaryTreePostOrderSucc.h"
 #include "LowestCommonAncestorBinaryTree.h"
@@ -1064,7 +1072,14 @@ int main()
 		EggDrop().MinTrialsWorstCase_DP2D_Recur(2, 10);
 		EggDrop().MinTrialsWorstCase_DP2D_Iterate(2, 10);
 
+        //EggDrop().MinTrialsWorstCase_Recur(12, 1023);
+        //EggDrop().MinTrialsWorstCase_DP2D_Recur(12, 1023);
+        //EggDrop().MinTrialsWorstCase_DP2D_Iterate(12, 1023);
+
 		EggDrop().MaxFloorsWorstCase_DP2D_Recur(2, 14);
+        EggDrop().MaxFloorsWorstCase_DP2D_Iterate(2, 14);
+        EggDrop().MaxFloorsWorstCase_DP2D_Recur(12, 25);
+        EggDrop().MaxFloorsWorstCase_DP2D_Iterate(12, 25);
 	}
 	{
 		WaterAndJugProblem().canMeasureWater(3, 5, 4);
@@ -1738,7 +1753,7 @@ int main()
 		MissingIPaddress().Test();
 	}
 	{
-		std::string encode = RunLengthEncodedString().Encode(std::string("aabcccccaadddddddddddddddddxxxxyyyyZz"));
+		std::string encode = RunLengthEncodedString().Encode3(std::string("aabcccccaadddddddddddddddddxxxxyyyyZz"));
 		RunLengthEncodedString().Decode(encode);
 	}
 	{
@@ -2585,6 +2600,13 @@ int main()
 		BestTimeBuySellStock().MaxProfit_AtMostKTransactions_DP1D_2(std::vector<int>({ 1, 2, 4, 2, 5, 7, 2, 4, 9, 0 }), 4);
 
 		BestTimeBuySellStock().MaxProfit_Cooldown1DayAfterSell(std::vector<int>({ 1,2,3,0,2 }));
+
+        BestTimeBuySellStock2().MaxProfit_OneTransaction(std::vector<int>({ 15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18 }));
+        BestTimeBuySellStock2().MaxProfit_UnlimitedTransactions(std::vector<int>({ 15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18 }));
+        BestTimeBuySellStock2().MaxProfit_AtMost2Transactions(std::vector<int>({ 15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18 }));
+        BestTimeBuySellStock2().MaxProfit_AtMostKTransactions(std::vector<int>({ 15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18 }), 5);
+        BestTimeBuySellStock2().MaxProfit_Cooldown1DayAfterSell(std::vector<int>({ 15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18 }));
+        BestTimeBuySellStock2().MaxProfit_UnlimitedTransactionsWithTransactionFee(std::vector<int>({ 15, 30, 24, 33, 11, 13, 17, 16, 21, 12, 24, 18 }), 10);
 	}
 	{
 		FrequencyOfIdxSeqArray().Transform(std::vector<int>({ 1, 3, 5, 7, 9, 1, 3, 5, 7, 9, 1 }));
@@ -2728,6 +2750,8 @@ int main()
 		tsiii.Print();
 		tsiii.Find(TestCase::RandNum(1, 20));
 		tsiii.Find(TestCase::RandNum(1, 20));
+
+        CountPairWSumEqualK().HashMap(std::vector<int>({1,1,1}), 2);
 	}
 	{
 		TwoSumAbsSortedArray().FindPairIndex_Greedy(std::vector<int>({ -49, 75, 103, -147, 164, -197, -238, 314, 348, -422 }), 167);
@@ -3827,6 +3851,9 @@ int main()
 				, std::function<bool(int a, int b)>([](int a, int b) { return a % 3 == b % 3; }));
 		}
 	}
+    {
+        FindAnagramMappings().UseHashMap(std::vector<int>({12, 28, 46, 32, 50}), std::vector<int>({50, 12, 32, 46, 28}));
+    }
 
 #endif
 #ifdef _Interval_
@@ -5354,6 +5381,13 @@ int main()
 		FindAllDistinctPalindromeSubstr().Greedy(std::string("abaaba"));
 		FindAllDistinctPalindromeSubstr().Greedy(std::string("abbaeaea"));
 	}
+    {
+        CountAllPalindromeSubseq().DP2D(std::string("bccb"));
+        CountAllPalindromeSubseq().DP2D(std::string("abaab"));
+        CountAllPalindromeSubseq().DP2D(std::string("abaaba"));
+        CountAllPalindromeSubseq().DP2D(std::string("abbaeae"));
+        //CountAllPalindromeSubseq().DP2D(std::string("abcdabcdabcdabcdabcdabcdabcdabcddcbadcbadcbadcbadcbadcbadcbadcba"));
+    }
 	{
 		CountSubArrWSumEqualK().UsePrefixSumMap(std::vector<int>({ 1,1,1 }), 2);
 		CountSubArrWSumEqualK().FindAll_PrefixSumMap(std::vector<int>({ 1,1,1 }), 2);
@@ -5406,6 +5440,16 @@ int main()
         RepeatedStringMatch().BruteForce(std::string("abaabaa"), std::string("abaababaab"));
         RepeatedStringMatch().UseKMP(std::string("abcd"), std::string("cdabcdab"));
         RepeatedStringMatch().UseKMP(std::string("abaabaa"), std::string("abaababaab"));
+    }
+    {
+        ShortestSubArrContainMaxFreqNums().GetLen_HashMap(std::vector<int>({1,2,2,3,1}));
+        ShortestSubArrContainMaxFreqNums().GetLen_HashMap(std::vector<int>({1,2,2,3,1,4,2}));
+    }
+    {
+        FindFirstDayContainKEmptySlots().UseSet(std::vector<int>({1,5,2,4,3}), 2);
+    }
+    {
+        MaxMSubArrSumWSizeK().DP2D(std::vector<int>({1,2,1,2,6,7,5,1}), 2, 3);
     }
 
 #endif
@@ -7397,6 +7441,13 @@ int main()
 	{
 		MostSquareDimensionXY().Test();
 	}
+    {
+        for (int i = 1; i <= 8; ++i)
+        {
+            CountSquaresIn2DGrid().BruteForce(i);
+            CountSquaresIn2DGrid().LinearTime(i);
+        }
+    }
 
 #endif
 #ifdef _BinaryTree_
@@ -8146,6 +8197,24 @@ int main()
 		PopulatingNextRightPtr::DeleteTree(pnrpRootNPerf);
 		PopulatingNextRightPtr::DeleteTree(pnrpRootNPerf2);
 	}
+    {
+        BinaryTreePreOrderSucc::TreeNode * btisRoot = new BinaryTreePreOrderSucc::TreeNode(6);
+        btisRoot->left = new BinaryTreePreOrderSucc::TreeNode(2);
+        btisRoot->left->parent = btisRoot;
+        btisRoot->left->right = new BinaryTreePreOrderSucc::TreeNode(3);
+        btisRoot->left->right->parent = btisRoot->left;
+        btisRoot->right = new BinaryTreePreOrderSucc::TreeNode(8);
+        btisRoot->right->parent = btisRoot;
+        btisRoot->right->left = new BinaryTreePreOrderSucc::TreeNode(7);
+        btisRoot->right->left->parent = btisRoot->right;
+        BinaryTreePreOrderSucc().Find_BST_Only(btisRoot, btisRoot->left->right);
+        BinaryTreePreOrderSucc().Find_BST_Only(btisRoot, btisRoot->right);
+        BinaryTreePreOrderSucc().Find_BST_Only(btisRoot, btisRoot->right->left);
+        PrintBinaryTree<BinaryTreePreOrderSucc::TreeNode, std::ostringstream>(btisRoot, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        BinaryTreePreOrderSucc::DeleteTree(btisRoot);
+    }
 	{
 		BinaryTreeInorderSucc::TreeNode * btisRoot = new BinaryTreeInorderSucc::TreeNode(6);
 		btisRoot->left = new BinaryTreeInorderSucc::TreeNode(2);
