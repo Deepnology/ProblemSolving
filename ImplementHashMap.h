@@ -4,7 +4,7 @@
 /*
 http://blog.csdn.net/u013325815/article/details/52907170
 */
-class ImplementHashMap
+class ImplementHashMap //use <string, int> for simplicity
 {
 	struct ListNode
 	{
@@ -17,7 +17,19 @@ class ImplementHashMap
 	std::vector<ListNode*> m_map;
 public:
 	ImplementHashMap(size_t size): m_size(size), m_map(size, NULL) {}
-
+    ~ImplementHashMap()
+    {
+        for (auto & cur : m_map)
+        {
+            while (cur)
+            {
+                ListNode * del = cur;
+                cur = cur->next;
+                delete del;
+                del = NULL;
+            }
+        }
+    }
 	bool Put(const std::string & key, int val)
 	{
 		size_t idx = std::hash<std::string>()(key) % m_size;
