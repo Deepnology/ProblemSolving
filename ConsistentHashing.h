@@ -17,7 +17,7 @@ class ConsistentHashing //use <string, int> for simplicity
     };
     size_t m_sizeNodes; //number of dummy nodes, where dummy nodes have indices in [0:m_size-1]
     std::map<size_t, ListNode *> m_sortedHashRing; //sorted hash ring
-    const size_t m_numReplicas;
+    const size_t m_numReplicas; //number of virtual hash nodes for each dummy node
     const std::hash<std::string> m_strHashFunc;
 
     size_t m_sizeKeys; //number of keys
