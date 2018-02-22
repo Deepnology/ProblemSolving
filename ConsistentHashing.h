@@ -15,9 +15,9 @@ class ConsistentHashing //use <string, int> for simplicity
         ListNode * next;
         ListNode(const std::string & key_, int val_) : key(key_), val(val_), next(NULL) {}
     };
-    size_t m_sizeNodes; //number of dummy nodes, where dummy nodes have indices in [0:m_size-1]
+    size_t m_sizeNodes; //number of dummy nodes (buckets), where dummy nodes have indices in [0:m_sizeNodes-1]
     std::map<size_t, ListNode *> m_sortedHashRing; //sorted hash ring
-    const size_t m_numReplicas; //number of virtual hash nodes for each dummy node
+    const size_t m_sizeReplicas; //number of virtual hash nodes for each dummy node
     const std::hash<std::string> m_strHashFunc;
 
     size_t m_sizeKeys; //number of keys
@@ -25,7 +25,7 @@ class ConsistentHashing //use <string, int> for simplicity
 
     std::map<std::string, int> m_testingMap;
 public:
-    ConsistentHashing(size_t sizeNodes, size_t numReplicas) : m_sizeNodes(0), m_numReplicas(numReplicas), m_sizeKeys(0), m_loadFactor(0.75f)
+    ConsistentHashing(size_t sizeNodes, size_t sizeReplicas) : m_sizeNodes(0), m_sizeReplicas(sizeReplicas), m_sizeKeys(0), m_loadFactor(0.75f)
     {
         for (size_t i = 0; i < sizeNodes; ++i)
             AddDummyNode(i);
@@ -39,7 +39,7 @@ public:
     {
         std::vector<std::pair<std::string, int>> res;
         ListNode * dummy = new ListNode("dummy", 0);
-        for (size_t i = 0; i < m_numReplicas; ++i) //add m_numReplicas virtual nodes
+        for (size_t i = 0; i < m_sizeReplicas; ++i) //add m_sizeReplicas virtual nodes
         {
             size_t curHash = m_strHashFunc(std::to_string(nodeIdx) + "," + std::to_string(i)); //need a separator to avoid duplicated composite number which causes same hash
             std::pair<std::map<size_t, ListNode *>::iterator, bool> curItr
@@ -70,19 +70,19 @@ public:
             }
             m_sortedHashRing.erase(curItr.first); //erase curHash to make sure later upperBound(curHash) won't hit a newly added hash
         }
-        for (size_t i = 0; i < m_numReplicas; ++i) //add m_numReplicas virtual nodes
+        for (size_t i = 0; i < m_sizeReplicas; ++i) //add m_sizeReplicas virtual nodes
         {
             size_t curHash = m_strHashFunc(std::to_string(nodeIdx) + "," + std::to_string(i));
             std::pair<std::map<size_t, ListNode *>::iterator, bool> curItr
                     = m_sortedHashRing.insert({curHash, dummy}); //all virtual nodes point to a same dummy node
         }
         ++m_sizeNodes;
-        return res; //return <key, val> that need to re-hashing
+        return res; //return <key, val> pairs that need to re-hashing
     }
     std::vector<std::pair<std::string, int>> RemoveDummyNode(size_t nodeIdx)
     {
         std::vector<std::pair<std::string, int>> res;
-        for (size_t i = 0; i < m_numReplicas; ++i)
+        for (size_t i = 0; i < m_sizeReplicas; ++i)
         {
             size_t curHash = m_strHashFunc(std::to_string(nodeIdx) + "," + std::to_string(i));
             auto itr = m_sortedHashRing.lower_bound(curHash);
@@ -110,7 +110,7 @@ public:
                 std::cout << "Warning: not found virtual node [nodeIdx,replicaIdx,hash]: [" << nodeIdx << "," << i << "," << curHash << "]" << std::endl;
         }
         --m_sizeNodes;
-        return res; //return <key, val> that need to re-hashing
+        return res; //return <key, val> pairs that need to re-hashing
     }
     void ResizeDummyNode(size_t n)
     {
@@ -118,7 +118,7 @@ public:
         std::vector<std::pair<std::string, int>> res;
         if (n > m_sizeNodes)
         {
-            for (int i = m_sizeNodes; i < n; ++i)
+            for (size_t i = m_sizeNodes; i < n; ++i)
             {
                 std::vector<std::pair<std::string, int>> keyVal = AddDummyNode(i);
                 res.insert(res.end(), keyVal.begin(), keyVal.end());
@@ -126,7 +126,7 @@ public:
         }
         else //n < m_size
         {
-            for (int i = m_sizeNodes - 1; i >= n; --i)
+            for (size_t i = m_sizeNodes - 1; i >= n; --i)
             {
                 std::vector<std::pair<std::string, int>> keyVal = RemoveDummyNode(i);
                 res.insert(res.end(), keyVal.begin(), keyVal.end());
@@ -134,7 +134,7 @@ public:
         }
         //std::cout << Debug::ToStr1D<std::string, int>()(res) << std::endl;
         for (auto & p : res)
-            put(p.first, p.second);//re-hashing <key, val>
+            put(p.first, p.second);//re-hashing <key, val> pairs
     }
 
 
