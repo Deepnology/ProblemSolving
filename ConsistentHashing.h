@@ -10,7 +10,7 @@ http://www.acodersjourney.com/2017/10/system-design-interview-consistent-hashing
 http://www.tom-e-white.com/2007/11/consistent-hashing.html
 https://www.codeproject.com/Articles/56138/Consistent-hashing
 
-Implement a simple hash map template that supports uniform distribution (load balance), efficient resizing buckets and rehashing (consistent hashing).
+Implement a simple hash map template class that supports uniform distribution (load balance), efficient resizing buckets and rehashing (consistent hashing).
 */
 template<class K, class V, class H = std::hash<K>> //<Key, Val, HashFunc>
 class ConsistentHashing
