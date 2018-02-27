@@ -35,7 +35,7 @@ class ReshapeMatrix
 {
 public:
 	ReshapeMatrix() {}
-	std::vector<std::vector<int>> Reshape(std::vector<std::vector<int>> & nums, int r, int c)
+	std::vector<std::vector<int>> Reshape(const std::vector<std::vector<int>> & nums, int r, int c)
 	{
 		int N = nums.size();
 		int M = nums[0].size();
@@ -45,10 +45,48 @@ public:
 		{
 			res[i/c][i%c] = nums[i/M][i%M];
 		}
+		Debug::Print2D<int>()(nums, false);
+		std::cout << "ReshapeMatrix for above matrix to [r,c]=[" << r << "," << c << "]:" << std::endl;
+		Debug::Print2D<int>()(res, false);
 		return res;
+	}
+
+	std::vector<std::vector<int>> Transpose(const std::vector<std::vector<int>> & nums)
+	{
+		int N = nums.size();
+		int M = nums[0].size();
+		std::vector<std::vector<int>> res(M, std::vector<int>(N));
+		for (int i = 0; i < N; ++i)
+			for (int j = 0; j < M; ++j)
+				res[j][i] = nums[i][j];
+
+		Debug::Print2D<int>()(nums, false);
+		std::cout << "ReshapeMatrix Transpose for above matrix:" << std::endl;
+		Debug::Print2D<int>()(res, false);
+		return res;
+
 	}
 };
 /*
+[rY][cX]
+Row#0	= 11, 12
+Row#1	= 21, 22
+Row#2	= 31, 32
+
+ReshapeMatrix for above matrix to [r,c]=[2,3]:
+[rY][cX]
+Row#0	= 11, 12, 21
+Row#1	= 22, 31, 32
+
+[rY][cX]
+Row#0	= 11, 12
+Row#1	= 21, 22
+Row#2	= 31, 32
+
+ReshapeMatrix Transpose for above matrix:
+[rY][cX]
+Row#0	= 11, 21, 31
+Row#1	= 12, 22, 32
 
 */
 #endif
