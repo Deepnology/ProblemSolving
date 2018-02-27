@@ -70,6 +70,7 @@ public:
     }
 };
 /*
-
+AllSubstrSizeKContainDistinctChars SlideWindow1 for "awaglknagawunagwkwagl", "4": kwag, agwk, unag, nagw, wuna, lkna, awun, aglk, knag, gawu, glkn, wagl
+AllSubstrSizeKContainDistinctChars SlideWindow2 for "awaglknagawunagwkwagl", "4": kwag, agwk, unag, nagw, wuna, lkna, awun, aglk, knag, gawu, glkn, wagl
  */
 #endif
