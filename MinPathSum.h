@@ -87,6 +87,51 @@ public:
 		return dp[N - 1];
 	}
 
+
+	struct Greater
+	{
+		bool operator()(const std::pair<int,int> & a, const std::pair<int,int> & b) const
+		{
+			return a.first > b.first;
+		}
+	};
+	//Goldman Sachs onsite
+	int BFS_GeneralCase(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & dest)
+	{
+		int N = maze.size();
+		if (N == 0) return 0;
+		int M = maze[0].size();
+		std::vector<std::vector<int>> dist(N, std::vector<int>(M, INT_MAX));
+		std::vector<std::vector<int>> dir({{-1,0},{1,0},{0,1},{0,-1}});
+		std::priority_queue<std::pair<int,int>, std::vector<std::pair<int,int>>, Greater> minHeap;
+		//<dist from start, i*M+j> where dist is min on top
+
+		minHeap.push({maze[start[0]][start[1]], start[0]*M+start[1]});
+		while (!minHeap.empty())
+		{
+			auto p = minHeap.top();
+			minHeap.pop();
+			int d = p.first;
+			int i = p.second / M;
+			int j = p.second % M;
+			if (dist[i][j] < d) continue;//2nd check
+			dist[i][j] = d;
+			for (int k = 0; k < 4; ++k)
+			{
+				int ii = i + dir[k][0];
+				int jj = j + dir[k][1];
+				if (ii >= 0 && ii < N && jj >= 0 && jj < M
+					&& d + maze[ii][jj] < dist[ii][jj])//1st check
+					minHeap.push({d + maze[ii][jj], ii*M+jj});
+			}
+		}
+
+		Debug::Print2D<int>()(dist, false);
+		Debug::Print2D<int>()(maze, false);
+		int res = dist[dest[0]][dest[1]] == INT_MAX ? -1 : dist[dest[0]][dest[1]];
+		std::cout << "MinPathSum BFS_GeneralCase for above maze from [" << Debug::ToStr1D<int>()(start) << "] to [" << Debug::ToStr1D<int>()(dest) << "]: " << res << std::endl;
+		return res;
+	}
 };
 /*
 [rY][cX]
@@ -109,5 +154,32 @@ Row#2	= 3, 8, 4, 5
 10, 14, 12, 14
 13, 21, 16, 19
 MinPathSum DP_1D: 19
+
+[rY][cX]
+Row#0	= 1, 8, 11, 18
+Row#1	= 10, 14, 12, 14
+Row#2	= 13, 21, 16, 19
+
+[rY][cX]
+Row#0	= 1, 7, 3, 7
+Row#1	= 9, 6, 1, 2
+Row#2	= 3, 8, 4, 5
+
+MinPathSum BFS_GeneralCase for above maze from [0, 0] to [2, 3]: 19
+[rY][cX]
+Row#0	= 53, 52, 45, 41, 34
+Row#1	= 102, 92, 139, 40, 31
+Row#2	= 3, 5, 82, 28, 29
+Row#3	= 80, 6, 82, 23, 85
+Row#4	= 13, 10, 13, 18, 26
+
+[rY][cX]
+Row#0	= 1, 7, 4, 7, 3
+Row#1	= 99, 87, 99, 12, 2
+Row#2	= 3, 2, 77, 5, 1
+Row#3	= 77, 1, 76, 5, 62
+Row#4	= 3, 4, 3, 5, 8
+
+MinPathSum BFS_GeneralCase for above maze from [2, 0] to [0, 0]: 53
 */
 #endif
