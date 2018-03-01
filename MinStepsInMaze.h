@@ -19,7 +19,7 @@ public:
             return a.first > b.first;
         }
     };
-    int BFS(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & dest)
+    int BFS_MinHeap(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & dest)
     {
         int N = maze.size();
         if (N == 0) return 0;
@@ -53,8 +53,56 @@ public:
         Debug::Print2D<int>()(dist, false);
         Debug::Print2D<int>()(maze, false);
         int res = dist[dest[0]][dest[1]] == INT_MAX ? -1 : dist[dest[0]][dest[1]];
-        std::cout << "MinStepsInMaze BFS for above maze from [" << Debug::ToStr1D<int>()(start) << "] to [" << Debug::ToStr1D<int>()(dest) << "]: " << res << std::endl;
+        std::cout << "MinStepsInMaze BFS_MinHeap for above maze from [" << Debug::ToStr1D<int>()(start) << "] to [" << Debug::ToStr1D<int>()(dest) << "]: " << res << std::endl;
         return res;
+    }
+
+    //use minHeap to keep track of minDistFromStart of each node ONLY WHEN "edge distance between nodes are different"!
+    //otherwise, just use a queue and keep track of levels
+    int BFS_Queue(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & dest)
+    {
+        int N = maze.size();
+        if (N == 0) return 0;
+        int M = maze[0].size();
+        std::vector<std::vector<int>> visit(N, std::vector<int>(M, 0));
+        std::vector<std::vector<int>> dir({{-1,0},{1,0},{0,1},{0,-1}});
+        std::queue<int> que;
+        int dist = 0;
+        que.push(0);
+        bool reach = false;
+        while (!que.empty())
+        {
+            int levelCount = que.size();
+            for (int count = 0; count < levelCount; ++count)
+            {
+                auto p = que.front();
+                que.pop();
+                int i = p / M;
+                int j = p % M;
+                if (i == dest[0] && j == dest[1])
+                {
+                    reach = true;
+                    break;
+                }
+                for (int k = 0; k < 4; ++k)
+                {
+                    int ii = i + dir[k][0];
+                    int jj = j + dir[k][1];
+                    if (ii >= 0 && ii < N && jj >= 0 && jj < M && maze[ii][jj] == 0 && !visit[ii][jj])
+                    {
+                        visit[ii][jj] = 1;
+                        que.push(ii * M + jj);
+                    }
+                }
+            }
+            if (reach) break;
+            ++dist;
+        }
+
+        Debug::Print2D<int>()(visit, false);
+        Debug::Print2D<int>()(maze, false);
+        std::cout << "MinStepsInMaze BFS_Queue for above maze from [" << Debug::ToStr1D<int>()(start) << "] to [" << Debug::ToStr1D<int>()(dest) << "]: " << dist << std::endl;
+        return dist;
     }
 };
 /*
@@ -74,6 +122,23 @@ Row#3	= 0, 1, 1, 0, 0, 0
 Row#4	= 0, 0, 1, 0, 1, 0
 Row#5	= 0, 0, 0, 0, 1, 0
 
-MinStepsInMaze BFS for above maze from [0, 0] to [5, 5]: 16
+MinStepsInMaze BFS_MinHeap for above maze from [0, 0] to [5, 5]: 16
+[rY][cX]
+Row#0	= 1, 1, 0, 0, 0, 1
+Row#1	= 0, 1, 0, 0, 0, 1
+Row#2	= 1, 1, 1, 0, 1, 1
+Row#3	= 1, 0, 0, 1, 1, 1
+Row#4	= 1, 1, 0, 1, 0, 1
+Row#5	= 1, 1, 1, 1, 0, 1
+
+[rY][cX]
+Row#0	= 0, 0, 1, 0, 0, 0
+Row#1	= 1, 0, 1, 0, 1, 0
+Row#2	= 0, 0, 0, 1, 0, 0
+Row#3	= 0, 1, 1, 0, 0, 0
+Row#4	= 0, 0, 1, 0, 1, 0
+Row#5	= 0, 0, 0, 0, 1, 0
+
+MinStepsInMaze BFS_Queue for above maze from [0, 0] to [5, 5]: 16
  */
 #endif
