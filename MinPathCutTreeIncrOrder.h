@@ -54,7 +54,7 @@ private:
 		int M = field[0].size();
 		static std::vector<std::vector<int>> dir({ { -1,0 }, { 1,0 }, { 0,-1 }, { 0,1 } });
 
-		//use minHeap to keep track of minDistFromStart of each node ONLY WHEN edge distance between nodes are different!
+		//use minHeap to keep track of minDistFromStart of each node ONLY WHEN "edge distance between nodes are different"!
 		//otherwise, just use a queue and keep track of levels
 
 		std::vector<std::vector<int>> visit(N, std::vector<int>(M, 0));
