@@ -123,7 +123,7 @@ public:
 					jj += dir[k][1];
 					++dd;
 				}
-				if (dist[ii][jj] > dd)
+				if (dist[ii][jj] == INT_MAX)
 					minHeap.push({ dd,ii*M + jj });
 			}
 		}
@@ -184,7 +184,7 @@ public:
 						holeStrs = holeStrs.empty() ? dirStr2 : std::min(holeStrs, dirStr2);
 					}
 				}
-				if (!(ii == hole[0] && jj == hole[1]) && dist[ii][jj] > dd)
+				if (!(ii == hole[0] && jj == hole[1]) && dist[ii][jj] == INT_MAX)
 					minHeap.push({ dd,ii*M + jj,dirStr2 });
 			}
 		}
