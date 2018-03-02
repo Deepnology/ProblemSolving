@@ -13,8 +13,8 @@
 //#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
-#define _2DGrid_
-//#define _BinaryTree_
+//#define _2DGrid_
+#define _BinaryTree_
 //#define _Heap_
 //#define _Graph_
 //#define _RMQLCA_
@@ -24,6 +24,7 @@
 
 /*HashMap*/
 #include "ImplementHashMap.h"
+#include "ConsistentHashing.h"
 
 /*Design*/
 #include "LRUCache.h"
@@ -148,6 +149,7 @@
 #include "PoorPigs.h"
 #include "StringCompression.h"
 #include "SelfDividingNumbers.h"
+#include "LargestMonotoneIncrNum.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -432,6 +434,7 @@
 #include "RemoveBoxes.h"
 #include "MaxSumOfPairMins.h"
 #include "RemoveConsecuSameChars.h"
+#include "PartitionSameCharsInSingleSubstr.h"
 
 /*Trie Suffix Tree Array*/
 #include "SuffixArray.h"
@@ -523,6 +526,7 @@
 #include "ShortestSubArrContainMaxFreqNums.h"
 #include "FindFirstDayContainKEmptySlots.h"
 #include "MaxMSubArrSumWSizeK.h"
+#include "AllSubstrSizeKContainDistinctChars.h"
 
 /*Compare String*/
 #include "EditDistance.h"
@@ -578,6 +582,7 @@
 #include "RemoveNodesWGivenValLinkedList.h"
 #include "PalindromeLinkedList.h"
 #include "EliminateLeftRightOddNumsGame.h"
+#include "SplitNodesInKGroupLinkedList.h"
 
 /*2D Grid*/
 #include "MinPathSum.h"
@@ -640,6 +645,9 @@
 #include "NumOfBoomerangs.h"
 #include "MostSquareDimensionXY.h"
 #include "CountSquaresIn2DGrid.h"
+#include "ReshapeMatrix.h"
+#include "MinStepsInMaze.h"
+#include "MinPathCutTreeIncrOrder.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -715,6 +723,7 @@
 #include "ParseNestedListString.h"
 #include "ParseNestedTernaryExpression.h"
 #include "FindNearestLeafNodeBinaryTree.h"
+#include "SplitBST.h"
 
 /*Heap*/
 #include "BinaryMinHeap.h"
@@ -839,6 +848,10 @@ int main()
 		ihp.Remove(std::string("c"));
 		ihp.Print();
 	}
+    {
+        ConsistentHashingTest4();
+    }
+
 #endif
 #ifdef _Design_
 	RdCout ? redirect_cout::to_file("Out_Design.txt") : redirect_cout::to_cout();
@@ -1934,6 +1947,9 @@ int main()
     }
     {
         SelfDividingNumbers().BruteForce(1, 22);
+    }
+    {
+        LargestMonotoneIncrNum().Linear(332);
     }
 
 #endif
@@ -4581,6 +4597,9 @@ int main()
 		RemoveConsecuSameChars().Linear("aabbcccbadd");
 		RemoveConsecuSameChars().Linear("abbbdbbccddaccddddccaaddcb");
 	}
+    {
+        PartitionSameCharsInSingleSubstr().TwoScanHashMap(std::string("ababcbacadefegdehijhklij"));
+    }
 
 #endif
 #ifdef _TrieSuffixArray_
@@ -5450,6 +5469,10 @@ int main()
     }
     {
         MaxMSubArrSumWSizeK().DP2D(std::vector<int>({1,2,1,2,6,7,5,1}), 2, 3);
+    }
+    {
+        AllSubstrSizeKContainDistinctChars().SlideWindow1(std::string("awaglknagawunagwkwagl"), 4);
+        AllSubstrSizeKContainDistinctChars().SlideWindow2(std::string("awaglknagawunagwkwagl"), 4);
     }
 
 #endif
@@ -6439,6 +6462,27 @@ int main()
 		llOss.str(std::string());
 		PalindromeLinkedList::DeleteLinkedList(head);
 	}
+    {
+        SplitNodesInKGroupLinkedList::ListNode * head = new SplitNodesInKGroupLinkedList::ListNode(1);
+        head->next = new SplitNodesInKGroupLinkedList::ListNode(2);
+        head->next->next = new SplitNodesInKGroupLinkedList::ListNode(3);
+        head->next->next->next = new SplitNodesInKGroupLinkedList::ListNode(4);
+        head->next->next->next->next = new SplitNodesInKGroupLinkedList::ListNode(5);
+        head->next->next->next->next->next = new SplitNodesInKGroupLinkedList::ListNode(6);
+        head->next->next->next->next->next->next = new SplitNodesInKGroupLinkedList::ListNode(7);
+        head->next->next->next->next->next->next->next = new SplitNodesInKGroupLinkedList::ListNode(8);
+        head->next->next->next->next->next->next->next->next = new SplitNodesInKGroupLinkedList::ListNode(9);
+        head->next->next->next->next->next->next->next->next->next = new SplitNodesInKGroupLinkedList::ListNode(10);
+        PrintLinkedList<SplitNodesInKGroupLinkedList::ListNode, std::ostringstream>(head, llOss);
+        std::vector<SplitNodesInKGroupLinkedList::ListNode*> res = SplitNodesInKGroupLinkedList().TwoScan(head, 3);
+        llOss << "SplitNodesInKGroupLinkedList TwoScan for above linked list: " << std::endl;
+        for (auto & h : res)
+            PrintLinkedList<SplitNodesInKGroupLinkedList::ListNode, std::ostringstream>(h, llOss);
+        std::cout << llOss.str() << std::endl;
+        llOss.str(std::string());
+        for (auto & h : res)
+            SplitNodesInKGroupLinkedList::DeleteLinkedList(h);
+    }
 
 #endif
 #ifdef _2DGrid_
@@ -6540,6 +6584,34 @@ int main()
 		);
 		MinPathSum().DP_2D(minPathSumGrid);
 		MinPathSum().DP_1D(minPathSumGrid);
+
+        MinPathSum().BFS_GeneralCase_WNegativeNums(minPathSumGrid, {0,0}, {2,3});
+        MinPathSum().BFS_GeneralCase_WNegativeNums(std::vector<std::vector<int>>(
+                {
+                        {  1,  7,  4,  7,  3 },
+                        { 99, 87, 99, 12,  2 },
+                        {  3,  2, 77,  5,  1 },
+                        { 77,  1, 76,  5, 62 },
+                        {  3,  4,  3,  5,  8 },
+                }), {2,0}, {0,0});
+        MinPathSum().BFS_GeneralCase_WNegativeNums(std::vector<std::vector<int>>(
+                {
+                        {  1,  1, 99,  1,  1,  1 },
+                        { 99,  1, 99,  1, 99,  1 },
+                        {  1,  1,  1, 99,  1,  1 },
+                        {  1, 99, 99,  1,  1,  1 },
+                        {  1,  1, 99,  1, 99,  1 },
+                        {  1,  1,  1,  1, 99,  1 },
+                }), {0,0}, {5,5});
+        MinPathSum().BFS_GeneralCase_WNegativeNums(std::vector<std::vector<int>>(
+                {
+                        {  1,  1, 99,  1,  1,  1 },
+                        { 99,  1, 99, -6, 99,  1 },
+                        {  1,  1,  1, 99,  0, -2 },
+                        {  1, 99, 99,  1,  1,  1 },
+                        {  1,  1, 99,  1, 99,  1 },
+                        {  1,  1,  1,  1, 99,  1 },
+                }), {0,0}, {5,5});
 	}
 	{
 		std::vector<std::vector<int>> triangleGrid(
@@ -7305,6 +7377,27 @@ int main()
 			{ 0, 1, 0, 0, 0 }
 		}), std::vector<int>({ 4,3 }), std::vector<int>({ 0,1 }));
 	}
+    {
+        redirect_cout::to_cout();
+        MinStepsInMaze().BFS_MinHeap(std::vector<std::vector<int>>(
+                {
+                        { 0, 0, 1, 0, 0, 0 },
+                        { 1, 0, 1, 0, 1, 0 },
+                        { 0, 0, 0, 1, 0, 0 },
+                        { 0, 1, 1, 0, 0, 0 },
+                        { 0, 0, 1, 0, 1, 0 },
+                        { 0, 0, 0, 0, 1, 0 },
+                }), std::vector<int>({ 0,0 }), std::vector<int>({ 5,5 }));
+        MinStepsInMaze().BFS_Queue(std::vector<std::vector<int>>(
+                {
+                        { 0, 0, 1, 0, 0, 0 },
+                        { 1, 0, 1, 0, 1, 0 },
+                        { 0, 0, 0, 1, 0, 0 },
+                        { 0, 1, 1, 0, 0, 0 },
+                        { 0, 0, 1, 0, 1, 0 },
+                        { 0, 0, 0, 0, 1, 0 },
+                }), std::vector<int>({ 0,0 }), std::vector<int>({ 5,5 }));
+    }
 	{
 		LonelyPixel().CountLonelyB(std::vector<std::vector<char>>(
 		{
@@ -7447,6 +7540,30 @@ int main()
             CountSquaresIn2DGrid().BruteForce(i);
             CountSquaresIn2DGrid().LinearTime(i);
         }
+    }
+    {
+        ReshapeMatrix().Reshape(std::vector<std::vector<int>>(
+                {
+                        {11,12},
+                        {21,22},
+                        {31,32},
+                }), 2, 3);
+        ReshapeMatrix().Transpose(std::vector<std::vector<int>>(
+                {
+                        {11,12},
+                        {21,22},
+                        {31,32},
+                }));
+    }
+    {
+        MinPathCutTreeIncrOrder().UseBFS(std::vector<std::vector<int>>(
+                {
+                        {54581641,64080174,24346381,69107959},
+                        {86374198,61363882,68783324,79706116},
+                        {668150,92178815,89819108,94701471},
+                        {83920491,22724204,46281641,47531096},
+                        {89078499,18904913,25462145,60813308}
+                }));
     }
 
 #endif
@@ -9246,6 +9363,24 @@ int main()
         FindNearestLeafNodeBinaryTree().Recur(root, 7);
         FindNearestLeafNodeBinaryTree().Recur(root, 4);
         FindNearestLeafNodeBinaryTree::DeleteTree(root);
+        bstOss.str(std::string());
+    }
+    {
+        SplitBST::TreeNode * root = new SplitBST::TreeNode(4);
+        root->left = new SplitBST::TreeNode(2);
+        root->left->left = new SplitBST::TreeNode(1);
+        root->left->right = new SplitBST::TreeNode(3);
+        root->right = new SplitBST::TreeNode(6);
+        root->right->left = new SplitBST::TreeNode(5);
+        root->right->right = new SplitBST::TreeNode(7);
+        PrintBinaryTree<SplitBST::TreeNode, std::ostringstream>(root, bstOss);
+        bstOss << std::endl << "SplitBST for above BST with value=2:" << std::endl;
+        std::vector<SplitBST::TreeNode*> res = SplitBST().Recur(root, 2);
+        for (auto & r : res)
+            PrintBinaryTree<SplitBST::TreeNode, std::ostringstream>(r, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        for (auto & r : res)
+            SplitBST::DeleteTree(r);
         bstOss.str(std::string());
     }
 
