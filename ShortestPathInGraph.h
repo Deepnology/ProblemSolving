@@ -27,6 +27,19 @@ AdjacencyList: O(ElogV) time
 
 Definition of "negative weight cycle" in a graph is a cycle v0 -> v1 -> v2 -> ... -> vt -> v0
 in which weight(v0,v1) + weight(v1,v2) + ... + weight(vt,v0) < 0
+
+Leetcode: Network Delay Time
+There are N network nodes, labelled 1 to N.
+Given times, a list of travel times as directed edges times[i] = (u, v, w)
+, where u is the source node, v is the target node, and w is the time it takes for a signal to travel from source to target.
+Now, we send a signal from a certain node K.
+How long will it take for all nodes to receive the signal?
+If it is impossible, return -1.
+Note:
+N will be in the range [1, 100].
+K will be in the range [1, N].
+The length of times will be in the range [1, 6000].
+All edges times[i] = (u, v, w) will have 1 <= u, v <= N and 1 <= w <= 100.
 */
 class ShortestPathInGraph
 {
@@ -332,6 +345,44 @@ public:
 		std::cout << "ShortestPathInGraph Dijkstra_MinEdges_MinHeap_UndirectedAdjacencyMatrtix from,to: " << source << "," << target << ". Dad: " << Debug::ToStr1D<int>()(dad) << ". Dist: " << Debug::ToStr1D<int>()(dist) << ". Edge: " << Debug::ToStr1D<int>()(edge) << std::endl;
 		return dist;
 	}
+
+    //Leetcode: Network Delay Time
+    struct Greater
+    {
+        bool operator()(const std::pair<int,int> & a, const std::pair<int,int> & b)
+        {
+            return a.first > b.first;
+        }
+    };
+    int NetworkDelayTime_Dijkstra_DAG(std::vector<std::vector<int>> & times, int N, int K)
+    {
+        //find shortest path from src to all other nodes, then return the max path among all shortes paths: Dijkstra
+        std::unordered_map<int,std::unordered_map<int,int>> DAG;//<from,<to,weight>>
+        for (const auto & v : times)
+            DAG[v[0]].insert({v[1],v[2]});
+        std::vector<int> dist(N+1, INT_MAX);//dist[i]=min distance from vertex K to vertex i (1-based)
+        dist[K] = 0;
+        std::priority_queue<std::pair<int,int>, std::vector<std::pair<int,int>>, Greater> minHeap;//<dist from vertex K,adj vertex>
+        minHeap.push({0, K});
+        while (!minHeap.empty())
+        {
+            auto top = minHeap.top();
+            minHeap.pop();
+            int curV = top.second;
+            for (const auto & p : DAG[curV])
+                if (dist[curV]+p.second < dist[p.first])
+                {
+                    dist[p.first] = dist[curV]+p.second;
+                    minHeap.push({dist[p.first], p.first});
+                }
+        }
+
+        int maxPath = 0;
+        for (int i = 1; i <= N; ++i)
+            maxPath = std::max(maxPath, dist[i]);
+
+        return maxPath == INT_MAX ? -1:maxPath;
+    }
 };
 /*
 		           9
