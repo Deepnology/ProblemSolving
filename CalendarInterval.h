@@ -96,7 +96,7 @@ class CalendarIntervalII
 {
     std::map<int,int> map;//<start/end time, positive/negative count>
 public:
-    MyCalendarIntervalII(){}
+    CalendarIntervalII(){}
     bool CheckTripleOverlap_Book(int start, int end)
     {
         ++map[start];
