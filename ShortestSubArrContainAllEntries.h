@@ -1,4 +1,4 @@
-/*HashTable*/
+/*AmazonOA*/
 #ifndef SHORTEST_SUB_ARR_CONTAIN_ALL_ENTRIES_H
 #define SHORTEST_SUB_ARR_CONTAIN_ALL_ENTRIES_H
 #include <vector>
