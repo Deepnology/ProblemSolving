@@ -70,6 +70,24 @@ public:
 		std::cout << "RunLengthEncodedString Encode2 for \"" << s << "\": " << res << std::endl;
 		return res;
 	}
+    std::string Encode3(const std::string & s)
+    {
+        int N = s.size();
+        std::string res;
+        int begin = 0;
+        while (begin < N)
+        {
+            int end = begin + 1;
+            while (s[begin] == s[end])
+                ++end;
+            res += std::to_string(end - begin);
+            res += s.substr(begin, 1);
+            begin = end;
+        }
+
+        std::cout << "RunLengthEncodedString Encode3 for \"" << s << "\": " << res << std::endl;
+        return res;
+    }
 
 	std::string Decode(const std::string & s)
 	{
