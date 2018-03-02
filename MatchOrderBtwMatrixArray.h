@@ -1,8 +1,8 @@
+/*AmazonOA*/
 #ifndef MATCH_ORDER_BTW_MATRIX_ARRAY_H
 #define MATCH_ORDER_BTW_MATRIX_ARRAY_H
 #include "Debug.h"
 /*
-Amazon
 Bob's fruit company is running a promotion in which customers receive prizes for purchasing a secret combination of items.
 The combination will change each day, so Bob wants to use a code list to make it easy to change the combination.
 The code list contains group of fruits.
