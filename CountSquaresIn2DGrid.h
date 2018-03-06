@@ -29,23 +29,38 @@ public:
         std::cout << "CountSquaresIn2DGrid LinearTime for N=" << N << ": " << res << std::endl;
         return res;
     }
+    int Formula_SumOfSquares(int N)
+    {
+        int res = N * (N+1) * (2*N+1) / 6;
+
+        std::cout << "CountSquaresIn2DGrid Formula_SumOfSquares for N=" << N << ": " << res << std::endl;
+        return res;
+    }
 };
 /*
 CountSquaresIn2DGrid BruteForce for N=1: 1
 CountSquaresIn2DGrid LinearTime for N=1: 1
+CountSquaresIn2DGrid Formula_SumOfSquares for N=1: 1
 CountSquaresIn2DGrid BruteForce for N=2: 5
 CountSquaresIn2DGrid LinearTime for N=2: 5
+CountSquaresIn2DGrid Formula_SumOfSquares for N=2: 5
 CountSquaresIn2DGrid BruteForce for N=3: 14
 CountSquaresIn2DGrid LinearTime for N=3: 14
+CountSquaresIn2DGrid Formula_SumOfSquares for N=3: 14
 CountSquaresIn2DGrid BruteForce for N=4: 30
 CountSquaresIn2DGrid LinearTime for N=4: 30
+CountSquaresIn2DGrid Formula_SumOfSquares for N=4: 30
 CountSquaresIn2DGrid BruteForce for N=5: 55
 CountSquaresIn2DGrid LinearTime for N=5: 55
+CountSquaresIn2DGrid Formula_SumOfSquares for N=5: 55
 CountSquaresIn2DGrid BruteForce for N=6: 91
 CountSquaresIn2DGrid LinearTime for N=6: 91
+CountSquaresIn2DGrid Formula_SumOfSquares for N=6: 91
 CountSquaresIn2DGrid BruteForce for N=7: 140
 CountSquaresIn2DGrid LinearTime for N=7: 140
+CountSquaresIn2DGrid Formula_SumOfSquares for N=7: 140
 CountSquaresIn2DGrid BruteForce for N=8: 204
 CountSquaresIn2DGrid LinearTime for N=8: 204
+CountSquaresIn2DGrid Formula_SumOfSquares for N=8: 204
  */
 #endif
