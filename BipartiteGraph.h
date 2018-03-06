@@ -11,6 +11,7 @@
 #include <functional>
 #include "Debug.h"
 /*
+Leetcode: Is Graph Bipartite?
 Aka 2-colorable problem
 Elements of programming interview, Graph: Making wired connection
 Design an algorithm that takes a set of pins and a set of wires connecting pairs of pins
@@ -27,7 +28,7 @@ There is no edge that connects vertices of same set.
 A bipartite graph is possible if the graph coloring is possible using two colors such that vertices in a set are colored with the same color.
 Note that it is possible to color a cycle graph with "even cycle" using two colors.
 
-°ö¾i»PÁëÁå
+ï¿½ï¿½ï¿½iï¿½Pï¿½ï¿½ï¿½ï¿½
 Given an acyclic undirected graph, determine if all the vertices in the graph can be labeled with 2 colors.
 The colors of adjacent vertices cannot be the same.
 
