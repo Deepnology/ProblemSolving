@@ -8,17 +8,19 @@
 //#define _SortSearchSelect_
 //#define _Interval_
 //#define _PermuteCombinePartition_
-//#define _TrieSuffixArray_
+#define _TrieSuffixArray_
 //#define _FindSubstringSubsequence_
 //#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
-#define _BinaryTree_
+//#define _BinaryTree_
 //#define _Heap_
 //#define _Graph_
 //#define _RMQLCA_
 //#define _ThreadSafe_
+//#define _DesignPattern_
+//#define _CPP_
 //#define _PrintFileNameByTag_
 //#define _PrintVSSolutionTree_
 
@@ -443,6 +445,7 @@
 #include "Rope.h"
 #include "FirstUniqueURL.h"
 #include "MaxXORof2NumsInArray.h"
+#include "SearchWordWithPrefixSuffix.h"
 
 /*Find Substring Subsequence*/
 #include "AllSubstr.h"
@@ -648,6 +651,8 @@
 #include "ReshapeMatrix.h"
 #include "MinStepsInMaze.h"
 #include "MinPathCutTreeIncrOrder.h"
+#include "LargestPlusSignIn2DGrid.h"
+#include "CountCornerRectanglesIn2DGrid.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -821,6 +826,37 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+
+/*DesignPattern*/
+#include "DesignPattern_AbstractFactory.h"
+#include "DesignPattern_Adapter.h"
+#include "DesignPattern_Bridge.h"
+#include "DesignPattern_Builder.h"
+#include "DesignPattern_ChainOfResponsibility.h"
+#include "DesignPattern_Command.h"
+#include "DesignPattern_Composite.h"
+#include "DesignPattern_Decorator.h"
+#include "DesignPattern_Facade.h"
+#include "DesignPattern_FactoryMethod.h"
+#include "DesignPattern_Flyweight.h"
+#include "DesignPattern_Interpreter.h"
+#include "DesignPattern_Iterator.h"
+#include "DesignPattern_Mediator.h"
+#include "DesignPattern_Memento.h"
+#include "DesignPattern_NullObject.h"
+#include "DesignPattern_ObjectPool.h"
+#include "DesignPattern_Observer.h"
+#include "DesignPattern_PrivateClassData.h"
+#include "DesignPattern_Prototype.h"
+#include "DesignPattern_Proxy.h"
+#include "DesignPattern_Singleton.h"
+#include "DesignPattern_State.h"
+#include "DesignPattern_Strategy.h"
+#include "DesignPattern_TemplateMethod.h"
+#include "DesignPattern_Visitor.h"
+
+/*CPP*/
+#include "MakeFinal.h"
 
 int main()
 {
@@ -4724,6 +4760,14 @@ int main()
 	{
 		MaxXORof2NumsInArray().FindMaxXOR_BinaryTrie(std::vector<int>({ 3, 10, 5, 25, 2, 8 }));
 	}
+    {
+        SearchWordWithPrefixSuffix_1 s1(std::vector<std::string>({"apple"}));
+        std::cout << "Search(\"a\",\"e\")=" << s1.Search("a", "e") << std::endl;
+        std::cout << "Search(\"b\",\"\")=" << s1.Search("b", "") << std::endl;
+        SearchWordWithPrefixSuffix_2 s2(std::vector<std::string>({"apple"}));
+        std::cout << "Search(\"a\",\"e\")=" << s2.Search("a", "e") << std::endl;
+        std::cout << "Search(\"b\",\"\")=" << s2.Search("b", "") << std::endl;
+    }
 
 #endif
 #ifdef _FindSubstringSubsequence_
@@ -7378,7 +7422,6 @@ int main()
 		}), std::vector<int>({ 4,3 }), std::vector<int>({ 0,1 }));
 	}
     {
-        redirect_cout::to_cout();
         MinStepsInMaze().BFS_MinHeap(std::vector<std::vector<int>>(
                 {
                         { 0, 0, 1, 0, 0, 0 },
@@ -7539,6 +7582,7 @@ int main()
         {
             CountSquaresIn2DGrid().BruteForce(i);
             CountSquaresIn2DGrid().LinearTime(i);
+            CountSquaresIn2DGrid().Formula_SumOfSquares(i);
         }
     }
     {
@@ -7563,6 +7607,26 @@ int main()
                         {668150,92178815,89819108,94701471},
                         {83920491,22724204,46281641,47531096},
                         {89078499,18904913,25462145,60813308}
+                }));
+    }
+    {
+        LargestPlusSignIn2DGrid().BruteForce(5, std::vector<std::vector<int>>({{4,2}}));
+        LargestPlusSignIn2DGrid().DP2D(5, std::vector<std::vector<int>>({{4,2}}));
+    }
+    {
+        CountCornerRectanglesIn2DGrid().BruteForce(std::vector<std::vector<int>>(
+                {
+                        {1,0,0,1,0},
+                        {0,0,1,0,1},
+                        {0,0,0,1,0},
+                        {1,0,1,0,1},
+                }));
+        CountCornerRectanglesIn2DGrid().Better(std::vector<std::vector<int>>(
+                {
+                        {1,0,0,1,0},
+                        {0,0,1,0,1},
+                        {0,0,0,1,0},
+                        {1,0,1,0,1},
                 }));
     }
 
@@ -12173,6 +12237,26 @@ int main()
 	{
 		//SyncDiningPhilosophers::Test();
 	}
+#endif
+
+#ifdef _DesignPattern_
+    RdCout ? redirect_cout::to_file("Out_DesignPattern.txt") : redirect_cout::to_cout();
+    PrintH("DesignPattern");
+    {
+        DesignPattern_Strategy::Test();
+        DesignPattern_TemplateMethod::Test();
+        DesignPattern_Visitor::Test();
+    }
+
+#ifdef _CPP_
+    RdCout ? redirect_cout::to_file("Out_CPP.txt") : redirect_cout::to_cout();
+    PrintH("CPP");
+    {
+        MakeFinal::Test();
+        MakeFinal::Test2();
+    }
+#endif
+
 #endif
 
 #ifdef _PrintFileNameByTag_
