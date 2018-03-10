@@ -49,6 +49,7 @@ public:
 	};
 
 	//O(n) time
+	//inorder traversal of the tree is original array and min heap property is kept
 	TreeNode * Construct_SortedStack(const std::vector<int> & inorder)//inorder is not necessarily sorted
 	{
 		int N = inorder.size();
