@@ -2,6 +2,7 @@
 #define MOVE_ZEROS_TO_END_OF_ARRAY_H
 #include "Debug.h"
 /*
+Leetcode: Move zeros
 Given an integer array, move all zeros to end of array and keep original order.
 see also RemoveSomeElementFromArray.h, AltPosNegNumArray.h
 */
@@ -31,6 +32,23 @@ public:
 		}
 		
 		std::cout << "MoveZerosToEndOfArray InPlace for \"" << before << "\": " << Debug::ToStr1D<int>()(v) << std::endl;
+	}
+
+	void InPlace2(std::vector<int> && nums)
+	{
+		std::string before = Debug::ToStr1D<int>()(nums);
+
+		int N = nums.size();
+		int newEnd = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			if (nums[i] != 0)
+				nums[newEnd++] = nums[i];
+		}
+		for (; newEnd < N; ++newEnd)
+			nums[newEnd] = 0;
+
+		std::cout << "MoveZerosToEndOfArray InPlace2 for \"" << before << "\": " << Debug::ToStr1D<int>()(nums) << std::endl;
 	}
 };
 /*
