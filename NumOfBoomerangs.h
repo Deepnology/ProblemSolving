@@ -38,6 +38,9 @@ public:
 			{
 				if (p.second.size() > 1)
 					res += p.second.size()*(p.second.size() - 1);
+
+				//Combination_NoRepeat_FromNoDupArray + Permutation_FromNoDupArray
+				//n!/(n-k)!, where k=2, equivalent to n*(n-1)
 			}
 		}
 
