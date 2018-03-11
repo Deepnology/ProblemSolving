@@ -113,13 +113,13 @@ Row#3	= [0,0], [0,0], [0,0], [3,3], [-6,-6], [-30,-30]
 Row#4	= [0,0], [0,0], [0,0], [0,0], [-2,-2], [-10,-10]
 Row#5	= [0,0], [0,0], [0,0], [0,0], [0,0], [5,5]
 
-MaxSumParenthesizeArithmeticExpr DP2D for "-8, 4, 2, 3, -2, 5", "1, 1, 0, 1, 1": 1600, MinSum: -350
+MaxSumParenthesizeArithmeticExpr DP2D for [-8, 4, 2, 3, -2, 5], [1, 1, 0, 1, 1]: 1600, MinSum: -350
 [rY][cX]
 Row#0	= [-8,-8], [-16,-16], [8,-19], [104,-95]
 Row#1	= [0,0], [2,2], [-1,-1], [-5,-13]
 Row#2	= [0,0], [0,0], [-3,-3], [-15,-15]
 Row#3	= [0,0], [0,0], [0,0], [5,5]
 
-MaxSumParenthesizeArithmeticExpr DP2D for "-8, 2, -3, 5", "1, 0, 1": 104, MinSum: -95
+MaxSumParenthesizeArithmeticExpr DP2D for [-8, 2, -3, 5], [1, 0, 1]: 104, MinSum: -95
 */
 #endif
