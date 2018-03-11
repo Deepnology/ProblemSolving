@@ -86,7 +86,7 @@ public:
 			}
 		}
 		Debug::Print2D<int>()(dp, false);
-		std::cout << "MaxSumParenthesizeArithmeticExpr DP2D for \"" << Debug::ToStr1D<int>()(v) << "\", \"" << Debug::ToStr1D<int>()(op) << "\": " << dp[0][N - 1].first << ", MinSum: " << dp[0][N - 1].second << std::endl;
+		std::cout << "MaxSumParenthesizeArithmeticExpr DP2D for [" << Debug::ToStr1D<int>()(v) << "], [" << Debug::ToStr1D<int>()(op) << "]: " << dp[0][N - 1].first << ", MinSum: " << dp[0][N - 1].second << std::endl;
 		return dp[0][N - 1].first;
 	}
 
