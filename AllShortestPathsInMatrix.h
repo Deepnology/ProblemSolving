@@ -10,7 +10,7 @@
 /*
 Leetcode: Walls and Gates
 Given a 2D N*M matrix with obstacles, find the shortest distance of each non-obstacle to a (nearest) source.
-1. single source: °ö¾i»PÁëÁå Shortest path in maze
+1. single source: ï¿½ï¿½ï¿½iï¿½Pï¿½ï¿½ï¿½ï¿½ Shortest path in maze
 2. multi-source:
 Google
 http://www.careercup.com/question?id=4716965625069568
@@ -80,6 +80,43 @@ public:
 	}
 
 	//Leetcode: walls(-1) and gates(0). empty(INT_MAX)
+	void WallsAndGates_BFS_Better(std::vector<std::vector<int>> & board)
+	{
+		int N = board.size();
+		if (N == 0) return;
+		int M = board[0].size();
+		if (M == 0) return;
+		std::vector<std::vector<int>> dir({ { -1,0 },{ 1,0 },{ 0,1 },{ 0,-1 } });
+
+		std::queue<int> que;
+		for (int i = 0; i < N; ++i)
+			for (int j = 0; j < M; ++j)
+				if (board[i][j] == 0)
+					que.push(i*M+j); //put all 0s in queue in the beginning
+
+		int dist = 1;
+		while (!que.empty())
+		{
+			int count = que.size();
+			for (int i = 0; i < count; ++i)
+			{
+				int ii = que.front() / M;
+				int jj = que.front() % M;
+				que.pop();
+				for (int k = 0; k < 4; ++k)
+				{
+					int x = ii + dir[k][0];
+					int y = jj + dir[k][1];
+					if (x >= 0 && x < N && y >= 0 && y < M && board[x][y] == INT_MAX)
+					{
+						board[x][y] = dist;
+						que.push(x*M+y);
+					}
+				}
+			}
+			++dist;
+		}
+	}
 	void WallsAndGates_BFS(std::vector<std::vector<int>> & board)
 	{
 		int N = board.size();
