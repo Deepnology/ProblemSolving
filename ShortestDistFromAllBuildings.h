@@ -30,9 +30,14 @@ public:
 		int N = board.size();
 		int M = board[0].size();
 
+		std::vector<std::vector<int>> dir({{0,1},{0,-1},{1,0},{-1,0}});
 		std::vector<std::vector<int>> dist(N, std::vector<int>(M, 0));//the sum of distance to each building from each empty land
 		std::vector<std::vector<int>> reachable(N, std::vector<int>(M, 0));//the reachable building count of each empty land
 		int buildingCount = 0;
+		for (int i = 0; i < N; ++i)
+			for (int j = 0; j < M; ++j)
+				if (board[i][j] == 1)
+					++buildingCount;
 
 		for (int i = 0; i < N; ++i)
 		{
@@ -40,20 +45,17 @@ public:
 			{
 				if (board[i][j] == 1)
 				{
-					++buildingCount;
-
-					//BFS from (i,j)
-					std::vector<std::vector<int>> visit(N, std::vector<int>(M, 0));//without keep track of visit: time limit exceeded!
+					int connectedBuilding = 0;
+					std::vector<std::vector<int>> visit(N, std::vector<int>(M, 0));
+					visit[i][j] = 1;
 					std::queue<std::pair<int, int>> que;
 					que.push({ i, j });
-					int distBFS = -1;//-1 is to cancel the increment for the first element in queue which is a building
+					int distBFS = 0;//-1 is to cancel the increment for the first element in queue which is a building
 					while (!que.empty())
 					{
-						++distBFS;//increment distance for each level
 						int curLevelCount = que.size();
-						for (int k = 0; k < curLevelCount; ++k)//just pop out curLevelCount elements from queue (keep nextLevel elements in queue for next incremented distBFS)
+						while (curLevelCount--)
 						{
-							//now visit the node
 							int ii = que.front().first;
 							int jj = que.front().second;
 							que.pop();
@@ -63,29 +65,28 @@ public:
 								dist[ii][jj] += distBFS;
 							}
 
-							//check for node's neighbors
-							if (ii - 1 >= 0 && visit[ii - 1][jj] == 0 && board[ii - 1][jj] == 0)
+							for (int d = 0; d < 4; ++d)
 							{
-								visit[ii - 1][jj] = 1;
-								que.push({ ii - 1, jj });
-							}
-							if (ii + 1 < N && visit[ii + 1][jj] == 0 && board[ii + 1][jj] == 0)
-							{
-								visit[ii + 1][jj] = 1;
-								que.push({ ii + 1, jj });
-							}
-							if (jj - 1 >= 0 && visit[ii][jj - 1] == 0 && board[ii][jj - 1] == 0)
-							{
-								visit[ii][jj - 1] = 1;
-								que.push({ ii, jj - 1 });
-							}
-							if (jj + 1 < M && visit[ii][jj + 1] == 0 && board[ii][jj + 1] == 0)
-							{
-								visit[ii][jj + 1] = 1;
-								que.push({ ii, jj + 1 });
+								int x = ii+dir[d][0];
+								int y = jj+dir[d][1];
+								if (x>=0 && x<N && y>=0 && y<M && visit[x][y] == 0)
+								{
+									if (board[x][y] == 0)
+									{
+										visit[x][y] = 1;
+										que.push({x,y});
+									}
+									else if (board[x][y] == 1)
+									{
+										visit[x][y] = 1;
+										++connectedBuilding;
+									}
+								}
 							}
 						}
+						++distBFS;
 					}
+					if (connectedBuilding != buildingCount - 1) return -1;//early return if cur building cannot connect all other buildings
 				}
 			}
 		}
