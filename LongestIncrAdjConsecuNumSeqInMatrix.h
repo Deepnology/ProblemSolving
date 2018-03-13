@@ -48,17 +48,21 @@ private:
 	{
 		int N = board.size();//num of rows
 		int M = board[0].size();//num of cols
-		
+
 		if (used[x][y] != -1)
 			return used[x][y];
 
-		int up = (x - 1 >= 0 && board[x - 1][y] == board[x][y] + 1) ? this->DFSRecur(board, x - 1, y, used) : 0;
-		int down = (x + 1 < N && board[x + 1][y] == board[x][y] + 1) ? this->DFSRecur(board, x + 1, y, used) : 0;
-		int left = (y - 1 >= 0 && board[x][y - 1] == board[x][y] + 1) ? this->DFSRecur(board, x, y - 1, used) : 0;
-		int right = (y + 1 < M && board[x][y + 1] == board[x][y] + 1) ? this->DFSRecur(board, x, y + 1, used) : 0;
+		static std::vector<std::vector<int>> dir({{-1,0},{1,0},{0,1},{0,-1}});
+		int len = 0;
+		for (int d = 0; d < 4; ++d)
+		{
+			int i = x + dir[d][0];
+			int j = y + dir[d][1];
+			if (i >= 0 && i < N && j >= 0 && j < M && board[i][j] > board[x][y])
+				len = std::max(len, DFSRecur(board, i, j, used));
+		}
 
-		int curLen = 1 + std::max(std::max(std::max(up, down), left), right);
-		return used[x][y] = curLen;
+		return used[x][y] = len + 1;
 	}
 };
 /*
