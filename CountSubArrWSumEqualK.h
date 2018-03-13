@@ -1,3 +1,4 @@
+/*Facebook*/
 #ifndef COUNT_SUBARR_W_SUM_EQUAL_K_H
 #define COUNT_SUBARR_W_SUM_EQUAL_K_H
 #include "Debug.h"
@@ -26,6 +27,36 @@ class CountSubArrWSumEqualK
 {
 public:
 	CountSubArrWSumEqualK() {}
+
+	int NonNegativeNums_SlideWindow(const std::vector<int> & nums, int k)//same for SubArrWGivenSum.h
+	{
+		int N = nums.size();
+		int res = 0;
+		int begin = 0;
+		int sum = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			sum += nums[i];
+			while (sum - nums[begin] > k && begin < i)
+			{
+				sum -= nums[begin];
+				++begin;
+			}
+			//now [begin,i] is the local longest subarr with sum <= k
+			int sum2 = sum;
+			int begin2 = begin;
+			if (sum2 == k)
+				++res;
+			while (sum2 - nums[begin2] == k && begin2 < i)
+			{
+				sum2 -= nums[begin2++];
+				++res;
+			}
+		}
+
+		std::cout << "CountSubArrWSumEqualK NonNegativeNums_SlideWindow for \"" << Debug::ToStr1D<int>()(nums) << "\", k=\"" << k << "\": " << res << std::endl;
+		return res;
+	}
 
 	int UsePrefixSumMap(const std::vector<int> & nums, int k)
 	{
@@ -69,6 +100,7 @@ public:
 	}
 };
 /*
+CountSubArrWSumEqualK NonNegativeNums_SlideWindow for "1, 1, 1", k="2": 2
 CountSubArrWSumEqualK UsePrefixSumMap for "1, 1, 1", k="2": 2
 CountSubArrWSumEqualK FindAll_PrefixSumMap for "1, 1, 1", k="2": [0,1], [1,2]
 CountSubArrWSumEqualK UsePrefixSumMap for "0, 1, 0, -2, 2, 1, 0, 0, -2", k="1": 16
