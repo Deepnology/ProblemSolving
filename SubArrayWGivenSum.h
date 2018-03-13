@@ -105,6 +105,14 @@ private:
 	}
 };
 /*
+SubArrayWGivenSum SlideWindow_NonNegativeArr for "0" from "0, 0, 0":
+Row#0	= [0,0]: 0
+Row#1	= [0,1]: 0, 0
+Row#2	= [1,1]: 0
+Row#3	= [0,2]: 0, 0, 0
+Row#4	= [1,2]: 0, 0
+Row#5	= [2,2]: 0
+
 SubArrayWGivenSum SlideWindow_NonNegativeArr for "4" from "1, 2, 1, 0, 2, 1, 2, 0, 0, 1, 1, 2, 4":
 Row#0	= [0,2]: 1, 2, 1
 Row#1	= [0,3]: 1, 2, 1, 0
