@@ -37,7 +37,7 @@ public:
 			for (int col = 0; col <= 2; ++col)
 			{
 				if (keypad[row][col] != '*' && keypad[row][col] != '#')
-					count += this->dfs_recur(keypad, row, col, n);
+					count += dfs_recur(keypad, row, col, n);
 			}
 		}
 		Debug::Print2D<char>()(keypad, false);
@@ -51,31 +51,15 @@ private:
 			return 1;
 
 		int count = 0;
-		/*current key*/
-		if (rowY >= 0 && rowY <= 3 && colX >= 0 && colX <= 2 && keypad[rowY][colX] != '*' && keypad[rowY][colX] != '#')
+		static std::vector<std::vector<int>> dir({{0,0},{-1,0},{1,0},{0,1},{0,-1}});
+		for (int d = 0; d < 5; ++d)
 		{
-			count += this->dfs_recur(keypad, rowY, colX, n - 1);
+			int i = rowY + dir[d][0];
+			int j = colX + dir[d][1];
+			if (i >= 0 && i <= 3 && j >= 0 && j <= 2 && keypad[i][j] != '*' && keypad[i][j] != '#')
+				count += dfs_recur(keypad, i, j, n-1);
 		}
-		/*move up*/
-		if (rowY - 1 >= 0 && rowY - 1 <= 3 && colX >= 0 && colX <= 2 && keypad[rowY - 1][colX] != '*' && keypad[rowY - 1][colX] != '#')
-		{
-			count += this->dfs_recur(keypad, rowY - 1, colX, n - 1);
-		}
-		/*move down*/
-		if (rowY + 1 >= 0 && rowY + 1 <= 3 && colX >= 0 && colX <= 2 && keypad[rowY + 1][colX] != '*' && keypad[rowY + 1][colX] != '#')
-		{
-			count += this->dfs_recur(keypad, rowY + 1, colX, n - 1);
-		}
-		/*move left*/
-		if (rowY >= 0 && rowY <= 3 && colX - 1 >= 0 && colX - 1 <= 2 && keypad[rowY][colX - 1] != '*' && keypad[rowY][colX - 1] != '#')
-		{
-			count += this->dfs_recur(keypad, rowY, colX - 1, n - 1);
-		}
-		/*move right*/
-		if (rowY >= 0 && rowY <= 3 && colX + 1 >= 0 && colX + 1 <= 2 && keypad[rowY][colX + 1] != '*' && keypad[rowY][colX + 1] != '#')
-		{
-			count += this->dfs_recur(keypad, rowY, colX + 1, n - 1);
-		}
+
 		return count;
 	}
 
@@ -87,6 +71,7 @@ public:
 		if (n == 1)
 			return 10;
 
+		std::vector<std::vector<int>> dir({{0,0},{-1,0},{1,0},{0,1},{0,-1}});
 		std::vector<std::vector<std::vector<int> > > dp(4, std::vector<std::vector<int> >(3, std::vector<int>(n + 1)));
 		for (int row = 0; row <= 3; ++row)
 		{
@@ -106,21 +91,14 @@ public:
 					if (keypad[row][col] != '*' && keypad[row][col] != '#')
 					{
 						dp[row][col][move] = 0;
-						/*current key*/
-						if (row >= 0 && row <= 3 && col >= 0 && col <= 2 && keypad[row][col] != '*' && keypad[row][col] != '#')
-							dp[row][col][move] += dp[row][col][move - 1];
-						/*move up*/
-						if (row - 1 >= 0 && row - 1 <= 3 && col >= 0 && col <= 2 && keypad[row - 1][col] != '*' && keypad[row - 1][col] != '#')
-							dp[row][col][move] += dp[row - 1][col][move - 1];
-						/*move down*/
-						if (row + 1 >= 0 && row + 1 <= 3 && col >= 0 && col <= 2 && keypad[row + 1][col] != '*' && keypad[row + 1][col] != '#')
-							dp[row][col][move] += dp[row + 1][col][move - 1];
-						/*move left*/
-						if (row >= 0 && row <= 3 && col - 1 >= 0 && col - 1 <= 2 && keypad[row][col - 1] != '*' && keypad[row][col - 1] != '#')
-							dp[row][col][move] += dp[row][col - 1][move - 1];
-						/*move right*/
-						if (row >= 0 && row <= 3 && col + 1 >= 0 && col + 1 <= 2 && keypad[row][col + 1] != '*' && keypad[row][col + 1] != '#')
-							dp[row][col][move] += dp[row][col + 1][move - 1];
+
+						for (int d = 0; d < 5; ++d)
+						{
+							int i = row + dir[d][0];
+							int j = col + dir[d][1];
+							if (i >= 0 && i <= 3 && j >= 0 && j <= 2 && keypad[i][j] != '*' && keypad[i][j] != '#')
+								dp[row][col][move] += dp[i][j][move-1];
+						}
 					}
 				}
 			}
