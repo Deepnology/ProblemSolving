@@ -9,7 +9,7 @@
 /*
 Elements of programming interview, Recursion: Enumerate all non-attacking placements of n-Queens
 Leetcode: N-Queens I
-// The n-queens puzzle is the problem of placing n queens on an n¡Ñn chessboard
+// The n-queens puzzle is the problem of placing n queens on an nxn chessboard
 // such that no two queens attack each other. 
 // (any two queens cannot be on the same row, column, or diagonal.)
 // Complexity:
@@ -183,6 +183,58 @@ private:
 	}
 };
 /*
+NQueens1 for "1":
+[cX][rY]
+Row#0	= Q
+
+NQueens2 for "1":
+[cX][rY]
+Row#0	= Q
+
+NQueens1 Total Queens for "1" is: 1
+NQueens2 Total Queens for "1" is: 1
+NQueens1 for "2":
+NQueens2 for "2":
+NQueens1 Total Queens for "2" is: 0
+NQueens2 Total Queens for "2" is: 0
+NQueens1 for "3":
+NQueens2 for "3":
+NQueens1 Total Queens for "3" is: 0
+NQueens2 Total Queens for "3" is: 0
+NQueens1 for "4":
+[cX][rY]
+Row#0	= .Q.., ..Q.
+Row#1	= ...Q, Q...
+Row#2	= Q..., ...Q
+Row#3	= ..Q., .Q..
+
+NQueens2 for "4":
+[cX][rY]
+Row#0	= .Q.., ..Q.
+Row#1	= ...Q, Q...
+Row#2	= Q..., ...Q
+Row#3	= ..Q., .Q..
+
+NQueens1 Total Queens for "4" is: 2
+NQueens2 Total Queens for "4" is: 2
+NQueens1 for "5":
+[cX][rY]
+Row#0	= Q...., Q...., .Q..., .Q..., ..Q.., ..Q.., ...Q., ...Q., ....Q, ....Q
+Row#1	= ..Q.., ...Q., ...Q., ....Q, Q...., ....Q, Q...., .Q..., .Q..., ..Q..
+Row#2	= ....Q, .Q..., Q...., ..Q.., ...Q., .Q..., ..Q.., ....Q, ...Q., Q....
+Row#3	= .Q..., ....Q, ..Q.., Q...., .Q..., ...Q., ....Q, ..Q.., Q...., ...Q.
+Row#4	= ...Q., ..Q.., ....Q, ...Q., ....Q, Q...., .Q..., Q...., ..Q.., .Q...
+
+NQueens2 for "5":
+[cX][rY]
+Row#0	= Q...., Q...., .Q..., .Q..., ..Q.., ..Q.., ...Q., ...Q., ....Q, ....Q
+Row#1	= ..Q.., ...Q., ...Q., ....Q, Q...., ....Q, Q...., .Q..., .Q..., ..Q..
+Row#2	= ....Q, .Q..., Q...., ..Q.., ...Q., .Q..., ..Q.., ....Q, ...Q., Q....
+Row#3	= .Q..., ....Q, ..Q.., Q...., .Q..., ...Q., ....Q, ..Q.., Q...., ...Q.
+Row#4	= ...Q., ..Q.., ....Q, ...Q., ....Q, Q...., .Q..., Q...., ..Q.., .Q...
+
+NQueens1 Total Queens for "5" is: 10
+NQueens2 Total Queens for "5" is: 10
 NQueens1 for "6":
 [cX][rY]
 Row#0	= .Q...., ..Q..., ...Q.., ....Q.
