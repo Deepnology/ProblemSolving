@@ -26,8 +26,8 @@ Leetcode: Valid Number
 // Regular Expression: depending on language
 // Finite State Machine: O(n) time, O(1) space
 
-follow: «e­±¦³
-be followed by: «á­±¦³
+follow: ï¿½eï¿½ï¿½ï¿½ï¿½
+be followed by: ï¿½á­±ï¿½ï¿½
 
 Rules:
 1.
@@ -46,21 +46,63 @@ Rules:
 */
 class ValidNumber
 {
-private:
-	static int table[9][6];
-	enum Type
-	{
-		Invalid,//0
-		Space,//1
-		Sign,//2
-		Digit,//3
-		Dot,//4
-		Exp//5
-	};
 public:
 	ValidNumber(){}
 	~ValidNumber(){}
 
+    bool Better(const std::string & s)
+    {
+        bool res = this->better(s);
+        std::cout << "ValidNumber Better for \"" << s << "\": " << res << std::endl;
+        return res;
+    }
+private:
+    bool better(const std::string & s)
+    {
+        int N = s.size();
+        if (N == 0)
+            return false;
+
+        int i = 0;
+        //1. skip leading space
+        while(i < N && s[i] == ' ')
+            ++i;
+        //2. check sign
+        if (i < N && (s[i] == '+' || s[i] == '-'))
+            ++i;
+        //3. check countDigit and countPoint
+        int countDigit = 0;
+        int countPoint = 0;
+        while (i < N && (isdigit(s[i]) || s[i] == '.'))
+        {
+            s[i] == '.' ? ++countPoint : ++countDigit;
+            ++i;
+        }
+        if (countDigit < 1 || countPoint > 1)
+            return false;
+        //4. check e
+        if (i < N && s[i] == 'e')
+        {
+            ++i;
+            if (i < N && (s[i] == '+' || s[i] == '-'))
+                ++i;
+            countDigit = 0;
+            while (i < N && isdigit(s[i]))
+            {
+                ++countDigit;
+                ++i;
+            }
+            if (countDigit < 1)
+                return false;
+        }
+        //5. skip trailing space
+        while (i < N && s[i] == ' ')
+            ++i;
+
+        return i == N;
+    }
+
+public:
 	bool BruteForce(const std::string & s)
 	{
 		bool res = this->bruteForce(s);
@@ -159,7 +201,19 @@ public:
 		std::cout << "ValidNumber FiniteAutomata for \"" << s << "\": " << res << std::endl;
 		return res;
 	}
+private:
+    static int table[9][6];
+    enum Type
+    {
+        Invalid,//0
+        Space,//1
+        Sign,//2
+        Digit,//3
+        Dot,//4
+        Exp//5
+    };
 
+public:
 	bool Regex(const std::string & s)
 	{
 		std::regex isnum("^(\\s*)[\\+-]?\\d*(\\.\\d+)?([eE][\\+-]?\\d+)?(\\s*)$");
@@ -183,6 +237,20 @@ int ValidNumber::table[9][6] =
 };
 
 /*
+ValidNumber Better for "+7.e-9": 1
+ValidNumber Better for "+.7e-9": 1
+ValidNumber Better for "+9e-3": 1
+ValidNumber Better for "+9.e-3": 1
+ValidNumber Better for "+9.e3": 1
+ValidNumber Better for "9.": 1
+ValidNumber Better for ".9": 1
+ValidNumber Better for ".9e-3": 1
+ValidNumber Better for "+.9": 1
+ValidNumber Better for "+.e9": 0
+ValidNumber Better for ".e9": 0
+ValidNumber Better for "e9": 0
+ValidNumber Better for "  -.18e77  ": 1
+ValidNumber Better for "e9": 0
 ValidNumber BruteForce for "+7.e-9": 1
 ValidNumber BruteForce for "+.7e-9": 1
 ValidNumber BruteForce for "+9e-3": 1
@@ -195,6 +263,7 @@ ValidNumber BruteForce for "+.9": 1
 ValidNumber BruteForce for "+.e9": 0
 ValidNumber BruteForce for ".e9": 0
 ValidNumber BruteForce for "e9": 0
+ValidNumber BruteForce for "  -.18e77  ": 1
 ValidNumber Regex for "  -.18e77  ": 1
 ValidNumber FiniteAutomata for "  -.18e77  ": 1
 */
