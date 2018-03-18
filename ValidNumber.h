@@ -250,7 +250,6 @@ ValidNumber Better for "+.e9": 0
 ValidNumber Better for ".e9": 0
 ValidNumber Better for "e9": 0
 ValidNumber Better for "  -.18e77  ": 1
-ValidNumber Better for "e9": 0
 ValidNumber BruteForce for "+7.e-9": 1
 ValidNumber BruteForce for "+.7e-9": 1
 ValidNumber BruteForce for "+9e-3": 1
