@@ -791,7 +791,12 @@ namespace Debug
 	public:
 		ToStr1D(){}
 		~ToStr1D(){}
-
+		std::string operator()(const std::pair<T,U> & p)
+		{
+			std::ostringstream oss;
+			oss << p.first << ", " << p.second;
+			return oss.str();
+		}
 		std::string operator()(const std::vector<T> & v)
 		{
 			std::ostringstream oss;
