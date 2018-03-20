@@ -68,7 +68,7 @@ public:
             else if (!(A[i-1] < B[i]) || !(B[i-1] < A[i]))//cannot swap
             {
                 notSwap[i] = notSwap[i-1];
-                swap[i] = swap[i-1] + 1;
+                swap[i] = swap[i-1] + 1;//if already swapped at i-1, need to swap at i back, so +1
             }
             else//either swap or notSwap
             {
