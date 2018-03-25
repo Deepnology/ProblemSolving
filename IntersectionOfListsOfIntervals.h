@@ -75,5 +75,15 @@ IntersectionOfListsOfIntervals Linear for above 4 arrays: input, input, res1, re
 [2,2], [5,6]
 [2,2], [5,6]
 IntersectionOfListsOfIntervals Linear for above 4 arrays: input, input, res1, res2
+[3,8], [100,150]
+[2,5], [7,10]
+[3,5], [7,8]
+[3,5], [7,8]
+IntersectionOfListsOfIntervals Linear for above 4 arrays: input, input, res1, res2
+[0,4], [7,12]
+[1,3], [5,8], [9,11]
+[1,3], [7,8], [9,11]
+[1,3], [7,11]
+IntersectionOfListsOfIntervals Linear for above 4 arrays: input, input, res1, res2
  */
 #endif
