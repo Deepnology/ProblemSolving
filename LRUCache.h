@@ -147,7 +147,7 @@ class URLHistory2
 {
 	struct GreaterComp
 	{
-		bool operator()(const std::pair<std::string, int> & a, const std::pair<std::string, int> & b)
+		bool operator()(const std::pair<std::string, int> & a, const std::pair<std::string, int> & b) const
 		{
 			//for unique keys that appear in a pair type:
 			//must compare both fields in the pair
