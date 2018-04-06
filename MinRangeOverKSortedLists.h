@@ -47,9 +47,9 @@ public:
 	//1. Use MinHeap
 	struct CompGreater
 	{
-		bool operator()(const std::pair<int, std::pair<int, int>> & a, const std::pair<int, std::pair<int, int>> & b)
+		bool operator()(const std::pair<int, std::pair<int, int>> & a, const std::pair<int, std::pair<int, int>> & b) const
 		{
-			return a.first > b.first;
+			return a.first != b.first ? a.first > b.first : a.second.first != b.second.first ? a.second.first < b.second.first : a.second.second < b.second.second;
 		}
 	};
 	int Solve_MinHeap(const std::vector<std::vector<int>> & lists)
@@ -111,9 +111,9 @@ public:
 	//2. Use SortedSet
 	struct CompLess
 	{
-		bool operator()(const std::pair<int, std::pair<int, int>> & a, const std::pair<int, std::pair<int, int>> & b)
+		bool operator()(const std::pair<int, std::pair<int, int>> & a, const std::pair<int, std::pair<int, int>> & b) const
 		{
-			return a.first != b.first ? a.first < b.first : a.second.first < b.second.first;
+			return a.first != b.first ? a.first < b.first : a.second.first != b.second.first ? a.second.first < b.second.first : a.second.second < b.second.second;
 		}
 	};
 	int Solve_SortedSet(const std::vector<std::vector<int> > & lists)
