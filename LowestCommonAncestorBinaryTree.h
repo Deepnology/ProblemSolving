@@ -148,6 +148,79 @@ private:
 	}
 
 	//2. bottom up, with parent ptr
+	//2.0.1 construct ChdToParent map
+    TreeNode * Find_Iterate_ChdToP(TreeNode * root, TreeNode * a, TreeNode * b)
+    {
+        if (root == NULL) return NULL;
+        std::unordered_map<TreeNode *, TreeNode *> chdToP;
+        build_ChdToP_Recur(root, chdToP);
+        chdToP[root] = NULL;
+        TreeNode * LCA = NULL;
+        std::unordered_set<TreeNode *> visit;
+        while (a || b)
+        {
+            if (a)
+            {
+                if (visit.count(a))
+                {
+                    LCA = a;
+                    break;
+                }
+                visit.insert(a);
+                a = chdToP[a];
+            }
+            if (b)
+            {
+                if (visit.count(b))
+                {
+                    LCA = b;
+                    break;
+                }
+                visit.insert(b);
+                b = chdToP[b];
+            }
+        }
+        return LCA;
+    }
+    //2.0.2 construct ChdToParent map
+    TreeNode * Find_Iterate_ChdToP_Queue(TreeNode * root, TreeNode * a, TreeNode * b)
+    {
+        if (root == NULL) return NULL;
+        std::unordered_map<TreeNode *, TreeNode *> chdToP;
+        build_ChdToP_Recur(root, chdToP);
+        chdToP[root] = NULL;
+        TreeNode * LCA = NULL;
+        std::unordered_set<TreeNode *> visit;
+        std::queue<TreeNode *> que;
+        que.push(a); que.push(b);
+        while (!que.empty())
+        {
+            TreeNode * cur = que.front(); que.pop();
+            if (visit.count(cur))
+            {
+                LCA = cur;
+                break;
+            }
+            visit.insert(cur);
+            if (chdToP.count(cur) && chdToP[cur])
+                que.push(chdToP[cur]);
+        }
+        return LCA;
+    }
+    void build_ChdToP_Recur(TreeNode * cur, std::unordered_map<TreeNode*, TreeNode*> & chdToP)
+    {
+        if (cur == NULL) return;
+        if (cur->left)
+        {
+            chdToP[cur->left] = cur;
+            build_ChdToP_Recur(cur->left, chdToP);
+        }
+        if (cur->right)
+        {
+            chdToP[cur->right] = cur;
+            build_ChdToP_Recur(cur->right, chdToP);
+        }
+    }
 	//2.1 count depth difference
 public:
 	TreeNode * Find_Iterate_WParentPtr(TreeNode * a, TreeNode * b)
