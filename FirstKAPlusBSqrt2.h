@@ -34,9 +34,9 @@ public:
 	typedef std::pair<std::pair<int, int>, double> Num;//first.first: a, first.second: b, second: a + b*Sqrt(2)
 	struct NumSmallerThan
 	{
-		bool operator()(const Num & a, const Num & b)
+		bool operator()(const Num & a, const Num & b) const
 		{
-			return a.second < b.second;
+			return a.second != b.second ? a.second < b.second : a.first.first != b.first.first ? a.first.first < b.first.first : a.first.second < b.first.second;
 		}
 	};
 	std::vector<Num> BFS_MinHeap(int k)
