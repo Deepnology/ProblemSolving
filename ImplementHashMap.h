@@ -1,6 +1,9 @@
 #ifndef IMPLEMENT_HASH_MAP_H
 #define IMPLEMENT_HASH_MAP_H
-#include "Debug.h"
+#include <string>
+#include <vector>
+#include <iostream>
+#include <sstream>
 /*
 http://blog.csdn.net/u013325815/article/details/52907170
 */
