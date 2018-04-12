@@ -198,6 +198,54 @@ public:
 			else if (maxLen == dp[j])
 				res += dp2[j];
 		}
+		std::cout << Debug::ToStr1D<int>()(dp) << std::endl;
+		std::cout << Debug::ToStr1D<int>()(dp2) << std::endl;
+		std::cout << "LIS Count_LIS_DP1D for \"" << Debug::ToStr1D<int>()(v) << "\": " << res << std::endl;
+		return res;
+	}
+	int Count_LIS_Greedy_LowerBound(const std::vector<int> & v)
+	{
+		int N = v.size();
+		std::vector<int> sorted;
+		std::vector<std::vector<std::pair<int,int>>> aux;
+		for (int i = 0; i < N; ++i)
+		{
+			auto lb = std::lower_bound(sorted.begin(), sorted.end(), v[i]);
+
+			if (lb == sorted.end())
+			{
+				sorted.push_back(v[i]);
+				aux.push_back(std::vector<std::pair<int,int>>({{v[i],0}}));
+				lb = std::prev(sorted.end());
+			}
+			else
+			{
+				*lb = v[i];
+				aux[lb-sorted.begin()].push_back({v[i],0});
+			}
+
+
+			int lbIdx = lb - sorted.begin();
+			if (lbIdx == 0)
+				aux[lbIdx].back().second = 1;
+			else
+			{
+				int count = 0;
+				for (auto & p : aux[lbIdx-1])
+					if (p.first < v[i])
+						count += p.second;
+				aux[lbIdx].back().second = count;
+			}
+
+			std::cout << Debug::ToStr1D<int>()(sorted) << std::endl;
+			Debug::Print2D<int>()(aux, true, true);
+		}
+		int res = 0;
+		if (!aux.empty())
+			for (auto & p : aux.back())
+				res += p.second;
+
+		std::cout << "LIS Count_LIS_Greedy_LowerBound for \"" << Debug::ToStr1D<int>()(v) << "\": " << res << std::endl;
 		return res;
 	}
 
@@ -712,5 +760,146 @@ Row#7	= 7, 7,  ,
 LIS Count_IS_DP1D_Quadratic for "3, 2, 4, 5, 4": 14
 0, 0, 1, 1, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 LIS Count_IS_DP1D_Linear for "dcefe": 14
+
+1, 1, 2, 3, 3, 4, 2, 1, 3, 2, 4, 3, 5, 4, 6, 5
+1, 1, 2, 2, 2, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+LIS Count_LIS_DP1D for "3, 1, 5, 7, 6, 8, 2, -5, 4, -4, 5, -3, 6, -2, 7, -1": 1
+1, 1, 2, 2, 3, 4, 4, 5
+1, 1, 2, 2, 4, 4, 4, 8
+LIS Count_LIS_DP1D for "1, 1, 5, 5, 6, 7, 7, 8": 8
+3
+[cX][rY]
+Row#0	=	[3,1]
+
+1
+[cX][rY]
+Row#0	=	[3,1]
+Row#1	=	[1,1]
+
+1, 5
+[cX][rY]
+Row#0	=	[3,1],	[5,2]
+Row#1	=	[1,1],
+
+1, 5, 7
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2]
+Row#1	=	[1,1],		,
+
+1, 5, 6
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2]
+Row#1	=	[1,1],		,	[6,2]
+
+1, 5, 6, 8
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4]
+Row#1	=	[1,1],		,	[6,2],
+
+1, 2, 6, 8
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4]
+Row#1	=	[1,1],	[2,1],	[6,2],
+
+-5, 2, 6, 8
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4]
+Row#1	=	[1,1],	[2,1],	[6,2],
+Row#2	=	[-5,1],		,		,
+
+-5, 2, 4, 8
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4]
+Row#1	=	[1,1],	[2,1],	[6,2],
+Row#2	=	[-5,1],		,	[4,1],
+
+-5, -4, 4, 8
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4]
+Row#1	=	[1,1],	[2,1],	[6,2],
+Row#2	=	[-5,1],	[-4,1],	[4,1],
+
+-5, -4, 4, 5
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4]
+Row#1	=	[1,1],	[2,1],	[6,2],	[5,1]
+Row#2	=	[-5,1],	[-4,1],	[4,1],
+
+-5, -4, -3, 5
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4]
+Row#1	=	[1,1],	[2,1],	[6,2],	[5,1]
+Row#2	=	[-5,1],	[-4,1],	[4,1],
+Row#3	=		,		,	[-3,1],
+
+-5, -4, -3, 5, 6
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4],	[6,1]
+Row#1	=	[1,1],	[2,1],	[6,2],	[5,1],
+Row#2	=	[-5,1],	[-4,1],	[4,1],		,
+Row#3	=		,		,	[-3,1],		,
+
+-5, -4, -3, -2, 6
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4],	[6,1]
+Row#1	=	[1,1],	[2,1],	[6,2],	[5,1],
+Row#2	=	[-5,1],	[-4,1],	[4,1],	[-2,1],
+Row#3	=		,		,	[-3,1],		,
+
+-5, -4, -3, -2, 6, 7
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4],	[6,1],	[7,1]
+Row#1	=	[1,1],	[2,1],	[6,2],	[5,1],		,
+Row#2	=	[-5,1],	[-4,1],	[4,1],	[-2,1],		,
+Row#3	=		,		,	[-3,1],		,		,
+
+-5, -4, -3, -2, -1, 7
+[cX][rY]
+Row#0	=	[3,1],	[5,2],	[7,2],	[8,4],	[6,1],	[7,1]
+Row#1	=	[1,1],	[2,1],	[6,2],	[5,1],	[-1,1],
+Row#2	=	[-5,1],	[-4,1],	[4,1],	[-2,1],		,
+Row#3	=		,		,	[-3,1],		,		,
+
+LIS Count_LIS_Greedy_LowerBound for "3, 1, 5, 7, 6, 8, 2, -5, 4, -4, 5, -3, 6, -2, 7, -1": 1
+1
+[cX][rY]
+Row#0	=	[1,1]
+
+1
+[cX][rY]
+Row#0	=	[1,1]
+Row#1	=	[1,1]
+
+1, 5
+[cX][rY]
+Row#0	=	[1,1],	[5,2]
+Row#1	=	[1,1],
+
+1, 5
+[cX][rY]
+Row#0	=	[1,1],	[5,2]
+Row#1	=	[1,1],	[5,2]
+
+1, 5, 6
+[cX][rY]
+Row#0	=	[1,1],	[5,2],	[6,4]
+Row#1	=	[1,1],	[5,2],
+
+1, 5, 6, 7
+[cX][rY]
+Row#0	=	[1,1],	[5,2],	[6,4],	[7,4]
+Row#1	=	[1,1],	[5,2],		,
+
+1, 5, 6, 7
+[cX][rY]
+Row#0	=	[1,1],	[5,2],	[6,4],	[7,4]
+Row#1	=	[1,1],	[5,2],		,	[7,4]
+
+1, 5, 6, 7, 8
+[cX][rY]
+Row#0	=	[1,1],	[5,2],	[6,4],	[7,4],	[8,8]
+Row#1	=	[1,1],	[5,2],		,	[7,4],
+
+LIS Count_LIS_Greedy_LowerBound for "1, 1, 5, 5, 6, 7, 7, 8": 8
 */
 #endif
