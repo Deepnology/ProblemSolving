@@ -62,7 +62,7 @@ public:
         }
         //now 2 entries in between [left:right] inclusive
         if (res == -1)
-            res = v[left] > v[right] ? left : right;
+            res = v[left] < v[right] ? left : right;
         return res;
     }
 };
