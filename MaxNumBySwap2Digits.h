@@ -36,11 +36,18 @@ public:
 					char c = str[i];
 					str[i] = '0' + j;
 					str[lastIdx[j]] = c;
+                    std::cout << "MaxNumBySwap2Digits for \"" << num << "\": " << stoi(str) << std::endl;
 					return stoi(str);
 				}
 			}
 		}
+
+		std::cout << "MaxNumBySwap2Digits for \"" << num << "\": " << num << std::endl;
 		return num;
 	}
 };
+/*
+MaxNumBySwap2Digits for "2736": 7236
+MaxNumBySwap2Digits for "9973": 9973
+ */
 #endif
