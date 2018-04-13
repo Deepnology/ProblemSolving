@@ -45,9 +45,45 @@ public:
 		std::cout << "MaxNumBySwap2Digits for \"" << num << "\": " << num << std::endl;
 		return num;
 	}
+
+    int OnePass(int num)//better
+    {
+        std::string str = std::to_string(num);
+        int N = str.size();
+        int maxDigit = -1;
+        int maxIdx;
+        int leftIdx = -1;
+        int rightIdx;
+        for (int i = N-1; i >= 0; --i)
+        {
+            if (str[i]-'0' > maxDigit)
+            {
+                maxDigit = str[i]-'0';
+                maxIdx = i;
+            }
+            else if (str[i]-'0' < maxDigit)
+            {
+                leftIdx = i;
+                rightIdx = maxIdx;//must record rightIdx here
+            }
+        }
+        if (leftIdx == -1)
+        {
+            std::cout << "MaxNumBySwap2Digits OnePass for \"" << num << "\": " << num << std::endl;
+            return num;
+        }
+
+        std::swap(str[leftIdx], str[rightIdx]);
+        std::cout << "MaxNumBySwap2Digits OnePass for \"" << num << "\": " << stoi(str) << std::endl;
+        return stoi(str);
+    }
 };
 /*
 MaxNumBySwap2Digits for "2736": 7236
 MaxNumBySwap2Digits for "9973": 9973
+MaxNumBySwap2Digits for "98368": 98863
+MaxNumBySwap2Digits OnePass for "2736": 7236
+MaxNumBySwap2Digits OnePass for "9973": 9973
+MaxNumBySwap2Digits OnePass for "98368": 98863
  */
 #endif
