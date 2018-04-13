@@ -105,32 +105,40 @@ public:
 		return res;
 	}
 
-	bool ContainTreeRecur(TreeNode * big, TreeNode * small)
+	bool ContainTree(TreeNode * s, TreeNode * t)
 	{
-		std::cout << "SameBinaryTree ContainRecur for \"";
-		(big == NULL) ? std::cout << "NULL" : std::cout << big->val;
-		std::cout << "\" and \"";
-		(small == NULL) ? std::cout << "NULL" : std::cout << small->val;
-		std::cout << "\": ";
-
-		bool res;
-		if (small == NULL)
-			res = true;
-		else
-			res = this->containTreeRecur(big, small);
-		
-		std::cout << res << std::endl;
+		int d = depthRecur(t);
+		std::vector<TreeNode*> nodes;//nodes in s with same depth as t
+		depthRecur2(s, d, nodes);
+		bool res = false;
+		for (auto & n : nodes)
+			if (sameRecur(n, t))
+			{
+				res = true;
+				break;
+			}
+		std::cout << "SameBinaryTree ContainTree: " << res << std::endl;
 		return res;
 	}
 private:
-	bool containTreeRecur(TreeNode * bigCur, TreeNode * smallRoot)
+	int depthRecur(TreeNode * cur)
 	{
-		if (bigCur == NULL)
-			return false;
-		if (this->dfsRecur(bigCur, smallRoot))
-			return true;
-		return this->containTreeRecur(bigCur->left, smallRoot) ||
-			this->containTreeRecur(bigCur->right, smallRoot);
+		if (cur == NULL) return 0;
+		return std::max(depthRecur(cur->left), depthRecur(cur->right)) + 1;
+	}
+	int depthRecur2(TreeNode * cur, int tgtDepth, std::vector<TreeNode*> & v)
+	{
+		if (cur == NULL) return 0;
+		int d = std::max(depthRecur2(cur->left, tgtDepth, v), depthRecur2(cur->right, tgtDepth, v)) + 1;
+		if (d == tgtDepth) v.push_back(cur);
+		return d;
+	}
+	bool sameRecur(TreeNode * s, TreeNode * t)
+	{
+		if (s == NULL && t == NULL) return true;
+		if (s == NULL || t == NULL) return false;
+		if (s->val != t->val) return false;
+		return sameRecur(s->left, t->left) && sameRecur(s->right, t->right);
 	}
 public:
 	static void DeleteTree(TreeNode * root)
@@ -169,6 +177,6 @@ public:
 
 SameBinaryTree DFS: 1
 SameBinaryTree BFS: 1
-SameBinaryTree ContainRecur for "1" and "5": 1
+SameBinaryTree ContainTree: 1
 */
 #endif
