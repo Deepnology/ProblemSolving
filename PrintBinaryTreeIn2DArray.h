@@ -60,8 +60,10 @@ public:
 	{
 		int h = heightRecur(root);
 		int w = widthRecur(root);
-		std::vector<std::vector<std::string>> res(h, std::vector<std::string>(w, ""));
+		std::vector<std::vector<std::string>> res(h, std::vector<std::string>(w, " "));
 		recur(root, 0, 0, w - 1, res);
+        std::cout << "PrintBinaryTreeIn2DArray Recur: " << std::endl;
+        Debug::Print2D<std::string>()(res, false);
 		return res;
 	}
 private:
@@ -83,5 +85,71 @@ private:
 		if (cur == NULL) return 0;
 		return std::max(widthRecur(cur->left), widthRecur(cur->right)) * 2 + 1;
 	}
+
+public:
+	std::vector<std::string> ToStrRecur(TreeNode * root)
+	{
+		int h = heightRecur(root);
+		int w = widthRecur(root);
+        std::vector<std::string> res(h, std::string(w, ' '));
+		recur(root, 0, 0, w-1, res);
+
+		std::cout << "PrintBinaryTreeIn2DArray ToStrRecur: " << std::endl;
+        Debug::Print2D<std::string>()(res, false);
+		return res;
+	}
+private:
+	void recur(TreeNode * cur, int curDepth, int left, int right, std::vector<std::string> & res)
+	{
+        if (cur == NULL) return;
+        int mid = (left + right) / 2;
+        res[curDepth][mid] = (cur->val+'0');
+        recur(cur->left, curDepth + 1, left, mid - 1, res);
+        recur(cur->right, curDepth + 1, mid + 1, right, res);
+	}
+
+public:
+    static void DeleteTree(TreeNode * root)
+    {
+        if (root == 0)
+            return;
+
+        DeleteTree(root->left);
+        DeleteTree(root->right);
+
+        //post order
+        delete root;
+        root = 0;
+    }
 };
+/*
+
+               1
+        ______ 0______
+       /               \
+       2               2
+    __ 1__          __ 8__
+   /       \       /       \
+   3       3       3       3
+   2       5       9       2
+ /   \   /   \   /   \   /   \
+ 4   4   4   4   4   4   4   4
+ 3   4   6   7   0   1   3   4
+
+
+PrintBinaryTreeIn2DArray Recur:
+[rY][cX]
+Row#0	=  ,  ,  ,  ,  ,  ,  , 0,  ,  ,  ,  ,  ,  ,
+Row#1	=  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  , 8,  ,  ,
+Row#2	=  , 2,  ,  ,  , 5,  ,  ,  , 9,  ,  ,  , 2,
+Row#3	= 3,  , 4,  , 6,  , 7,  , 0,  , 1,  , 3,  , 4
+
+PrintBinaryTreeIn2DArray ToStrRecur:
+[rY][cX]
+Row#0	=  ,  ,  ,  ,  ,  ,  , 0,  ,  ,  ,  ,  ,  ,
+Row#1	=  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  , 8,  ,  ,
+Row#2	=  , 2,  ,  ,  , 5,  ,  ,  , 9,  ,  ,  , 2,
+Row#3	= 3,  , 4,  , 6,  , 7,  , 0,  , 1,  , 3,  , 4
+
+ */
 #endif
