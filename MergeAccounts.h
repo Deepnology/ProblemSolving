@@ -92,6 +92,55 @@ private:
         }
         return cur;
     }
+
+public:
+    std::vector<std::vector<int>> MergeSets_UnionFind(const std::vector<std::vector<int>> & sets)
+    {
+        std::unordered_map<int,int> chdToP;
+        std::unordered_map<int,std::unordered_set<int>> rootToChildren;
+        int N = sets.size();
+        //init: O(N) time
+        for (int i = 0; i < N; ++i)
+        {
+            int M = sets[i].size();
+            for (int j = 0; j < M; ++j)
+                chdToP[sets[i][j]] = sets[i][j];
+        }
+        //UnionFind: O(NlogN) time
+        for (int i = 0; i < N; ++i)
+        {
+            int root1 = Find(chdToP, sets[i][0]);
+            int M = sets[i].size();
+            for (int j = 1; j < M; ++j)
+            {
+                int root2 = Find(chdToP, sets[i][j]);
+                if (root2 != root1)
+                    chdToP[root2] = root1;
+            }
+        }
+        //Classify: O(NlogN) time
+        for (const auto & p : chdToP)
+            rootToChildren[Find(chdToP, p.second)].insert(p.first);
+
+        std::vector<std::vector<int>> res;
+        for (const auto & p : rootToChildren)
+            res.push_back(std::vector<int>(p.second.begin(), p.second.end()));
+
+        Debug::Print2D<int>()(rootToChildren);
+        std::cout << "MergeSets UnionFind for sets=[" << Debug::ToStr1D<int>()(sets) << "]: " << Debug::ToStr1D<int>()(res) << std::endl;
+        return res;
+    }
+private:
+    int Find(std::unordered_map<int,int> & chdToP, int chd)//O(logN) time
+    {
+        int cur = chd;
+        while (chdToP[cur] != cur)
+        {
+            chdToP[cur] = chdToP[chdToP[cur]];
+            cur = chdToP[cur];
+        }
+        return cur;
+    }
 };
 /*
 toRoot: [David4@m.co,David3@m.co], [David1@m.co,David0@m.co], [David2@m.co,David0@m.co], [David5@m.co,David3@m.co], [David3@m.co,David2@m.co], [David0@m.co,David0@m.co]
@@ -108,5 +157,12 @@ Row#4	= David, David1@m.co, David2@m.co
 MergeAccounts UnionFind for above accounts:
 [rY][cX]
 Row#0	= David, David0@m.co, David1@m.co, David2@m.co, David3@m.co, David4@m.co, David5@m.co
+
+
+Row#0	= 2: 3, 4, 2, 1
+Row#1	= 9: 9
+Row#2	= 11: 7, 8, 6, 11, 5, 10
+
+MergeSets UnionFind for sets=[[3,4], [2,3], [2,1], [7,8], [6,5,7], [9], [9], [11,10,5]]: [3,4,2,1], [9], [7,8,6,11,5,10]
  */
 #endif
