@@ -63,7 +63,7 @@ public:
         //1. BST to CDLL with inorder from head to tail
         TreeNode * head = BSTtoCDLLRecur(root);
 
-        //2. perform levelorder traversal on CDLL to convert to left skewed MinHeap
+        //2. perform levelorder traversal on CDLL to convert to MinHeap
 
         //disconnect tail<->head
         head->left->right = NULL;
