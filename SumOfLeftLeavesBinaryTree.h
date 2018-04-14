@@ -30,12 +30,15 @@ public:
     {
         int res = 0;
         if (root == NULL) return res;
-        recur(root->left, true, res);
-        recur(root->right, false, res);
-
+        res = recur(root, false);
         return res;
     }
-
+    int recur(TreeNode * cur, bool isLeft)//better
+    {
+        if (cur == NULL) return 0;
+        if (!cur->left && !cur->right) return isLeft ? cur->val : 0;
+        return recur(cur->left, true) + recur(cur->right, false);
+    }
     void recur(TreeNode * cur, bool isLeft, int & res)
     {
         if (cur == NULL) return;
