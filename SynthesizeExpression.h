@@ -1,3 +1,4 @@
+/*Facebook*/
 #ifndef SYNTHESIZE_EXPRESSION_H
 #define SYNTHESIZE_EXPRESSION_H
 #include <iostream>
@@ -26,7 +27,89 @@ public:
 	SynthesizeExpression(){}
 	~SynthesizeExpression(){}
 
-	//Leetcode: Time Limit Exceeded
+	std::vector<std::string> BetterRecur(std::string num, int target)
+	{
+		std::vector<std::string> res;
+		if (num.empty()) return res;
+		std::string path;
+		recur(num, 0, "", path, target, res);
+		std::cout << "SynthesizeExpression BetterRecur for \"" << target << " from " << num << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
+		return res;
+	}
+private:
+	void recur(const std::string & num, int begin, std::string curNum, std::string & path, int target, std::vector<std::string> & res)
+	{
+		if (!curNum.empty() && curNum[0] == '0') return;
+		curNum.push_back(num[begin]);
+		if (std::stoll(curNum) > INT_MAX || -std::stoll(curNum) < INT_MIN) return;
+		int N = num.size();
+		if (begin == N-1)
+		{
+			path += curNum;
+			if (Eval(path) == target)
+				res.push_back(path);
+			path = path.substr(0, path.size()-curNum.size());
+			return;
+		}
+		recur(num, begin+1, curNum, path, target, res);
+
+		path += curNum;
+		path.push_back('+');
+		recur(num, begin+1, "", path, target, res);
+		path.pop_back();
+
+		path.push_back('-');
+		recur(num, begin+1, "", path, target, res);
+		path.pop_back();
+
+		path.push_back('*');
+		recur(num, begin+1, "", path, target, res);
+		path.pop_back();
+		path = path.substr(0, path.size()-curNum.size());
+	}
+	int Eval(const std::string & s)//BasicCalculatorII: with +,-,*,/, without (,)
+	{
+		int N = s.size();
+		std::vector<long> nums;
+		char op = '+';
+		int i = 0;
+		while (i < N)
+		{
+			if (isdigit(s[i]))
+			{
+				int begin = i;
+				while (i < N && isdigit(s[i]))
+					++i;
+				long nxt = stol(s.substr(begin,i-begin));
+				Add(nums, nxt, op);
+			}
+			else//+,-,*,/
+			{
+				op = s[i];
+				++i;
+			}
+		}
+		long res = 0;
+		for (const auto & n : nums)
+			res += n;
+		return res;
+	}
+	void Add(std::vector<long> & nums, long cur, char op)
+	{
+		switch(op)
+		{
+			case '+': nums.push_back(cur); break;
+			case '-': nums.push_back(-cur); break;
+			case '*': nums.back() *= cur; break;
+			case '/': nums.back() /= cur; break;
+			default: break;
+		}
+	}
+
+
+
+
+public:
 	std::vector<std::string> Recur(const std::string & v, int sum)
 	{
 		std::vector<std::string> res;
@@ -151,6 +234,7 @@ Evaluate "1, 2, 3", "*, +": 5
 Evaluate "1, 2, 3", "*, -": -1
 Evaluate "1, 2, 3", "*, *": 6
 SynthesizeExpression Recur for "6 from 123": 1+2+3, 1*2*3
+SynthesizeExpression BetterRecur for "6 from 123": 1+2+3, 1*2*3
 Evaluate "232", "": 232
 Evaluate "23, 2", "+": 25
 Evaluate "23, 2", "-": 21
@@ -168,6 +252,7 @@ Evaluate "2, 3, 2", "*, +": 8
 Evaluate "2, 3, 2", "*, -": 4
 Evaluate "2, 3, 2", "*, *": 12
 SynthesizeExpression Recur for "8 from 232": 2+3*2, 2*3+2
+SynthesizeExpression BetterRecur for "8 from 232": 2+3*2, 2*3+2
 Evaluate "105", "": 105
 Evaluate "10, 5", "+": 15
 Evaluate "10, 5", "-": 5
@@ -182,9 +267,11 @@ Evaluate "1, 0, 5", "*, +": 5
 Evaluate "1, 0, 5", "*, -": -5
 Evaluate "1, 0, 5", "*, *": 0
 SynthesizeExpression Recur for "5 from 105": 10-5, 1*0+5
+SynthesizeExpression BetterRecur for "5 from 105": 10-5, 1*0+5
 Evaluate "0, 0", "+": 0
 Evaluate "0, 0", "-": 0
 Evaluate "0, 0", "*": 0
 SynthesizeExpression Recur for "0 from 00": 0+0, 0-0, 0*0
+SynthesizeExpression BetterRecur for "0 from 00": 0+0, 0-0, 0*0
 */
 #endif
