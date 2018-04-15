@@ -20,12 +20,21 @@ Fill out the original array starting with the entries that have max count at fir
 maxHeap:
 O(n + mlogm) time, O(m) space for maxHeap, where n is the number of entries in A, m is the number of distinct entries in A
 
-Similar problem: minimum run time task scheduler
-Given a task sequence tasks such as ABBABBC, and an integer k, which is the cool down time between two same tasks.
-Assume the execution for each individual task is 1 unit.
-For example, if k = 3, then tasks BB takes a total of 5 unit time to finish, because B takes 1 unit of time to execute, then wait for 3 unit, and execute the second B again for another unit of time. So 1 + 3 + 1 = 5 unit for BB.
-Given a task sequence and the cool down time, return the total execution time.
-Follow up: Given a task sequence and the cool down time, rearrange the task sequence such that the execution time is minimal.
+
+Leetcode: Task Scheduler
+Given a char array representing tasks CPU need to do.
+It contains capital letters A to Z where different letters represent different tasks.
+Tasks could be done without original order.
+Each task could be done in one interval.
+For each interval, CPU could finish one task or just be idle.
+However, there is a non-negative cooling interval n that means between two same tasks
+, there must be at least n intervals that CPU are doing different tasks or just be idle.
+You need to return the least number of intervals the CPU will take to finish all the given tasks.
+Example 1:
+Input: tasks = ["A","A","A","B","B","B"], n = 2
+Output: 8
+Explanation: A -> B -> idle -> A -> B -> idle -> A -> B.
+Followup: the char order cannot change
 */
 class RearrangeArrWEqualEntriesKAway
 {
@@ -141,10 +150,118 @@ public:
 		std::cout << "RearrangeArrWEqualEntriesKAway MaxHeap for \"" << k << "\", \"" << before << "\": " << Debug::ToStr1D<int>()(v) << std::endl;
 	}
 };
+class RearrangeArrWEqualCharsKAway
+{
+public:
+    RearrangeArrWEqualCharsKAway(){}
+
+    int CountLeastSpace_Linear(const std::vector<char> & tasks, int n)//n: number of other elements (or empty) between 2 same elements
+    {
+        std::unordered_map<char, int> freq;
+        for (const auto &c : tasks)
+            ++freq[c];
+        int maxFreq = 0;
+        for (const auto &p : freq)
+            maxFreq = std::max(maxFreq, p.second);
+        int countOfMaxFreq = 0;
+        for (const auto &p : freq)
+            if (p.second == maxFreq)
+                ++countOfMaxFreq;
+
+        int space = (maxFreq - 1) //num of intervals in between maxFreq elements
+                    * (n + 1) //interval space + 1st element on its left
+                    + countOfMaxFreq; //remainings
+
+        int res = space < (int)tasks.size() ? (int)tasks.size() : space;
+
+        std::cout << "RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for \"" << n << "\" from \"" << Debug::ToStr1D<char>()(tasks) << "\": " << res << std::endl;
+        return res;
+    }
+
+
+    struct Less
+    {
+        bool operator()(const std::pair<int,char> & a, const std::pair<int,char> & b)
+        {
+            return a.first < b.first;
+        }
+    };
+public:
+    int CountLeastSpace_MaxHeap(const std::vector<char> & tasks, int n)//n: number of other elements (or empty) between 2 same elements
+    {
+        std::vector<char> count(26, 0);
+        for (auto & c : tasks)
+            ++count[c-'a'];
+        std::priority_queue<std::pair<int,char>, std::vector<std::pair<int,char>>, Less> maxHeap;
+        for (int i = 0; i < 25; ++i)
+            if (count[i])
+                maxHeap.push({count[i], i+'a'});
+        std::vector<char> res;
+        int total = 0;
+        while (!maxHeap.empty())
+        {
+            int binSize = n+1;
+            std::vector<std::pair<int,char>> remains;
+            while (binSize-->0)
+            {
+                if (!maxHeap.empty())
+                {
+                    std::pair<int,char> p = maxHeap.top();
+                    maxHeap.pop();
+                    if (--p.first)
+                        remains.push_back(p);
+
+                    ++total;
+                }
+                else
+                {
+                    if (!remains.empty())
+                    {
+                        total += binSize+1;
+                        break;
+                    }
+                }
+            }
+            for (auto & p : remains)
+                maxHeap.push(p);
+        }
+        std::cout << "RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for \"" << n << "\" from \"" << Debug::ToStr1D<char>()(tasks) << "\": " << total << std::endl;
+        return total;
+    }
+
+public:
+	int CountLeastSpace_WithSameOrder(const std::vector<char> & tasks, int n)//n: number of other elements (or empty) between 2 same elements
+	{
+		int N = tasks.size();
+		int res = N;
+		std::unordered_map<char, int> lastIdx;
+		for (int i = 0; i < N; ++i)
+		{
+			if (lastIdx.count(tasks[i]) && i - lastIdx[tasks[i]] - 1 < n)
+				res += n - (i - lastIdx[tasks[i]] - 1);
+			lastIdx[tasks[i]] = i;
+		}
+
+		std::cout << "RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for \"" << n << "\" from \"" << Debug::ToStr1D<char>()(tasks) << "\": " << res << std::endl;
+		return res;
+	}
+};
 /*
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "2", "aabbcc": abcabc
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "3", "aabbcc": abcabc
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "2", "aaabc": abaca
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "2", "aaadbbcc": abacabcd
+RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for "2" from "a, a, b, b, c, c": 6
+RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for "3" from "a, a, b, b, c, c": 7
+RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for "2" from "a, a, a, b, c": 7
+RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for "2" from "a, a, a, d, b, b, c, c": 8
+RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, b, b, c, c": 6
+RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "3" from "a, a, b, b, c, c": 7
+RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, a, b, c": 7
+RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, a, d, b, b, c, c": 8
+RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, b, b, c, c": 12
+RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "3" from "a, a, b, b, c, c": 15
+RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, a, b, c": 9
+RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, a, d, b, b, c, c": 16
 */
 #endif
