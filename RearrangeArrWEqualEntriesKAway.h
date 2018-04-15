@@ -44,7 +44,7 @@ public:
 
 	struct Less
 	{
-		bool operator()(const std::pair<int, int> & a, const std::pair<int, int> & b)
+		bool operator()(const std::pair<int, int> & a, const std::pair<int, int> & b) const
 		{
 			return a.first == b.first ? a.second > b.second : a.first < b.first;//a.second > b.second ensures char order in diff bins the same which ensures same chars can be k apart
 		}
@@ -98,7 +98,7 @@ public:
 	//WRONG: simply greedy assign maxFreq chars w/ exactly k dist apart is wrong (aabbcc, 2 => abcabc)
 	struct SmallerThan
 	{
-		bool operator()(const std::pair<int, int> & a, const std::pair<int, int> & b)
+		bool operator()(const std::pair<int, int> & a, const std::pair<int, int> & b) const
 		{
 			return a.first < b.first;
 		}
@@ -181,7 +181,7 @@ public:
 
     struct Less
     {
-        bool operator()(const std::pair<int,char> & a, const std::pair<int,char> & b)
+        bool operator()(const std::pair<int,char> & a, const std::pair<int,char> & b) const
         {
             return a.first < b.first;
         }
