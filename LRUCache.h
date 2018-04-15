@@ -179,7 +179,7 @@ private:
 		}
 		else//m_list.back().first has duplicates, insert back with decremented key
 		{
-			auto itrPair = m_sorted.insert({ p.first, p.second - 1 });
+			std::pair<std::set<std::pair<std::string, int>, GreaterComp>::iterator,bool> itrPair = m_sorted.insert({ p.first, p.second - 1 });
 			m_itrMap[m_list.back().first] = itrPair.first;
 		}
 		m_list.pop_back();
@@ -209,12 +209,12 @@ public:
 			auto itr = m_itrMap[url];
 			int oldCount = itr->second;
 			m_sorted.erase(itr);
-			auto itrPair = m_sorted.insert({ url, oldCount + 1 });
+			std::pair<std::set<std::pair<std::string, int>, GreaterComp>::iterator,bool> itrPair = m_sorted.insert({ url, oldCount + 1 });
 			m_itrMap[url] = itrPair.first;
 		}
 		else//url doesn't exist in history: just insert in m_sorted
 		{
-			auto itrPair = m_sorted.insert({ url, 1 });
+			std::pair<std::set<std::pair<std::string, int>, GreaterComp>::iterator,bool> itrPair = m_sorted.insert({ url, 1 });
 			m_itrMap[url] = itrPair.first;
 		}
 
