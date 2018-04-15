@@ -278,6 +278,94 @@ public:
 		return res;
 	}
 };
+
+class TwoSum_
+{
+public:
+	TwoSum_(){}
+
+	std::vector<std::vector<int>> FindAllUniquePairs(std::vector<int> && v, int tgt)
+	{
+		std::sort(v.begin(), v.end());
+		int N = v.size();
+		std::vector<std::vector<int>> res;
+		int left = 0;
+		int right = N-1;
+		while (left < right)
+		{
+			int sum = v[left] + v[right];
+			if (sum < tgt) ++left;
+			else if (sum > tgt) --right;
+			else
+			{
+				res.push_back(std::vector<int>({v[left],v[right]}));
+				do{
+					++left;
+				}while (left < right && v[left-1] == v[left]);
+				do{
+					++right;
+				}while (left < right && v[right] == v[right+1]);
+			}
+		}
+
+		std::cout << "TwoSum_ FindAllUniquePairs for \"" << tgt << "\" from \"" << Debug::ToStr1D<int>()(v) << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+	std::vector<std::vector<int>> FindAllIndexPairs(std::vector<int> && v, int tgt)
+	{
+		int N = v.size();
+		std::unordered_map<int, std::vector<int>> toIdx;//<entry, arr of idx>
+		for (int i = 0; i < N; ++i)
+			toIdx[v[i]].push_back(i);
+		std::vector<std::vector<int>> res;
+		for (int i = 0; i < N; ++i)
+		{
+			if (toIdx.count(v[i]) == 0) continue;
+			if (v[i] + v[i] == tgt && toIdx[v[i]].size() >= 2)
+			{
+				int M = toIdx[v[i]].size();
+				for (int j = 0; j < M-1; ++j)
+					for (int k = j+1; k < M; ++k)
+						res.push_back(std::vector<int>({toIdx[v[i]][j], toIdx[v[i]][k]}));
+			}
+			else if (toIdx.count(tgt-v[i]))
+			{
+				int M1 = toIdx[v[i]].size();
+				int M2 = toIdx[tgt-v[i]].size();
+				for (int j = 0; j < M1; ++j)
+					for (int k = 0; k < M2; ++k)
+						res.push_back(std::vector<int>({toIdx[v[i]][j], toIdx[tgt-v[i]][k]}));
+			}
+			toIdx.erase(v[i]);
+			toIdx.erase(tgt-v[i]);
+		}
+
+		std::cout << "TwoSum_ FindAllIndexPairs for \"" << tgt << "\" from \"" << Debug::ToStr1D<int>()(v) << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+	std::vector<std::vector<int>> FindAllUniquePairs_NoSort(std::vector<int> && v, int tgt)
+	{
+		int N = v.size();
+		std::vector<std::vector<int>> res;
+		std::unordered_set<int> visit;
+		std::unordered_set<int> used;
+		for (int i = 0; i < N; ++i)
+		{
+			if (visit.count(tgt-v[i]) && !used.count(tgt-v[i]))//find a "tgt-num[i]" from already visited nums
+			{
+				std::vector<int> p({v[i], tgt-v[i]});
+				std::sort(p.begin(), p.end());
+				res.push_back(p);
+				used.insert(v[i]);
+				used.insert(tgt-v[i]);
+			}
+			visit.insert(v[i]);
+		}
+
+		std::cout << "TwoSum_ FindAllUniquePairs_NoSort for \"" << tgt << "\" from \"" << Debug::ToStr1D<int>()(v) << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+};
 /*
 TwoSum ExistPairSumTo0_Sort_Greedy for "3, -6, -4, 2, -7, 9, 4, 1, 2": 1 [-4,4]
 TwoSum FindPair_BruteForce for "7" from "6, 4, -3, 0, 3, 7": 2, 5
@@ -288,5 +376,8 @@ TwoSumIII: [4,1], [8,2], [3,2], [5,2], [2,1], [10,2]
 TwoSumIII Find "5": 1
 TwoSumIII Find "18": 1
 TwoSum CountPairSumEqualK HashMap for "1, 1, 1", k=2: 3
+TwoSum_ FindAllUniquePairs for "2" from "0, 0, 1, 1, 1, 2, 2, 3": [0,2], [1,1]
+TwoSum_ FindAllUniquePairs_NoSort for "2" from "0, 0, 1, 1, 1, 2, 2, 3": [1,1], [0,2]
+TwoSum_ FindAllIndexPairs for "2" from "0, 0, 1, 1, 1, 2, 2, 3": [0,5], [0,6], [1,5], [1,6], [2,3], [2,4], [3,4]
 */
 #endif
