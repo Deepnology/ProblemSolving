@@ -153,6 +153,60 @@ public:
 		std::cout << "LongestValidParentheses InPlace_TwoScans_FindLongestValidSubstr for \"" << s << "\": " << res << std::endl;
 		return res;
 	}
+	std::string InPlace_TwoScans_FindLongestValidSubseq(const std::string & s)
+	{
+		int N = s.size();
+		int balance = 0;
+		std::string LtoR;
+		for (int i = 0; i < N; ++i)
+		{
+			if (s[i] == '(')
+			{
+				++balance;
+			}
+			else if (s[i] == ')')
+			{
+				--balance;
+			}
+			if (balance >= 0)
+			{
+				LtoR.push_back(s[i]);
+			}
+			else
+			{
+				++balance;
+			}
+		}
+
+		std::cout << LtoR << std::endl;
+		std::string res;
+		N = LtoR.size();
+		//iterate LtoR from right to left
+		balance = 0;
+		for (int i = N-1; i >= 0; --i)
+		{
+			if (LtoR[i] == ')')
+			{
+				++balance;
+			}
+			else if (LtoR[i] == '(')
+			{
+				--balance;
+			}
+			if (balance >= 0)
+			{
+				res.push_back(LtoR[i]);
+			}
+			else
+			{
+				++balance;
+			}
+		}
+		std::reverse(res.begin(), res.end());
+
+		std::cout << "LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for \"" << s << "\": " << res << std::endl;
+		return res;
+	}
 };
 /*
 LongestValidParentheses Stack for ")(((())()()(((": 8
@@ -165,5 +219,29 @@ LongestValidParentheses InPlace_TwoScans_FindLongestValidSubstr for ")(())()((":
 LongestValidParentheses InPlace_TwoScans_FindLongestValidSubstr for "()())()": ()()
 ,
 LongestValidParentheses InPlace_TwoScans_FindLongestValidSubstr for ")(":
+()(),()()
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubstr for "()())())(()()": ()()
+()(),()
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubstr for "()())())(()(()": ()()
+(())(),(())()
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubstr for "()())(())()(()(()": (())()
+(()(())),(()(()))
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubstr for "()()))(()))(()(()))(()": (()(()))
+(((())()()(((
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for ")(((())()()(((": (())()()
+(())()((
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for ")(())()((": (())()
+()()()
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for "()())()": ()()()
+(
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for ")(":
+()()()(()()
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for "()())())(()()": ()()()()()
+()()()(()(()
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for "()())())(()(()": ()()()()()
+()()(())()(()(()
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for "()())(())()(()(()": ()()(())()()()
+()()(())(()(()))(()
+LongestValidParentheses InPlace_TwoScans_FindLongestValidSubseq for "()()))(()))(()(()))(()": ()()(())(()(()))()
 */
 #endif
