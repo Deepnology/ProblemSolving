@@ -226,7 +226,7 @@ public:
             }
         }
         std::string res(s);
-        while (!prenIdxStk.empty())
+        while (!prenIdxStk.empty())//erase chars from right to left
         {
             int topIdx = prenIdxStk.top(); prenIdxStk.pop();
             res.erase(topIdx, 1);
