@@ -142,6 +142,40 @@ public:
 		return fastNode;
 	}
 
+	ListNode * GetCycleBegin_Brent(ListNode * head)
+	{
+		if (head == NULL || head->next == NULL) return NULL;
+
+		ListNode * slow = head;
+		ListNode * fast = head->next;
+		int len = 1;
+		int pow = 1;
+		while (fast && fast != slow)
+		{
+			if (len == pow)
+			{
+				pow *= 2;
+				len = 0;
+				slow = fast;
+			}
+			fast = fast->next;
+			++len;
+		}
+		if (fast == NULL) return NULL;
+		//now len is the length of loop
+		ListNode * cycleLenNode = head;
+		while (len--)
+			cycleLenNode = cycleLenNode->next;
+		ListNode * cycleBegin = head;
+		while (cycleBegin != cycleLenNode)
+		{
+			cycleBegin = cycleBegin->next;
+			cycleLenNode = cycleLenNode->next;
+		}
+
+		return cycleBegin;
+	}
+
 public:
 	static void DeleteLinkedList(ListNode * head)
 	{
@@ -170,12 +204,12 @@ CycleMiddle: 3
 CycleMiddle: 3
 [0,17]->[1,8]->[2,16]->[3,5]->[4,11]->[5,3]->[6,24]->[7,9]->
                          ^_________________________________|
-LinkedListCycle HasCycle: 1, CycleBegin: 5, 5
+LinkedListCycle HasCycle: 1, CycleBegin: 5, 5, 5
 
 CycleMiddle: 10
 CycleMiddle: 10
 [0,0]->[1,1]->[2,2]->[3,3]->[4,4]->[5,5]->[6,6]->[7,7]->[8,8]->[9,9]->[10,10]->[11,11]->[12,12]->[13,13]->[14,14]->[15,15]->
                                             ^______________________________________________________________________________|
-LinkedListCycle HasCycle: 1, CycleBegin: 6, 6
+LinkedListCycle HasCycle: 1, CycleBegin: 6, 6, 6
 */
 #endif
