@@ -60,4 +60,50 @@ public:
 		}
 	}
 };
+class RemoveGivenNodeInDoublyLinkedList
+{
+public:
+	struct ListNode
+	{
+		ListNode(int v) : val(v), next(NULL), prev(NULL){}
+		int val;
+		ListNode * next;
+		ListNode * prev;
+	};
+	RemoveGivenNodeInDoublyLinkedList(){}
+
+	ListNode * Solve(ListNode * head, ListNode * tgt)
+	{
+		if (head == NULL || tgt == NULL) return NULL;
+
+		if (tgt->prev == NULL)//tgt is head: update tgt->next and head
+		{
+			if (tgt->next)
+				tgt->next->prev = NULL;
+			head = tgt->next;
+			delete tgt;
+			return head;
+		}
+		else if (tgt->next == NULL)//tgt is tail (and not head): update tgt->prev
+		{
+			tgt->prev->next = NULL;
+			delete tgt;
+			return head;
+		}
+		else if (tgt->prev == tgt)//single node with a ring: update head
+		{
+			delete tgt;
+			return NULL;
+		}
+		else//tgt is a middle node in a list w/o ring OR can be any node in a list w/ ring and size >= 2
+		{
+			tgt->prev->next = tgt->next;
+			tgt->next->prev = tgt->prev;
+			if (head == tgt)
+				head = tgt->next;
+			delete tgt;
+			return head;
+		}
+	}
+};
 #endif
