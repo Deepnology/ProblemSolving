@@ -193,7 +193,7 @@ public:
         for (auto & c : tasks)
             ++count[c-'a'];
         std::priority_queue<std::pair<int,char>, std::vector<std::pair<int,char>>, Less> maxHeap;
-        for (int i = 0; i < 25; ++i)
+        for (int i = 0; i < 26; ++i)
             if (count[i])
                 maxHeap.push({count[i], i+'a'});
         std::vector<char> res;
@@ -211,12 +211,14 @@ public:
                     if (--p.first)
                         remains.push_back(p);
 
+					res.push_back(p.second);
                     ++total;
                 }
                 else
                 {
                     if (!remains.empty())
                     {
+						res.insert(res.end(), binSize+1, ' ');
                         total += binSize+1;
                         break;
                     }
@@ -225,7 +227,7 @@ public:
             for (auto & p : remains)
                 maxHeap.push(p);
         }
-        std::cout << "RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for \"" << n << "\" from \"" << Debug::ToStr1D<char>()(tasks) << "\": " << total << std::endl;
+        std::cout << "RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for \"" << n << "\" from \"" << Debug::ToStr1D<char>()(tasks) << "\": " << total << " (" << Debug::ToStr1D<char>()(res) << ")" << std::endl;
         return total;
     }
 
@@ -255,10 +257,10 @@ RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for "2" from "a, a, b, b, 
 RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for "3" from "a, a, b, b, c, c": 7
 RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for "2" from "a, a, a, b, c": 7
 RearrangeArrWEqualEntriesKAway CountLeastSpace_Linear for "2" from "a, a, a, d, b, b, c, c": 8
-RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, b, b, c, c": 6
-RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "3" from "a, a, b, b, c, c": 7
-RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, a, b, c": 7
-RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, a, d, b, b, c, c": 8
+RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, b, b, c, c": 6 (a, b, c, a, b, c)
+RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "3" from "a, a, b, b, c, c": 7 (a, b, c,  , a, b, c)
+RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, a, b, c": 7 (a, b, c, a,  ,  , a)
+RearrangeArrWEqualCharsKAway CountLeastSpace_MaxHeap for "2" from "a, a, a, d, b, b, c, c": 8 (a, b, c, a, d, c, b, a)
 RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, b, b, c, c": 12
 RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "3" from "a, a, b, b, c, c": 15
 RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, a, b, c": 9
