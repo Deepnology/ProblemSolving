@@ -74,7 +74,7 @@ public:
 
 	ListNode * Solve(ListNode * head, ListNode * tgt)
 	{
-		if (head == NULL || tgt == NULL) return NULL;
+		if (head == NULL || tgt == NULL) return head;
 
 		if (tgt->prev == NULL)//tgt is head: update tgt->next and head
 		{
