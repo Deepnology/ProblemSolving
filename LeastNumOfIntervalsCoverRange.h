@@ -30,7 +30,7 @@ public:
         int end = tgt.first - 1;
         while (i < N)
         {
-            if (v[i].first <= start)//cur interval covers
+            if (v[i].first <= start)//just advance
             {
                 end = std::max(end, v[i].second);
                 ++i;
