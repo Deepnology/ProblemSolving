@@ -1,3 +1,4 @@
+/*Facebook*/
 #ifndef _FIND_4_POINTS_FORM_RECTANGLE_H
 #define _FIND_4_POINTS_FORM_RECTANGLE_H
 #include "Debug.h"
