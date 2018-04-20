@@ -47,7 +47,8 @@ public:
 		}
 
 		int quotient = isNegative ? (int)(0 - res) : (int)res;
-		std::cout << "Divide2IntWoMulDivMod Simplest for \"" << dividend << "\" and \"" << divisor << "\": " << quotient << std::endl;
+		int remain = dvd;
+		std::cout << "Divide2IntWoMulDivMod Simplest for \"" << dividend << "\" and \"" << divisor << "\": " << quotient << " (" << remain << ")" << std::endl;
 		return quotient;
 	}
 
