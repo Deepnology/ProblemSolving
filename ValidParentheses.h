@@ -238,7 +238,7 @@ class ValidParenthesesWildcard
 public:
 	ValidParenthesesWildcard() {}
 
-	bool IsValid(std::string s)
+	bool OnePass(std::string s)
 	{
 		//'*', can be '(' or ')' or empty
 		//so keep track of a range of balance
@@ -268,6 +268,41 @@ public:
 		}
 
 		return balanceLow == 0;
+	}
+
+	bool TwoScans(std::string s)
+	{
+		int N = s.size();
+		int balance = 0;
+		int countX = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			if (s[i] == '(') ++balance;
+			else if (s[i] == ')') --balance;
+			else ++countX;
+			if (balance < 0)
+			{
+				if (countX == 0) return false;
+				//now cancel a '*' with a ')'
+				--countX;
+				++balance;
+			}
+		}
+		balance = 0;
+		countX = 0;
+		for (int i = N-1; i >= 0; --i)
+		{
+			if (s[i] == ')') ++balance;
+			else if (s[i] == '(') --balance;
+			else ++countX;
+			if (balance < 0)
+			{
+				if (countX == 0) return false;
+				--countX;
+				++balance;
+			}
+		}
+		return true;
 	}
 };
 /*
