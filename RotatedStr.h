@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "Debug.h"
 /*
+Leetcode: Rotate String
 http://www.careercup.com/question?id=14968587
 http://stackoverflow.com/questions/2553522/interview-question-check-if-one-string-is-a-rotation-of-other-string
 Given 2 strings a and b, determine if a is a rotated version of b.
@@ -33,7 +34,7 @@ public:
 		int N = a.size();
 		if (N != (int)b.size())
 			return false;
-
+		if (N == 0) return true;
 		bool res = false;
 		int i = 0;
 		int j = 0;
