@@ -105,7 +105,7 @@ public:
 				}
 				else if (j > 1)//p[j-1]=='*', but '*' cannot be the 1st element
 				{
-					if (dp[i][j - 1] || dp[i][j - 2])//match 0 or 1 preceding element
+					if (dp[i][j - 1] || dp[i][j - 2])//match 1 or 0 preceding element
 						dp[i][j] = 1;
 					else if (i > 0 && (s[i - 1] == p[j - 2] || p[j - 2] == '.') && dp[i - 1][j])//match multiple preceding elements
 						dp[i][j] = 1;
@@ -157,6 +157,56 @@ private:
 		return ((*p == *s) || (*p == '.' && *s != '\0')) &&//*s matches *p ?
 			this->isMatch_Recur(s + 1, p + 1);//*(s+1) matches *(p+1) ?
 	}
+
+public:
+	int IsMatch_DP2D_Plus(const std::string & s, const std::string & p)//replace * with +, which matches 1 or more precedings
+	{
+        int N = s.size();
+        int M = p.size();
+        std::vector<std::vector<int>> dp(N + 1, std::vector<int>(M + 1, 0));
+        dp[0][0] = 1;
+        //dp[i][j] == 1: means s[i-1] matches p[j-1] so far
+
+        //special case for i==0:
+        for (int i = 0; i <= N; ++i)
+        {
+            for (int j = 1; j <= M; ++j)
+            {
+                if (p[j - 1] != '.' && p[j - 1] != '+')
+                {
+                    if (i > 0 && s[i - 1] == p[j - 1] && dp[i - 1][j - 1])
+                        dp[i][j] = 1;
+                }
+                else if (p[j - 1] == '.')
+                {
+                    if (i > 0 && dp[i - 1][j - 1])
+                        dp[i][j] = 1;
+                }
+                else if (j > 1)//p[j-1]=='+', but '+' cannot be the 1st element
+                {
+                    if (dp[i][j - 1])//match 1 preceding element
+                        dp[i][j] = 1;
+                    else if (i > 0 && (s[i - 1] == p[j - 2] || p[j - 2] == '.') && dp[i - 1][j])//match multiple preceding elements
+                        dp[i][j] = 1;
+                }
+            }
+        }
+
+        Debug::Print2D<int>()(dp, false);
+        std::cout << "RegexMatching DP2D_Plus for \"" << s << "\" and \"" << p << "\": " << dp[N][M] << std::endl;
+        return dp[N][M] == 1 ? true : false;
+	}
+
+    int IsMatchSubstr_DP2D(const std::string & s, const std::string & p)//match a substr in s instead the whole string
+    {
+        int N = s.size();
+        int M = p.size();
+        for (int i = 0; i < N; ++i)
+        {
+
+        }
+        return 0;
+    }
 };
 /*
 RegexMatching Recur for "b" and "a*b": 1
@@ -218,5 +268,70 @@ Row#7	= 0, 0, 0, 0
 Row#8	= 0, 0, 0, 0
 
 RegexMatching DP2D for "xyaW9123" and "a.9": 0
+
+[rY][cX]
+Row#0	= 1, 0, 0, 0
+Row#1	= 0, 0, 0, 0
+
+RegexMatching DP2D_Plus for "b" and "a+b": 0
+[rY][cX]
+Row#0	= 1, 0, 0, 0
+Row#1	= 0, 1, 1, 0
+Row#2	= 0, 0, 0, 1
+
+RegexMatching DP2D_Plus for "ab" and "a+b": 1
+[rY][cX]
+Row#0	= 1, 0, 0, 0
+Row#1	= 0, 1, 1, 0
+Row#2	= 0, 0, 1, 0
+Row#3	= 0, 0, 1, 0
+Row#4	= 0, 0, 1, 0
+Row#5	= 0, 0, 0, 1
+
+RegexMatching DP2D_Plus for "aaaab" and "a+b": 1
+[rY][cX]
+Row#0	= 1, 0, 0, 0
+Row#1	= 0, 0, 0, 0
+
+RegexMatching DP2D_Plus for "b" and "a+.": 0
+[rY][cX]
+Row#0	= 1, 0, 0, 0
+Row#1	= 0, 1, 1, 0
+Row#2	= 0, 0, 0, 1
+
+RegexMatching DP2D_Plus for "ab" and "a+.": 1
+[rY][cX]
+Row#0	= 1, 0, 0, 0
+Row#1	= 0, 1, 1, 0
+Row#2	= 0, 0, 1, 1
+Row#3	= 0, 0, 1, 1
+Row#4	= 0, 0, 1, 1
+Row#5	= 0, 0, 0, 1
+
+RegexMatching DP2D_Plus for "aaaab" and "a+.": 1
+[rY][cX]
+Row#0	= 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#1	= 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Row#2	= 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+Row#3	= 0, 0, 0, 1, 1, 0, 0, 0, 0, 0
+Row#4	= 0, 0, 0, 0, 0, 1, 0, 0, 0, 0
+Row#5	= 0, 0, 0, 0, 0, 0, 1, 0, 0, 0
+Row#6	= 0, 0, 0, 0, 0, 0, 0, 1, 0, 0
+Row#7	= 0, 0, 0, 0, 0, 0, 0, 0, 1, 0
+Row#8	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+
+RegexMatching DP2D_Plus for "xyaW9123" and "..a+.9...": 1
+[rY][cX]
+Row#0	= 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#1	= 0, 1, 0, 0, 0, 0, 0, 0, 0, 0
+Row#2	= 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
+Row#3	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#4	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#5	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#6	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#7	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#8	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+RegexMatching DP2D_Plus for "xyaW9123" and "..b+.9...": 0
 */
 #endif
