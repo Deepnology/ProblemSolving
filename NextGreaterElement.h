@@ -36,6 +36,13 @@ Explanation: The first 1's next greater number is 2;
 The number 2 can't find next greater number;
 The second 1's next greater number needs to search circularly, which is also 2.
 Note: The length of given array won't exceed 10000.
+
+Leetcode: Daily Temperatures
+Given a list of daily temperatures, produce a list that, for each day in the input, tells you how many days you would have to wait until a warmer temperature.
+If there is no future day for which this is possible, put 0 instead.
+For example, given the list temperatures = [73, 74, 75, 71, 69, 72, 76, 73], your output should be [1, 1, 4, 2, 1, 1, 0, 0].
+Note: The length of temperatures will be in the range [1, 30000].
+Each temperature will be an integer in the range [30, 100].
 */
 class NextGreaterElement
 {
@@ -88,11 +95,38 @@ public:
 		return res;
 	}
 };
+class DailyTemperatures
+{
+public:
+	DailyTemperatures(){}
+
+	std::vector<int> UseStack(const std::vector<int> & temperatures)
+	{
+		int N = temperatures.size();
+		std::stack<int> stk;
+		std::vector<int> res(N, 0);
+		for (int i = 0; i < N; ++i)
+		{
+			while (!stk.empty() && temperatures[stk.top()] < temperatures[i])
+			{
+				int cur = stk.top();
+				stk.pop();
+				res[cur] = i - cur;
+			}
+			stk.push(i);
+		}
+
+		std::cout << "DailyTemperatures NumOfDaysToNextHigherTemp UseStack for \"" << Debug::ToStr1D<int>()(temperatures) << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+};
 /*
 [1,2], [2,3], [3,4]
 NextGreaterElement NonCircular_UseStack for "2, 4", from "1, 2, 3, 4": 3, -1
 
 NextGreaterElement NonCircular_UseStack for "2, 4", from "4, 3, 2, 1": -1, -1
 NextGreaterElement Circular_UseStack for "1, 2, 1": 2, -1, 2
+
+DailyTemperatures NumOfDaysToNextHigherTemp UseStack for "73, 74, 75, 71, 69, 72, 76, 73": 1, 1, 4, 2, 1, 1, 0, 0
 */
 #endif
