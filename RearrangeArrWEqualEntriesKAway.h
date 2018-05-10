@@ -35,6 +35,19 @@ Input: tasks = ["A","A","A","B","B","B"], n = 2
 Output: 8
 Explanation: A -> B -> idle -> A -> B -> idle -> A -> B.
 Followup: the char order cannot change
+
+
+Leetcode: Reorganize string
+Given a string S, check if the letters can be rearranged so that two characters that are adjacent to each other are not the same.
+If possible, output any possible result.
+If not possible, return the empty string.
+Example 1:
+Input: S = "aab"
+Output: "aba"
+Example 2:
+Input: S = "aaab"
+Output: ""
+This is a special case of Rearrange String k Distance Apart, where k is equal to 2.
 */
 class RearrangeArrWEqualEntriesKAway
 {
@@ -248,6 +261,54 @@ public:
 		return res;
 	}
 };
+class RearrangeArrWithoutAdjacentEqualChars
+{
+public:
+    RearrangeArrWithoutAdjacentEqualChars(){}
+
+    std::string Linear(std::string s)//O(N) time
+    {
+        int N = s.size();
+        std::vector<int> count(26,0);
+        for (char c : s)
+            ++count[c-'a'];
+        int maxCount = 0;
+        int maxChar = 0;
+        for (int i = 0; i < 26; ++i)
+            if (maxCount < count[i])
+            {
+                maxCount = count[i];
+                maxChar = i;
+            }
+        if (N%2==0 && maxCount>N/2) return "";//the most frequent char cannot exceed half length
+        if (N%2==1 && maxCount>N/2+1) return "";//the most frequent char cannot exceed half length + 1
+        std::string res(N, ' ');
+        //1. fill up the most frequent char
+        int i = 0;
+        for (; i<N && count[maxChar]; i += 2)
+        {
+            res[i] = maxChar+'a';
+            --count[maxChar];
+        }
+        //2. fill up the remaining chars
+        int curChar = 0;
+        for (; i<N; i += 2)
+        {
+            while (count[curChar]==0) ++curChar;
+            res[i] = curChar + 'a';
+            --count[curChar];
+        }
+        for (i=1; i<N; i+=2)
+        {
+            while (count[curChar]==0) ++curChar;
+            res[i] = curChar +'a';
+            --count[curChar];
+        }
+
+        std::cout << "RearrangeArrWithoutAdjacentEqualChars for \"" << s << "\": " << res << std::endl;
+        return res;
+    }
+};
 /*
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "2", "aabbcc": abcabc
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "3", "aabbcc": abcabc
@@ -265,5 +326,7 @@ RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, b,
 RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "3" from "a, a, b, b, c, c": 15
 RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, a, b, c": 9
 RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, a, d, b, b, c, c": 16
+RearrangeArrWithoutAdjacentEqualChars for "aab": aba
+RearrangeArrWithoutAdjacentEqualChars for "aabb": abab
 */
 #endif
