@@ -25,12 +25,15 @@ How would you optimize it?
 Design a class which receives a list of words in the constructor, and implements a method that takes two words word1 and word2 and return the shortest distance between these two words in the list.
 For example,
 Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
-Given word1 = "coding¡¨, word2 = "practice¡¨, return 3. Given word1 = "makes", word2 = "coding", return 1.
+Given word1 = "codingï¿½ï¿½, word2 = "practiceï¿½ï¿½, return 3. Given word1 = "makes", word2 = "coding", return 1.
 Note
 You may assume that word1 does not equal to word2, and word1 and word2 are both in the list.
 
 Leetcode: Shortest Word Distance III
 word1 and word2 can be equal
+
+Compute min dist of every char in a string to a target char.
+ex: s="bloomberg", c='b', return [0,1,2,2,1,0,1,2,3]
 */
 class MinDistBtw2WordsInFile
 {
@@ -132,6 +135,35 @@ public:
 		return minDist;
 	}
 };
+class MinDistToTgtChar
+{
+public:
+	MinDistToTgtChar(){}
+
+	std::vector<int> TwoScan(const std::string & s, char c)
+	{
+		int N = s.size();
+		std::vector<int> res(N, -1);
+		int lastIdx = -1;
+		for (int i = 0; i < N; ++i)
+		{
+			if (s[i] == c)
+				lastIdx = i;
+			if (lastIdx != -1)
+				res[i] = i - lastIdx;
+		}
+		lastIdx = -1;
+		for (int i = N-1; i >= 0; --i)
+		{
+			if (s[i] == c)
+				lastIdx = i;
+			if (lastIdx != -1)
+				res[i] = std::min(res[i], lastIdx - i);
+		}
+		std::cout << "MinDistToTgtChar TwoScan for \"" << c << "\" from [" << s << "]: " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+};
 /*
 MinDistBtw2WordsInFile OneScan for [tea,eat] in "ace, tea, and, ad, eat, kk, eat, dan, ate, tea, abc, eat, xyz": 2
 MinDistBtw2WordsInFile BuildWordMap for "ace, tea, and, ad, eat, kk, eat, dan, ate, tea, abc, eat, xyz":
@@ -149,5 +181,8 @@ Row#9	= xyz: 12
 MinPairDiff2SortedArrays ModifiedMerge2SortedArrays for "1, 9", and "4, 6, 11": 2, [9,11]
 MinDistBtw2WordsInFile QueryFromWordMap for [tea,eat]: 2
 MinDistBtw2WordsInFile OneScan2 for [eat,eat] in "ace, tea, and, ad, eat, kk, eat, dan, ate, tea, abc, eat, xyz": 2
+
+MinDistToTgtChar TwoScan for "b" from [bloomberg]: 0, 1, 2, 2, 1, 0, 1, 2, 3
+MinDistToTgtChar TwoScan for "a" from [bloomberg]: -1, -1, -1, -1, -1, -1, -1, -1, -1
 */
 #endif
