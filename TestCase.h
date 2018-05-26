@@ -135,6 +135,27 @@ namespace TestCase
 		return res;
 	}
 	template<class T>
+	static std::vector<std::vector<T>> RandMatrix(unsigned rowCount, unsigned colCount, T low, T high)
+    {
+        return std::vector<std::vector<T>>();
+    }
+    template<>
+    std::vector<std::vector<int>> RandMatrix(unsigned rowCount, unsigned colCount, int low, int high)
+    {
+        std::vector<std::vector<int>> res;
+        for (int row = 0; row < rowCount; ++row)
+            res.push_back(RandVec<int>(colCount, low, high));
+        return res;
+    }
+    template<>
+    std::vector<std::vector<double>> RandMatrix(unsigned rowCount, unsigned colCount, double low, double high)
+    {
+        std::vector<std::vector<double>> res;
+        for (int row = 0; row < rowCount; ++row)
+            res.push_back(RandVec<double>(colCount, low, high));
+        return res;
+    }
+	template<class T>
 	static std::vector<T> RandUniqueVec(unsigned count, T low, T high)
 	{
 		return std::vector<T>();
