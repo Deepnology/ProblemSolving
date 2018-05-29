@@ -50,19 +50,43 @@ public:
 		std::cout << "MissingRangesInSortedArray for \"[" << lower << "," << upper << "], From " << Debug::ToStr1D<int>()(sorted) << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
 		return res;
 	}
+
+	std::vector<std::string> Simplified(const std::vector<int> & sorted, int lower, int upper)//nums in sorted are exclusive, but "lower" and "upper" are inclusive
+	{
+		int N = sorted.size();
+		std::vector<std::string> res;
+
+		int prevNum = lower-1;
+		for (int i = 0; i < N; ++i)
+		{
+			if ((sorted[i] - prevNum) > 1)//at least 3 entries in between inclusive
+			{
+				if (sorted[i] - prevNum == 2)//exactly 3 entries in between inclusive
+					res.push_back(std::to_string(prevNum + 1));
+				else//3 more entries in between inclusive
+					res.push_back(std::to_string(prevNum + 1) + "->" + std::to_string(sorted[i] - 1));
+			}
+			prevNum = sorted[i];
+		}
+
+		if ((upper+1) - prevNum > 1)//at least 3 entries in between inclusive
+		{
+			if ((upper+1) - prevNum == 2)//exactly 3 entries in between inclusive
+				res.push_back(std::to_string(prevNum + 1));
+			else//3 more entries in between inclusive
+				res.push_back(std::to_string(prevNum + 1) + "->" + std::to_string((upper+1) - 1));
+		}
+
+		std::cout << "MissingRangesInSortedArray Simplified for \"[" << lower << "," << upper << "], From " << Debug::ToStr1D<int>()(sorted) << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
+		return res;
+	}
 };
 /*
-MissingRangesInSortedArray for "[27,102], From 12, 13, 14, 36, 37, 40, 45, 52, 59, 80": 27->35, 38->39, 41->44, 46->51, 53->58, 60->79, 81->102
-MissingRangesInSortedArray for "[30,75], From 8, 16, 21, 38, 45, 46, 54, 56, 76, 77": 30->37, 39->44, 47->53, 55, 57->75
-MissingRangesInSortedArray for "[-10,131], From 4, 9, 19, 45, 46, 67, 70, 81, 85, 96": -10->3, 5->8, 10->18, 20->44, 47->66, 68->69, 71->80, 82->84, 86->95, 97->131
-MissingRangesInSortedArray for "[-23,97], From 1, 5, 43, 44, 51, 54, 71, 77, 85, 93": -23->0, 2->4, 6->42, 45->50, 52->53, 55->70, 72->76, 78->84, 86->92, 94->97
-MissingRangesInSortedArray for "[21,89], From 10, 12, 32, 36, 38, 51, 52, 59, 86, 89": 21->31, 33->35, 37, 39->50, 53->58, 60->85, 87->88
-MissingRangesInSortedArray for "[-45,91], From 6, 14, 18, 24, 32, 45, 56, 57, 79, 97": -45->5, 7->13, 15->17, 19->23, 25->31, 33->44, 46->55, 58->78, 80->91
-MissingRangesInSortedArray for "[-49,78], From 9, 9, 11, 25, 43, 43, 56, 73, 90, 91": -49->8, 10, 12->24, 26->42, 44->55, 57->72, 74->78
-MissingRangesInSortedArray for "[-31,98], From 10, 11, 11, 19, 38, 38, 46, 62, 74, 80": -31->9, 12->18, 20->37, 39->45, 47->61, 63->73, 75->79, 81->98
-MissingRangesInSortedArray for "[23,98], From 5, 20, 31, 32, 42, 68, 71, 72, 73, 98": 23->30, 33->41, 43->67, 69->70, 74->97
-MissingRangesInSortedArray for "[-42,124], From 2, 32, 37, 42, 52, 64, 72, 75, 87, 99": -42->1, 3->31, 33->36, 38->41, 43->51, 53->63, 65->71, 73->74, 76->86, 88->98, 100->124
-MissingRangesInSortedArray for "[36,65], From 2, 11, 11, 28, 43, 63, 65, 66, 70, 79": 36->42, 44->62, 64
-MissingRangesInSortedArray for "[37,58], From 15, 29, 32, 37, 41, 70, 70, 83, 87, 95": 38->40, 42->58
+MissingRangesInSortedArray for "[42,113], From 9, 25, 32, 47, 47, 56, 59, 68, 70, 72": 42->46, 48->55, 57->58, 60->67, 69, 71, 73->113
+MissingRangesInSortedArray Simplified for "[-1,146], From 6, 9, 42, 50, 53, 60, 63, 73, 92, 97": -1->5, 7->8, 10->41, 43->49, 51->52, 54->59, 61->62, 64->72, 74->91, 93->96, 98->146
+MissingRangesInSortedArray for "[11,124], From 3, 4, 8, 27, 40, 40, 48, 71, 88, 90": 11->26, 28->39, 41->47, 49->70, 72->87, 89, 91->124
+MissingRangesInSortedArray Simplified for "[40,108], From 2, 8, 8, 20, 44, 59, 60, 64, 83, 97": 3->7, 9->19, 21->43, 45->58, 61->63, 65->82, 84->96, 98->108
+MissingRangesInSortedArray for "[-28,95], From 3, 14, 16, 29, 44, 44, 70, 76, 81, 84": -28->2, 4->13, 15, 17->28, 30->43, 45->69, 71->75, 77->80, 82->83, 85->95
+MissingRangesInSortedArray Simplified for "[5,86], From 8, 12, 30, 31, 41, 44, 57, 77, 86, 97": 5->7, 9->11, 13->29, 32->40, 42->43, 45->56, 58->76, 78->85, 87->96
 */
 #endif
