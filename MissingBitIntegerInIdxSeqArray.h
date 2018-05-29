@@ -213,14 +213,14 @@ public:
 		return XOR;
 	}
 
-	int SortedArrayBinarySearch(const std::vector<int> & A)//A is sorted
+	int SortedArrayBinarySearchRecur(const std::vector<int> & A)//A is sorted
 	{
 		int N = A.size();
 		if (N == 0) return -1;
 		//now A contains at least 1 element
-		int resIdx = recur(A, -1, N);
-		std::cout << "MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [" << Debug::ToStr1D<int>()(A) << "]: " << resIdx << std::endl;
-		return resIdx;
+		int res = recur(A, -1, N);
+		std::cout << "MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [" << Debug::ToStr1D<int>()(A) << "]: " << res << std::endl;
+		return res;
 	}
 private:
     //cases:
@@ -248,10 +248,43 @@ private:
 		}
 		//now right-left > 1
 		int mid = left + (right - left) / 2;
-		int resL = recur(A, left, mid);
-		if (resL != -1) return resL;
-		return recur(A, mid, right);
+        if (A[mid] > mid)//greater: search left
+            return recur(A, left, mid);
+        else//equal or less: search right
+            return recur(A, mid, right);
 	}
+
+public:
+    int SortedArrayBinarySearchIterate(const std::vector<int> & A)
+    {
+        int N = A.size();
+        if (N == 0) return -1;
+        int left = -1;
+        int right = N;
+        while (right - left > 1)
+        {
+            int mid = left + (right - left) / 2;
+            if (A[mid] > mid)//greater: search left
+                right = mid;
+            else//equal or less: search right
+                left = mid;
+        }
+        //now 2 elements in between inclusive
+        int res = -1;
+        if (left == -1)
+            if (A[right] != 0) res = 0;
+            else res = -1;
+        else if (right == N)
+            if (A[left] != N) res = N;
+            else res = -1;
+        else if (A[left] + 1 != A[right])
+            res = left != A[left] ? left : right;
+        else
+            res = -1;
+
+        std::cout << "MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchIterate for [" << Debug::ToStr1D<int>()(A) << "]: " << res << std::endl;
+        return res;
+    }
 };
 /*
 MissingBitIntegerInIdxSeqArray FindIterate for "0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13": 3
@@ -264,24 +297,24 @@ MissingBitIntegerInIdxSeqArray UseXOR for "0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12
 MissingBitIntegerInIdxSeqArray UseXOR for "4, 3, 6, 9, 1, 8, 10, 2, 5, 0": 7
 MissingBitIntegerInIdxSeqArray UseXOR for "1, 2, 3, 4, 5, 6, 8, 9, 10, 0": 7
 
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0]: 1
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [1]: 0
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1]: 2
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [1, 2]: 0
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 2]: 1
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 2]: 3
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 3]: 2
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 2, 3]: 1
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [1, 2, 3]: 0
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 0
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 6
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20]: 15
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20]: 13
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 0
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20]: 15
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20]: 18
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 9
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 5
-MissingBitIntegerInIdxSeqArray SortedArrayBinarySearch for [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 2
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0]: 1
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [1]: 0
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1]: 2
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [1, 2]: 0
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 2]: 1
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2]: 3
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 3]: 2
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 2, 3]: 1
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [1, 2, 3]: 0
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 9
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]: 20
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20]: 14
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20]: 13
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 7
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20]: 18
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 9
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20]: 18
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 0
+MissingBitIntegerInIdxSeqArray SortedArrayBinarySearchRecur for [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]: 6
 */
 #endif
