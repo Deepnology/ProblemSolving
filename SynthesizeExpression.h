@@ -27,6 +27,52 @@ public:
 	SynthesizeExpression(){}
 	~SynthesizeExpression(){}
 
+	std::vector<std::string> BestRecur(std::string num, int target)
+	{
+		std::vector<std::string> res;
+		if (num.empty()) return res;
+		std::string path;
+		recur(num, 0, 0, 0, path, target, res);
+		std::cout << "SynthesizeExpression BestRecur for \"" << target << " from " << num << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
+		return res;
+	}
+private:
+	void recur(const std::string & num, int begin, long long eval, long long mul, std::string & path, int target, std::vector<std::string> & res)
+	{
+		int N = num.size();
+		if (begin == N)
+		{
+			if (eval == target)
+				res.push_back(path);
+			return;
+		}
+		for (int i = begin; i < N; ++i)
+		{
+			if (i > begin && num[begin] == '0') break;
+			long long curNum = stoll(num.substr(begin, i-begin+1));
+			if (curNum > INT_MAX) break;
+			if (begin == 0)
+			{
+				int len = path.size();
+				path += std::to_string(curNum);
+				recur(num, i+1, curNum, curNum, path, target, res);
+				path = path.substr(0, len);
+			}
+			else
+			{
+				int len = path.size();
+				path += "+" + std::to_string(curNum);
+				recur(num, i+1, eval+curNum, curNum, path, target, res);
+				path[len] = '-';
+				recur(num, i+1, eval-curNum, -curNum, path, target, res);
+				path[len] = '*';
+				recur(num, i+1, eval-mul+mul*curNum, mul*curNum, path, target, res);
+				path = path.substr(0, len);
+			}
+		}
+	}
+
+public:
 	std::vector<std::string> BetterRecur(std::string num, int target)
 	{
 		std::vector<std::string> res;
@@ -211,67 +257,23 @@ private:
 			++operatorItr;
 		}
 
-		std::cout << "Evaluate \"" << Debug::ToStr1D<long long>()(operands) << "\", \"" << Debug::ToStr1D<char>()(operators) << "\": " << sum << std::endl;
+		//std::cout << "Evaluate \"" << Debug::ToStr1D<long long>()(operands) << "\", \"" << Debug::ToStr1D<char>()(operators) << "\": " << sum << std::endl;
 		return (int)sum;
 	}
 
 };
 /*
-Evaluate "123", "": 123
-Evaluate "12, 3", "+": 15
-Evaluate "12, 3", "-": 9
-Evaluate "12, 3", "*": 36
-Evaluate "1, 23", "+": 24
-Evaluate "1, 2, 3", "+, +": 6
-Evaluate "1, 2, 3", "+, -": 0
-Evaluate "1, 2, 3", "+, *": 7
-Evaluate "1, 23", "-": -22
-Evaluate "1, 2, 3", "-, +": 2
-Evaluate "1, 2, 3", "-, -": -4
-Evaluate "1, 2, 3", "-, *": -5
-Evaluate "1, 23", "*": 23
-Evaluate "1, 2, 3", "*, +": 5
-Evaluate "1, 2, 3", "*, -": -1
-Evaluate "1, 2, 3", "*, *": 6
 SynthesizeExpression Recur for "6 from 123": 1+2+3, 1*2*3
 SynthesizeExpression BetterRecur for "6 from 123": 1+2+3, 1*2*3
-Evaluate "232", "": 232
-Evaluate "23, 2", "+": 25
-Evaluate "23, 2", "-": 21
-Evaluate "23, 2", "*": 46
-Evaluate "2, 32", "+": 34
-Evaluate "2, 3, 2", "+, +": 7
-Evaluate "2, 3, 2", "+, -": 3
-Evaluate "2, 3, 2", "+, *": 8
-Evaluate "2, 32", "-": -30
-Evaluate "2, 3, 2", "-, +": 1
-Evaluate "2, 3, 2", "-, -": -3
-Evaluate "2, 3, 2", "-, *": -4
-Evaluate "2, 32", "*": 64
-Evaluate "2, 3, 2", "*, +": 8
-Evaluate "2, 3, 2", "*, -": 4
-Evaluate "2, 3, 2", "*, *": 12
+SynthesizeExpression BestRecur for "6 from 123": 1+2+3, 1*2*3
 SynthesizeExpression Recur for "8 from 232": 2+3*2, 2*3+2
 SynthesizeExpression BetterRecur for "8 from 232": 2+3*2, 2*3+2
-Evaluate "105", "": 105
-Evaluate "10, 5", "+": 15
-Evaluate "10, 5", "-": 5
-Evaluate "10, 5", "*": 50
-Evaluate "1, 0, 5", "+, +": 6
-Evaluate "1, 0, 5", "+, -": -4
-Evaluate "1, 0, 5", "+, *": 1
-Evaluate "1, 0, 5", "-, +": 6
-Evaluate "1, 0, 5", "-, -": -4
-Evaluate "1, 0, 5", "-, *": 1
-Evaluate "1, 0, 5", "*, +": 5
-Evaluate "1, 0, 5", "*, -": -5
-Evaluate "1, 0, 5", "*, *": 0
+SynthesizeExpression BestRecur for "8 from 232": 2+3*2, 2*3+2
 SynthesizeExpression Recur for "5 from 105": 10-5, 1*0+5
 SynthesizeExpression BetterRecur for "5 from 105": 10-5, 1*0+5
-Evaluate "0, 0", "+": 0
-Evaluate "0, 0", "-": 0
-Evaluate "0, 0", "*": 0
+SynthesizeExpression BestRecur for "5 from 105": 1*0+5, 10-5
 SynthesizeExpression Recur for "0 from 00": 0+0, 0-0, 0*0
 SynthesizeExpression BetterRecur for "0 from 00": 0+0, 0-0, 0*0
+SynthesizeExpression BestRecur for "0 from 00": 0+0, 0-0, 0*0
 */
 #endif
