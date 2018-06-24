@@ -240,6 +240,195 @@ void Test()
 	std::cout << "Hit ENTER -> ThreadPool: detach all threads in pool. ";
 	std::cin.ignore();
 }
+}
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <memory>//std::shared_ptr
+#include <functional>
+namespace thread_pool2
+{
+	class Worker;
+	class ThreadPool
+	{
+		friend Worker;
+	public:
+		explicit ThreadPool(size_t count);
+		~ThreadPool();
+		void Dispatch(std::function<void()> f);
+	private:
+		void DispatchHandler();
+
+		std::mutex m_mutex;
+		std::condition_variable m_condition;
+		std::map<std::thread::id, Worker *> m_pool;
+		std::deque<std::thread::id> m_standBy;
+		std::deque<std::function<void()>> m_tasks;
+		bool m_destroyed;
+
+		std::thread m_dispatchHandler;
+	};
+	class Worker
+	{
+	public:
+		explicit Worker(ThreadPool * t);
+		~Worker();
+		std::thread::id GetId() const;
+		void Accept(std::function<void()> f);
+	private:
+		void Invoke();
+
+		ThreadPool * m_ThreadPool;
+
+		std::shared_ptr<std::mutex> m_mutex_f;
+		std::shared_ptr<std::condition_variable> m_condition_f;
+		std::shared_ptr<std::function<void()>> m_f;
+
+		std::shared_ptr<std::mutex> m_mutex;
+		std::shared_ptr<bool> m_destroyed;
+
+		std::thread m_worker;
+	};
+	Worker::Worker(ThreadPool * t): m_ThreadPool(t)
+			, m_mutex_f(new std::mutex()), m_condition_f(new std::condition_variable()), m_f()
+			, m_mutex(new std::mutex()), m_destroyed(new bool(false))
+			, m_worker(std::bind(&Worker::Invoke, this))
+	{
+
+	}
+	Worker::~Worker()
+	{
+		/*critical section: main*/
+		std::unique_lock<std::mutex> lock(*m_mutex);
+		*m_destroyed = true;
+		m_worker.detach();
+	}
+	std::thread::id Worker::GetId() const
+	{
+		return m_worker.get_id();
+	}
+	void Worker::Accept(std::function<void()> f)
+	{
+		/*critical section: f*/
+		std::unique_lock<std::mutex> lock(*m_mutex_f);
+		std::shared_ptr<std::function<void()>>(new std::function<void()>(f)).swap(m_f);
+		m_condition_f->notify_one();
+	}
+	void Worker::Invoke()
+	{
+		std::shared_ptr<std::mutex> scoped_m_mutex_f = m_mutex_f;
+		std::shared_ptr<std::condition_variable> scoped_m_condition_f = m_condition_f;
+
+		std::shared_ptr<std::mutex> scoped_m_mutex = m_mutex;
+		std::shared_ptr<bool> scoped_m_destroyed = m_destroyed;
+
+		while (true)
+		{
+			{
+				/*critical section: f*/
+				std::unique_lock<std::mutex> lock(*scoped_m_mutex_f);
+				scoped_m_condition_f->wait(lock);
+
+				std::shared_ptr<std::function<void()>> scoped_m_f = m_f;
+
+				try {
+					(*scoped_m_f)();
+				}
+				catch (std::exception &) {
+
+				}
+				catch (...) {
+
+				}
+			}
+
+			/*critical section: main*/
+			std::unique_lock<std::mutex> lock(*scoped_m_mutex);
+			if (!(*scoped_m_destroyed))
+			{
+				std::unique_lock<std::mutex> lock2(m_ThreadPool->m_mutex);
+				m_ThreadPool->m_condition.notify_one();
+				m_ThreadPool->m_standBy.push_back(std::this_thread::get_id());
+			}
+			else
+				break;
+		}
+	}
+
+	ThreadPool::ThreadPool(size_t count):
+			m_mutex(), m_condition(), m_pool(), m_standBy(), m_tasks(), m_destroyed(false)
+			, m_dispatchHandler(std::bind(&ThreadPool::DispatchHandler, this))
+	{
+		for (size_t i = 0; i < count; ++i)
+		{
+			Worker * w = new Worker(this);
+			m_pool.emplace(w->GetId(), w);
+			m_standBy.push_back(w->GetId());
+		}
+	}
+	ThreadPool::~ThreadPool()
+	{
+		{
+			std::unique_lock<std::mutex> lock(m_mutex);
+			m_destroyed = true;
+			m_condition.notify_one();
+		}
+		m_dispatchHandler.join();
+	}
+	void ThreadPool::Dispatch(std::function<void()> f)
+	{
+		std::unique_lock<std::mutex> lock(m_mutex);
+		m_tasks.push_back(f);
+		m_condition.notify_one();
+	}
+	void ThreadPool::DispatchHandler()
+	{
+		std::unique_lock<std::mutex> lock(m_mutex);
+		while(true)
+		{
+			m_condition.wait(lock);
+			if (m_destroyed)
+			{
+				lock.unlock();
+				for (const auto & p : m_pool)
+					delete p.second;
+				m_pool.clear();
+				break;
+			}
+			while (!m_standBy.empty() && !m_tasks.empty())
+			{
+				m_pool[m_standBy.front()]->Accept(m_tasks.front());
+				m_standBy.pop_front();
+				m_tasks.pop_front();
+			}
+		}
+	}
+
+	/*the following functions are for test*/
+	void aLoop(std::string arg, size_t count)
+	{
+		std::ostringstream oss;
+		oss << "[" << arg << "," << std::this_thread::get_id() << "," << count << "]";
+		for (size_t i = 0; i < count; ++i)
+			//std::cout << oss.str();
+			std::cout << arg;
+	}
+	void Test()
+	{
+		std::cout << "Hit ENTER -> ThreadPool: init for 5 threads in pool. ";
+		std::cin.ignore();
+		ThreadPool p(5);
+		std::cout << "Hit ENTER -> ThreadPool: dispatch 200 tasks with random number of loops in [1:150]. ";
+		std::cin.ignore();
+		for (size_t i = 0; i < 200; ++i)
+			p.Dispatch(std::bind(aLoop, std::to_string(i), rand() % 150 + 1));
+		std::cout << "ThreadPool: print 200 tasks' results [task_id,thread_id,loop_count]. ";
+		std::cin.ignore();
+		std::cout << "Hit ENTER -> ThreadPool: detach all threads in pool. ";
+		std::cin.ignore();
+	}
 }
 #endif
