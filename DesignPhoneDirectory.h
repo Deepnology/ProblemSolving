@@ -31,6 +31,8 @@ directory.check(2);
 // Release number 2 back to the pool.
 directory.release(2);
 
+Bloomberg
+Use Trie !!!!
 */
 class DesignPhoneDirectory
 {
