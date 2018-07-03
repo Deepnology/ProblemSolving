@@ -85,6 +85,38 @@ private:
 		if (cur == NULL) return 0;
 		return std::max(widthRecur(cur->left), widthRecur(cur->right)) * 2 + 1;
 	}
+public:
+	std::vector<std::vector<std::string>> BFS(TreeNode * root)
+	{
+		int h = heightRecur(root);
+		int w = widthRecur(root);
+		std::vector<std::vector<std::string>> res(h, std::vector<std::string>(w, " "));
+		std::queue<std::tuple<TreeNode *, int, int>> que;
+		que.push({root, 0, w-1});
+		int depth = 0;
+		while (!que.empty())
+		{
+			int levelCount = que.size();
+			while (levelCount-->0)
+			{
+				auto cur = que.front();
+				que.pop();
+				TreeNode *n = std::get<0>(cur);
+				int left = std::get<1>(cur);
+				int right = std::get<2>(cur);
+				int mid = (left + right) / 2;
+				res[depth][mid] = std::to_string(n->val);
+				if (n->left)
+					que.push({n->left,left,mid-1});
+				if (n->right)
+					que.push({n->right,mid+1,right});
+			}
+			++depth;
+		}
+		std::cout << "PrintBinaryTreeIn2DArray BFS: " << std::endl;
+		Debug::Print2D<std::string>()(res, false);
+		return res;
+	}
 
 public:
 	std::vector<std::string> ToStrRecur(TreeNode * root)
@@ -144,6 +176,13 @@ Row#1	=  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  , 8,  ,  ,
 Row#2	=  , 2,  ,  ,  , 5,  ,  ,  , 9,  ,  ,  , 2,
 Row#3	= 3,  , 4,  , 6,  , 7,  , 0,  , 1,  , 3,  , 4
 
+PrintBinaryTreeIn2DArray BFS:
+[rY][cX]
+Row#0	=  ,  ,  ,  ,  ,  ,  , 0,  ,  ,  ,  ,  ,  ,
+Row#1	=  ,  ,  , 1,  ,  ,  ,  ,  ,  ,  , 8,  ,  ,
+Row#2	=  , 2,  ,  ,  , 5,  ,  ,  , 9,  ,  ,  , 2,
+Row#3	= 3,  , 4,  , 6,  , 7,  , 0,  , 1,  , 3,  , 4
+
 PrintBinaryTreeIn2DArray ToStrRecur:
 [rY][cX]
 Row#0	=  ,  ,  ,  ,  ,  ,  , 0,  ,  ,  ,  ,  ,  ,
@@ -152,4 +191,39 @@ Row#2	=  , 2,  ,  ,  , 5,  ,  ,  , 9,  ,  ,  , 2,
 Row#3	= 3,  , 4,  , 6,  , 7,  , 0,  , 1,  , 3,  , 4
 
  */
+/*
+//Amazon
+class BinaryTreeBottomView
+{
+public:
+	BinaryTreeBottomView(){}
+	struct TreeNode
+	{
+		TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+		int val;
+		TreeNode * left;
+		TreeNode * right;
+	};
+	std::vector<std::string> BFS(TreeNode * root)
+	{
+		int width = widthRecur(root);
+		std::vector<std::string> res(width, "");
+		std::queue<std::pair<TreeNode *,int>> que;
+		que.push({root,0});
+		while (!que.empty())
+		{
+			auto cur = que.front(); que.pop();
+			res[cur.second] = std::to_string(cur.first->val);
+			if (cur.first->left)
+				que.push({cur.first->left, 2*cur.second+1});
+		}
+		return res;
+	}
+	int widthRecur(TreeNode * cur)
+	{
+		if (cur == NULL) return 0;
+		return std::max(widthRecur(cur->left), widthRecur(cur->right)) * 2 + 1;
+	}
+};
+*/
 #endif
