@@ -4,7 +4,7 @@
 //#define _BitNumberOperation_
 //#define _Random_
 //#define _StackQueue_
-//#define _1DArray_
+#define _1DArray_
 //#define _SortSearchSelect_
 //#define _Interval_
 //#define _PermuteCombinePartition_
@@ -14,7 +14,7 @@
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
-#define _BinaryTree_
+//#define _BinaryTree_
 //#define _Heap_
 //#define _Graph_
 //#define _RMQLCA_
@@ -44,10 +44,15 @@
 #include "DesignSearchAutocompleteSystem.h"
 #include "DesignTypeaheadSuggestion.h"
 #include "DesignAPIRateLimiter.h"
+#include "AddGetTopKStockPrice.h"
+#include "AddGetFraudulentTransactionsInOrder.h"
+#include "DesignMealCombinationSystem.h"
+#include "DesignLeetcodeOJ.h"
 
 /*Math*/
 #include "EggDrop.h"
 #include "WaterAndJugProblem.h"
+#include "TrainPassCaveProblem.h"
 
 /*Bit Number Operation*/
 #include "SwapInPlace.h"
@@ -158,6 +163,7 @@
 #include "DotProductOfArrays.h"
 #include "ValidateIPAddress.h"
 #include "MaxNumBySwap2Digits.h"
+#include "CountPrimeSetBitsOfNums.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -197,6 +203,7 @@
 #include "MovingAvgFromDataStream.h"
 #include "StackReproduceDiffOrderArray.h"
 #include "StackWithMax.h"
+#include "StackPermutation.h"
 
 /*1D Array*/
 #include "AllUniqueElements.h"
@@ -265,6 +272,8 @@
 #include "CircularArrayLoop.h"
 #include "ReconstructOriginalDigitsFromEnglish.h"
 #include "MoveZerosToEndOfArray.h"
+#include "SwapAdjacentInLRString.h"
+//#include "AsteroidCollision.h"
 
 /*Sort Search Select*/
 #include "Partition.h"
@@ -356,6 +365,8 @@
 #include "SortArrWithMultiSortedSubArrs.h"
 #include "SortStringsWithNewAlphabet.h"
 #include "CutWoodsToKPiecesWSameLen.h"
+#include "PrintSeqInOrderFromUnorderedStream.h"
+#include "EqualGlobalAndLocalInversions.h"
 
 /*Interval*/
 #include "MergeIntervals.h"
@@ -372,6 +383,7 @@
 #include "IntersectionOfListsOfIntervals.h"
 #include "LeastNumOfIntervalsCoverRange.h"
 #include "AddBoldTagInStrMergeInterval.h"
+#include "FallingSquares.h"
 
 /*Permute Combine Partition*/
 #include "Permutations.h"
@@ -455,6 +467,8 @@
 #include "MaxSumOfPairMins.h"
 #include "RemoveConsecuSameChars.h"
 #include "PartitionSameCharsInSingleSubstr.h"
+#include "NextClosestTime.h"
+#include "PartitionIntoFibonacciSeq.h"
 
 /*Trie Suffix Tree Array*/
 #include "SuffixArray.h"
@@ -567,6 +581,8 @@
 #include "ClosestRepetition.h"
 #include "MinDistBtw2WordsInFile.h"
 #include "SentenceSimilarity.h"
+#include "LongestWordInDictThruDeleting.h"
+#include "LongestLadderWordInDict.h"
 
 /*Text Lines*/
 #include "NeatPrintWordWrap.h"
@@ -607,6 +623,7 @@
 #include "EliminateLeftRightOddNumsGame.h"
 #include "SplitNodesInKGroupLinkedList.h"
 #include "FlattenMultilevelLinkedList.h"
+#include "TraverseMultilevelLinkedList.h"
 
 /*2D Grid*/
 #include "MinPathSum.h"
@@ -679,6 +696,10 @@
 #include "SquirrelCollectNutsToTree.h"
 #include "VerticalPrintWBalancedColumnLen.h"
 #include "Find4PointsFormRectangle.h"
+#include "MaxIncrKeepSkyline.h"
+#include "FindDuplicateRowsInBinaryMatrix.h"
+#include "Count1sIn2dMatrixWithHasAPI.h"
+#include "UniquePathInTriangle.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -819,6 +840,13 @@
 #include "FreedomTrail.h"
 #include "MergeAccounts.h"
 #include "LCAofDeepestLeavesGraphTree.h"
+#include "FindLoudestRicherPerson.h"
+#include "EventualSafeVerticesDirectedGraph.h"
+#include "BusRoutes.h"
+#include "MinStepsToOpen4DigitLock.h"
+#include "MinStepsSwap0In2DPuzzleBoard.h"
+#include "CheapestFlightsWithinKStops.h"
+#include "OnePathVisitAllRooms.h"
 
 /*RMQ LCA*/
 #include "RangeSumQuerySegmentTree.h"
@@ -1142,6 +1170,35 @@ int main()
     }
     {
         DesignAPIRateLimiter().Test();
+    }
+    {
+        AddGetTopKStockPrice s;
+        s.Add("a",1);
+        s.Add("b",2);
+        s.Add("c",3);
+        s.Add("b",4);
+        s.Add("a",3);
+        s.Add("d",2);
+        s.GetTopK(4);
+    }
+    {
+        AddGetFraudulentTransactionsInOrder a;
+        a.Add("a", 0, 1, "aa");
+        a.Add("b", 0, 2, "bb");
+        a.Add("a", 0, 59, "cc");
+        a.Add("c", 0, 61, "dd");
+        a.Add("b", 0, 61, "ee");
+        a.Add("c", 0, 130, "ff");
+        a.GetAllTransactionsInOrder();
+        a.GetAllFradulentTransactionsInOrder();
+    }
+    {
+        DesignMealCombinationSystem::Kitchen k(400,200,400,600,400,300,300,400);
+    }
+    {
+        DesignLeetcodeOJ::OJSingleton::Instance().Print();
+        DesignLeetcodeOJ::OJSingleton::Instance().Print();
+        DesignLeetcodeOJ::OJSingleton::Instance().Print();
     }
 
 #endif
@@ -2053,6 +2110,9 @@ int main()
         MaxNumBySwap2Digits().OnePass(9973);
         MaxNumBySwap2Digits().OnePass(98368);
     }
+    {
+        CountPrimeSetBitsOfNums().Solve(10, 15);
+    }
 
 #endif
 #ifdef _Random_
@@ -2465,6 +2525,14 @@ int main()
         s.pop();
         s.top();
     }
+    {
+        StackPermutation().Validate(std::vector<int>({1,2,3,4,5}), std::vector<int>({5,4,3,2,1}));
+        StackPermutation().Validate(std::vector<int>({1,2,3,4,5}), std::vector<int>({1,2,3,4,5}));
+        StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({6,8,4,7,5}));
+        StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({6,4,5,7,8}));
+        StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({6,4,7,8,5}));
+        StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({7,8,4,6,5}));
+    }
 
 #endif
 #ifdef _1DArray_
@@ -2758,10 +2826,13 @@ int main()
 		MinWaitingTime().Schedule(TestCase::RandVec<int>(20, 0, 99));
 	}
 	{
-		for (int i = 0; i < 100; ++i)
-			MissingRangesInSortedArray().Solve(TestCase::RandSortedVec(10, 1, 99), TestCase::RandNum(-50, 50), TestCase::RandNum(50, 150));
-
+		for (int i = 0; i < 3; ++i)
+        {
+            MissingRangesInSortedArray().Solve(TestCase::RandSortedVec(10, 1, 99), TestCase::RandNum(-50, 50), TestCase::RandNum(50, 150));
+            MissingRangesInSortedArray().Simplified(TestCase::RandSortedVec(10, 1, 99), TestCase::RandNum(-50, 50), TestCase::RandNum(50, 150));
+        }
 		SummaryRangesInSortedArray().Solve(TestCase::RandSortedVec(10, 1, 13));
+        SummaryRangesInSortedArray().Better(TestCase::RandSortedVec(10, 1, 13));
 	}
 	{
 		FirstMissingPositive().Find(&std::vector<int>({ 17, 16, -2, 5, 1, 4, 2, -1, 18, 0 })[0], 10);
@@ -2915,6 +2986,9 @@ int main()
 		MaxProductOf3().OneScan(&std::vector<int>({ -6, -1, -2, -5, -4, -3, -7, -10, -8, -9 })[0], 10);
 		MaxProductOf3().Sort(&std::vector<int>({ -6, -1, 2, -5, -4, -3, 7, 3, 1, 2 })[0], 10);
 		MaxProductOf3().Sort(&std::vector<int>({ -6, -1, -2, -5, -4, -3, -7, -10, -8, -9 })[0], 10);
+
+        //for (int i = 0; i < 30; ++i)
+        MaxProductOfK().SortGreedy(TestCase::RandVec(8, -9, 9), TestCase::RandNum(1, 7));
 	}
 	{
 		for (int i = 0; i < 4; ++i)
@@ -2971,6 +3045,33 @@ int main()
 			MissingBitIntegerInIdxSeqArray().FindRecur(v);
 			MissingBitIntegerInIdxSeqArray().UseXOR(v);
 		}
+
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0}));//missing num in [0:1]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({1}));//missing num in [0:1]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,1}));//missing num in [0:2]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({1,2}));//missing num in [0:2]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,2}));//missing num in [0:2]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,1,2}));//missing num in [0:3]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,1,3}));//missing num in [0:3]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,2,3}));//missing num in [0:3]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({1,2,3}));//missing num in [0:3]
+
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0}));//missing num in [0:1]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({1}));//missing num in [0:1]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,1}));//missing num in [0:2]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({1,2}));//missing num in [0:2]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,2}));//missing num in [0:2]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,1,2}));//missing num in [0:3]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,1,3}));//missing num in [0:3]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({0,2,3}));//missing num in [0:3]
+        MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(std::vector<int>({1,2,3}));//missing num in [0:3]
+
+        for (int i = 0; i < 10; ++i)
+        {
+            std::vector<int> v= TestCase::RandUniqueSortedVec(20, 0, 20);
+            MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchRecur(v);
+            MissingBitIntegerInIdxSeqArray().SortedArrayBinarySearchIterate(v);
+        }
 	}
 	{
 		ContainsDuplicate().Solve(TestCase::RandVec<int>(25, 0, 99), TestCase::RandNum<int>(5, 15), TestCase::RandNum<int>(10, 80));
@@ -3042,6 +3143,12 @@ int main()
 		RemoveSomeElementFromArray().InPlace(std::vector<int>({ 0, 9, 0, 4, 0, 0, 2, 7, 0, 6, 0 }), 0);
 		RemoveSomeElementFromArray().InPlace(std::vector<int>({ 0, 9, 0, 0, 0, 0, 0, 7, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1 }), 0);
 	}
+    {
+        SwapAdjacentInLRString().CanTransform(std::string("RXXLRXRXL"), std::string("XRLXXRRLX"));
+    }
+    {//redirect_cout::to_cout();
+        //AsteroidCollision().UseStack(TestCase::RandVec<int>(10, -10, 10));
+    }
 
 #endif
 #ifdef _SortSearchSelect_
@@ -3723,6 +3830,7 @@ int main()
 	}
 	{
 		IndirectSortTextLineLengthInFile().Test();
+        IndirectSortTextLinesInLogFile().Sort(std::vector<std::string>({"zz 93 1", "a2da abd fjdks lkdf", "b3ds gfi skl", "sji akdk jige", "d1ka 123 345 943 32", "dkj dks jdf", "d0k 8342 372 83", "dki dks jdf"}));
 	}
 	{
 		LeastDistanceSort().IndirectAndPermute(std::vector<int>({ 41, 67, 34, 0, 69, 24, 78, 58, 62, 64, 5, 45, 81, 27, 61 }));
@@ -3761,6 +3869,9 @@ int main()
         RearrangeArrWEqualCharsKAway().CountLeastSpace_WithSameOrder(std::vector<char>({'a','a','b','b','c','c'}), 3);
         RearrangeArrWEqualCharsKAway().CountLeastSpace_WithSameOrder(std::vector<char>({'a','a','a','b','c'}), 2);
         RearrangeArrWEqualCharsKAway().CountLeastSpace_WithSameOrder(std::vector<char>({'a','a','a','d','b','b','c','c'}), 2);
+
+        RearrangeArrWithoutAdjacentEqualChars().Linear(std::string("aab"));
+        RearrangeArrWithoutAdjacentEqualChars().Linear(std::string("aabb"));
 	}
 	{
 		for (int i = 1; i <= 35; i += 20)
@@ -3969,6 +4080,8 @@ int main()
 		NextGreaterElement().NonCircular_UseStack(std::vector<int>({ 2,4 }), std::vector<int>({ 1,2,3,4 }));
 		NextGreaterElement().NonCircular_UseStack(std::vector<int>({ 2,4 }), std::vector<int>({ 4,3,2,1 }));
 		NextGreaterElement().Circular_UseStack(std::vector<int>({ 1,2,1 }));
+
+        DailyTemperatures().UseStack(std::vector<int>({73, 74, 75, 71, 69, 72, 76, 73}));
 	}
 	{
 		MaxCapitalForIPO().SortAndMaxHeap(1, 2, std::vector<int>({ 2,1,3 }), std::vector<int>({ 1,1,2 }));
@@ -4046,6 +4159,16 @@ int main()
     }
     {
         CutWoodsToKPiecesWSameLen().FindMaxLen_BinarySearch(std::vector<int>({232,124,456}), 7);
+    }
+    {
+        PrintSeqInOrderFromUnorderedStream().Test(std::vector<int>({4,5,3,1,2}));
+        PrintSeqInOrderFromUnorderedStream().Test(std::vector<int>({4,1,5,2,3}));
+        PrintSeqInOrderFromUnorderedStream().Test(std::vector<int>({3,5,1,2,4}));
+        PrintSeqInOrderFromUnorderedStream().Test(std::vector<int>({1,3,2,4,5}));
+    }
+    {
+        EqualGlobalAndLocalInversions().Test(std::vector<int>({1,0,2}));
+        EqualGlobalAndLocalInversions().Test(std::vector<int>({1,2,0}));
     }
 
 #endif
@@ -4142,6 +4265,9 @@ int main()
     }
     {
         AddBoldTagInStrMergeInterval().MergeInterval(std::string("aaabbcc"), std::vector<std::string>({"aaa","aab","bc"}));
+    }
+    {
+        FallingSquares().FindCurMaxHeights(std::vector<std::pair<int,int>>({{1,2},{2,3},{6,1}}));
     }
 
 #endif
@@ -4373,12 +4499,16 @@ int main()
 	{
 		SynthesizeExpression().Recur(std::string("123"), 6);
         SynthesizeExpression().BetterRecur(std::string("123"), 6);
+        SynthesizeExpression().BestRecur(std::string("123"), 6);
 		SynthesizeExpression().Recur(std::string("232"), 8);
         SynthesizeExpression().BetterRecur(std::string("232"), 8);
+        SynthesizeExpression().BestRecur(std::string("232"), 8);
 		SynthesizeExpression().Recur(std::string("105"), 5);
         SynthesizeExpression().BetterRecur(std::string("105"), 5);
+        SynthesizeExpression().BestRecur(std::string("105"), 5);
 		SynthesizeExpression().Recur(std::string("00"), 0);
         SynthesizeExpression().BetterRecur(std::string("00"), 0);
+        SynthesizeExpression().BestRecur(std::string("00"), 0);
 		//SynthesizeExpression().Recur(std::string("2147483647"), 2147483647);
 
 
@@ -4798,6 +4928,14 @@ int main()
 	}
     {
         PartitionSameCharsInSingleSubstr().TwoScanHashMap(std::string("ababcbacadefegdehijhklij"));
+    }
+    {
+        NextClosestTime().Solve(std::string("19:34"));
+        NextClosestTime().Solve(std::string("23:59"));
+    }
+    {
+        PartitionIntoFibonacciSeq().Recur_FindAnyOne(std::string("1101111"));
+        PartitionIntoFibonacciSeq().Recur_FindAll(std::string("1101111"));
     }
 
 #endif
@@ -5831,9 +5969,19 @@ int main()
 		std::unordered_map<std::string, std::vector<int>> wordMap = MinDistBtw2WordsInFile().BuildWordMap(std::vector<std::string>({ "ace", "tea", "and", "ad", "eat", "kk", "eat", "dan", "ate", "tea", "abc", "eat", "xyz" }));
 		MinDistBtw2WordsInFile().QueryFromWordMap(wordMap, std::string("tea"), std::string("eat"));
 		MinDistBtw2WordsInFile().OneScan2(std::vector<std::string>({ "ace", "tea", "and", "ad", "eat", "kk", "eat", "dan", "ate", "tea", "abc", "eat", "xyz" }), std::string("eat"), std::string("eat"));
+
+		MinDistToTgtChar().TwoScan(std::string("bloomberg"), 'b');
+        MinDistToTgtChar().TwoScan(std::string("bloomberg"), 'a');
 	}
     {
         SentenceSimilarity().Test(std::vector<std::string>({"great", "acting", "skills"}), std::vector<std::string>({"fine", "drama", "talent"}), std::vector<std::pair<std::string,std::string>>({{"great", "good"}, {"fine", "good"}, {"acting","drama"}, {"skills","talent"}}));
+    }
+    {
+        LongestWordInDictThruDeleting().Solve(std::string("abpcplea"), std::vector<std::string>({"ale","apple","monkey","plea"}));
+    }
+    {
+        LongestLadderWordInDict().UseTrie(std::vector<std::string>({"a", "banana", "app", "appl", "ap", "apply", "apple"}));
+        LongestLadderWordInDict().SortHashSet(std::vector<std::string>({"a", "banana", "app", "appl", "ap", "apply", "apple"}));
     }
 
 #endif
@@ -6843,6 +6991,58 @@ int main()
         PrintLinkedList<FlattenMultilevelLinkedList::ListNode, std::ostringstream>(u, llOss);
         std::cout << llOss.str() << std::endl;
         llOss.str(std::string());
+    }
+    {
+        TraverseMultilevelLinkedList::ListNode * r = new TraverseMultilevelLinkedList::ListNode(1);
+        r->next = new TraverseMultilevelLinkedList::ListNode(2);
+        r->next->next = new TraverseMultilevelLinkedList::ListNode(3);
+        r->next->next->next = new TraverseMultilevelLinkedList::ListNode(4);
+        r->next->down = new TraverseMultilevelLinkedList::ListNode(7);
+        r->next->down->next = new TraverseMultilevelLinkedList::ListNode(8);
+        r->next->down->next->next = new TraverseMultilevelLinkedList::ListNode(10);
+        r->next->down->next->next->next = new TraverseMultilevelLinkedList::ListNode(12);
+        r->next->down->down = new TraverseMultilevelLinkedList::ListNode(9);
+        r->next->down->down->down = new TraverseMultilevelLinkedList::ListNode(14);
+        r->next->down->down->down->down = new TraverseMultilevelLinkedList::ListNode(15);
+        r->next->down->down->down->down->next = new TraverseMultilevelLinkedList::ListNode(23);
+        r->next->down->down->down->down->next->down = new TraverseMultilevelLinkedList::ListNode(24);
+        r->next->down->next->down = new TraverseMultilevelLinkedList::ListNode(16);
+        r->next->down->next->down->down = new TraverseMultilevelLinkedList::ListNode(17);
+        r->next->down->next->down->down->next = new TraverseMultilevelLinkedList::ListNode(18);
+        r->next->down->next->down->down->next->next = new TraverseMultilevelLinkedList::ListNode(19);
+        r->next->down->next->down->down->next->next->next = new TraverseMultilevelLinkedList::ListNode(20);
+        r->next->down->next->down->down->next->next->next->down = new TraverseMultilevelLinkedList::ListNode(21);
+        r->next->down->next->next->down = new TraverseMultilevelLinkedList::ListNode(11);
+        TraverseMultilevelLinkedList().Levelorder(r);
+        TraverseMultilevelLinkedList().Verticalorder(r);
+        TraverseMultilevelLinkedList().PreorderNext(r);
+        TraverseMultilevelLinkedList().PreorderDown(r);
+
+        TraverseMultilevelLinkedList::ListNode * t = new TraverseMultilevelLinkedList::ListNode(10);
+        t->down = new TraverseMultilevelLinkedList::ListNode(4);
+        t->down->next = new TraverseMultilevelLinkedList::ListNode(20);
+        t->down->next->down = new TraverseMultilevelLinkedList::ListNode(2);
+        t->down->next->next = new TraverseMultilevelLinkedList::ListNode(13);
+        t->down->next->next->down = new TraverseMultilevelLinkedList::ListNode(16);
+        t->down->next->next->down->down = new TraverseMultilevelLinkedList::ListNode(3);
+        t->down->next->next->next = new TraverseMultilevelLinkedList::ListNode(17);
+        t->down->next->next->next->down = new TraverseMultilevelLinkedList::ListNode(9);
+        t->down->next->next->next->down->down = new TraverseMultilevelLinkedList::ListNode(19);
+        t->down->next->next->next->down->down->next = new TraverseMultilevelLinkedList::ListNode(15);
+        t->down->next->next->next->down->next = new TraverseMultilevelLinkedList::ListNode(8);
+        t->down->next->next->next->next = new TraverseMultilevelLinkedList::ListNode(6);
+        t->next = new TraverseMultilevelLinkedList::ListNode(5);
+        t->next->next = new TraverseMultilevelLinkedList::ListNode(12);
+        t->next->next->next = new TraverseMultilevelLinkedList::ListNode(7);
+        t->next->next->next->next = new TraverseMultilevelLinkedList::ListNode(11);
+        t->next->next->next->down = t->down->next->next->next;
+        t->down->next->next->next->next->next = t->down->next->next->next->down->down->next;
+        t->down->next->next->next->down->next->next = t->next->next->next->next;
+        TraverseMultilevelLinkedList().Levelorder(t);
+        TraverseMultilevelLinkedList().Verticalorder(t);
+        TraverseMultilevelLinkedList().PreorderNext(t);
+        TraverseMultilevelLinkedList().PreorderDown(t);
+
     }
 
 #endif
@@ -7992,6 +8192,44 @@ int main()
         VerticalPrintWBalancedColumnLen().Solve(std::vector<std::string>({"a","b","ccccccc","dd","e","ffffffff","gg","h","i","j"}), 3);
         VerticalPrintWBalancedColumnLen().Solve(std::vector<std::string>({"a","b","ccccccc","dd","e","ffffffff","gg","h","i","j"}), 4);
         VerticalPrintWBalancedColumnLen().Solve(std::vector<std::string>({"a","b","ccccccc","dd","e","ffffffff","gg","h","i","j"}), 5);
+    }
+    {
+        MaxIncrKeepSkyline().Linear(std::vector<std::vector<int>>(
+                {
+                        {3,0,8,4},
+                        {2,4,5,7},
+                        {9,2,6,3},
+                        {0,3,1,0}
+                }));
+    }
+    {
+        FindDuplicateRowsInBinaryMatrix().UseTrie(std::vector<std::vector<int>>(
+                {
+                        {1,1,0,1,0,1},
+                        {0,0,1,0,0,1},
+                        {1,0,1,1,0,0},
+                        {1,1,0,1,0,1},
+                        {0,0,1,0,0,1},
+                        {0,0,1,0,0,1},
+                }
+        ));
+    }
+    {
+        Count1sIn2dMatrixWithHasAPI().Count(std::vector<std::vector<int>>(
+                {
+                        {1,1,1,0,0,0,1},
+                        {1,0,0,1,0,0,1},
+                        {0,1,0,0,1,0,0},
+                        {0,1,0,0,1,0,1},
+                        {0,1,1,0,0,1,0},
+                        {1,0,1,1,1,0,0},
+                }));
+        //for (int i = 0; i < 10; ++i)
+        //    Count1sIn2dMatrixWithHasAPI().Count(TestCase::RandMatrix(TestCase::RandNum(1,7), TestCase::RandNum(1,7),0,1));
+    }
+    {
+        for (int i = 9; i < 10; ++i)
+            UniquePathInTriangle().DP2D(i);
     }
 
 #endif
@@ -9932,6 +10170,7 @@ int main()
         PrintBinaryTree<PrintBinaryTreeIn2DArray::TreeNode, std::ostringstream>(r, bstOss);
         std::cout << bstOss.str() << std::endl;
         PrintBinaryTreeIn2DArray().Recur(r);
+        PrintBinaryTreeIn2DArray().BFS(r);
         PrintBinaryTreeIn2DArray().ToStrRecur(r);
         bstOss.str(std::string());
         PrintBinaryTreeIn2DArray::DeleteTree(r);
@@ -11192,6 +11431,19 @@ int main()
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 7
 			{ 0, 0, 0, 0, 0, 0, 0, 4, 0 },//vertex 8
 		}), 1);
+        /*
+        0->1->2->3->4->5
+        4->5
+        */
+        LongestPathInDAG().DFS_AdjacencyMatrix(std::vector<std::vector<int>>(
+                {
+                    {0,1,0,0,0,0},
+                    {0,0,1,0,0,0},
+                    {0,0,0,1,0,0},
+                    {0,0,0,0,0,1},
+                    {0,0,0,0,0,1},
+                    {0,0,0,0,0,0},
+                }));
 	}
 	{
 		/*
@@ -12308,6 +12560,8 @@ int main()
 	{
 		RemoveInvalidParentheses().BFS(std::string("()())()"));
 		RemoveInvalidParentheses().DFS(std::string("()())()"));
+        RemoveInvalidParentheses().BFS(std::string("()()))(()))(()(()))(()"));
+        RemoveInvalidParentheses().DFS(std::string("()()))(()))(()(()))(()"));
 	}
 	{
 		FreedomTrail().DP2D(std::string("godding"), std::string("oin"));
@@ -12383,6 +12637,57 @@ int main()
         r->children[1]->children[2]->children[0]->children.push_back(new LCAofDeepestLeavesGraphTree::TreeNode(10));
         LCAofDeepestLeavesGraphTree().BottomUp_BFS(r);
         LCAofDeepestLeavesGraphTree::DeleteTree(r);
+    }
+    {
+        FindLoudestRicherPerson().DFS(std::vector<std::vector<int>>({{1,0},{2,1},{3,1},{3,7},{4,3},{5,3},{6,3}}), std::vector<int>({3,2,5,4,6,1,7,0}));
+    }
+    {
+        /*
+       3----->0       6
+        ^   /  \
+         \ v   v
+          1--->2     4
+               \   /
+               v v
+                5
+         visit:    0,1,2,5,3,4,6
+         complete: 5,3,4,6
+         */
+        EventualSafeVerticesDirectedGraph().FindCompletionVertices(std::vector<std::vector<int>>(
+                {
+                        {1,2},
+                        {2,3},
+                        {5},
+                        {0},
+                        {5},
+                        {},
+                        {}
+                }));
+    }
+    {
+        BusRoutes().BFS_NumOfBuses(std::vector<std::vector<int>>(
+                {
+                        {1,2,7},
+                        {3,6,7},
+                }), 1, 6);
+    }
+    {
+        MinStepsToOpen4DigitLock().Test(std::vector<std::string>({"8887","8889","8878","8898","8788","8988","7888","9888"}), std::string("8888"));
+    }
+    {
+        MinStepsSwap0In2DPuzzleBoard().Test(std::vector<std::vector<int>>(
+                {
+                        {3,2,4},
+                        {1,5,0}
+                }));
+    }
+    {
+        CheapestFlightsWithinKStops().Test(3, std::vector<std::vector<int>>({{0,1,100},{1,2,100},{0,2,500}}), 0, 2, 1);
+        CheapestFlightsWithinKStops().Test(3, std::vector<std::vector<int>>({{0,1,100},{1,2,100},{0,2,500}}), 0, 2, 0);
+    }
+    {
+        OnePathVisitAllRooms().DFS(std::vector<std::vector<int>>({{1},{2},{3},{}}));
+        OnePathVisitAllRooms().DFS(std::vector<std::vector<int>>({{1},{3,0,1},{2},{0}}));
     }
 
 #endif
@@ -12748,6 +13053,7 @@ int main()
 	{
 		//thread_mgr::Test();
 		//thread_pool::Test();
+        thread_pool2::Test();
 	}
 	{
 		//ImplementAsyncCallback::Test();
@@ -12773,9 +13079,16 @@ int main()
     RdCout ? redirect_cout::to_file("Out_DesignPattern.txt") : redirect_cout::to_cout();
     PrintH("DesignPattern");
     {
-        DesignPattern_Strategy::Test();
-        DesignPattern_TemplateMethod::Test();
-        DesignPattern_Visitor::Test();
+        //redirect_cout::to_cout();
+        //DesignPattern_Singleton::Test();
+        //DesignPattern_Command::Test();
+        //DesignPattern_ChainOfResponsibility::Test();
+        //DesignPattern_FactoryMethod::Test();
+        DesignPattern_Builder::Test();
+
+        //DesignPattern_Strategy::Test();
+        //DesignPattern_TemplateMethod::Test();
+        //DesignPattern_Visitor::Test();
     }
 
 #ifdef _CPP_
