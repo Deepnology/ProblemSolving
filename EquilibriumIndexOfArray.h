@@ -8,6 +8,7 @@
 #include <functional>
 #include "Debug.h"
 /*
+Leetcode: Find Pivot Index
 http://www.geeksforgeeks.org/equilibrium-index-of-an-array/
 Equilibrium index of an array is an index such that the sum of elements at lower indices (EXCLUDE itself) is equal to the sum of elements at higher indices (EXCLUDE itself).
 -7, 1, 5, 2, -4, 3, 0
