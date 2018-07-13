@@ -32,7 +32,7 @@ class ToeplitzMatrix
 public:
     ToeplitzMatrix(){}
 
-    bool Solve(std::vector<std::vector<int>> & matrix)
+    bool Solve(const std::vector<std::vector<int>> & matrix)
     {
         int N = matrix.size();
         int M = matrix[0].size();
