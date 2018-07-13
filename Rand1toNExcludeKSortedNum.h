@@ -56,13 +56,35 @@ public:
         return res;
     }
 };
-class RandomPickWithBlacklist_BinarySearch
+class RandomPickWithBlacklist_BinarySearch_AccuWhiteCount
+{
+    std::vector<int> accuWhiteCount;
+    int N;
+    int M;
+public:
+    RandomPickWithBlacklist_BinarySearch_AccuWhiteCount(int n, std::vector<int> blacklist) : N(n)
+    {
+        M = N - blacklist.size();
+        std::sort(blacklist.begin(), blacklist.end());
+        blacklist.push_back(n);
+        for (int i = 0; i < blacklist.size(); ++i)
+            accuWhiteCount.push_back(blacklist[i] - i);
+    }
+    int Pick() //O(logn) time
+    {
+        int res = rand() % M;
+        auto itr = std::upper_bound(accuWhiteCount.begin(), accuWhiteCount.end(), res) - 1;//find rightmost num that is equal to res (already have 'res' white nums before itr)
+        int idx = itr - accuWhiteCount.begin();
+        return res + (idx+1);//right shift res with black nums
+    }
+};
+class RandomPickWithBlacklist_BinarySearch_InPlace
 {
     std::vector<int> black;
     int N;
 public:
     //blacklist[i] is 0-based
-    RandomPickWithBlacklist_BinarySearch(int n, std::vector<int> blacklist): N(n), black(blacklist) //O(nlogn) time
+    RandomPickWithBlacklist_BinarySearch_InPlace(int n, std::vector<int> blacklist): N(n), black(blacklist) //O(nlogn) time
     {
         std::sort(black.begin(), black.end());
     }
