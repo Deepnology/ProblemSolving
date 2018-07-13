@@ -11,6 +11,8 @@
 #include <cmath>
 #include "Debug.h"
 /*
+Leetcode: Random Pick With Blacklist
+Given a blacklist B containing unique integers from [0, N), write a function to return a uniform random integer from [0, N) which is NOT in B.
 Google
 http://www.careercup.com/question?id=6065702117048320
 Given a positive integer N, and a sorted num array, K, containing integers [1, N].
@@ -26,6 +28,77 @@ K:  						4, 5, 7, 10, 11, 12, 16, 17, 18
 Interval Nums Accu Count
 till current index:			3  3  4   6   6   6   9   9   9  11
 */
+class RandomPickWithBlacklist_HashMap
+{
+    std::unordered_map<int,int> bToW;
+    int M;
+public:
+    //blacklist[i] is 0-based
+    RandomPickWithBlacklist_HashMap(int n, std::vector<int> blacklist) //O(n) time
+    {
+        for (int & b : blacklist)
+            bToW.insert({b,-1});
+        M = n - blacklist.size();
+        for (int & b : blacklist)
+            if (b < M)
+            {
+                while(bToW.count(n-1))
+                    --n;
+                bToW[b] = n-1;
+                --n;
+            }
+    }
+    int Pick() //O(1) time
+    {
+        int res = rand() % M;
+        if (bToW.count(res))
+            return bToW[res];
+        return res;
+    }
+};
+class RandomPickWithBlacklist_BinarySearch
+{
+    std::vector<int> black;
+    int N;
+public:
+    //blacklist[i] is 0-based
+    RandomPickWithBlacklist_BinarySearch(int n, std::vector<int> blacklist): N(n), black(blacklist) //O(nlogn) time
+    {
+        std::sort(black.begin(), black.end());
+    }
+    int Pick() //O(logn) time
+    {
+        int tgt = rand() % (N-black.size());//0-based white number index
+        int res = 0;
+        int left = 0;
+        int right = black.size() - 1;
+        //white number accumulated count till mid = black[mid]-mid
+        //then -1 to transform to 0-based white number index
+        //so black[mid]-mid-1 means the white number index
+        while (left <= right)
+        {
+            int mid = (left + right) / 2;
+            if (black[mid] - mid - 1 >= tgt)
+                right = mid - 1;
+            else
+                left = mid + 1;
+        }
+        //now left is lower bound
+        if (left == black.size())
+        {
+            int whiteNumCount = black.back() - (black.size()-1);//black.back() - lastIdx
+            int extraMore = (tgt+1) - whiteNumCount;
+            res = black.back() + extraMore;
+        }
+        else
+        {
+            int whiteNumCount = black[left] - left;
+            int extraLess = whiteNumCount - (tgt+1);
+            res = (black[left]-1) - extraLess;
+        }
+        return res;
+    }
+};
 class Rand1toNExcludeKSortedNum
 {
 public:
