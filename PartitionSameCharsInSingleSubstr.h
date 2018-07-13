@@ -27,12 +27,12 @@ public:
         for (int i = 0; i < N; ++i)
             lastIdx[S[i]] = i;
         int begin = 0;
-        int curCharLastIdx = 0;
+        int curMaxLastIdx = 0;
         std::vector<int> res;
         for (int i = 0; i < N; ++i)//i is end
         {
-            curCharLastIdx = std::max(curCharLastIdx, lastIdx[S[i]]);
-            if (curCharLastIdx == i)
+            curMaxLastIdx = std::max(curMaxLastIdx, lastIdx[S[i]]);
+            if (curMaxLastIdx == i)
             {
                 res.push_back(i-begin+1);
                 begin = i+1;
