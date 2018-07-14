@@ -40,7 +40,7 @@ class MaxNumPartitionsToSort // and then make array sorted
 public:
     MaxNumPartitionsToSort(){}
 
-    int FromIdxSeqNums(const std::vector<int> & arr)
+    int FromIdxSeqArr(const std::vector<int> & arr)
     {
         int N = arr.size();
         int curMax = -1;
@@ -51,7 +51,7 @@ public:
             if (curMax == i)
                 ++count;
         }
-        std::cout << "MaxNumPartitionsToSort FromIdxSeqNums for [" << Debug::ToStr1D<int>()(arr) << "]: " << count << std::endl;
+        std::cout << "MaxNumPartitionsToSort FromIdxSeqArr for [" << Debug::ToStr1D<int>()(arr) << "]: " << count << std::endl;
         return count;
     }
     int WithDuplicates(const std::vector<int> & arr)
@@ -72,7 +72,7 @@ public:
     }
 };
 /*
-MaxNumPartitionsToSort FromIdxSeqNums for [1, 0, 2, 3, 4]: 4
+MaxNumPartitionsToSort FromIdxSeqArr for [1, 0, 2, 3, 4]: 4
 MaxNumPartitionsToSort WithDuplicates for [2, 1, 3, 4, 4]: 4
  */
 #endif
