@@ -44,6 +44,27 @@ class KthSmallestElementInSortedMatrix
 public:
 	KthSmallestElementInSortedMatrix(){}
 	~KthSmallestElementInSortedMatrix(){}
+
+	int BinarySearchSpace(const std::vector<std::vector<int>> & board, int K) //O(log(Num Range) * NlogN) time
+	{
+		//for this approach, the first num of a row is not necessarily greater equal to the last num of previous row
+		int N = board.size();
+		long left = board[0][0];
+		long right = board[N-1][N-1];
+		while (left <= right)
+		{
+			long mid = (left + right) / 2;
+			int count = 0;
+			for (int row = 0; row < N; ++row)
+				count += std::upper_bound(board[row].begin(), board[row].end(), mid) - board[row].begin();
+			if (count >= K)
+				right = mid - 1;
+			else
+				left = mid + 1;
+		}
+		return left;
+	}
+
 	struct CompGreater
 	{
 		bool operator()(const std::pair<int, std::pair<int, int>> & a, const std::pair<int, std::pair<int, int>> & b)
