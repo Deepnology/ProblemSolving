@@ -2,6 +2,8 @@
 #define GENERIC_DFS_W_STACK_H
 #include "Debug.h"
 /*
+Leetcode: N-ary Tree Preorder Traversal
+Leetcode: N-ary Tree Postorder Traversal
 
 */
 class GenericDFSWStack
@@ -17,7 +19,47 @@ public:
 	GenericDFSWStack() {}
 	~GenericDFSWStack() {}
 
-	std::vector<int> Preorder(TreeNode * root)
+	//Approach 1: use stack
+	std::vector<int> PreorderStack(TreeNode * root)
+	{
+		std::vector<int> res;
+		std::stack<TreeNode *> stk;
+		if (root)
+			stk.push(root);
+		while (!stk.empty())
+		{
+			TreeNode * cur = stk.top();
+			stk.pop();
+			int N = cur->children.size();
+			for (int i = N-1; i >= 0; --i)
+				stk.push(cur->children[i]);
+			res.push_back(cur->val);
+		}
+		std::cout << "GenericDFSWStack PreorderS: " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+	std::vector<int> PostorderStack(TreeNode * root)
+	{
+		std::vector<int> res;
+		std::stack<TreeNode *> stk;
+		if (root)
+			stk.push(root);
+		while (!stk.empty())
+		{
+			TreeNode * cur = stk.top();
+			stk.pop();
+			int N = cur->children.size();
+			for (int i = 0; i < N; ++i)
+				stk.push(cur->children[i]);
+			res.push_back(cur->val);
+		}
+		std::reverse(res.begin(), res.end());
+		std::cout << "GenericDFSWStack PostorderS: " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+
+	//Approach 2: use stack and unordered_set
+	std::vector<int> PreorderStackHashMap(TreeNode * root)
 	{
 		std::vector<int> res;
 		std::stack<TreeNode *> stk;
@@ -39,10 +81,10 @@ public:
 			res.push_back(cur->val);
 		}
 		std::reverse(res.begin(), res.end());
-		std::cout << "GenericDFSWStack Preorder: " << Debug::ToStr1D<int>()(res) << std::endl;
+		std::cout << "GenericDFSWStack PreorderSH: " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
-	std::vector<int> Postorder(TreeNode * root)
+	std::vector<int> PostorderStackHashMap(TreeNode * root)
 	{
 		std::vector<int> res;
 		std::stack<TreeNode *> stk;
@@ -63,7 +105,7 @@ public:
 			stk.pop();
 			res.push_back(cur->val);
 		}
-		std::cout << "GenericDFSWStack Postorder: " << Debug::ToStr1D<int>()(res) << std::endl;
+		std::cout << "GenericDFSWStack PostorderSH: " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
 private:
@@ -89,6 +131,40 @@ private:
 	}
 
 public:
+	//Approach 3: recursion
+	std::vector<int> PreorderRecur(TreeNode * root)
+	{
+		std::vector<int> res;
+		recurPre(root, res);
+		std::cout << "GenericDFSWStack PreorderR: " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+	void recurPre(TreeNode * cur, std::vector<int> & res)
+	{
+		if (cur == NULL) return;
+		res.push_back(cur->val);
+		int N = cur->children.size();
+		for (int i = 0; i < N; ++i)
+			recurPre(cur->children[i], res);
+	}
+
+	std::vector<int> PostorderRecur(TreeNode * root)
+	{
+		std::vector<int> res;
+		recurPost(root, res);
+		std::cout << "GenericDFSWStack PostorderR: " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+	void recurPost(TreeNode * cur, std::vector<int> & res)
+	{
+		if (cur == NULL) return;
+		int N = cur->children.size();
+		for (int i = 0; i < N; ++i)
+			recurPost(cur->children[i], res);
+		res.push_back(cur->val);
+	}
+
+public:
 	static void DeleteTree(TreeNode * root)
 	{
 		if (root == 0)
@@ -110,8 +186,12 @@ public:
  / | \    / | \    /  |  \
 2  3  4  6  7  8  10  11  12
 
-GenericDFSWStack Preorder: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
-GenericDFSWStack Postorder: 2, 3, 4, 1, 6, 7, 8, 5, 10, 11, 12, 9, 0
+GenericDFSWStack PreorderS: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+GenericDFSWStack PreorderSH: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+GenericDFSWStack PreorderR: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+GenericDFSWStack PostorderS: 2, 3, 4, 1, 6, 7, 8, 5, 10, 11, 12, 9, 0
+GenericDFSWStack PostorderSH: 2, 3, 4, 1, 6, 7, 8, 5, 10, 11, 12, 9, 0
+GenericDFSWStack PostorderR: 2, 3, 4, 1, 6, 7, 8, 5, 10, 11, 12, 9, 0
 
 					    _________________________0_____________________________
 				       /                |                  |                   \
@@ -121,7 +201,11 @@ GenericDFSWStack Postorder: 2, 3, 4, 1, 6, 7, 8, 5, 10, 11, 12, 9, 0
 			   / \    |   / | \   |  /  |  \  |  /  |  \ /   \  /  | \  /  \  /   \  /  |  | \
 			  17 18  19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43
 
-GenericDFSWStack Preorder: 0, 1, 2, 17, 18, 3, 19, 4, 20, 21, 22, 5, 6, 23, 7, 24, 25, 26, 8, 27, 9, 10, 28, 29, 30, 11, 31, 32, 12, 33, 34, 35, 13, 14, 36, 37, 15, 38, 39, 16, 40, 41, 42, 43
-GenericDFSWStack Postorder: 17, 18, 2, 19, 3, 20, 21, 22, 4, 1, 23, 6, 24, 25, 26, 7, 27, 8, 5, 28, 29, 30, 10, 31, 32, 11, 33, 34, 35, 12, 9, 36, 37, 14, 38, 39, 15, 40, 41, 42, 43, 16, 13, 0
+GenericDFSWStack PreorderS: 0, 1, 2, 17, 18, 3, 19, 4, 20, 21, 22, 5, 6, 23, 7, 24, 25, 26, 8, 27, 9, 10, 28, 29, 30, 11, 31, 32, 12, 33, 34, 35, 13, 14, 36, 37, 15, 38, 39, 16, 40, 41, 42, 43
+GenericDFSWStack PreorderSH: 0, 1, 2, 17, 18, 3, 19, 4, 20, 21, 22, 5, 6, 23, 7, 24, 25, 26, 8, 27, 9, 10, 28, 29, 30, 11, 31, 32, 12, 33, 34, 35, 13, 14, 36, 37, 15, 38, 39, 16, 40, 41, 42, 43
+GenericDFSWStack PreorderR: 0, 1, 2, 17, 18, 3, 19, 4, 20, 21, 22, 5, 6, 23, 7, 24, 25, 26, 8, 27, 9, 10, 28, 29, 30, 11, 31, 32, 12, 33, 34, 35, 13, 14, 36, 37, 15, 38, 39, 16, 40, 41, 42, 43
+GenericDFSWStack PostorderS: 17, 18, 2, 19, 3, 20, 21, 22, 4, 1, 23, 6, 24, 25, 26, 7, 27, 8, 5, 28, 29, 30, 10, 31, 32, 11, 33, 34, 35, 12, 9, 36, 37, 14, 38, 39, 15, 40, 41, 42, 43, 16, 13, 0
+GenericDFSWStack PostorderSH: 17, 18, 2, 19, 3, 20, 21, 22, 4, 1, 23, 6, 24, 25, 26, 7, 27, 8, 5, 28, 29, 30, 10, 31, 32, 11, 33, 34, 35, 12, 9, 36, 37, 14, 38, 39, 15, 40, 41, 42, 43, 16, 13, 0
+GenericDFSWStack PostorderR: 17, 18, 2, 19, 3, 20, 21, 22, 4, 1, 23, 6, 24, 25, 26, 7, 27, 8, 5, 28, 29, 30, 10, 31, 32, 11, 33, 34, 35, 12, 9, 36, 37, 14, 38, 39, 15, 40, 41, 42, 43, 16, 13, 0
 */
 #endif
