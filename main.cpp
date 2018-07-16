@@ -4,7 +4,7 @@
 //#define _BitNumberOperation_
 //#define _Random_
 //#define _StackQueue_
-#define _1DArray_
+//#define _1DArray_
 //#define _SortSearchSelect_
 //#define _Interval_
 //#define _PermuteCombinePartition_
@@ -13,7 +13,7 @@
 //#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
-//#define _2DGrid_
+#define _2DGrid_
 //#define _BinaryTree_
 //#define _Heap_
 //#define _Graph_
@@ -273,7 +273,7 @@
 #include "ReconstructOriginalDigitsFromEnglish.h"
 #include "MoveZerosToEndOfArray.h"
 #include "SwapAdjacentInLRString.h"
-//#include "AsteroidCollision.h"
+#include "AsteroidCollision.h"
 
 /*Sort Search Select*/
 #include "Partition.h"
@@ -367,6 +367,8 @@
 #include "CutWoodsToKPiecesWSameLen.h"
 #include "PrintSeqInOrderFromUnorderedStream.h"
 #include "EqualGlobalAndLocalInversions.h"
+#include "MinimizeMaxDistToGasStation.h"
+#include "MaxNumPartitionsToSort.h"
 
 /*Interval*/
 #include "MergeIntervals.h"
@@ -700,6 +702,8 @@
 #include "FindDuplicateRowsInBinaryMatrix.h"
 #include "Count1sIn2dMatrixWithHasAPI.h"
 #include "UniquePathInTriangle.h"
+#include "LargestIslandAtMost1FlipInMatrix.h"
+#include "DetermineIfPointLieInsideTriangle.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -3146,8 +3150,8 @@ int main()
     {
         SwapAdjacentInLRString().CanTransform(std::string("RXXLRXRXL"), std::string("XRLXXRRLX"));
     }
-    {//redirect_cout::to_cout();
-        //AsteroidCollision().UseStack(TestCase::RandVec<int>(10, -10, 10));
+    {
+        AsteroidCollision().UseStack(std::vector<int>({1,2,8,-8,-2,-6}));
     }
 
 #endif
@@ -4169,6 +4173,14 @@ int main()
     {
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,0,2}));
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,2,0}));
+    }
+    {
+        MinimizeMaxDistToGasStation().MaxHeapGreedyAssign(std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), 9);
+        MinimizeMaxDistToGasStation().BinarySearch(std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), 9);
+    }
+    {
+        MaxNumPartitionsToSort().FromIdxSeqArr(std::vector<int>({1,0,2,3,4}));
+        MaxNumPartitionsToSort().WithDuplicates(std::vector<int>({2,1,3,4,4}));
     }
 
 #endif
@@ -8230,6 +8242,21 @@ int main()
     {
         for (int i = 9; i < 10; ++i)
             UniquePathInTriangle().DP2D(i);
+    }
+    {
+        LargestIslandAtMost1FlipInMatrix().BruteForceBFS(std::vector<std::vector<int>>(
+                {
+                        {1,0},
+                        {0,1}
+                }));
+        LargestIslandAtMost1FlipInMatrix().UnionFind(std::vector<std::vector<int>>(
+                {
+                        {1,0},
+                        {0,1}
+                }));
+    }
+    {
+        DetermineIfPointLieInsideTriangle().CheckAreaSum(0, 0, 20, 0, 10, 30, 10, 15);
     }
 
 #endif
