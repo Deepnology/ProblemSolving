@@ -13,10 +13,10 @@
 //#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
-#define _2DGrid_
+//#define _2DGrid_
 //#define _BinaryTree_
 //#define _Heap_
-//#define _Graph_
+#define _Graph_
 //#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _DesignPattern_
@@ -704,6 +704,7 @@
 #include "UniquePathInTriangle.h"
 #include "LargestIslandAtMost1FlipInMatrix.h"
 #include "DetermineIfPointLieInsideTriangle.h"
+#include "Find3PointsFormLargestTriangle.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -8258,6 +8259,9 @@ int main()
     {
         DetermineIfPointLieInsideTriangle().CheckAreaSum(0, 0, 20, 0, 10, 30, 10, 15);
     }
+    {
+        Find3PointsFormLargestTriangle().BruteForce(std::vector<std::vector<int>>({{0,0},{0,1},{1,0},{0,2},{2,0}}));
+    }
 
 #endif
 #ifdef _BinaryTree_
@@ -12444,8 +12448,12 @@ int main()
 		tr->children[2]->children.push_back(new GenericDFSWStack::TreeNode(10));
 		tr->children[2]->children.push_back(new GenericDFSWStack::TreeNode(11));
 		tr->children[2]->children.push_back(new GenericDFSWStack::TreeNode(12));
-		GenericDFSWStack().Preorder(tr);
-		GenericDFSWStack().Postorder(tr);
+		GenericDFSWStack().PreorderStack(tr);
+		GenericDFSWStack().PreorderStackHashMap(tr);
+		GenericDFSWStack().PreorderRecur(tr);
+		GenericDFSWStack().PostorderStack(tr);
+		GenericDFSWStack().PostorderStackHashMap(tr);
+		GenericDFSWStack().PostorderRecur(tr);
 		GenericDFSWStack::DeleteTree(tr);
 		/*
 					    _________________________0_____________________________
@@ -12500,8 +12508,12 @@ int main()
 		tr->children[3]->children[2]->children.push_back(new GenericDFSWStack::TreeNode(41));
 		tr->children[3]->children[2]->children.push_back(new GenericDFSWStack::TreeNode(42));
 		tr->children[3]->children[2]->children.push_back(new GenericDFSWStack::TreeNode(43));
-		GenericDFSWStack().Preorder(tr);
-		GenericDFSWStack().Postorder(tr);
+		GenericDFSWStack().PreorderStack(tr);
+        GenericDFSWStack().PreorderStackHashMap(tr);
+        GenericDFSWStack().PreorderRecur(tr);
+		GenericDFSWStack().PostorderStack(tr);
+        GenericDFSWStack().PostorderStackHashMap(tr);
+        GenericDFSWStack().PostorderRecur(tr);
 		GenericDFSWStack::DeleteTree(tr);
 	}
 	{
