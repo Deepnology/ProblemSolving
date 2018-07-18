@@ -12,11 +12,11 @@
 //#define _FindSubstringSubsequence_
 //#define _CompareString_
 //#define _TextLines_
-//#define _LinkedList_
+#define _LinkedList_
 //#define _2DGrid_
 //#define _BinaryTree_
 //#define _Heap_
-#define _Graph_
+//#define _Graph_
 //#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _DesignPattern_
@@ -626,6 +626,8 @@
 #include "SplitNodesInKGroupLinkedList.h"
 #include "FlattenMultilevelLinkedList.h"
 #include "TraverseMultilevelLinkedList.h"
+#include "InsertNodeCyclicSortedLinkedList.h"
+#include "LinkedListComponents.h"
 
 /*2D Grid*/
 #include "MinPathSum.h"
