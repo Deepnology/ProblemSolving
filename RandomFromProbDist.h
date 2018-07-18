@@ -78,6 +78,27 @@ public:
 			return -1;
 	}
 
+	int NextIndex3()
+	{
+		int r = (rand() % m_cumulative.back()) + 1;
+		int low = 0;
+		int high = m_cumulative.size() - 1;
+		while (low <= high)
+		{
+			int mid = low + (high - low) / 2;
+			if (r <= m_cumulative[mid])//left side
+				high = mid - 1;
+			else//right side
+				low = mid + 1;
+		}
+
+		//now m_cumulative[low] should be the the lower bound of r
+		if (m_cumulative[low] >= r)
+			return low;
+		else
+			return -1;//won't happen
+	}
+
 
 
 	void Roll(const std::vector<int> & v, int times)
@@ -89,7 +110,7 @@ public:
 		for (int i = 0; i < N; ++i)
 			res.push_back(std::make_pair(v[i], 0));
 		for (int i = 0; i < times; ++i)
-			++res[this->NextIndex()].second;
+			++res[this->NextIndex3()].second;
 
 		std::cout << "RandomFromProbDist for \"" << Debug::ToStr1D<int>()(v) << "\" with CumulativeProbability \"" << Debug::ToStr1D<int>()(m_cumulative) << "\":" << std::endl 
 			<< ", Roll for \"" << times << "\"-times: " << Debug::ToStr1D<int>()(res) << std::endl;
@@ -98,5 +119,8 @@ public:
 /*
 RandomFromProbDist for "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14" with CumulativeProbability "1, 2, 4, 6, 9, 12, 16, 22, 28, 35, 44, 55, 68, 83, 100":
 , Roll for "1000"-times: [0,11], [1,11], [2,18], [3,19], [4,31], [5,32], [6,32], [7,52], [8,60], [9,70], [10,101], [11,98], [12,145], [13,168], [14,152]
+
+RandomFromProbDist for "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14" with CumulativeProbability "1, 2, 4, 6, 9, 12, 16, 22, 28, 35, 44, 55, 68, 83, 100":
+, Roll for "1000"-times: [0,10], [1,11], [2,23], [3,17], [4,31], [5,26], [6,31], [7,69], [8,67], [9,56], [10,90], [11,128], [12,133], [13,144], [14,164]
 */
 #endif
