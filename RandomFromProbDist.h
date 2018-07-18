@@ -21,9 +21,10 @@ see also AliasMethod.h
 */
 class RandomFromProbDist
 {
+    std::vector<int> m_prob;
 	std::vector<int> m_cumulative;
 public:
-	explicit RandomFromProbDist(const std::vector<int> & probabilityDistribution) : m_cumulative(probabilityDistribution.size())
+	explicit RandomFromProbDist(const std::vector<int> & probabilityDistribution) : m_prob(probabilityDistribution), m_cumulative(probabilityDistribution.size())
 	{
 		int N = probabilityDistribution.size();
 		m_cumulative[0] = probabilityDistribution[0];
@@ -99,6 +100,18 @@ public:
 			return -1;//won't happen
 	}
 
+    int NextIndex_ConstSpace(const std::vector<int> & prob)
+    {
+        int sum = std::accumulate(prob.begin(), prob.end(), 0);
+        int r = (rand() % sum) + 1;
+        int N = prob.size();
+        int i = 0;
+        int prefixSum = 0;
+        while (i < N && prefixSum + prob[i] < r)
+            prefixSum += prob[i++];
+        //now prefixSum + prob[i] >= r
+        return i;
+    }
 
 
 	void Roll(const std::vector<int> & v, int times)
@@ -112,15 +125,22 @@ public:
 		for (int i = 0; i < times; ++i)
 			++res[this->NextIndex3()].second;
 
-		std::cout << "RandomFromProbDist for \"" << Debug::ToStr1D<int>()(v) << "\" with CumulativeProbability \"" << Debug::ToStr1D<int>()(m_cumulative) << "\":" << std::endl 
+		std::cout << "RandomFromProbDist BinarySearch for \"" << Debug::ToStr1D<int>()(v) << "\" with CumulativeProbability \"" << Debug::ToStr1D<int>()(m_cumulative) << "\":" << std::endl
 			<< ", Roll for \"" << times << "\"-times: " << Debug::ToStr1D<int>()(res) << std::endl;
+
+        for (int i = 0; i < N; ++i)
+            res[i].second = 0;
+        for (int i = 0; i < times; ++i)
+            ++res[this->NextIndex_ConstSpace(m_prob)].second;
+
+		std::cout << "RandomFromProbDist ConstSpace for \"" << Debug::ToStr1D<int>()(v) << "\" with CumulativeProbability \"" << Debug::ToStr1D<int>()(m_cumulative) << "\":" << std::endl
+				  << ", Roll for \"" << times << "\"-times: " << Debug::ToStr1D<int>()(res) << std::endl;
 	}
 };
 /*
-RandomFromProbDist for "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14" with CumulativeProbability "1, 2, 4, 6, 9, 12, 16, 22, 28, 35, 44, 55, 68, 83, 100":
-, Roll for "1000"-times: [0,11], [1,11], [2,18], [3,19], [4,31], [5,32], [6,32], [7,52], [8,60], [9,70], [10,101], [11,98], [12,145], [13,168], [14,152]
-
-RandomFromProbDist for "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14" with CumulativeProbability "1, 2, 4, 6, 9, 12, 16, 22, 28, 35, 44, 55, 68, 83, 100":
-, Roll for "1000"-times: [0,10], [1,11], [2,23], [3,17], [4,31], [5,26], [6,31], [7,69], [8,67], [9,56], [10,90], [11,128], [12,133], [13,144], [14,164]
+RandomFromProbDist BinarySearch for "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14" with CumulativeProbability "1, 2, 4, 6, 9, 12, 16, 22, 28, 35, 44, 55, 68, 83, 100":
+, Roll for "1000"-times: [0,7], [1,7], [2,21], [3,18], [4,24], [5,24], [6,38], [7,68], [8,55], [9,72], [10,98], [11,110], [12,136], [13,147], [14,175]
+RandomFromProbDist ConstSpace for "0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14" with CumulativeProbability "1, 2, 4, 6, 9, 12, 16, 22, 28, 35, 44, 55, 68, 83, 100":
+, Roll for "1000"-times: [0,13], [1,10], [2,20], [3,19], [4,34], [5,30], [6,51], [7,62], [8,58], [9,67], [10,81], [11,98], [12,132], [13,161], [14,164]
 */
 #endif
