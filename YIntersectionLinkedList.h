@@ -78,24 +78,22 @@ public:
 	ListNode * FindIntersectionNode(ListNode * head1, ListNode * head2)
 	{
 		/*1. find tail1 and len1*/
-		int len1 = 0;
+		int len1 = 1;
 		ListNode * tail1 = head1;
 		while (tail1->next != nullptr)
 		{
 			tail1 = tail1->next;
 			++len1;
 		}
-		++len1;
 
 		/*1. find tail2 and len2*/
-		int len2 = 0;
+		int len2 = 1;
 		ListNode * tail2 = head2;
 		while (tail2->next != nullptr)
 		{
 			tail2 = tail2->next;
 			++len2;
 		}
-		++len2;
 
 		/*3. compare tail1 and tail2*/
 		bool converged = tail1 == tail2;
