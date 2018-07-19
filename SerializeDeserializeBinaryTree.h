@@ -78,22 +78,18 @@ public:
 		std::vector<TreeNode *> res;
 		int begin = 0;
 		int N = data.size();
-		for (int i = 0; i < N; ++i)
-		{
-			if (data[i] == 'N')
-			{
-				res.push_back(NULL);
-				begin = i + 1;
-			}
-			else if (data[i] == ',')//,: only need to push back cur num when prev != 'N'
-			{
-				if (data[i - 1] != 'N')
-					res.push_back(new TreeNode(stoi(data.substr(begin, i - begin))));
-				begin = i + 1;
-			}
-			else if (i == N - 1)//non-N non-, at end: must be a num
-				res.push_back(new TreeNode(stoi(data.substr(begin, i - begin + 1))));
-		}
+        int i = 0;
+        while (i < N)
+        {
+            while (i < N && data[i] != ',')
+                ++i;
+            if (i-begin==1 && data[begin] == 'N')
+                res.push_back(NULL);
+            else
+                res.push_back(new TreeNode(stoi(data.substr(begin,i-begin))));
+            ++i;
+            begin = i;
+        }
 		return LevelOrderConstructBT(res);
 	}
 private:
