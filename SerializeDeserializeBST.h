@@ -53,15 +53,14 @@ public:
 		std::vector<int> preorder;
 		int begin = 0;
 		int N = data.size();
-		for (int i = 0; i < N; ++i)
+		int i = 0;
+		while (i < N)
 		{
-			if (data[i] == ',')
-			{
-				preorder.push_back(stoi(data.substr(begin, i - begin)));
-				begin = i + 1;
-			}
-			else if (i == N - 1)
-				preorder.push_back(stoi(data.substr(begin, i - begin + 1)));
+			while (i < N && data[i] != ',')
+				++i;
+			preorder.push_back(stoi(data.substr(begin,i-begin)));
+			++i;
+			begin = i;
 		}
 		int cur = 0;
 		return recur(preorder, INT_MIN, INT_MAX, cur);
