@@ -30,9 +30,11 @@ public:
 		{
 			TreeNode * cur = stk.top();
 			stk.pop();
+			std::cout << cur->val << ",";
 			int N = cur->children.size();
 			for (int i = N-1; i >= 0; --i)
 				stk.push(cur->children[i]);
+			std::cout << "[" << ToStr1D(stk) << "]," << cur->val << std::endl;
 			res.push_back(cur->val);
 		}
 		std::cout << "GenericDFSWStack PreorderS: " << Debug::ToStr1D<int>()(res) << std::endl;
@@ -68,6 +70,7 @@ public:
 			stk.push(root), visit.insert(root);
 		while (!stk.empty())
 		{
+			std::cout << stk.top()->val << ",";
 			//push all nodes in the rightmost child path to stk
 			TreeNode * chd;
 			while ((chd = GetNextNonVisitedChild(stk.top(), visit, false)) != nullptr)//Children: Right to Left
@@ -75,6 +78,7 @@ public:
 				stk.push(chd);
 				visit.insert(chd);
 			}
+			std::cout << "[" << ToStr1D(stk) << "]," << stk.top()->val << std::endl;
 			//now visit cur node in reversed preorder
 			TreeNode * cur = stk.top();
 			stk.pop();
@@ -177,6 +181,27 @@ public:
 		//post order
 		delete root;
 		root = 0;
+	}
+
+	std::string ToStr1D(const std::stack<GenericDFSWStack::TreeNode *> &s, bool topToBottom = false)
+	{
+		std::stack<GenericDFSWStack::TreeNode *> copy(s);
+		if (!topToBottom)
+		{
+			std::stack<GenericDFSWStack::TreeNode *> rev;
+			while (!copy.empty())
+				rev.push(copy.top()), copy.pop();
+			rev.swap(copy);
+		}
+		std::ostringstream oss;
+		while (!copy.empty())
+		{
+			oss << copy.top()->val;
+			copy.pop();
+			if (!copy.empty())
+				oss << ", ";
+		}
+		return oss.str();
 	}
 };
 /*
