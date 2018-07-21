@@ -169,13 +169,59 @@ private:
 			return idx + (M - *map[c].rbegin());
 		return idx - *std::prev(iter);
 	}
+
+public:
+	//time limit exceeded
+	int BFS_DP_Simple(const std::string & ring, const std::string & key)
+	{
+		int N = key.size();
+		int M = ring.size();
+		int res = INT_MAX;
+		std::unordered_map<std::string,std::unordered_map<int,int>> dp;
+		std::queue<std::tuple<std::string,int,int>> que;
+		que.push({ring,0,0});
+		while(!que.empty())
+		{
+			std::string state = std::get<0>(que.front());
+			int idx = std::get<1>(que.front());
+			int numSteps = std::get<2>(que.front());
+			que.pop();
+			if (idx == N)
+			{
+				res = std::min(res, numSteps);
+				continue;
+			}
+			int fwd = state.find(key[idx]);
+			std::string fwdState = state.substr(fwd) + state.substr(0, fwd);
+			if (dp[fwdState].count(idx) == 0 || dp[fwdState][idx] > numSteps + fwd + 1)
+			{
+				dp[fwdState][idx] = numSteps + fwd + 1;
+				que.push({fwdState, idx+1, numSteps+fwd+1});
+			}
+
+			std::string bwdState = state;
+			std::reverse(bwdState.begin(), bwdState.end());
+			bwdState = bwdState.substr(M-1) + bwdState.substr(0, M-1);
+			int bwd = bwdState.find(key[idx]);
+			bwdState = bwdState.substr(bwd) + bwdState.substr(0, bwd);
+			if (dp[bwdState].count(idx) == 0 || dp[bwdState][idx] > numSteps + bwd + 1)
+			{
+				dp[bwdState][idx] = numSteps + bwd + 1;
+				que.push({bwdState, idx+1, numSteps+bwd+1});
+			}
+		}
+		std::cout << "FreedomTrail BFS_DP_Simple for \"" << ring << "\", \"" << key << "\": " << res << std::endl;
+		return res;
+	}
 };
 /*
 FreedomTrail DP2D for "godding", "oin": 8
 FreedomTrail DFS_DP for "godding", "oin": 8
 FreedomTrail BFS_DP for "godding", "oin": 8
+FreedomTrail BFS_DP_Simple for "godding", "oin": 8
 FreedomTrail DP2D for "czjdn", "zzznnnjjjdddccc": 23
 FreedomTrail DFS_DP for "czjdn", "zzznnnjjjdddccc": 23
 FreedomTrail BFS_DP for "czjdn", "zzznnnjjjdddccc": 23
+FreedomTrail BFS_DP_Simple for "czjdn", "zzznnnjjjdddccc": 23
 */
 #endif
