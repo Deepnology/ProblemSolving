@@ -56,6 +56,64 @@ public:
     };
     FindNearestLeafNodeBinaryTree(){}
 
+    int BFS(TreeNode * root, int k)
+    {
+        TreeNode * found = NULL;
+        std::unordered_map<TreeNode*, TreeNode*> toP;
+        recur(root, toP, found, k);
+        std::queue<TreeNode*> que;
+        std::unordered_set<TreeNode*> visit;
+        que.push(found);
+        visit.insert(found);
+        int dist = 0;
+        while (!que.empty())
+        {
+            int levelCount = que.size();
+            while (levelCount-- > 0)
+            {
+                TreeNode * cur = que.front(); que.pop();
+                if (!cur->left && !cur->right)
+                {
+                    std::cout << "FindNearestLeafNodeBinaryTree BFS for \"" << k << "\": " << cur->val << " (min dist = " << dist << ")" << std::endl;
+                    return cur->val;
+                }
+                if (cur->left && !visit.count(cur->left))
+                {
+                    visit.insert(cur->left);
+                    que.push(cur->left);
+                }
+                if (cur->right && !visit.count(cur->right))
+                {
+                    visit.insert(cur->right);
+                    que.push(cur->right);
+                }
+                if (toP.count(cur) && !visit.count(toP[cur]))
+                {
+                    visit.insert(toP[cur]);
+                    que.push(toP[cur]);
+                }
+            }
+            ++dist;
+        }
+        return -1;
+    }
+    void recur(TreeNode * cur, std::unordered_map<TreeNode*,TreeNode*> & toP, TreeNode *& found, int k)
+    {
+        if (cur == NULL) return;
+        if (cur->val == k) found = cur;
+        if (cur->left)
+        {
+            toP[cur->left] = cur;
+            recur(cur->left, toP, found, k);
+        }
+        if (cur->right)
+        {
+            toP[cur->right] = cur;
+            recur(cur->right, toP, found, k);
+        }
+    }
+
+
     int Recur(TreeNode * root, int k)
     {
         auto res = recur(root, k);
@@ -113,6 +171,7 @@ public:
  6   N   N   N   N   N   N   N   N   N   N   N   N   N   N   N
 
 
+FindNearestLeafNodeBinaryTree BFS for "2": 3 (min dist = 2)
 FindNearestLeafNodeBinaryTree Recur for "2": 3 (min dist = 2)
 
                                1
@@ -131,8 +190,11 @@ FindNearestLeafNodeBinaryTree Recur for "2": 3 (min dist = 2)
  N   N   N   N   N   N   N   N   8   9   N   N   N   N  10   N
 
 
+FindNearestLeafNodeBinaryTree BFS for "3": 2 (min dist = 2)
 FindNearestLeafNodeBinaryTree Recur for "3": 2 (min dist = 2)
+FindNearestLeafNodeBinaryTree BFS for "7": 10 (min dist = 1)
 FindNearestLeafNodeBinaryTree Recur for "7": 10 (min dist = 1)
+FindNearestLeafNodeBinaryTree BFS for "4": 8 (min dist = 2)
 FindNearestLeafNodeBinaryTree Recur for "4": 9 (min dist = 2)
  */
 #endif
