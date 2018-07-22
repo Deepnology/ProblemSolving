@@ -268,22 +268,74 @@ public:
 		}
 
 		std::vector<std::string> path;
+		path.push_back(start);
 		recur(fwdAdjList, start, end, path, res);
+		path.pop_back();
 		return res;
 	}
 	void recur(std::unordered_map<std::string,std::unordered_set<std::string>> & adjList, std::string cur, const std::string & end, std::vector<std::string> & path, std::vector<std::vector<std::string>> & res)
 	{
-		path.push_back(cur);
 		if (cur == end)
 		{
 			res.push_back(path);
-			path.pop_back();
 			return;
 		}
 		for (auto & nxt : adjList[cur])
+		{
+			path.push_back(nxt);
 			recur(adjList, nxt, end, path, res);
-		path.pop_back();
+			path.pop_back();
+		}
 	}
+
+
+    std::vector<std::vector<std::string>> FindAllDFS(const std::string & start, const std::string & end, const std::vector<std::string> & strs)//Time Limit Exceeded
+    {
+        std::unordered_set<std::string> dict(strs.begin(), strs.end());
+        std::vector<std::vector<std::string>> res;
+        if (!dict.count(end)) return res;
+        std::map<int, std::vector<std::vector<std::string>>> allValid;
+        std::unordered_map<std::string, int> visit;
+        std::vector<std::string> path;
+        path.push_back(start);
+        int minDepth = INT_MAX;
+        recur(start, end, minDepth, path, visit, allValid, dict);
+        if (!allValid.empty())
+            for (auto & p : allValid.begin()->second)
+                res.push_back(p);
+        return res;
+    }
+    void recur(std::string cur, const std::string & end, int & minDepth, std::vector<std::string> & path, std::unordered_map<std::string, int> & visit, std::map<int, std::vector<std::vector<std::string>>> & allValid, const std::unordered_set<std::string> & dict)
+    {
+        int curLen = path.size();
+        if (curLen > minDepth)
+            return;
+        if (cur == end)
+        {
+            minDepth = std::min(minDepth, curLen);
+            allValid[curLen].push_back(path);
+            return;
+        }
+        else if (curLen == minDepth)
+            return;
+
+        for (int i = 0; i < (int)cur.size(); ++i)
+        {
+            std::string nxt = cur;
+            for (char c = 'a'; c <= 'z'; ++c)
+            {
+                if (c == cur[i]) continue;
+                nxt[i] = c;
+                if (dict.count(nxt) && (!visit.count(nxt) || visit[nxt] >= curLen + 1))
+                {
+                    visit[nxt] = curLen + 1;
+                    path.push_back(nxt);
+                    recur(nxt, end, minDepth, path, visit, allValid, dict);
+                    path.pop_back();
+                }
+            }
+        }
+    }
 
 	void Test(const std::string & start, const std::string & end, const std::vector<std::string> & words)
 	{
@@ -291,15 +343,17 @@ public:
 		int res2 = BFS_2Dir(start, end, words);
 		std::vector<std::vector<std::string>> res3 = FindAllBFS(start, end, words);
 		std::vector<std::vector<std::string>> res4 = FindAllBFS_2Dir(start, end, words);
-		std::cout << "WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir for \"" << start << "\", \"" << end << "\" from [" << Debug::ToStr1D<std::string>()(words) << "]" << std::endl;
+        std::vector<std::vector<std::string>> res5 = FindAllDFS(start, end, words);
+		std::cout << "WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir, FindAllDFS for \"" << start << "\", \"" << end << "\" from [" << Debug::ToStr1D<std::string>()(words) << "]:" << std::endl;
 		std::cout << res1 << std::endl;
 		std::cout << res2 << std::endl;
 		Debug::Print2D<std::string>()(res3, false);
 		Debug::Print2D<std::string>()(res4, false);
+        Debug::Print2D<std::string>()(res5, false);
 	}
 };
 /*
-WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir for "hit", "cog" from [hot, dot, dog, lot, log, cog]
+WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir, FindAllDFS for "hit", "cog" from [hot, dot, dog, lot, log, cog]:
 5
 5
 [rY][cX]
@@ -310,9 +364,18 @@ Row#1	= hit, hot, lot, log, cog
 Row#0	= hit, hot, dot, dog, cog
 Row#1	= hit, hot, lot, log, cog
 
-WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir for "red", "tax" from [ted, tex, red, tax, tad, den, rex, pee]
+[rY][cX]
+Row#0	= hit, hot, dot, dog, cog
+Row#1	= hit, hot, lot, log, cog
+
+WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir, FindAllDFS for "red", "tax" from [ted, tex, red, tax, tad, den, rex, pee]:
 4
 4
+[rY][cX]
+Row#0	= red, ted, tad, tax
+Row#1	= red, ted, tex, tax
+Row#2	= red, rex, tex, tax
+
 [rY][cX]
 Row#0	= red, ted, tad, tax
 Row#1	= red, ted, tex, tax
