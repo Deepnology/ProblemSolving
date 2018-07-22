@@ -22,8 +22,89 @@ public:
 	RemoveInvalidParentheses() {}
 	~RemoveInvalidParentheses() {}
 
-	//enumerate all diff result configurations with a shortest path instead of enumerating all diff shortest paths
-	std::vector<std::string> BFS(const std::string & s)//better
+	std::vector<std::string> BFS_Optimal(const std::string & s)
+	{
+		std::vector<std::string> res;
+		std::queue<std::tuple<std::string,int,int,char>> que;//<cur, start, rmv, dir>
+		que.push({s, 0, 0, '('});//start from left to right
+		while (!que.empty())
+		{
+			std::string cur = std::get<0>(que.front());
+			int start = std::get<1>(que.front());
+			int rmv = std::get<2>(que.front());
+			char left = std::get<3>(que.front());
+			char right = left == '(' ? ')' : '(';
+			int balance = 0;
+			que.pop();
+
+			for (int i = start; i < cur.size(); ++i)
+			{
+				if (cur[i] == left) ++balance;
+				else if (cur[i] == right) --balance;
+				if (balance < 0)//now there are more rights in cur[0:i], try to remove rights
+				{
+					for (int j = rmv; j <= i; ++j)
+						if (cur[j] == right && (j == rmv || cur[j] != cur[j-1]))
+							que.push({cur.substr(0,j)+cur.substr(j+1), i, j, left});//continue with same dir
+					break;
+				}
+			}
+			if (balance < 0) continue;
+			//now balance >= 0, if finished both left to right and right to left, should be a valid parenthesis string
+			//if finished only left to right, continue with right to left
+			std::reverse(cur.begin(), cur.end());
+			if (left == '(')//finished left to right
+				que.push({cur, 0, 0, ')'});//continue with right to left
+			else//finished right to left
+				res.push_back(cur);//finished both dir, should be valid
+		}
+
+		std::cout << "RemoveInvalidParentheses BFS_Optimal for \"" << s << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
+		return res;
+	}
+
+
+	std::vector<std::string> BFS_NoHashMap(const std::string & s)
+	{
+		std::vector<std::string> res;
+		std::queue<std::pair<std::string,int>> que;//<cur, rmv>
+		que.push({s, 0});
+		while (!que.empty())
+		{
+			int levelCount = que.size();
+			bool reach = false;
+			while (levelCount-->0)
+			{
+				std::string cur = que.front().first;
+				int rmv = que.front().second;
+				que.pop();
+				if (isValid(cur))
+				{
+					res.push_back(cur);
+					reach = true;
+				}
+				if (reach) continue;
+				for (int i = rmv; i < cur.size(); ++i)
+				{
+					if (cur[i] == '(' || cur[i] == ')')
+					{
+                        //keep track of removal order, ex: (()(() remove 0th then 3rd and remove 3rd then 0th both generate ()()
+                        //skip consecutive same chars, ex: (() remove 0th and remove 1th both generate ()
+						if (i == rmv || cur[i] != cur[i-1])
+						{
+							que.push({cur.substr(0,i)+cur.substr(i+1), i});
+						}
+					}
+				}
+			}
+			if (reach) break;
+		}
+
+		std::cout << "RemoveInvalidParentheses BFS_NoHashMap for \"" << s << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
+		return res;
+	}
+
+	std::vector<std::string> BFS(const std::string & s)
 	{
 		std::unordered_set<std::string> visit;
 		std::queue<std::string> que;
@@ -137,13 +218,16 @@ private:
 	}
 };
 /*
+RemoveInvalidParentheses BFS_Optimal for "()())()": (())(), ()()()
+RemoveInvalidParentheses BFS_NoHashMap for "()())()": (())(), ()()()
 RemoveInvalidParentheses BFS for "()())()": (())(), ()()()
 Row#0	= 2: (())(), ()()()
 Row#1	= 4: ()()
 Row#2	= 6: ()
 
 RemoveInvalidParentheses DFS for "()())()": (())(), ()()()
-
+RemoveInvalidParentheses BFS_Optimal for "()()))(()))(()(()))(()": (()(()))(()(()))(), (())(())(()(()))(), ()((()))(()(()))(), ()()(())(()(()))()
+RemoveInvalidParentheses BFS_NoHashMap for "()()))(()))(()(()))(()": (()(()))(()(()))(), (())(())(()(()))(), ()((()))(()(()))(), ()()(())(()(()))()
 RemoveInvalidParentheses BFS for "()()))(()))(()(()))(()": (()(()))(()(()))(), (())(())(()(()))(), ()((()))(()(()))(), ()()(())(()(()))()
 Row#0	= 5: (()(()))(()(()))(), (())(())(()(()))(), ()((()))(()(()))(), ()()(())(()(()))()
 Row#1	= 7: ((()))(()(()))(), ()(())(()(()))(), (((()))()(()))(), (((()))(()()))(), (((()))(()(()))), (()())(()(()))(), (()(())()(()))(), (()(())(()()))(), (()(())(()(()))), (()(()))((()))(), (()(()))()(())(), (()(()))(((()))), (()(()))(()())(), (()(()))(()(()))
