@@ -56,27 +56,24 @@ public:
 	~WordLadder(){}
 
 	//1. find an arbitrary shortest path
-	int FindShortestLadderLengthBFS(const std::string & start, const std::string & end, std::unordered_set<std::string> dict)//dict will be modified
+	int BFS(const std::string & start, const std::string & end, const std::vector<std::string> & wordList)
 	{
-		std::string dictBefore = Debug::ToStr1D<std::string>()(dict);
-		std::cout << "WordLadder FindShortestLadderLengthBFS for \"" << start << "\", \"" << end << "\" from \"" << dictBefore << "\": ";
-
-		std::queue<std::pair<std::string, int>> que;//key: ladder word, value: length
-		que.push({ start, 1 });
+		std::unordered_set<std::string> dict(wordList.begin(), wordList.end());
+		if (dict.count(end) == 0) return 0;
+		std::unordered_set<std::string> visit;
+		std::queue<std::string> que;
+		que.push(start);
+		visit.insert(start);
+		int dist = 1;
 		while (!que.empty())
 		{
-			int curLevelCount = que.size();
-			for (int k = 0; k < curLevelCount; ++k)
+			int levelCount = que.size();
+			while (levelCount-->0)
 			{
-				std::string curWord = que.front().first;
-				int curLen = que.front().second;
+				std::string curWord = que.front();
 				que.pop();
 				if (curWord == end)//found shortest path
-				{
-					std::cout << curLen << std::endl;
-					return curLen;
-				}
-
+					return dist;
 				for (int i = 0; i < (int)curWord.size(); ++i)
 				{
 					std::string nxtWord = curWord;
@@ -85,51 +82,85 @@ public:
 						if (c == curWord[i])
 							continue;
 						nxtWord[i] = c;
-
-						if (dict.find(nxtWord) != dict.end() || nxtWord == end)
+						if (dict.count(nxtWord) && !visit.count(nxtWord))
 						{
-							if (nxtWord != end)
-								dict.erase(nxtWord);
-							//since we just need to find the FIRST reached shortest path without enumerating ALL, mark this neighbor of cur level node visited regardless of other latter cur level nodes !!!
-
-							que.push({ nxtWord, curLen + 1 });
+							visit.insert(nxtWord);
+							que.push(nxtWord);
 						}
 					}
 				}
 			}
-			
+			++dist;
 		}
-
-		std::cout << 0 << std::endl;
+		return 0;
+	}
+	int BFS_2Dir(const std::string & start, const std::string & end, const std::vector<std::string> & wordList)
+	{
+		std::unordered_set<std::string> dict(wordList.begin(), wordList.end());
+		if (dict.count(end) == 0) return 0;
+		std::unordered_set<std::string> fwd;
+		std::unordered_set<std::string> bwd;
+		std::unordered_set<std::string> visit;
+		fwd.insert(start);
+		bwd.insert(end);
+		visit.insert(start);
+		visit.insert(end);
+		int dist = 1;
+		while (!fwd.empty() && !bwd.empty())
+		{
+			if (bwd.size() < fwd.size())
+				std::swap(fwd, bwd);
+			std::unordered_set<std::string> nxtLevel;
+			for (auto & cur : fwd)
+			{
+				for (int i = 0; i < (int)cur.size(); ++i)
+				{
+					std::string nxt = cur;
+					for (char c = 'a'; c <= 'z'; ++c)
+						if (c != cur[i])
+						{
+							nxt[i] = c;
+							if (bwd.count(nxt))
+								return dist + 1;
+							if (dict.count(nxt) && !visit.count(nxt))
+							{
+								visit.insert(nxt);
+								nxtLevel.insert(nxt);
+							}
+						}
+				}
+			}
+			++dist;
+			std::swap(fwd, nxtLevel);
+		}
 		return 0;
 	}
 
 	//2. enumerate all diff shortest paths instead of enumerating all diff result configurations with a shortest path
-	std::vector<std::vector<std::string>> FindAllShortestLaddersBFS(const std::string & start, const std::string & end, std::unordered_set<std::string> dict)//better
+	std::vector<std::vector<std::string>> FindAllBFS(const std::string & start, const std::string & end, const std::vector<std::string> & strs)
 	{
-		std::string dictBefore = Debug::ToStr1D<std::string>()(dict);
-
+		std::unordered_set<std::string> dict(strs.begin(), strs.end());
 		std::vector<std::vector<std::string>> res;
 		std::queue<std::string> que;
 		que.push(start);
+		std::unordered_set<std::string> visit;
+		visit.insert(start);
 		std::queue<std::vector<std::string>> pathQue;
 		pathQue.push(std::vector<std::string>(1, start));
-
 		int maxLen = INT_MAX;
 		while (!que.empty())
 		{
-			int curLevelCount = que.size();
+			int levelCount = que.size();
 			bool reached = false;
 			std::vector<std::string> levelVisit;
-			for (int k = 0; k < curLevelCount; ++k)
+			while (levelCount-->0)
 			{
 				std::string curWord = que.front();
 				que.pop();
 				std::vector<std::string> curPath = pathQue.front();
 				pathQue.pop();
-
 				int curLen = curPath.size();
-				if (curLen > maxLen)//redundant
+				if (curLen > maxLen)
 					continue;
 				if (curWord == end)
 				{
@@ -142,7 +173,6 @@ public:
 				}
 				else if (curLen == maxLen)
 					continue;
-
 				for (int i = 0; i < (int)curWord.size(); ++i)
 				{
 					std::string nxtWord = curWord;
@@ -151,15 +181,11 @@ public:
 						if (c == curWord[i])
 							continue;
 						nxtWord[i] = c;
-
-						if (dict.find(nxtWord) != dict.end() || nxtWord == end)
+						if (dict.count(nxtWord) && !visit.count(nxtWord))
 						{
-							//cannot mark this neighbor visited here to find ALL diff shortest paths: bc this neighbor of cur level node might be a neighbor of other latter cur level nodes !!!
-							if (nxtWord != end)
-								levelVisit.push_back(nxtWord);
-
-							curPath.push_back(nxtWord);
+							levelVisit.push_back(nxtWord);
 							que.push(nxtWord);
+							curPath.push_back(nxtWord);
 							pathQue.push(curPath);
 							curPath.pop_back();
 						}
@@ -168,233 +194,134 @@ public:
 			}
 			if (reached)
 				break;
-
-			//now mark all neighbors of all cur level nodes as visited after all neighbors of all cur level nodes have been visited
-			//this is to ensure ALL diff shortest paths can be enumerated
 			for (auto & s : levelVisit)
-				dict.erase(s);
+				visit.insert(s);
 		}
-		
-		std::cout << "WordLadder FindAllShortestLaddersBFS for \"" << start << "\", \"" << end << "\" from \"" << dictBefore << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
 		return res;
 	}
-
-	std::vector<std::vector<std::string>> FindAllShortestLaddersDFS(const std::string & start, const std::string & end, std::unordered_set<std::string> dict)//Time Limit Exceeded
+	std::vector<std::vector<std::string>> FindAllBFS_2Dir(const std::string & start, const std::string & end, const std::vector<std::string> & strs)
 	{
-		std::string dictBefore = Debug::ToStr1D<std::string>()(dict);
-
-		std::map<int, std::vector<std::vector<std::string>>> allValid;
-		std::unordered_map<std::string, int> visit;
-		std::vector<std::string> path;
-		path.push_back(start);
-		int minDepth = INT_MAX;
-		recur(start, end, minDepth, path, visit, allValid, dict);
+		std::unordered_set<std::string> dict(strs.begin(), strs.end());
 		std::vector<std::vector<std::string>> res;
-		if (!allValid.empty())
-			for (auto & p : allValid.begin()->second)
-				res.push_back(p);
-		for (auto & p : allValid)
-			Debug::Print2D<std::string>()(p.second, false);
-		std::cout << "WordLadder FindAllShortestLaddersDFS for \"" << start << "\", \"" << end << "\" from \"" << dictBefore << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
+		if (!dict.count(end)) return res;
+		std::unordered_map<std::string,std::unordered_set<std::string>> fwdAdjList;
+		std::unordered_set<std::string> visit;
+		std::unordered_set<std::string> fwd;
+		std::unordered_set<std::string> bwd;
+		fwd.insert(start);
+		bwd.insert(end);
+		visit.insert(start);
+		visit.insert(end);
+		bool isFwd = true;
+		int dist = 1;
+		while (!fwd.empty() && !bwd.empty())
+		{
+			bool reach = false;
+			if (bwd.size() < fwd.size())
+			{
+				std::swap(fwd, bwd);
+				isFwd = !isFwd;
+			}
+			std::unordered_set<std::string> nxtLevel;
+			std::unordered_map<std::string,std::unordered_set<std::string>> fwdAdjList2;
+			for (auto & cur : fwd)
+			{
+				for (int i = 0; i < (int)cur.size(); ++i)
+				{
+					std::string nxt = cur;
+					for (char c = 'a'; c <= 'z'; ++c)
+						if (c != cur[i])
+						{
+							nxt[i] = c;
+							if (bwd.count(nxt))
+							{
+								reach = true;
+								if (isFwd)
+									fwdAdjList[cur].insert(nxt);
+								else
+									fwdAdjList[nxt].insert(cur);
+							}
+							if (reach) continue;
+							if (dict.count(nxt) && !visit.count(nxt))
+							{
+								nxtLevel.insert(nxt);
+								if (isFwd)
+									fwdAdjList2[cur].insert(nxt);
+								else
+									fwdAdjList2[nxt].insert(cur);
+							}
+						}
+				}
+			}
+			++dist;
+			if (reach) break;
+			fwd.clear();
+			for (auto & nxt : nxtLevel)
+			{
+				visit.insert(nxt);//mark visit here to avoid skipping some paths
+				fwd.insert(nxt);
+			}
+			//now adding extras (if reached, we don't need to add extras)
+			for (auto & p : fwdAdjList2)
+				for (auto & s : p.second)
+					fwdAdjList[p.first].insert(s);
+		}
+
+		std::vector<std::string> path;
+		recur(fwdAdjList, start, end, path, res);
 		return res;
 	}
-	void recur(std::string cur, const std::string & end, int & minDepth, std::vector<std::string> & path, std::unordered_map<std::string, int> & visit, std::map<int, std::vector<std::vector<std::string>>> & allValid, const std::unordered_set<std::string> & dict)
+	void recur(std::unordered_map<std::string,std::unordered_set<std::string>> & adjList, std::string cur, const std::string & end, std::vector<std::string> & path, std::vector<std::vector<std::string>> & res)
 	{
-		int curLen = path.size();
-		if (curLen > minDepth)
-			return;
+		path.push_back(cur);
 		if (cur == end)
 		{
-			minDepth = std::min(minDepth, curLen);
-			allValid[curLen].push_back(path);
+			res.push_back(path);
+			path.pop_back();
 			return;
 		}
-		else if (curLen == minDepth)
-			return;
-
-		for (int i = 0; i < (int)cur.size(); ++i)
-		{
-			std::string nxt = cur;
-			for (char c = 'a'; c <= 'z'; ++c)
-			{
-				if (c == cur[i]) continue;
-				nxt[i] = c;
-				if (nxt == end || (dict.find(nxt) != dict.end() && (visit.find(nxt) == visit.end() || visit[nxt] >= curLen + 1)))
-				{
-					if (nxt != end)
-						visit[nxt] = curLen + 1;
-					path.push_back(nxt);
-					recur(nxt, end, minDepth, path, visit, allValid, dict);
-					path.pop_back();
-				}
-			}
-		}
-	}
-
-
-
-
-
-
-
-
-	//faster but harder to memo
-	std::vector<std::vector<std::string>> FindAllShortestLadders(const std::string & start, const std::string & end, std::unordered_set<std::string> dict)
-	{
-		std::cout << "WordLadder FindAllShortestLadders for \"" << start << "\", \"" << end << "\" from \"" << Debug::ToStr1D<std::string>()(dict) << "\": " << std::endl;
-
-		//key: next 1-letter-diff-word in dict or "end"
-		//value: a vector of all the prev 1-letter-diff-word in dict
-		std::unordered_map<std::string, std::vector<std::string>> ladderWordMap;
-
-		std::vector<std::vector<std::string> > res;
-		std::unordered_set<std::string> currLadderWords;//all 1-letter-diff-words in curr level
-		std::unordered_set<std::string> prevLadderWords;//all 1-letter-diff-words in prev level
-
-		//add start to prevLadderWords
-		prevLadderWords.insert(start);
-
-		//BFS build the ladderWordMap
-		while (true)
-		{
-			//1. remove all prevLadderWords from dict
-			for (std::unordered_set<std::string>::const_iterator itr = prevLadderWords.begin(); itr != prevLadderWords.end(); ++itr)
-				dict.erase(*itr);
-			//std::cout << "dict: " << Debug::ToStr1D<std::string>()(dict) << std::endl;
-
-			//2. enumerate all possible 1-letter-diff-prevLadderWords from dict, and insert in ladderWordMap and curLadderWords
-			for (std::unordered_set<std::string>::const_iterator itr = prevLadderWords.begin(); itr != prevLadderWords.end(); ++itr)
-			{
-				//double-for-loops to try all 1-letter-diff-words
-				for (int j = 0; j < (int)itr->size(); ++j)
-				{
-					std::string nextLadderWord = *itr;
-					for (char c = 'a'; c <= 'z'; ++c)
-					{
-						if (itr->at(j) == c)//self => skip
-							continue;
-						nextLadderWord[j] = c;//1-letter-diff-word
-
-						if (dict.find(nextLadderWord) == dict.end() && //can't find 1-letter-diff-word in dict
-							nextLadderWord != end)//can't find 1-letter-diff-word in "end"
-							continue;
-
-						//now this nextLadderWord is in dict or is "end"
-						ladderWordMap[nextLadderWord].push_back(*itr);//put it and all its prev 1-letter-diff-words in map
-
-						//put this nextLadderWord in currLadderWords for next while loop
-						std::pair<std::unordered_set<std::string>::iterator, bool> r = 
-							currLadderWords.insert(nextLadderWord);
-						//std::cout << next << "," << r.second << "," << curr.size() << "." << Debug::ToStr1D<std::string>()(curr) << std::endl;
-					}
-				}
-			}
-
-			//3. if found NO 1-letter-diff-prevLadderWords for next while loop, can't form any ladder toward end, stop and return
-			if (currLadderWords.size() == 0)
-			{
-				std::cout << "No Word Ladders Were Found!" << std::endl;
-				return res;
-			}
-
-			//4. if found "end" is a 1-letter-diff-prevLadderWords, ladder is completed, stop while loop
-			if (currLadderWords.find(end) != currLadderWords.end())
-				break;
-
-			//5. update buffer
-			prevLadderWords = currLadderWords;
-			currLadderWords.clear();
-		}
-
-		this->printLadderWordMap(ladderWordMap);
-
-		std::vector<std::string> path;
-		this->getPathRecur_DFS_FromBack(end, start, ladderWordMap, path, res);//recursively build the all word ladders map
-
-		std::cout << Debug::ToStr1D<std::string>()(res) << std::endl;
-		return res;
-	}
-
-private:
-	//start: a prev word in start's prev word vector in ladderWordMap
-	//end: the target beginning of the ladder
-	void getPathRecur_DFS_FromBack(const std::string & start, const std::string & end, std::unordered_map<std::string, std::vector<std::string>> & map
-		, std::vector<std::string> & path, std::vector<std::vector<std::string>> & res)
-	{
-		path.push_back(start);//form the path vector backward
-
-		if (start == end)
-		{
-			res.push_back(std::vector<std::string>(path.rbegin(), path.rend()));
-		}
-		else
-		{
-			for (std::vector<std::string>::iterator pre = map[start].begin(); pre != map[start].end(); ++pre)
-			{
-				this->getPathRecur_DFS_FromBack(*pre, end, map, path, res);
-			}
-		}
+		for (auto & nxt : adjList[cur])
+			recur(adjList, nxt, end, path, res);
 		path.pop_back();
 	}
 
-	void printLadderWordMap(const std::unordered_map<std::string, std::vector<std::string>> & map)
+	void Test(const std::string & start, const std::string & end, const std::vector<std::string> & words)
 	{
-		std::ostringstream oss;
-		for (std::unordered_map<std::string, std::vector<std::string>>::const_iterator i = map.begin(); i != map.end(); ++i)
-		{
-			oss << i->first << ": ";
-			for (std::vector<std::string>::const_iterator j = i->second.begin(); j != i->second.end(); ++j)
-			{
-				oss << *j;
-				if (j != i->second.end() - 1)
-					oss << ",";
-				else
-					oss << ".";
-			}
-			oss << std::endl;
-		}
-		std::cout << "Ladder Word Map:" << std::endl << oss.str();
+		int res1 = BFS(start, end, words);
+		int res2 = BFS_2Dir(start, end, words);
+		std::vector<std::vector<std::string>> res3 = FindAllBFS(start, end, words);
+		std::vector<std::vector<std::string>> res4 = FindAllBFS_2Dir(start, end, words);
+		std::cout << "WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir for \"" << start << "\", \"" << end << "\" from [" << Debug::ToStr1D<std::string>()(words) << "]" << std::endl;
+		std::cout << res1 << std::endl;
+		std::cout << res2 << std::endl;
+		Debug::Print2D<std::string>()(res3, false);
+		Debug::Print2D<std::string>()(res4, false);
 	}
 };
 /*
-WordLadder FindShortestLadderLengthBFS for "hit", "cog" from "hot, dot, lot, dog, log": 5
-WordLadder FindAllShortestLaddersBFS for "hit", "cog" from "hot, dot, lot, dog, log": [hit,hot,dot,dog,cog], [hit,hot,lot,log,cog]
+WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir for "hit", "cog" from [hot, dot, dog, lot, log, cog]
+5
+5
 [rY][cX]
 Row#0	= hit, hot, dot, dog, cog
 Row#1	= hit, hot, lot, log, cog
 
 [rY][cX]
-Row#0	= hit, hot, dot, lot, log, cog
+Row#0	= hit, hot, dot, dog, cog
+Row#1	= hit, hot, lot, log, cog
 
-WordLadder FindAllShortestLaddersDFS for "hit", "cog" from "hot, dot, lot, dog, log": [hit,hot,dot,dog,cog], [hit,hot,lot,log,cog]
-WordLadder FindAllShortestLadders for "hit", "cog" from "hot, dot, lot, dog, log":
-Ladder Word Map:
-hot: hit.
-cog: dog,log.
-lot: hot.
-dot: hot.
-log: lot.
-dog: dot.
-[hit,hot,dot,dog,cog], [hit,hot,lot,log,cog]
-WordLadder FindShortestLadderLengthBFS for "red", "tax" from "ted, tax, tex, tad, red, den, rex, pee": 4
-WordLadder FindAllShortestLaddersBFS for "red", "tax" from "ted, tax, tex, tad, red, den, rex, pee": [red,ted,tad,tax], [red,ted,tex,tax], [red,rex,tex,tax]
+WordLadder BFS, BFS_2Dir, FindAllBFS, FindAllBFS_2Dir for "red", "tax" from [ted, tex, red, tax, tad, den, rex, pee]
+4
+4
 [rY][cX]
 Row#0	= red, ted, tad, tax
 Row#1	= red, ted, tex, tax
 Row#2	= red, rex, tex, tax
 
 [rY][cX]
-Row#0	= red, ted, red, rex, tex, tax
-
-WordLadder FindAllShortestLaddersDFS for "red", "tax" from "ted, tax, tex, tad, red, den, rex, pee": [red,ted,tad,tax], [red,ted,tex,tax], [red,rex,tex,tax]
-WordLadder FindAllShortestLadders for "red", "tax" from "ted, tax, tex, tad, red, den, rex, pee":
-Ladder Word Map:
-tax: tad,tex.
-ted: red.
-rex: red.
-tex: ted,rex.
-tad: ted.
-[red,ted,tad,tax], [red,ted,tex,tax], [red,rex,tex,tax]
+Row#0	= red, ted, tad, tax
+Row#1	= red, ted, tex, tax
+Row#2	= red, rex, tex, tax
 */
 
 /*
@@ -432,9 +359,7 @@ public:
 
 	int CountMinMutation_BFS(const std::string & start, const std::string & end, const std::vector<std::string> & bank)
 	{
-		std::unordered_set<std::string> dict;
-		for (const auto & s : bank)
-			dict.insert(s);
+		std::unordered_set<std::string> dict(bank.begin(), bank.end());
 		std::unordered_set<std::string> visit;
 		visit.insert(start);
 		int dist = 0;
@@ -448,10 +373,7 @@ public:
 				std::string s = que.front();
 				que.pop();
 				if (s == end)
-				{
-					std::cout << "MinGeneticMutation CountMinMutation_BFS for start=\"" << start << "\", end=\"" << end << "\", from \"" << Debug::ToStr1D<std::string>()(bank) << "\": " << dist << std::endl;
 					return dist;
-				}
 				std::string c = "ACGT";
 				int N = s.size();
 				for (int i = 0; i < N; ++i)
@@ -472,12 +394,61 @@ public:
 			}
 			++dist;
 		}
-
-		std::cout << "MinGeneticMutation CountMinMutation_BFS for start=\"" << start << "\", end=\"" << end << "\", from \"" << Debug::ToStr1D<std::string>()(bank) << "\": " << -1 << std::endl;
 		return -1;
+	}
+	int CountMinMutation_BFS_2Dir(const std::string & start, const std::string & end, const std::vector<std::string> & bank)
+	{
+		std::unordered_set<std::string> dict(bank.begin(), bank.end());
+		if (!dict.count(end)) return -1;
+		std::unordered_set<std::string> fwd;
+		std::unordered_set<std::string> bwd;
+		std::unordered_set<std::string> visit;
+		fwd.insert(start);
+		bwd.insert(end);
+		visit.insert(start);
+		visit.insert(end);
+		int dist = 0;
+		while (!fwd.empty() && !bwd.empty())
+		{
+			if (bwd.size() < fwd.size())
+				std::swap(fwd, bwd);
+			std::unordered_set<std::string> nxtLevel;
+			for (auto & cur : fwd)
+			{
+				for (int i = 0; i < (int)cur.size(); ++i)
+				{
+					std::string nxt = cur;
+					std::string set = "ACGT";
+					for (int j = 0; j < 4; ++j)
+					{
+						if (set[j] != cur[i])
+						{
+							nxt[i] = set[j];
+							if (bwd.count(nxt))
+								return dist + 1;
+							if (dict.count(nxt) && !visit.count(nxt))
+							{
+								visit.insert(nxt);
+								nxtLevel.insert(nxt);
+							}
+						}
+					}
+				}
+			}
+			++dist;
+			std::swap(fwd, nxtLevel);
+		}
+		return -1;
+	}
+
+	void Test(const std::string & start, const std::string & end, const std::vector<std::string> & bank)
+	{
+		int res1 = CountMinMutation_BFS(start, end, bank);
+		int res2 = CountMinMutation_BFS_2Dir(start, end, bank);
+		std::cout << "MinGeneticMutation CountMinMutation BFS, BFS_2Dir for \"" << start << "\", \"" << end << "\" from [" << Debug::ToStr1D<std::string>()(bank) << "]: " << res1 << "," << res2 << std::endl;
 	}
 };
 /*
-MinGeneticMutation CountMinMutation_BFS for start="AAAAACCC", end="AACCCCCC", from "AAAACCCC, AAACCCCC, AACCCCCC": 3
+MinGeneticMutation CountMinMutation BFS, BFS_2Dir for "AAAAACCC", "AACCCCCC" from [AAAACCCC, AAACCCCC, AACCCCCC]: 3,3
 */
 #endif
