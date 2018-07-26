@@ -60,7 +60,7 @@ public:
 
 		/*1. sort the heightsWCounts array with heights in descending order O(nlogn) time*/
 		std::sort(heightsWCounts.begin(), heightsWCounts.end(),
-			[](const std::pair<int, int> & a, const std::pair<int, int> & b)->bool { return a.first == b.first ? a.second < b.second : a.first > b.first; });
+			[](const std::pair<int, int> & a, const std::pair<int, int> & b)->bool const { return a.first == b.first ? a.second < b.second : a.first > b.first; });
 
 		/*2. */
 		std::vector<std::pair<int, int>> res;
@@ -89,7 +89,7 @@ public:
 		
 		/*1. sort the heightsWCounts array with heights in decending order O(nlogn) time*/
 		std::sort(heightsWCounts.begin(), heightsWCounts.end(),
-			[](const std::pair<int, int> & a, const std::pair<int, int> & b)->bool { return a.first == b.first ? a.second < b.second : a.first > b.first; });
+			[](const std::pair<int, int> & a, const std::pair<int, int> & b)->bool const { return a.first == b.first ? a.second < b.second : a.first > b.first; });
 
 		/*
 		2. insert each pair into a rope data structure
