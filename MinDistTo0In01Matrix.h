@@ -33,6 +33,51 @@ class MinDistTo0In01Matrix
 public:
 	MinDistTo0In01Matrix() {}
 
+	std::vector<std::vector<int>> BFS_Better(std::vector<std::vector<int>> && matrix)
+	{
+		Debug::Print2D<int>()(matrix, false);
+		int N = matrix.size();
+		int M = matrix[0].size();
+		std::vector<std::vector<int>> dist(N, std::vector<int>(M, 0));
+		std::queue<int> que;
+		for (int i = 0; i < N; ++i)
+		{
+			for (int j = 0; j < M; ++j)
+			{
+				if (matrix[i][j] == 0)
+					que.push(i * M + j);
+				else
+					dist[i][j] = INT_MAX;
+			}
+		}
+		std::vector<std::vector<int>> dir = {{-1,0},{1,0},{0,1},{0,-1}};
+		int steps = 0;
+		while (!que.empty())
+		{
+			int levelCount = que.size();
+			while (levelCount-- > 0)
+			{
+				int i = que.front() / M;
+				int j = que.front() % M;
+				que.pop();
+				for (int d = 0; d < 4; ++d)
+				{
+					int ii = i + dir[d][0];
+					int jj = j + dir[d][1];
+					if (ii >= 0 && ii < N && jj >= 0 && jj < M && matrix[ii][jj] == 1 && dist[ii][jj] == INT_MAX)
+					{
+						dist[ii][jj] = steps + 1;
+						que.push(ii * M + jj);
+					}
+				}
+			}
+			++steps;
+		}
+		std::cout << "MinDistTo0In01Matrix BFS_Better for the above matrix: " << std::endl;
+		Debug::Print2D<int>()(dist, false);
+		return dist;
+	}
+
 	std::vector<std::vector<int>> BFS(std::vector<std::vector<int>> && matrix)//Time Limit Exceeded
 	{
 		Debug::Print2D<int>()(matrix, false);
