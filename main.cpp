@@ -12,11 +12,11 @@
 //#define _FindSubstringSubsequence_
 //#define _CompareString_
 //#define _TextLines_
-#define _LinkedList_
+//#define _LinkedList_
 //#define _2DGrid_
 //#define _BinaryTree_
 //#define _Heap_
-//#define _Graph_
+#define _Graph_
 //#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _DesignPattern_
@@ -787,6 +787,7 @@
 #include "MinDist2NodesBinaryTree.h"
 #include "ConvertBSTtoMinHeap.h"
 #include "PrintBinaryTreeIn2DArray.h"
+#include "SerializeDeserializeNaryTree.h"
 
 /*Heap*/
 #include "BinaryMinHeap.h"
@@ -8182,14 +8183,14 @@ int main()
         }
     }
     {
-        FindMinCol1In01Matrix().BinarySearchFromUpperRightCorner(std::vector<std::vector<int>>(
+        FindMinCol1In01Matrix().LinearSearchFromUpperRightCorner(std::vector<std::vector<int>>(
                 {
                         {0,0,1,1,1},
                         {0,1,1,1,1},
                         {0,0,1,1,1},
                         {0,0,0,0,0},
                 }));
-        FindMinCol1In01Matrix().BinarySearchFromUpperRightCorner(std::vector<std::vector<int>>(
+        FindMinCol1In01Matrix().LinearSearchFromUpperRightCorner(std::vector<std::vector<int>>(
                 {
                         {0,0,0,0,1},
                         {0,1,1,1,1},
@@ -10042,6 +10043,7 @@ int main()
         root->right = new FindNearestLeafNodeBinaryTree::TreeNode(3);
         PrintBinaryTree<FindNearestLeafNodeBinaryTree::TreeNode, std::ostringstream>(root, bstOss);
         std::cout << bstOss.str() << std::endl;
+        FindNearestLeafNodeBinaryTree().BFS(root, 2);
         FindNearestLeafNodeBinaryTree().Recur(root, 2);
         FindNearestLeafNodeBinaryTree::DeleteTree(root);
         bstOss.str(std::string());
@@ -10058,8 +10060,11 @@ int main()
         root->right->right->right->left = new FindNearestLeafNodeBinaryTree::TreeNode(10);
         PrintBinaryTree<FindNearestLeafNodeBinaryTree::TreeNode, std::ostringstream>(root, bstOss);
         std::cout << bstOss.str() << std::endl;
+        FindNearestLeafNodeBinaryTree().BFS(root, 3);
         FindNearestLeafNodeBinaryTree().Recur(root, 3);
+        FindNearestLeafNodeBinaryTree().BFS(root, 7);
         FindNearestLeafNodeBinaryTree().Recur(root, 7);
+        FindNearestLeafNodeBinaryTree().BFS(root, 4);
         FindNearestLeafNodeBinaryTree().Recur(root, 4);
         FindNearestLeafNodeBinaryTree::DeleteTree(root);
         bstOss.str(std::string());
@@ -12519,32 +12524,10 @@ int main()
 		GenericDFSWStack::DeleteTree(tr);
 	}
 	{
-		std::unordered_set<std::string> dict_wordladder1;
-		dict_wordladder1.insert("hot");
-		dict_wordladder1.insert("dot");
-		dict_wordladder1.insert("dog");
-		dict_wordladder1.insert("lot");
-		dict_wordladder1.insert("log");
-		WordLadder().FindShortestLadderLengthBFS("hit", "cog", dict_wordladder1);
-		WordLadder().FindAllShortestLaddersBFS("hit", "cog", dict_wordladder1);
-		WordLadder().FindAllShortestLaddersDFS("hit", "cog", dict_wordladder1);
-		WordLadder().FindAllShortestLadders("hit", "cog", dict_wordladder1);
+        WordLadder().Test("hit", "cog", std::vector<std::string>({"hot","dot","dog","lot","log","cog"}));
+        WordLadder().Test("red", "tax", std::vector<std::string>({"ted","tex","red","tax","tad","den","rex","pee"}));
 
-		std::unordered_set<std::string> dict_wordladder2;
-		dict_wordladder2.insert("ted");
-		dict_wordladder2.insert("tex");
-		dict_wordladder2.insert("red");
-		dict_wordladder2.insert("tax");
-		dict_wordladder2.insert("tad");
-		dict_wordladder2.insert("den");
-		dict_wordladder2.insert("rex");
-		dict_wordladder2.insert("pee");
-		WordLadder().FindShortestLadderLengthBFS("red", "tax", dict_wordladder2);
-		WordLadder().FindAllShortestLaddersBFS("red", "tax", dict_wordladder2);
-		WordLadder().FindAllShortestLaddersDFS("red", "tax", dict_wordladder2);
-		WordLadder().FindAllShortestLadders("red", "tax", dict_wordladder2);
-
-		MinGeneticMutation().CountMinMutation_BFS(std::string("AAAAACCC"), std::string("AACCCCCC"), std::vector<std::string>({ "AAAACCCC", "AAACCCCC", "AACCCCCC" }));
+		MinGeneticMutation().Test(std::string("AAAAACCC"), std::string("AACCCCCC"), std::vector<std::string>({ "AAAACCCC", "AAACCCCC", "AACCCCCC" }));
 	}
 	{
 		/*
@@ -12599,8 +12582,12 @@ int main()
 		MinHeightTreesInGraph().BFS(6, std::vector<std::pair<int, int>>({ { 0, 3 },{ 1, 3 },{ 2, 3 },{ 4,3 },{ 5,4 } }));
 	}
 	{
+        RemoveInvalidParentheses().BFS_Optimal(std::string("()())()"));
+        RemoveInvalidParentheses().BFS_NoHashMap(std::string("()())()"));
 		RemoveInvalidParentheses().BFS(std::string("()())()"));
 		RemoveInvalidParentheses().DFS(std::string("()())()"));
+        RemoveInvalidParentheses().BFS_Optimal(std::string("()()))(()))(()(()))(()"));
+        RemoveInvalidParentheses().BFS_NoHashMap(std::string("()()))(()))(()(()))(()"));
         RemoveInvalidParentheses().BFS(std::string("()()))(()))(()(()))(()"));
         RemoveInvalidParentheses().DFS(std::string("()()))(()))(()(()))(()"));
 	}
@@ -12608,9 +12595,11 @@ int main()
 		FreedomTrail().DP2D(std::string("godding"), std::string("oin"));
 		FreedomTrail().DFS_DP(std::string("godding"), std::string("oin"));
 		FreedomTrail().BFS_DP(std::string("godding"), std::string("oin"));
+        FreedomTrail().BFS_DP_Simple(std::string("godding"), std::string("oin"));
 		FreedomTrail().DP2D(std::string("czjdn"), std::string("zzznnnjjjdddccc"));
 		FreedomTrail().DFS_DP(std::string("czjdn"), std::string("zzznnnjjjdddccc"));
 		FreedomTrail().BFS_DP(std::string("czjdn"), std::string("zzznnnjjjdddccc"));
+        FreedomTrail().BFS_DP_Simple(std::string("czjdn"), std::string("zzznnnjjjdddccc"));
 		
 	}
 	{
