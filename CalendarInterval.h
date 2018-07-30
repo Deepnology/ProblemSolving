@@ -74,18 +74,13 @@ public:
     CalendarIntervalI(){}
     bool CheckOverlap_Book(int start, int end)
     {
-        if (map.empty())//adding this case to avoid when itr hitting map.end() without prev(itr)
-        {
-            map.insert({start,end});
-            return true;
-        }
-        auto itr = map.lower_bound(start);
-
-        //1. first check prev(itr)'s range in case of itr==map.end(): start1<end2&&start2<end1 for overlap
-        if (itr != map.begin() && start < std::prev(itr)->second && std::prev(itr)->first < end)
+        //note: map contains only non-overlapped intervals
+        auto itr = map.upper_bound(start);
+        //1. check prev(itr)'s range: start1<end2&&start2<end1 for overlap
+        if (itr != map.begin() && start < std::prev(itr)->second)// && std::prev(itr)->first < end)
             return false;
         //2. check itr's range: start1<end2&&start2<end1 for overlap
-        if (itr->first < end && start < itr->second)
+        if (itr != map.end() && itr->first < end)// && start < itr->second)
             return false;
 
         map.insert({start,end});
