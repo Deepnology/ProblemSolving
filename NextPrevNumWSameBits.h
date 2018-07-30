@@ -149,16 +149,7 @@ public:
 		if (i - 1 >= 0)
 		{
 			auto itr = std::upper_bound(s.begin() + i, s.end(), s[i - 1]);
-			if (itr != s.end())
-			{
-				std::swap(s[i - 1], s[(itr - s.begin())]);
-			}
-			else
-			{
-				char c = s[i - 1];
-				s.erase(i - 1, 1);
-				s += c;
-			}
+			std::swap(s[i - 1], s[(itr - s.begin())]);
 			long long res = stoll(s);
 			if (res >= INT_MAX) return -1;
 			return (int)res;
