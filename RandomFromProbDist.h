@@ -7,6 +7,7 @@
 #include <time.h>
 #include "Debug.h"
 /*
+Leetcode: Random Pick With Weight
 Random from probability distribution
 Elements of programming interview, Array: Generate nonuniform random numbers
 http://www.geeksforgeeks.org/random-number-generator-in-arbitrary-probability-distribution-fashion/
