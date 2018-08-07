@@ -15,7 +15,7 @@ namespace MakeFinal
         friend class MyFinalClass; //so that MyFinalClass::ctor can call Final::ctor
     };
     class MyFinalClass : virtual Final //either virtual public or virtual private (default): make Derived::ctor call Final::ctor
-    {                                   //without virtual inheritance: Derived::ctor calls MyFinalClass::ctor which calls Final::ctor, no problem
+    {                                   //without virtual inheritance: Derived::ctor calls MyFinalClass::ctor which calls Final::ctor: no compile error
     public:
         MyFinalClass(){ std::cout << "MyFinalClass::ctor" << std::endl; }
     };
