@@ -66,7 +66,7 @@ class GraphToTreeRedundantEdge
 public:
 	GraphToTreeRedundantEdge() {}
 
-	std::vector<int> Undirected_UnionFind(std::vector<std::vector<int>> & edges)
+	std::vector<int> Undirected_UnionFind(const std::vector<std::vector<int>> & edges)
 	{
 		int N = 0;
 		for (auto & p : edges)
@@ -76,16 +76,55 @@ public:
 			root.push_back(i);
 		for (auto & p : edges)
 		{
-			int root1 = find(root, p[0]);
-			int root2 = find(root, p[1]);
+			int root1 = Find(root, p[0]);
+			int root2 = Find(root, p[1]);
 			if (root1 == root2)
 				return p;
 			root[root1] = root2;
 		}
 		return{ 0,0 };
 	}
+
+	std::vector<int> Directed_UnionFind(const std::vector<std::vector<int>> & edges)
+	{
+		int N = edges.size();
+		std::vector<int> rootIdx;
+		//init rootIdx with [0:N]
+		for (int i = 0; i <= N; ++i)
+			rootIdx.push_back(i);
+
+		std::vector<int> edge1;
+		std::vector<int> edge2;
+		for (int i = 0; i < N; ++i)
+		{
+			int src = edges[i][0];
+			int tgt = edges[i][1];
+			int rootSrc = Find(rootIdx, src);
+			int rootTgt = Find(rootIdx, tgt);
+			if (rootSrc == rootTgt)
+			{
+				edge1 = edges[i];//record last edge for cycle issue
+			}
+			else
+			{
+				if (rootTgt == tgt)
+					rootIdx[rootTgt] = rootSrc;
+				else
+					edge2 = edges[i];//record last edge for multiple parents issue
+			}
+		}
+
+		if (edge1.empty()) return edge2;
+		if (edge2.empty()) return edge1;
+		for (int i = 0; i < N; ++i)
+			if (edge2[1] == edges[i][1])//return first edge that has multiple parents issue
+				return edges[i];
+
+		return std::vector<int>();
+	}
+
 private:
-	int find(std::vector<int> & v, int idx)
+	int Find(std::vector<int> & v, int idx)
 	{
 		while (idx != v[idx])
 		{
