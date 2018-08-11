@@ -86,6 +86,43 @@ public:
         std::cout << "LongestLadderWordInDict SortHashSet for [" << Debug::ToStr1D<std::string>()(words) << "]: " << res << std::endl;
         return res;
     }
+
+
+/*
+Tow Sigma: Longest Chain
+Given a dictionary of words, find the longest chain of words that can be formed by inserting a char to any other words in dictionary.
+ */
+    int CountLongestChainLength(const std::vector<std::string> & words)
+    {
+        //sort all words based their lengths in increasing order
+        //such that shorter words can be checked first
+        std::sort(words.begin(), words.end(), [](const std::string & a, const std::string & b)
+        {
+            return a.size() < b.size();
+        });
+        std::unordered_map<std::string,int> built;//<word,curMaxLadderLength>
+        int res = 0;
+        for (auto & s : words)
+        {
+            if (built.count(s)) continue;
+            built[s] = 1;//init cur word with length 1
+            int N = s.size();
+            //enumerate all possible previous words that is one char removed from cur word
+            for (int i = 0; i < N; ++i)
+            {
+                std::string prev = s.substr(0,i) + s.substr(i+1);
+                //update cur word's max ladder length
+                if (built.count(prev) && built[prev]+1 > built[s])
+                {
+                    built[s] = built[prev] + 1;
+                }
+            }
+            //update global max ladder length
+            res = std::max(res, built[s]);
+        }
+
+        return res;
+    }
 };
 /*
 LongestLadderWordInDict UseTrie for [a, banana, app, appl, ap, apply, apple]: apple
