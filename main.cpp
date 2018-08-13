@@ -7,7 +7,7 @@
 //#define _1DArray_
 //#define _SortSearchSelect_
 //#define _Interval_
-//#define _PermuteCombinePartition_
+#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
 //#define _FindSubstringSubsequence_
 //#define _CompareString_
@@ -16,7 +16,7 @@
 //#define _2DGrid_
 //#define _BinaryTree_
 //#define _Heap_
-#define _Graph_
+//#define _Graph_
 //#define _RMQLCA_
 //#define _ThreadSafe_
 //#define _DesignPattern_
@@ -386,6 +386,7 @@
 #include "LeastNumOfIntervalsCoverRange.h"
 #include "AddBoldTagInStrMergeInterval.h"
 #include "FallingSquares.h"
+#include "RangeModule.h"
 
 /*Permute Combine Partition*/
 #include "Permutations.h"
@@ -471,6 +472,8 @@
 #include "PartitionSameCharsInSingleSubstr.h"
 #include "NextClosestTime.h"
 #include "PartitionIntoFibonacciSeq.h"
+#include "MinStickersToSpellWord.h"
+#include "Game24.h"
 
 /*Trie Suffix Tree Array*/
 #include "SuffixArray.h"
@@ -855,6 +858,8 @@
 #include "MinStepsSwap0In2DPuzzleBoard.h"
 #include "CheapestFlightsWithinKStops.h"
 #include "OnePathVisitAllRooms.h"
+#include "GraphToTreeRedundantEdge.h"
+#include "CrackSafe.h"
 
 /*RMQ LCA*/
 #include "RangeSumQuerySegmentTree.h"
@@ -4952,6 +4957,12 @@ int main()
     {
         PartitionIntoFibonacciSeq().Recur_FindAnyOne(std::string("1101111"));
         PartitionIntoFibonacciSeq().Recur_FindAll(std::string("1101111"));
+    }
+    {
+        MinStickersToSpellWord().DFS_DP(std::vector<std::string>({"with", "example", "science"}), std::string("thehat"));
+    }
+    {
+        Game24().DFS(std::vector<int>({4,1,8,7}));
     }
 
 #endif
@@ -12719,6 +12730,15 @@ int main()
         OnePathVisitAllRooms().DFS(std::vector<std::vector<int>>({{1},{2},{3},{}}));
         OnePathVisitAllRooms().DFS(std::vector<std::vector<int>>({{1},{3,0,1},{2},{0}}));
     }
+    {
+        GraphToTreeRedundantEdge().Undirected_UnionFind(std::vector<std::vector<int>>({{1,2}, {2,3}, {3,4}, {1,4}, {1,5}}));
+        GraphToTreeRedundantEdge().Directed_UnionFind(std::vector<std::vector<int>>({{1,2}, {2,3}, {3,4}, {4,1}, {1,5}}));
+        GraphToTreeRedundantEdge().Directed_UnionFind(std::vector<std::vector<int>>({{2,1}, {4,2}, {1,4}, {3,1}}));
+    }
+    {
+        CrackSafe().deBruijnSeq(2, 2);
+        CrackSafe().deBruijnSeq(3, 3);
+    }
 
 #endif
 #ifdef _RMQLCA_
@@ -13120,6 +13140,7 @@ int main()
         //DesignPattern_TemplateMethod::Test();
         //DesignPattern_Visitor::Test();
     }
+#endif
 
 #ifdef _CPP_
     RdCout ? redirect_cout::to_file("Out_CPP.txt") : redirect_cout::to_cout();
@@ -13128,8 +13149,6 @@ int main()
         MakeFinal::Test();
         MakeFinal::Test2();
     }
-#endif
-
 #endif
 
 #ifdef _PrintFileNameByTag_
