@@ -92,7 +92,7 @@ public:
 Tow Sigma: Longest Chain
 Given a dictionary of words, find the longest chain of words that can be formed by inserting a char to any other words in dictionary.
  */
-    int CountLongestChainLength(const std::vector<std::string> & words)
+    int CountLongestChainLength(std::vector<std::string> && words)
     {
         //sort all words based their lengths in increasing order
         //such that shorter words can be checked first
