@@ -7,10 +7,10 @@
 //#define _1DArray_
 //#define _SortSearchSelect_
 //#define _Interval_
-#define _PermuteCombinePartition_
+//#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
 //#define _FindSubstringSubsequence_
-//#define _CompareString_
+#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
@@ -588,6 +588,7 @@
 #include "SentenceSimilarity.h"
 #include "LongestWordInDictThruDeleting.h"
 #include "LongestLadderWordInDict.h"
+#include "CompareStringsWBackspace.h"
 
 /*Text Lines*/
 #include "NeatPrintWordWrap.h"
@@ -710,6 +711,7 @@
 #include "LargestIslandAtMost1FlipInMatrix.h"
 #include "DetermineIfPointLieInsideTriangle.h"
 #include "Find3PointsFormLargestTriangle.h"
+#include "RobotRoomCleaner.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -6009,6 +6011,9 @@ int main()
     {
         LongestLadderWordInDict().UseTrie(std::vector<std::string>({"a", "banana", "app", "appl", "ap", "apply", "apple"}));
         LongestLadderWordInDict().SortHashSet(std::vector<std::string>({"a", "banana", "app", "appl", "ap", "apply", "apple"}));
+    }
+    {
+        CompareStringsWBackspace().Test("a##C", "#a#C");
     }
 
 #endif
