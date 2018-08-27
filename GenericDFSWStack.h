@@ -4,7 +4,7 @@
 /*
 Leetcode: N-ary Tree Preorder Traversal
 Leetcode: N-ary Tree Postorder Traversal
-
+Leetcode: N-ary Tree Levelorder Traversal
 */
 class GenericDFSWStack
 {
@@ -167,6 +167,33 @@ public:
 			recurPost(cur->children[i], res);
 		res.push_back(cur->val);
 	}
+
+
+    std::vector<std::vector<int>> LevelOrder(TreeNode * root)
+    {
+        std::vector<std::vector<int>> res;
+        std::queue<TreeNode*> que;
+        if (root)
+        {
+            que.push(root);
+            res.push_back(std::vector<int>());
+        }
+        while (!que.empty())
+        {
+            int levelCount = que.size();
+            while (levelCount-- > 0)
+            {
+                TreeNode * cur = que.front();
+                que.pop();
+                res.back().push_back(cur->val);
+                for (auto nxt : cur->children)
+                    que.push(nxt);
+            }
+            if (!que.empty())
+                res.push_back(std::vector<int>());
+        }
+        return res;
+    }
 
 public:
 	static void DeleteTree(TreeNode * root)
