@@ -22,6 +22,19 @@ BruteForce_PrefixSums: O(n^2) time, O(n) space
 BruteForce: O(n^3) time, O(1) space
 
 see also ShortestSubstrContainAllChars.h, SubArrayWGivenSum.h
+
+Leetcode: Shortest Subarray with Sum at least K (array might contain negative numbers)
+Return the length of the shortest, non-empty, contiguous subarray of A with sum at least K.
+If there is no non-empty subarray with sum at least K, return -1.
+Example 1:
+Input: A = [1], K = 1
+Output: 1
+Example 2:
+Input: A = [1,2], K = 4
+Output: -1
+Example 3:
+Input: A = [2,-1,2], K = 3
+Output: 3
 */
 class ShortestSubArrWGreaterSum
 {
@@ -205,6 +218,35 @@ public:
 		return minLen;
 	}
 
+    //leetcode: shortest subarray with sum at least k (array might contain negative nums)
+    int SortedQueue_GreaterEqual(const std::vector<int> & v, int val)
+    {
+        int N = v.size();
+        std::vector<int> prefixSum(N, 0);
+        for (int i = 0; i < N; ++i)
+            prefixSum[i] = v[i] + (i==0 ? 0 : prefixSum[i-1]);
+        prefixSum.insert(prefixSum.begin(), 0);
+
+        std::deque<int> sortedQue;//in incr order
+        sortedQue.push_back(0);
+        int res = INT_MAX;
+        for (int i = 1; i <= N; ++i)
+        {
+            while (!sortedQue.empty() && prefixSum[i] <= prefixSum[sortedQue.back()])
+                sortedQue.pop_back();
+            sortedQue.push_back(i);
+            while (!sortedQue.empty() && prefixSum[i] - prefixSum[sortedQue.front()] >= val)
+            {
+                res = std::min(res, i-sortedQue.front());
+                sortedQue.pop_front();
+            }
+        }
+        res = (res==INT_MAX ? -1 : res);
+
+        std::cout << "ShortestSubArrWGreaterSum SortedQueue GreaterEqual for \"" << val << "\" from [" << Debug::ToStr1D<int>()(v) << "]: " << res << std::endl;
+        return res;
+    }
+
 	//leetcode: minimum size subarray sum (v contains positive nums only)
 	int SlideWindow_GreaterEqual_PositiveNums(const std::vector<int> & v, int val)
 	{
@@ -280,6 +322,8 @@ public:
 		std::cout << "ShortestSubArrWGreaterSum SortedPrefixSums_GreaterEqual_PositiveNums for \"" << val << "\" from \"" << Debug::ToStr1D<int>()(v) << "\": " << minLen << std::endl;
 		return minLen;
 	}
+
+
 };
 /*
 ShortestSubArrWGreaterSum for "-5" from "-6, -4, -7": [1,1] = -4
@@ -336,5 +380,8 @@ PrefixSum=13, lb=1, ub=1, len=2
 0, 10, 13
 PrefixSum=14, lb=1, ub=1, len=3
 ShortestSubArrWGreaterSum SortedPrefixSums_GreaterEqual_PositiveNums for "7" from "10, 3, 1": 1
+
+ShortestSubArrWGreaterSum SortedQueue GreaterEqual for "3" from [2, -1, 2]: 3
+ShortestSubArrWGreaterSum SortedQueue GreaterEqual for "3" from [-2, 2, -1, 2]: 3
 */
 #endif
