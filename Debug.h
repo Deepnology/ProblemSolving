@@ -19,6 +19,11 @@
 #include <type_traits>
 namespace Debug
 {
+	enum Splitter
+	{
+		Comma = 0,
+		NewLine = 1,
+	};
 	template<class T, class U = T>
 	class Print2D
 	{
@@ -797,7 +802,7 @@ namespace Debug
 			oss << p.first << ", " << p.second;
 			return oss.str();
 		}
-		std::string operator()(const std::vector<T> & v)
+		std::string operator()(const std::vector<T> & v, Splitter s = Comma)
 		{
 			std::ostringstream oss;
 			int N = v.size();
@@ -805,7 +810,7 @@ namespace Debug
 			{
 				oss << v[i];
 				if (i != N - 1)
-					oss << ", ";
+					s == Comma ? (oss << ", ") : (oss << std::endl);
 			}
 			return oss.str();
 		}
