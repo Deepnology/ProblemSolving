@@ -41,23 +41,25 @@ public:
 		std::multiset<int> window;
 		for (int i = 0; i < k; ++i)
 			window.insert(nums[i]);
-
-		auto midItr = std::next(window.begin(), k / 2);//for even, midItr is right of mid pair
+		auto itr1 = std::next(window.begin(), (k-1)/2);//linear advance from begin
+		auto itr2 = std::next(itr1, (k&1)==0?1:0);
 		std::vector<double> res;
-		res.push_back((double(*midItr) + double(*std::next(midItr, k % 2 - 1))) / 2);//for even: midItr + next(midItr,-1)
+		res.push_back((double(*itr1) + double(*itr2))/2);
 
 		for (int i = k; i < N; ++i)
 		{
+			//1. include nums[i]
 			window.insert(nums[i]);
-			if (nums[i] < *midItr)
-				--midItr;
+			if (nums[i] < *itr1)
+				--itr1;
 
-			//exclude nums[i-k]
-			if (nums[i - k] <= *midItr)
-				++midItr;
-			window.erase(window.lower_bound(nums[i - k]));
+			//2. exclude nums[i-k]
+			if (nums[i-k] <= *itr1)
+				++itr1;
+			window.erase(window.lower_bound(nums[i-k]));//O(logk) time
 
-			res.push_back((double(*midItr) + double(*std::next(midItr, k % 2 - 1))) / 2);
+			itr2 = std::next(itr1, (k&1)==0?1:0);
+			res.push_back((double(*itr1) + double(*itr2))/2);
 		}
 
 		std::cout << "SlidingWindowMedian UseSortedMultiSetWindow for \"" << Debug::ToStr1D<int>()(nums) << "\", k=" << k << ": " << Debug::ToStr1D<double>()(res) << std::endl;
