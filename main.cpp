@@ -5,12 +5,12 @@
 //#define _Random_
 //#define _StackQueue_
 //#define _1DArray_
-//#define _SortSearchSelect_
+#define _SortSearchSelect_
 //#define _Interval_
 //#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
 //#define _FindSubstringSubsequence_
-#define _CompareString_
+//#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
@@ -164,6 +164,7 @@
 #include "ValidateIPAddress.h"
 #include "MaxNumBySwap2Digits.h"
 #include "CountPrimeSetBitsOfNums.h"
+#include "CountBinaryNumsConvertableToEitherOf3.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -172,6 +173,7 @@
 #include "RandomFromProbDist.h"
 #include "AliasMethod.h"
 #include "Rand7FromRand5.h"
+#include "Rand10FromRand7.h"
 #include "Rand1toNExcludeKSortedNum.h"
 #include "UniformRandFromRand2.h"
 #include "OfflineSampling.h"
@@ -180,6 +182,7 @@
 #include "RandomSubset.h"
 #include "RandomFromExponentialDist.h"
 #include "RandomPickIndicesOfTarget.h"
+#include "InsertDeleteGetWeightedRandom.h"
 
 /*Stack Queue*/
 #include "SortStack.h"
@@ -387,6 +390,7 @@
 #include "AddBoldTagInStrMergeInterval.h"
 #include "FallingSquares.h"
 #include "RangeModule.h"
+#include "NonCoverredFromListsOfNonOvlpIntervals.h"
 
 /*Permute Combine Partition*/
 #include "Permutations.h"
@@ -474,6 +478,7 @@
 #include "PartitionIntoFibonacciSeq.h"
 #include "MinStickersToSpellWord.h"
 #include "Game24.h"
+#include "MaxPointsDeleteAndEarn.h"
 
 /*Trie Suffix Tree Array*/
 #include "SuffixArray.h"
@@ -598,6 +603,7 @@
 #include "ReadNCharsGivenRead4.h"
 #include "SentenceScreenFitting.h"
 #include "CountTheRepetitions.h"
+#include "RemoveComments.h"
 
 /*Linked List*/
 #include "PrintLinkedList.h"
@@ -2128,6 +2134,10 @@ int main()
     {
         CountPrimeSetBitsOfNums().Solve(10, 15);
     }
+    {
+        CountBinaryNumsConvertableToEitherOf3().Solve(1073741727, 1073741631, 1073741535);
+        CountBinaryNumsConvertableToEitherOf3().Solve(1073741809, 1073741808, 1073741809);
+    }
 
 #endif
 #ifdef _Random_
@@ -2178,6 +2188,8 @@ int main()
 	}
 	{
 		Rand7FromRand5().Roll(1000);
+        Rand10FromRand7().Roll(1000);
+        Rand11FromRand3().Roll(1000);
 	}
 	{
 		for (int i = 0; i < 10; ++i)
@@ -2186,6 +2198,15 @@ int main()
 			Rand1toNExcludeKSortedNum().BinarySearch(100, std::vector<int>({ 4, 13, 19, 25, 27, 31, 39, 43, 52, 58, 64, 67, 73, 81, 88, 94 }));
 
 		RandNonRepeat1toN(100).Roll();
+        /*
+        redirect_cout::to_cout();
+        RandomPickNumsInRangeWoRepeat_HashMap rpir(15, 20);
+        for (int i = 0; i < 6; ++i)
+            rpir.Pick();
+        RandomPickNumsInRangeWoRepeat_HashMap rpir2(10, 30);
+        for (int i = 0; i < 21; ++i)
+            rpir2.Pick();
+        */
 	}
 	{
 		UniformRandFromRand2().Roll(0, 31, 30);
@@ -2213,6 +2234,30 @@ int main()
 		r.Pick(3);
 		r.Pick(1);
 	}
+    {
+        InsertDeleteGetWeightedRandom r;
+        r.Insert("A", 1);
+        r.GetRandom();
+        r.Insert("B", 2);
+        r.GetRandom();
+        r.Insert("A", 3);
+        r.GetRandom();
+        r.Insert("C", 1);
+        r.GetRandom();
+        r.Insert("A", 0);
+        r.GetRandom();
+        r.Insert("B", 0);
+        r.GetRandom();
+        r.Insert("C", 0);
+        r.Insert("A", 1);
+        r.Insert("B", 2);
+        r.Insert("C", 3);
+        r.GetRandom();
+        r.Insert("A", 0);
+        r.GetRandom();
+        r.Insert("B", 0);
+        r.GetRandom();
+    }
 
 #endif
 #ifdef _StackQueue_
@@ -4180,6 +4225,18 @@ int main()
         PrintSeqInOrderFromUnorderedStream().Test(std::vector<int>({4,1,5,2,3}));
         PrintSeqInOrderFromUnorderedStream().Test(std::vector<int>({3,5,1,2,4}));
         PrintSeqInOrderFromUnorderedStream().Test(std::vector<int>({1,3,2,4,5}));
+        //std::cout << std::endl;
+        PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(std::vector<int>({4,5,3,4,1,5,2,1}));
+        PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(std::vector<int>({4,1,4,4,5,1,2,3}));
+        PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(std::vector<int>({3,5,1,2,5,4,1,2}));
+        PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(std::vector<int>({7,8,5,3,4,4,5,2,1,2,6,3}));
+        /*
+        for (int i = 0; i < 10; ++i)
+        {
+            std::vector<int> v = TestCase::RandVec<int>(10, 1, 5);
+            PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(v);
+        }
+        */
     }
     {
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,0,2}));
@@ -4291,6 +4348,20 @@ int main()
     }
     {
         FallingSquares().FindCurMaxHeights(std::vector<std::pair<int,int>>({{1,2},{2,3},{6,1}}));
+    }
+    {
+        NonCoverredFromListsOfNonOvlpIntervals().MergeAndFind(std::vector<std::vector<NonCoverredFromListsOfNonOvlpIntervals::Interval>>(
+                {
+                        {NonCoverredFromListsOfNonOvlpIntervals::Interval(1, 2),NonCoverredFromListsOfNonOvlpIntervals::Interval(5, 6)},
+                        {NonCoverredFromListsOfNonOvlpIntervals::Interval(1, 3)},
+                        {NonCoverredFromListsOfNonOvlpIntervals::Interval(4, 10)},
+                }));
+        NonCoverredFromListsOfNonOvlpIntervals().MergeAndFind(std::vector<std::vector<NonCoverredFromListsOfNonOvlpIntervals::Interval>>(
+                {
+                        {NonCoverredFromListsOfNonOvlpIntervals::Interval(1, 3),NonCoverredFromListsOfNonOvlpIntervals::Interval(6, 7)},
+                        {NonCoverredFromListsOfNonOvlpIntervals::Interval(2, 4)},
+                        {NonCoverredFromListsOfNonOvlpIntervals::Interval(2, 5),NonCoverredFromListsOfNonOvlpIntervals::Interval(9, 12)},
+                }));
     }
 
 #endif
@@ -4966,6 +5037,9 @@ int main()
     {
         Game24().DFS(std::vector<int>({4,1,8,7}));
     }
+    {
+        MaxPointsDeleteAndEarn().DP(std::vector<int>({2,2,3,3,3,4}));
+    }
 
 #endif
 #ifdef _TrieSuffixArray_
@@ -5463,6 +5537,9 @@ int main()
 		ShortestSubArrWGreaterSum().SortedPrefixSums_GreaterEqual_PositiveNums(std::vector<int>({ 2,3,1,2,4,3 }), 7);
 		ShortestSubArrWGreaterSum().SortedPrefixSums_GreaterEqual_PositiveNums(std::vector<int>({ 1,4,4 }), 4);
 		ShortestSubArrWGreaterSum().SortedPrefixSums_GreaterEqual_PositiveNums(std::vector<int>({ 10,3,1 }), 7);
+
+        ShortestSubArrWGreaterSum().SortedQueue_GreaterEqual(std::vector<int>({2,-1,2}), 3);
+        ShortestSubArrWGreaterSum().SortedQueue_GreaterEqual(std::vector<int>({-2,2,-1,2}), 3);
 	}
 	{
 		LongestSubArrWLessEqualSum().Greedy_PrefixSums(std::vector<int>({ 431, -15, 639, 342, -14, 565, -924, 635, 167, -70 }), 184);
@@ -6120,6 +6197,10 @@ int main()
 	{
 		CountTheRepetitions().DP(std::string("acb"), 4, std::string("ab"), 2);
 	}
+    {
+        RemoveComments().Solve(std::vector<std::string>({"/*Test program */", "int main()", "{ ", "  // variable declaration ", "int a, b, c;", "/* This is a test", "   multiline  ", "   comment for ", "   testing */", "a = b + c;", "}"}));
+        RemoveComments().Solve(std::vector<std::string>({"a/*comment", "line", "more_comment*/b"}));
+    }
 
 #endif
 #ifdef _LinkedList_
