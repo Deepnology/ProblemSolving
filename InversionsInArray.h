@@ -324,6 +324,12 @@ InversionsInArray UsePrefixSums for "6, 3, 0, 4, 2, 5, 1": 6, 3, 0, 2, 1, 1, 0
 InversionsInArray UseBinaryIndexedTree for "6, 3, 0, 4, 2, 5, 1": 6, 3, 0, 2, 1, 1, 0
 InversionsInArray CountTotal_MergeSort2 for "0, 1, 2, 3, 4, 5, 6": 13
 InversionsInArray UseBST for "6, 3, 0, 4, 2, 5, 1": 6, 3, 0, 2, 1, 1, 0
+InversionsInArray Naive for "5, 3, 0, 4, 2, 5, 1": 5, 3, 0, 2, 1, 1, 0
+InversionsInArray EnhancedMergeSort for "5, 3, 0, 4, 2, 5, 1": 5, 3, 0, 2, 1, 1, 0
+InversionsInArray UsePrefixSums for "5, 3, 0, 4, 2, 5, 1": 5, 3, 0, 2, 1, 1, 0
+InversionsInArray UseBinaryIndexedTree for "5, 3, 0, 4, 2, 5, 1": 5, 3, 0, 2, 1, 1, 0
+InversionsInArray CountTotal_MergeSort2 for "0, 1, 2, 3, 4, 5, 5": 12
+InversionsInArray UseBST for "5, 3, 0, 4, 2, 5, 1": 5, 3, 0, 2, 1, 1, 0
 */
 /*
 variant:
