@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "Debug.h"
 /*
-Leetcode: count smaller numbers after self
+Leetcode: count of smaller numbers after self
 Elements of programming interview, Recursion: Count inversions
 http://www.geeksforgeeks.org/counting-inversions/
 http://www.techsamaritan.org/courses/defasun/interviewQ2.html
@@ -67,8 +67,6 @@ prefixSum:	0, 0, 0, 0, 0, 0
 			0, 1, 2, 2, 2, 2
 						^
 res = 2,1,1,0
-
-See also CountSmallerElementsOnRight.h
 */
 class InversionsInArray
 {
@@ -267,6 +265,11 @@ InversionsInArray EnhancedMergeSort for "6, 3, 6, 5, 2, 4": 4, 1, 3, 2, 0, 0
 InversionsInArray UsePrefixSums for "4, 1, 4, 3, 0, 2": 4, 1, 3, 2, 0, 0
 InversionsInArray UseBinaryIndexedTree for "4, 1, 4, 3, 0, 2": 4, 1, 3, 2, 0, 0
 InversionsInArray CountTotal_MergeSort2 for "2, 3, 4, 5, 6, 6": 10
+InversionsInArray Naive for "6, 3, 4, 2, 5, 1": 5, 2, 2, 1, 1, 0
+InversionsInArray EnhancedMergeSort for "6, 3, 4, 2, 5, 1": 5, 2, 2, 1, 1, 0
+InversionsInArray UsePrefixSums for "5, 2, 3, 1, 4, 0": 5, 2, 2, 1, 1, 0
+InversionsInArray UseBinaryIndexedTree for "5, 2, 3, 1, 4, 0": 5, 2, 2, 1, 1, 0
+InversionsInArray CountTotal_MergeSort2 for "1, 2, 3, 4, 5, 6": 11
 */
 /*
 variant:
