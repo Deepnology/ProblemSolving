@@ -217,6 +217,7 @@ public:
 		std::cout << "InversionsInArray CountTotal_MergeSort2 for \"" << Debug::ToStr1D<int>()(v) << "\": " << res << std::endl;
 		return res;
 	}
+private:
 	int MergeSortRecur2(std::vector<int> & v, int left, int right, std::vector<int> & tmp)
 	{
 		if (left >= right)
@@ -248,6 +249,55 @@ public:
 			v[x] = tmp[x];
 		return count;
 	}
+
+
+    //use BST
+    struct TreeNode
+    {
+        TreeNode * left;
+        TreeNode * right;
+        int val;
+        int leftCount;
+        explicit TreeNode(int val_):val(val_),leftCount(0),left(NULL),right(NULL){}
+    };
+    int Insert(int val, TreeNode *& cur)
+    {
+        if (cur == NULL)
+        {
+            cur = new TreeNode(val);
+            return 0;
+        }
+        else if (val < cur->val)//too big, go left
+        {
+            int smallerCount = Insert(val, cur->left);
+            ++cur->leftCount;
+            return smallerCount;
+        }
+        else if (val > cur->val)
+        {
+            int smallerCount = cur->leftCount + 1 + Insert(val, cur->right);//accumulate smaller node count when going right
+            return smallerCount;
+        }
+        else//when equal, insert to right
+        {
+            int smallerCount = cur->leftCount + Insert(val, cur->right);//accumulate smaller node count when going right
+            return smallerCount;
+        }
+    }
+public:
+    std::vector<int> UseBST(const std::vector<int> & v)
+    {
+        if (v.empty()) return std::vector<int>();
+        int N = v.size();
+        std::vector<int> res(N, 0);
+        TreeNode * root = NULL;
+        for (int i = N-1; i >= 0; --i)
+            res[i] = Insert(v[i], root);
+        //res[i] is the smaller node count of current inserted node in the BST during the process of insertion from right to left of v.
+
+        std::cout << "InversionsInArray UseBST for \"" << Debug::ToStr1D<int>()(v) << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
+        return res;
+    }
 };
 /*
 InversionsInArray Naive for "2, 4, 2, 1, 3, 5": 1, 3, 1, 0, 0, 0
@@ -255,21 +305,25 @@ InversionsInArray EnhancedMergeSort for "2, 4, 2, 1, 3, 5": 1, 3, 1, 0, 0, 0
 InversionsInArray UsePrefixSums for "1, 3, 1, 0, 2, 4": 1, 3, 1, 0, 0, 0
 InversionsInArray UseBinaryIndexedTree for "1, 3, 1, 0, 2, 4": 1, 3, 1, 0, 0, 0
 InversionsInArray CountTotal_MergeSort2 for "1, 2, 2, 3, 4, 5": 5
+InversionsInArray UseBST for "2, 4, 2, 1, 3, 5": 1, 3, 1, 0, 0, 0
 InversionsInArray Naive for "10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2": 9, 14, 13, 12, 8, 10, 9, 8, 4, 6, 5, 4, 0, 2, 1, 0
 InversionsInArray EnhancedMergeSort for "10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2": 9, 14, 13, 12, 8, 10, 9, 8, 4, 6, 5, 4, 0, 2, 1, 0
 InversionsInArray UsePrefixSums for "9, 15, 14, 13, 8, 12, 11, 10, 4, 7, 6, 5, 0, 3, 2, 1": 9, 14, 13, 12, 8, 10, 9, 8, 4, 6, 5, 4, 0, 2, 1, 0
 InversionsInArray UseBinaryIndexedTree for "9, 15, 14, 13, 8, 12, 11, 10, 4, 7, 6, 5, 0, 3, 2, 1": 9, 14, 13, 12, 8, 10, 9, 8, 4, 6, 5, 4, 0, 2, 1, 0
 InversionsInArray CountTotal_MergeSort2 for "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16": 105
+InversionsInArray UseBST for "10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2": 9, 14, 13, 12, 8, 10, 9, 8, 4, 6, 5, 4, 0, 2, 1, 0
 InversionsInArray Naive for "6, 3, 6, 5, 2, 4": 4, 1, 3, 2, 0, 0
 InversionsInArray EnhancedMergeSort for "6, 3, 6, 5, 2, 4": 4, 1, 3, 2, 0, 0
 InversionsInArray UsePrefixSums for "4, 1, 4, 3, 0, 2": 4, 1, 3, 2, 0, 0
 InversionsInArray UseBinaryIndexedTree for "4, 1, 4, 3, 0, 2": 4, 1, 3, 2, 0, 0
 InversionsInArray CountTotal_MergeSort2 for "2, 3, 4, 5, 6, 6": 10
-InversionsInArray Naive for "6, 3, 4, 2, 5, 1": 5, 2, 2, 1, 1, 0
-InversionsInArray EnhancedMergeSort for "6, 3, 4, 2, 5, 1": 5, 2, 2, 1, 1, 0
-InversionsInArray UsePrefixSums for "5, 2, 3, 1, 4, 0": 5, 2, 2, 1, 1, 0
-InversionsInArray UseBinaryIndexedTree for "5, 2, 3, 1, 4, 0": 5, 2, 2, 1, 1, 0
-InversionsInArray CountTotal_MergeSort2 for "1, 2, 3, 4, 5, 6": 11
+InversionsInArray UseBST for "6, 3, 6, 5, 2, 4": 4, 1, 3, 2, 0, 0
+InversionsInArray Naive for "6, 3, 0, 4, 2, 5, 1": 6, 3, 0, 2, 1, 1, 0
+InversionsInArray EnhancedMergeSort for "6, 3, 0, 4, 2, 5, 1": 6, 3, 0, 2, 1, 1, 0
+InversionsInArray UsePrefixSums for "6, 3, 0, 4, 2, 5, 1": 6, 3, 0, 2, 1, 1, 0
+InversionsInArray UseBinaryIndexedTree for "6, 3, 0, 4, 2, 5, 1": 6, 3, 0, 2, 1, 1, 0
+InversionsInArray CountTotal_MergeSort2 for "0, 1, 2, 3, 4, 5, 6": 13
+InversionsInArray UseBST for "6, 3, 0, 4, 2, 5, 1": 6, 3, 0, 2, 1, 1, 0
 */
 /*
 variant:
@@ -285,5 +339,22 @@ Based the sorted order, count the inversions of time for each runner to reach th
 (an inversion of time is a longer time on the left side of a shorter time)
 
 O(nlogn) time, O(n) space
+
+variant:
+Count number of line intersections
+0    1    2
+  \   \  /
+   \   X
+    X   \
+  /  \   \
+2    0    1
+
+
+0    1    2
+|     \  /
+|      \/
+|      /\
+|     /  \
+0    2    1
 */
 #endif
