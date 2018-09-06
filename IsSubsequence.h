@@ -20,6 +20,15 @@ Return false.
 Follow up:
 If there are lots of incoming S, say S1, S2, ... , Sk where k >= 1B, and you want to check one by one to see if T has its subsequence.
 In this scenario, how would you change your code?
+
+Leetcode: Number of Matching Subsequences
+Given string S and a dictionary of words words, find the number of words[i] that is a subsequence of S.
+Example :
+Input:
+S = "abcde"
+words = ["a", "bb", "acd", "ace"]
+Output: 3
+Explanation: There are three words in words that are a subsequence of S: "a", "acd", "ace".
 */
 class IsSubsequence
 {
@@ -75,6 +84,56 @@ public:
 		}
 		return true;
 	}
+
+	int CountMatching(std::string S, const std::vector<std::string> & words)
+    {
+        std::vector<std::vector<int>> idxList(26, std::vector<int>());
+        int N = S.size();
+        for (int i = 0; i < N; ++i)
+            idxList[S[i]-'a'].push_back(i);
+
+        int res = 0;
+        for (auto & s : words)
+        {
+            N = s.size();
+            int prevIdx = -1;
+            bool valid = true;
+            for (int i = 0; i < N; ++i)
+            {
+                auto ub = std::upper_bound(idxList[s[i]-'a'].begin(), idxList[s[i]-'a'].end(), prevIdx);
+                if (ub == idxList[s[i]-'a'].end())
+                {
+                    valid = false;
+                    break;
+                }
+                prevIdx = *ub;
+            }
+            if (valid) ++res;
+        }
+        return res;
+    }
+
+    int CountMatching2(std::string S, const std::vector<std::string> & words)
+    {
+        std::vector<std::deque<std::string>> map(26, std::deque<std::string>());
+        for (auto & s : words)
+            map[s[0]-'a'].push_back(s);
+        int res = 0;
+        for (auto & c : S)
+        {
+            int N = map[c-'a'].size();
+            while (N-- > 0) // remove only first N words in map[c-'a'] queue
+            {
+                auto cur = map[c-'a'].front();
+                map[c-'a'].pop_front();
+                if (cur.size() == 1)
+                    ++res;
+                else
+                    map[cur[1]-'a'].push_back(cur.substr(1));
+            }
+        }
+        return res;
+    }
 };
 /*
 IsSubsequence for "abc", "ahbgdc" BruteForce and FreqLookup: 1, 1
