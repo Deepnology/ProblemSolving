@@ -85,7 +85,7 @@ public:
 		return true;
 	}
 
-	int CountMatching(std::string S, const std::vector<std::string> & words)
+	int CountMatching(std::string S, const std::vector<std::string> & words) //O(S + N * s * logS) time
     {
         std::vector<std::vector<int>> idxList(26, std::vector<int>());
         int N = S.size();
@@ -113,7 +113,7 @@ public:
         return res;
     }
 
-    int CountMatching2(std::string S, const std::vector<std::string> & words)
+    int CountMatching2(std::string S, const std::vector<std::string> & words) //O(S + N * s) time
     {
         std::vector<std::deque<std::string>> map(26, std::deque<std::string>());
         for (auto & s : words)
