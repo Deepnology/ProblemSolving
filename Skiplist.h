@@ -4,6 +4,9 @@
 #include <iostream>
 #include <sstream>
 /*
+Geeksforgeeks
+http://www.keithschwarz.com/interesting/code/skiplist/Skiplist.hh.html
+
 Insert, Search, Remove: O(logN) time in average, O(N) time in worst case
  */
 class SkipList
@@ -128,4 +131,102 @@ private:
 		return resLevel;
 	}
 };
+/*
+Level0:
+
+Insert 13:
+Level2: 13
+Level1: 13
+Level0: 13
+
+Insert 9:
+Level2: 13
+Level1: 9 13
+Level0: 9 13
+
+Insert 7:
+Level2: 7 13
+Level1: 7 9 13
+Level0: 7 9 13
+
+Insert 6:
+Level2: 7 13
+Level1: 7 9 13
+Level0: 6 7 9 13
+
+Insert 12:
+Level2: 7 13
+Level1: 7 9 13
+Level0: 6 7 9 12 13
+
+Insert 19:
+Level2: 7 13
+Level1: 7 9 13 19
+Level0: 6 7 9 12 13 19
+
+Insert 17:
+Level2: 7 13
+Level1: 7 9 13 19
+Level0: 6 7 9 12 13 17 19
+
+Insert 2:
+Level2: 2 7 13
+Level1: 2 7 9 13 19
+Level0: 2 6 7 9 12 13 17 19
+
+Insert 4:
+Level2: 2 7 13
+Level1: 2 7 9 13 19
+Level0: 2 4 6 7 9 12 13 17 19
+
+Insert 0:
+Level3: 0
+Level2: 0 2 7 13
+Level1: 0 2 7 9 13 19
+Level0: 0 2 4 6 7 9 12 13 17 19
+
+Insert 10:
+Level3: 0
+Level2: 0 2 7 13
+Level1: 0 2 7 9 13 19
+Level0: 0 2 4 6 7 9 10 12 13 17 19
+
+Search 19: 1
+Remove 2:
+Level3: 0
+Level2: 0 7 13
+Level1: 0 7 9 13 19
+Level0: 0 4 6 7 9 10 12 13 17 19
+
+Search 10: 1
+Remove 12:
+Level3: 0
+Level2: 0 7 13
+Level1: 0 7 9 13 19
+Level0: 0 4 6 7 9 10 13 17 19
+
+Remove 6:
+Level3: 0
+Level2: 0 7 13
+Level1: 0 7 9 13 19
+Level0: 0 4 7 9 10 13 17 19
+
+Remove 10:
+Level3: 0
+Level2: 0 7 13
+Level1: 0 7 9 13 19
+Level0: 0 4 7 9 13 17 19
+
+Remove 13:
+Level3: 0
+Level2: 0 7
+Level1: 0 7 9 19
+Level0: 0 4 7 9 17 19
+
+Insert 8:
+Level3: 0
+Level2: 0 7
+Level1: 0 7 9 19
+Level0: 0 4 7 8 9 17 19
+ */
 #endif
