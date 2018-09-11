@@ -129,6 +129,104 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
+		void operator()(const std::deque<std::vector<T>> & vv, bool columnXrowY = true, bool tab = false)
+		{
+			if (vv.empty())
+				return;
+			if (columnXrowY)//[columnX][rowY]
+			{
+				std::ostringstream oss;
+				oss << "[cX][rY]" << std::endl;
+				int maxColumnSize = vv[0].size();//can vary
+				int maxRowSize = vv.size();//should be fixed
+				for (int columnX = 0; columnX < maxRowSize; ++columnX)
+				{
+					int columnSize = vv[columnX].size();
+
+					if (maxColumnSize < columnSize)
+						maxColumnSize = columnSize;
+				}
+
+				for (int rowY = 0; rowY < maxColumnSize; ++rowY)//for each rowY (iterate vertically)
+				{
+					for (int columnX = 0; columnX < maxRowSize; ++columnX)//for each columnX (iterate horizontally)
+					{
+						int columnSize = vv[columnX].size();
+						if (columnX == 0)
+						{
+							if (tab)
+								oss << "Row#" << rowY << "	=	";
+							else
+								oss << "Row#" << rowY << "	= ";
+						}
+
+						if (rowY < columnSize)
+						{
+							oss << vv[columnX][rowY];
+						}
+						else//(rowY > 0 && rowY < maxColumnSize) || (rowY == 0 && columnSize == 0)
+						{
+							if (tab)
+								oss << "	";
+							else
+								oss << " ";
+						}
+
+						if (columnX != maxRowSize - 1)
+						{
+							if (tab)
+								oss << ",	";
+							else
+								oss << ", ";
+						}
+					}
+					oss << std::endl;
+				}
+				std::cout << oss.str() << std::endl;
+			}
+			else//[rowY][columnX]
+			{
+				std::ostringstream oss;
+				oss << "[rY][cX]" << std::endl;
+				int maxColumnSize = vv.size();//should be fixed
+				int maxRowSize = vv[0].size();//can vary
+				for (int rowY = 0; rowY < maxColumnSize; ++rowY)
+				{
+					int rowSize = vv[rowY].size();
+					if (maxRowSize < rowSize)
+						maxRowSize = rowSize;
+				}
+				for (int rowY = 0; rowY < maxColumnSize; ++rowY)
+				{
+					int rowSize = vv[rowY].size();
+					if (tab)
+						oss << "Row#" << rowY << "	=	";
+					else
+						oss << "Row#" << rowY << "	= ";
+					for (int columnX = 0; columnX < maxRowSize; ++columnX)
+					{
+						if (columnX < rowSize)
+							oss << vv[rowY][columnX];
+						else
+						{
+							if (tab)
+								oss << "	";
+							else
+								oss << " ";
+						}
+						if (columnX != maxRowSize - 1)
+						{
+							if (tab)
+								oss << ",	";
+							else
+								oss << ", ";
+						}
+					}
+					oss << std::endl;
+				}
+				std::cout << oss.str() << std::endl;
+			}
+		}
 		void operator()(const std::vector<std::string> & vv, bool columnXrowY = true, bool tab = false)//no template parameter
 		{
 			if (vv.empty())
