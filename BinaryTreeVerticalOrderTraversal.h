@@ -82,19 +82,20 @@ public:
 	};
 	std::vector<std::vector<int>> HashMap(TreeNode * root)
 	{
+		std::vector<std::vector<int>> res;
 		std::unordered_map<int, std::vector<int>> cols;//first: col index, second: nodes
 		std::queue<std::pair<TreeNode *, int>> levelQueue;//first: node, second: col index
-		levelQueue.push({ root, 0 });
+		if (root)
+			levelQueue.push({ root, 0 });
 		while (!levelQueue.empty())//level order traversal
 		{
 			auto p = levelQueue.front();
 			levelQueue.pop();
-			if (p.first != nullptr)
-			{
-				cols[p.second].emplace_back(p.first->val);
+			cols[p.second].emplace_back(p.first->val);
+			if (p.first->left)
 				levelQueue.push({ p.first->left, p.second - 1 });
+			if (p.first->right)
 				levelQueue.push({ p.first->right, p.second + 1 });
-			}
 		}
 
 		Debug::Print2D<int>()(cols);
@@ -107,7 +108,6 @@ public:
 			maxColIdx = std::max(maxColIdx, p.first);
 		}
 
-		std::vector<std::vector<int>> res;
 		for (int i = minColIdx; !cols.empty() && i <= maxColIdx; ++i)
 			res.emplace_back(std::move(cols[i]));
 
