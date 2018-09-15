@@ -81,16 +81,14 @@ private:
 		int fwd = ring.find(key[i]);
 
 		//compute the backward distance to find key[i]
-		std::string rRing(ring);
-		std::reverse(rRing.begin(), rRing.end());
-		int M = rRing.size();
-		rRing = rRing.substr(M - 1) + rRing.substr(0, M - 1);//last char + all chars before last char
-		int bkd = rRing.find(key[i]);
+		int bwd = ring.size() - ring.rfind(key[i]);
+		std::string bwdState = ring;
+		std::rotate(bwdState.rbegin(), bwdState.rbegin() + bwd, bwdState.rend());//right rotate
 
-		//std::cout << ring << "," << key[i] << ":" << fwd << "," << bkd << std::endl;
+		//std::cout << ring << "," << key[i] << ":" << fwd << "(" << ring.substr(fwd)+ring.substr(0,fwd) << ")," << bwd << "(" << bwdState << ")" << std::endl;
 
 		int fwdRes = 1 + fwd + recur(ring.substr(fwd) + ring.substr(0, fwd), key, i + 1, dp);
-		int bkdRes = 1 + bkd + recur(rRing.substr(bkd) + rRing.substr(0, bkd), key, i + 1, dp);
+		int bkdRes = 1 + bwd + recur(bwdState, key, i + 1, dp);
 		return dp[ring][i] = std::min(fwdRes, bkdRes);
 	}
 public:
@@ -199,11 +197,9 @@ public:
 				que.push({fwdState, idx+1, numSteps+fwd+1});
 			}
 
+			int bwd = state.size() - state.rfind(key[idx]);
 			std::string bwdState = state;
-			std::reverse(bwdState.begin(), bwdState.end());
-			bwdState = bwdState.substr(M-1) + bwdState.substr(0, M-1);
-			int bwd = bwdState.find(key[idx]);
-			bwdState = bwdState.substr(bwd) + bwdState.substr(0, bwd);
+			std::rotate(bwdState.rbegin(), bwdState.rbegin() + bwd, bwdState.rend());//right rotate
 			if (dp[bwdState].count(idx) == 0 || dp[bwdState][idx] > numSteps + bwd + 1)
 			{
 				dp[bwdState][idx] = numSteps + bwd + 1;
