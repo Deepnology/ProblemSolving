@@ -28,9 +28,10 @@ K:  						4, 5, 7, 10, 11, 12, 16, 17, 18
 Interval Nums Accu Count
 till current index:			3  3  4   6   6   6   9   9   9  11
 */
-class RandomPickWithBlacklist_HashMap
+
+class RandomPickWithBlacklist_HashMap //best
 {
-    std::unordered_map<int,int> bToW;
+    std::unordered_map<int,int> bToW;//map blacks below M to whites above M
     int M;
 public:
     //blacklist[i] is 0-based
