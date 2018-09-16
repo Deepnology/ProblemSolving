@@ -2,10 +2,10 @@
 //#define _Design_
 //#define _Math_
 //#define _BitNumberOperation_
-//#define _Random_
+#define _Random_
 //#define _StackQueue_
 //#define _1DArray_
-#define _SortSearchSelect_
+//#define _SortSearchSelect_
 //#define _Interval_
 //#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
@@ -183,6 +183,7 @@
 #include "RandomFromExponentialDist.h"
 #include "RandomPickIndicesOfTarget.h"
 #include "InsertDeleteGetWeightedRandom.h"
+#include "RandomPickNumsInRangeWoRepeat.h"
 
 /*Stack Queue*/
 #include "SortStack.h"
@@ -207,6 +208,7 @@
 #include "StackReproduceDiffOrderArray.h"
 #include "StackWithMax.h"
 #include "StackPermutation.h"
+#include "RoundRobinScheduling.h"
 
 /*1D Array*/
 #include "AllUniqueElements.h"
@@ -233,6 +235,7 @@
 #include "TwoDiffDupInIdxSeqArray.h"
 #include "MultiDupInIdxSeqArray.h"
 #include "Vector.h"
+#include "String.h"
 #include "ReplaceAllSpacesWPercent20.h"
 #include "RearrangeToWaveArray.h"
 #include "FirstDupInUnsortedArray.h"
@@ -369,6 +372,7 @@
 #include "SortStringsWithNewAlphabet.h"
 #include "CutWoodsToKPiecesWSameLen.h"
 #include "PrintSeqInOrderFromUnorderedStream.h"
+#include "LoginCountFromUnorderedStream.h"
 #include "EqualGlobalAndLocalInversions.h"
 #include "MinimizeMaxDistToGasStation.h"
 #include "MaxNumPartitionsToSort.h"
@@ -391,6 +395,7 @@
 #include "FallingSquares.h"
 #include "RangeModule.h"
 #include "NonCoverredFromListsOfNonOvlpIntervals.h"
+#include "ExamRoom.h"
 
 /*Permute Combine Partition*/
 #include "Permutations.h"
@@ -2198,16 +2203,19 @@ int main()
 			Rand1toNExcludeKSortedNum().BinarySearch(100, std::vector<int>({ 4, 13, 19, 25, 27, 31, 39, 43, 52, 58, 64, 67, 73, 81, 88, 94 }));
 
 		RandNonRepeat1toN(100).Roll();
-        /*
-        redirect_cout::to_cout();
-        RandomPickNumsInRangeWoRepeat_HashMap rpir(15, 20);
-        for (int i = 0; i < 6; ++i)
-            rpir.Pick();
-        RandomPickNumsInRangeWoRepeat_HashMap rpir2(10, 30);
-        for (int i = 0; i < 21; ++i)
-            rpir2.Pick();
-        */
 	}
+    {
+        for (int i = 0; i < 1; ++i)
+        {
+            RandomPickNumsInRangeWoRepeat r(15, 20);
+            r.Test();
+        }
+        for (int i = 0; i < 1; ++i)
+        {
+            RandomPickNumsInRangeWoRepeat r(-5, 5);
+            r.Test();
+        }
+    }
 	{
 		UniformRandFromRand2().Roll(0, 31, 30);
 	}
@@ -2225,6 +2233,8 @@ int main()
 	{
 		RandomSubset().UseOfflineSampling(16, 8);
 		RandomSubset().UseOfflineSampling2(16, 8);
+        for (int i = 0; i < 2; ++i)
+            RandomSubset().UseOfflineSampling(10, 10);
 	}
 	{
 		RandomFromExponentialDist().Roll(1.5, 30);
@@ -2592,6 +2602,9 @@ int main()
         StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({6,4,5,7,8}));
         StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({6,4,7,8,5}));
         StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({7,8,4,6,5}));
+    }
+    {
+        RoundRobinScheduling().Test();
     }
 
 #endif
@@ -3762,17 +3775,35 @@ int main()
 		InversionsInArray().UsePrefixSums(std::vector<int>({ 2, 4, 2, 1, 3, 5 }));
 		InversionsInArray().UseBinaryIndexedTree(std::vector<int>({ 2, 4, 2, 1, 3, 5 }));
 		InversionsInArray().CountTotal_MergeSort2(std::vector<int>({ 2, 4, 2, 1, 3, 5 }));
+        InversionsInArray().UseBST(std::vector<int>({ 2, 4, 2, 1, 3, 5 }));
+
 		InversionsInArray().Naive(std::vector<int>({ 10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2 }));
 		InversionsInArray().EnhancedMergeSort(std::vector<int>({ 10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2 }));
 		InversionsInArray().UsePrefixSums(std::vector<int>({ 10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2 }));
 		InversionsInArray().UseBinaryIndexedTree(std::vector<int>({ 10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2 }));
 		InversionsInArray().CountTotal_MergeSort2(std::vector<int>({ 10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2 }));
+        InversionsInArray().UseBST(std::vector<int>({ 10, 16, 15, 14, 9, 13, 12, 11, 5, 8, 7, 6, 1, 4, 3, 2 }));
 
 		InversionsInArray().Naive(std::vector<int>({ 6,3,6,5,2,4 }));
 		InversionsInArray().EnhancedMergeSort(std::vector<int>({ 6,3,6,5,2,4 }));
 		InversionsInArray().UsePrefixSums(std::vector<int>({ 6,3,6,5,2,4 }));
 		InversionsInArray().UseBinaryIndexedTree(std::vector<int>({ 6,3,6,5,2,4 }));
 		InversionsInArray().CountTotal_MergeSort2(std::vector<int>({ 6,3,6,5,2,4 }));
+        InversionsInArray().UseBST(std::vector<int>({ 6,3,6,5,2,4 }));
+
+        InversionsInArray().Naive(std::vector<int>({ 6,3,0,4,2,5,1 }));
+        InversionsInArray().EnhancedMergeSort(std::vector<int>({ 6,3,0,4,2,5,1 }));
+        InversionsInArray().UsePrefixSums(std::vector<int>({ 6,3,0,4,2,5,1 }));
+        InversionsInArray().UseBinaryIndexedTree(std::vector<int>({ 6,3,0,4,2,5,1 }));
+        InversionsInArray().CountTotal_MergeSort2(std::vector<int>({ 6,3,0,4,2,5,1 }));
+        InversionsInArray().UseBST(std::vector<int>({ 6,3,0,4,2,5,1 }));
+
+        InversionsInArray().Naive(std::vector<int>({ 5,3,0,4,2,5,1 }));
+        InversionsInArray().EnhancedMergeSort(std::vector<int>({ 5,3,0,4,2,5,1 }));
+        InversionsInArray().UsePrefixSums(std::vector<int>({ 5,3,0,4,2,5,1 }));
+        InversionsInArray().UseBinaryIndexedTree(std::vector<int>({ 5,3,0,4,2,5,1 }));
+        InversionsInArray().CountTotal_MergeSort2(std::vector<int>({ 5,3,0,4,2,5,1 }));
+        InversionsInArray().UseBST(std::vector<int>({ 5,3,0,4,2,5,1 }));
 	}
 	{
 		ReversePairs().UseMergeSort(std::vector<int>({ 1,3,2,3,1 }));
@@ -4239,6 +4270,17 @@ int main()
         */
     }
     {
+        LoginCountFromUnorderedStream_PrefixSum s;
+        s.Insert(10, 1);
+        s.Insert(20, -1);
+        s.Insert(30, 1);
+        s.Insert(40, 1);
+        s.Insert(50, -1);
+        s.QueryLoginCount(45);
+        s.QueryLoginCount(20);
+        s.QueryLoginCount(70);
+    }
+    {
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,0,2}));
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,2,0}));
     }
@@ -4362,6 +4404,15 @@ int main()
                         {NonCoverredFromListsOfNonOvlpIntervals::Interval(2, 4)},
                         {NonCoverredFromListsOfNonOvlpIntervals::Interval(2, 5),NonCoverredFromListsOfNonOvlpIntervals::Interval(9, 12)},
                 }));
+    }
+    {
+        ExamRoom er(10);
+        er.seat();
+        er.seat();
+        er.seat();
+        er.seat();
+        er.leave(4);
+        er.seat();
     }
 
 #endif
@@ -7156,6 +7207,29 @@ int main()
         TraverseMultilevelLinkedList().PreorderNext(t);
         TraverseMultilevelLinkedList().PreorderDown(t);
 
+    }
+    {
+        SkipList l(3, 0.5);
+        l.Print();
+        l.Insert(13);
+        l.Insert(9);
+        l.Insert(7);
+        l.Insert(6);
+        l.Insert(12);
+        l.Insert(19);
+        l.Insert(17);
+        l.Insert(2);
+        l.Insert(4);
+        l.Insert(0);
+        l.Insert(10);
+        l.Search(19);
+        l.Remove(2);
+        l.Search(10);
+        l.Remove(12);
+        l.Remove(6);
+        l.Remove(10);
+        l.Remove(13);
+        l.Insert(8);
     }
 
 #endif
