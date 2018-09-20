@@ -115,7 +115,6 @@ public:
 		//2. for each point from left, increment the itersection count when it is a start, decrement when it is an end
 		//   keep track of the max intersection count
 		int maxCount = 0;
-		int maxIndex = -1;
 		int count = 0;
 		for (int i = 0; i < 2 * N; ++i)//endPoints have 2N points
 		{
@@ -125,7 +124,6 @@ public:
 				if (count > maxCount)
 				{
 					maxCount = count;
-					maxIndex = endPoints[i].first;
 				}
 			}
 			else//cur point is an end
@@ -135,7 +133,7 @@ public:
 		}
 
 		std::cout << Debug::ToStr1D<int, bool>()(endPoints) << std::endl;
-		std::cout << "IntersectionOfIntervals CountMaxAtATime for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << ", At: " << maxIndex << std::endl;
+		std::cout << "IntersectionOfIntervals CountMaxAtATime for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << std::endl;
 		return maxCount;
 	}
 	int CountMaxAtATimeII(const std::vector<std::pair<int, int> > & intervals)//connected interval boundary counts for 1 (Leetcode: Meeting Rooms II)
@@ -157,7 +155,6 @@ public:
 		//2. for each point from left, increment the itersection count when it is a start, decrement when it is an end
 		//   keep track of the max intersection count
 		int maxCount = 0;
-		int maxIndex = -1;
 		int count = 0;
 		for (int i = 0; i < 2 * N; ++i)//endPoints have 2N points
 		{
@@ -167,7 +164,6 @@ public:
 				if (count > maxCount)
 				{
 					maxCount = count;
-					maxIndex = endPoints[i].first;
 				}
 			}
 			else//cur point is an end
@@ -177,10 +173,10 @@ public:
 		}
 
 		std::cout << Debug::ToStr1D<int, bool>()(endPoints) << std::endl;
-		std::cout << "IntersectionOfIntervals CountMaxAtATimeII for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << ", At: " << maxIndex << std::endl;
+		std::cout << "IntersectionOfIntervals CountMaxAtATimeII for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << std::endl;
 		return maxCount;
 	}
-	int CountMaxAtATimeII_smiple(std::vector<std::pair<int, int>> & intervals)//connected interval boundary counts for 1 (Leetcode: Meeting Rooms II)
+	int CountMaxAtATimeII_Simple(const std::vector<std::pair<int, int>> & intervals)//connected interval boundary counts for 1 (Leetcode: Meeting Rooms II)
 	{
 		std::map<int, int> balance;//<timeIdx, balancedIntervalCount> where timeIdx is sorted in incr order
 		for (auto & i : intervals)
@@ -195,6 +191,18 @@ public:
 			count += i.second;//cur interval count
 			maxCount = std::max(maxCount, count);
 		}
+		std::vector<std::pair<int,int>> maxItvls;//intervals with max overlaps
+		count = 0;
+		for (auto & i : balance)
+		{
+			count += i.second;
+			//std::cout << i.first << "," << i.second << ":" << count << std::endl;
+			if (count == maxCount && (maxItvls.empty() || maxItvls.back().second != -1))
+				maxItvls.push_back({i.first, -1});
+			else if (count < maxCount && !maxItvls.empty() && maxItvls.back().second == -1)
+				maxItvls.back().second = i.first;
+		}
+		std::cout << "IntersectionOfIntervals CountMaxAtATimeII_Simple for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << ", At: " << Debug::ToStr1D<int>()(maxItvls) << std::endl;
 		return maxCount;
 	}
 };
@@ -275,7 +283,7 @@ IntersectionOfIntervals CountTotal for "1, 5, 2, 1, 4, 0": 11, IndexPairs: [1,0]
 					         |-------|
 
 [-2,1], [-1,1], [0,1], [2,1], [2,1], [2,0], [3,1], [3,0], [4,0], [4,0], [5,1], [6,0], [7,0], [7,0]
-IntersectionOfIntervals CountMaxAtATime for "[-2,2], [-1,3], [0,4], [2,4], [2,6], [3,7], [5,7]": 5, At: 2
+IntersectionOfIntervals CountMaxAtATime for "[-2,2], [-1,3], [0,4], [2,4], [2,6], [3,7], [5,7]": 5, At: [2,3]
 
 -|---|---|---|---|---|---|---|---|---|---|---|---|---
 -4  -3  -2  -1   0   1   2   3   4   5   6   7   8
@@ -287,17 +295,21 @@ IntersectionOfIntervals CountMaxAtATime for "[-2,2], [-1,3], [0,4], [2,4], [2,6]
 				                    ||
 
 [-4,1], [-1,1], [0,1], [0,1], [1,0], [2,1], [4,0], [4,0], [5,1], [5,0], [6,0], [8,0]
-IntersectionOfIntervals CountMaxAtATime for "[-4,6], [-1,1], [0,4], [0,8], [2,4], [5,5]": 4, At: 0
+IntersectionOfIntervals CountMaxAtATime for "[-4,6], [-1,1], [0,4], [0,8], [2,4], [5,5]": 4, At: [0,4]
 
 [2,1], [10,1], [10,0], [19,0]
-IntersectionOfIntervals CountMaxAtATime for "[10,19], [2,10]": 2, At: 10
+IntersectionOfIntervals CountMaxAtATime for "[10,19], [2,10]": 2, At: [10,10]
 
 [-2,1], [-1,1], [0,1], [2,0], [2,1], [2,1], [3,0], [3,1], [4,0], [4,0], [5,1], [6,0], [7,0], [7,0]
-IntersectionOfIntervals CountMaxAtATimeII for "[-2,2], [-1,3], [0,4], [2,4], [2,6], [3,7], [5,7]": 4, At: 2
+IntersectionOfIntervals CountMaxAtATimeII for "[-2,2], [-1,3], [0,4], [2,4], [2,6], [3,7], [5,7]": 4
 [-4,1], [-1,1], [0,1], [0,1], [1,0], [2,1], [4,0], [4,0], [5,0], [5,1], [6,0], [8,0]
-IntersectionOfIntervals CountMaxAtATimeII for "[-4,6], [-1,1], [0,4], [0,8], [2,4], [5,5]": 4, At: 0
+IntersectionOfIntervals CountMaxAtATimeII for "[-4,6], [-1,1], [0,4], [0,8], [2,4], [5,5]": 4
 [2,1], [10,0], [10,1], [19,0]
-IntersectionOfIntervals CountMaxAtATimeII for "[10,19], [2,10]": 1, At: 2
+IntersectionOfIntervals CountMaxAtATimeII for "[10,19], [2,10]": 1
 
+
+IntersectionOfIntervals CountMaxAtATimeII_Simple for "[-2,2], [-1,3], [0,4], [2,4], [2,6], [3,7], [5,7]": 4, At: [2,4]
+IntersectionOfIntervals CountMaxAtATimeII_Simple for "[-4,6], [-1,1], [0,4], [0,8], [2,4], [5,5]": 4, At: [0,1], [2,4]
+IntersectionOfIntervals CountMaxAtATimeII_Simple for "[10,19], [2,10]": 1, At: [2,19]
 */
 #endif
