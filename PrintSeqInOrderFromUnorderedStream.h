@@ -2,8 +2,8 @@
 #define _PRINT_SEQ_IN_ORDER_FROM_UNORDERED_STREAM_H
 #include "Debug.h"
 /*
-Bloomberg
-UDP packet classic problem
+Bloomberg, Uber
+UDP packet classic problem, Apache Kafka similar question
 Ex:
 1. 4
 2. 5
