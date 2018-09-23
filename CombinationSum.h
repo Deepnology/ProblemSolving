@@ -128,7 +128,7 @@ private:
 		int N = nums.size();
 		for (int index = start; index < N; ++index)//next pick(combine) one number from nums[start]~nums[N-1]
 		{
-			if (nums[start] > targetSum)
+			if (nums[index] > targetSum)
 				continue;
 
 			path.push_back(nums[index]);
@@ -199,7 +199,7 @@ private:
 			if (index > start && nums[index] == nums[index - 1])
 				continue;//skip duplicates because nums might have duplicates (nums was already sorted)
 
-			if (nums[start] > targetSum)
+			if (nums[index] > targetSum)
 				continue;
 
 			path.push_back(nums[index]);
@@ -265,7 +265,7 @@ private:
 		int res = 0;
 		for (int index = start; index < N; ++index)
 		{
-			if (nums[start] > targetSum)
+			if (nums[index] > targetSum)
 				continue;
 
 			res += this->numOfWays_Recur_AllowRepeats_FromNoDupArray(nums, targetSum - nums[index], index);
@@ -293,7 +293,7 @@ private:
 			if (index > start && nums[index] == nums[index - 1])
 				continue;
 
-			if (nums[start] > targetSum)
+			if (nums[index] > targetSum)
 				continue;
 
 			res += this->numOfWays_Recur_NoRepeats_FromDupArray(nums, targetSum - nums[index], index + 1);
@@ -787,6 +787,8 @@ Row#8	= 0, 0, 0, 0, 2, 4, 6, 7, 7, 7
 CombinationSum NumOfWays_NoRepeats_FromDupArray_DP2D_DistinguishDups for "8" in "1, 1, 2, 5, 6, 7, 8, 9, 10": 7
 1, 2, 2, 2, 1, 1, 3, 5, 7
 CombinationSum NumOfWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for "8" in "1, 1, 2, 5, 6, 7, 8, 9, 10": 7
+1, 2, 1, 0, 0, 1, 1, 1, 1
+CombinationSum NumOfDistinctOrderWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for "8" in "1, 1, 2, 5, 6, 7, 8, 9, 10": 1
 [rY][cX]
 Row#0	= 1, 1, 1, 1, 1, 1, 1, 1, 1
 Row#1	= 0, 1, 1, 1, 1, 1, 1, 1, 1
@@ -813,6 +815,8 @@ Row#8	= 0, 0, 0, 1, 2, 3, 4, 4, 4
 CombinationSum NumOfWays_NoRepeats_FromDupArray_DP2D_DistinguishDups for "8" in "1, 2, 5, 6, 7, 8, 9, 10": 4
 1, 1, 1, 1, 0, 1, 2, 3, 4
 CombinationSum NumOfWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for "8" in "1, 2, 5, 6, 7, 8, 9, 10": 4
+1, 1, 1, 0, 0, 1, 1, 1, 1
+CombinationSum NumOfDistinctOrderWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for "8" in "1, 2, 5, 6, 7, 8, 9, 10": 1
 ===
 CombinationSum FindAllUnique_NoRepeats_FromDupArray_FixRecur for "8" in "1, 1, 2, 2, 2, 3, 3, 5, 6, 7, 8, 9, 10" are: [1,1,2,2,2], [1,1,3,3], [1,1,6], [1,2,2,3], [1,2,5], [1,7], [2,3,3], [2,6], [3,5], [8]
 CombinationSum FindAllUnique_NoRepeats_FromDupArray_InExcludeRecur for "8" in "1, 1, 2, 2, 2, 3, 3, 5, 6, 7, 8, 9, 10" are: [1,1,2,2,2], [1,1,3,3], [1,1,6], [1,2,2,3], [1,2,5], [1,7], [2,3,3], [2,6], [3,5], [8]
@@ -843,6 +847,8 @@ Row#8	= 0, 0, 0, 0, 0, 1, 7, 17, 25, 29, 31, 32, 32, 32
 CombinationSum NumOfWays_NoRepeats_FromDupArray_DP2D_DistinguishDups for "8" in "1, 1, 2, 2, 2, 3, 3, 5, 6, 7, 8, 9, 10": 32
 1, 2, 4, 8, 10, 15, 20, 23, 32
 CombinationSum NumOfWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for "8" in "1, 1, 2, 2, 2, 3, 3, 5, 6, 7, 8, 9, 10": 32
+1, 2, 3, 2, 0, 1, 1, 1, 1
+CombinationSum NumOfDistinctOrderWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for "8" in "1, 1, 2, 2, 2, 3, 3, 5, 6, 7, 8, 9, 10": 1
 ===
 CombinationSum FindAllUnique_NoRepeats_FromDupArray_FixRecur for "12" in "1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10" are: [1,1,2,2,2,4], [1,1,2,2,3,3], [1,1,2,2,6], [1,1,2,3,5], [1,1,2,4,4], [1,1,2,8], [1,1,3,3,4], [1,1,3,7], [1,1,4,6], [1,1,10], [1,2,2,2,5], [1,2,2,3,4], [1,2,2,7], [1,2,3,3,3], [1,2,3,6], [1,2,4,5], [1,2,9], [1,3,3,5], [1,3,4,4], [1,3,8], [1,4,7], [1,5,6], [2,2,2,3,3], [2,2,2,6], [2,2,3,5], [2,2,4,4], [2,2,8], [2,3,3,4], [2,3,7], [2,4,6], [2,10], [3,3,3,3], [3,3,6], [3,4,5], [3,9], [4,4,4], [4,8], [5,7]
 CombinationSum FindAllUnique_NoRepeats_FromDupArray_InExcludeRecur for "12" in "1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10" are: [1,1,2,2,2,4], [1,1,2,2,3,3], [1,1,2,2,6], [1,1,2,3,5], [1,1,2,4,4], [1,1,2,8], [1,1,3,3,4], [1,1,3,7], [1,1,4,6], [1,1,10], [1,2,2,2,5], [1,2,2,3,4], [1,2,2,7], [1,2,3,3,3], [1,2,3,6], [1,2,4,5], [1,2,9], [1,3,3,5], [1,3,4,4], [1,3,8], [1,4,7], [1,5,6], [2,2,2,3,3], [2,2,2,6], [2,2,3,5], [2,2,4,4], [2,2,8], [2,3,3,4], [2,3,7], [2,4,6], [2,10], [3,3,3,3], [3,3,6], [3,4,5], [3,9], [4,4,4], [4,8], [5,7]
@@ -881,6 +887,8 @@ Row#12	= 0, 0, 0, 0, 0, 0, 0, 4, 18, 49, 98, 161, 239, 307, 355, 384, 401, 411, 
 CombinationSum NumOfWays_NoRepeats_FromDupArray_DP2D_DistinguishDups for "12" in "1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10": 415
 1, 2, 4, 10, 17, 29, 49, 75, 111, 162, 228, 308, 415
 CombinationSum NumOfWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for "12" in "1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10": 415
+1, 2, 3, 4, 3, 1, 1, 1, 1, 1, 1, 0, 0
+CombinationSum NumOfDistinctOrderWays_NoRepeats_FromDupArray_DP1D_DistinguishDups for "12" in "1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10": 0
 ===
 [rY][cX]
 Row#0	= 0, 0, 0, 0, 0, 0
