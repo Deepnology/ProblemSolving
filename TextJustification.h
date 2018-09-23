@@ -64,13 +64,13 @@ public:
 		int curEnd = 0;
 		while (curEnd < N)
 		{
-			int pad = L;//the extra spaces that are needed to pad
+			int totalSpace = L;//the total spaces to fill the line
 			for (; curEnd < N; ++curEnd)
 			{
-				int nextPad = pad - words[curEnd].size() - (pad == L ? 0 : 1);//when pad != L we need to subtract 1 default sapce to count the extra spaces to pad
-				if (nextPad < 0)//can't include word[curEnd]
+				int nxtSpace = totalSpace - words[curEnd].size() - (totalSpace == L ? 0 : 1);//when totalSpace != L we need to subtract 1 default space to count the extra spaces to insert
+				if (nxtSpace < 0)//can't include word[curEnd]
 					break;
-				pad = nextPad;//can include word[curEnd]
+				totalSpace = nxtSpace;//can include word[curEnd]
 			}
 			//now curEnd points to the begin of the next line
 			//[ words[curBegin],words[curEnd] )
@@ -79,19 +79,19 @@ public:
 			std::ostringstream oss;
 			if (intervals != 0 && curEnd != N)//non-"one word line" && non-"the last line"
 			{
-				int spaceLen = pad / intervals + 1;//avg of total pad (pad/interval) + default one space (1)
-				int remainings = pad % intervals;//remainings of avg of total pad
+				int avgSpace = totalSpace / intervals + 1;//avg of space len (totalSpace/interval) + default one space (1)
+				int remainSpace = totalSpace % intervals;//remaining spaces
 				for (; curBegin < curEnd; ++curBegin)
 				{
 					oss << words[curBegin];
 					//pad spaces in interval
 					if (curBegin != curEnd - 1)
 					{
-						oss << std::string(spaceLen, ' ');
-						if (remainings > 0)
+						oss << std::string(avgSpace, ' ');
+						if (remainSpace > 0)
 						{
 							oss << " ";
-							--remainings;
+							--remainSpace;
 						}
 					}
 				}
@@ -106,7 +106,7 @@ public:
 						oss << " ";//the default 1 space
 				}
 				//now curBegin points to curEnd which is the begin of the next line
-				oss << std::string(pad, ' ');//pad all the extra spaces to the end
+				oss << std::string(totalSpace, ' ');//pad all the extra spaces to the end
 			}
 			res.push_back(oss.str());
 		}//end while
