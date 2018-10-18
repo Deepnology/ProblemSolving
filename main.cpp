@@ -2,7 +2,7 @@
 //#define _Design_
 //#define _Math_
 //#define _BitNumberOperation_
-#define _Random_
+//#define _Random_
 //#define _StackQueue_
 //#define _1DArray_
 //#define _SortSearchSelect_
@@ -14,7 +14,7 @@
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
-//#define _BinaryTree_
+#define _BinaryTree_
 //#define _Heap_
 //#define _Graph_
 //#define _RMQLCA_
@@ -723,6 +723,7 @@
 #include "DetermineIfPointLieInsideTriangle.h"
 #include "Find3PointsFormLargestTriangle.h"
 #include "RobotRoomCleaner.h"
+#include "RemoveSurroundedPiecesInMatrix.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -4268,17 +4269,52 @@ int main()
             PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(v);
         }
         */
+
+        for (int i = 0; i < 1; ++i)
+        {
+            PrintSeqInOrderFromUnorderedStream_AllowRepeats_ThreadSafe pat;
+            pat.Run();
+        }
+
     }
     {
         LoginCountFromUnorderedStream_PrefixSum s;
+        s.Insert(2, 1);
         s.Insert(10, 1);
+        s.Insert(5, 1);
+        s.Insert(6, -1);
         s.Insert(20, -1);
+        s.Insert(6, 1);
+        s.Insert(13, -1);
+        s.Insert(8, -1);
+        s.Insert(11, 1);
         s.Insert(30, 1);
         s.Insert(40, 1);
+        s.Insert(25, -1);
         s.Insert(50, -1);
         s.QueryLoginCount(45);
         s.QueryLoginCount(20);
         s.QueryLoginCount(70);
+        s.QueryLoginCount(15);
+
+        LoginCountFromUnorderedStream_BST bst;
+        bst.Insert(2, 1);
+        bst.Insert(10, 1);
+        bst.Insert(5, 1);
+        bst.Insert(6, -1);
+        bst.Insert(20, -1);
+        bst.Insert(6, 1);
+        bst.Insert(13, -1);
+        bst.Insert(8, -1);
+        bst.Insert(11, 1);
+        bst.Insert(30, 1);
+        bst.Insert(40, 1);
+        bst.Insert(25, -1);
+        bst.Insert(50, -1);
+        bst.QueryLoginCount(45);
+        bst.QueryLoginCount(20);
+        bst.QueryLoginCount(70);
+        bst.QueryLoginCount(15);
     }
     {
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,0,2}));
@@ -4324,6 +4360,10 @@ int main()
 		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { -2, 2 },{ -1, 3 },{ 0, 4 },{ 2, 4 },{ 2, 6 },{ 3, 7 },{ 5, 7 } }));
 		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { -4, 6 },{ -1, 1 },{ 0, 4 },{ 0, 8 },{ 2, 4 },{ 5, 5 } }));
 		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { 10, 19 },{ 2, 10 } }));
+
+        IntersectionOfIntervals().CountMaxAtATimeII_Simple(std::vector<std::pair<int, int>>({ { -2, 2 },{ -1, 3 },{ 0, 4 },{ 2, 4 },{ 2, 6 },{ 3, 7 },{ 5, 7 } }));
+        IntersectionOfIntervals().CountMaxAtATimeII_Simple(std::vector<std::pair<int, int>>({ { -4, 6 },{ -1, 1 },{ 0, 4 },{ 0, 8 },{ 2, 4 },{ 5, 5 } }));
+        IntersectionOfIntervals().CountMaxAtATimeII_Simple(std::vector<std::pair<int, int>>({ { 10, 19 },{ 2, 10 } }));
 	}
 	{
 		LeastPointsCoveringAllIntervals().TwoSortedSets(std::vector<std::pair<int, int>>({ { -2, 2 }, { -1, 3 }, { 0, 4 }, { 2, 4 }, { 2, 6 }, { 5, 7 } }));
@@ -6150,6 +6190,18 @@ int main()
 	RdCout ? redirect_cout::to_file("Out_TextLines.txt") : redirect_cout::to_cout();
 	PrintH("Text Lines");
 	{
+        TextJustification().Greedy_Break(std::vector<std::string>({ "This", "is", "an", "example", "of", "text", "justification." }), 4);
+        TextJustification().Greedy_Break(std::vector<std::string>({ "Text", "justification", "is", "an", "example", "of", "this." }), 4);
+
+        TextJustification().Greedy_Break(std::vector<std::string>({ "aaa", "bb", "cc", "ddddd", "eee", "f", "gg", "h", "i", "jjj" }), 2);
+        TextJustification().Greedy_Break(std::vector<std::string>({ "Geeks", "for", "Geeks", "presents", "word", "wrap", "problem" }), 3);
+        TextJustification().Greedy_Break(std::vector<std::string>({ "The", "quick", "brown", "fox", "jumped", "over", "the", "lazy", "dogs." }), 4);
+        TextJustification().Greedy_Break(std::vector<std::string>(
+                { "I", "have", "inserted", "a", "large", "number", "of", "new", "examples", "from", "the", "papers", "for", "the", "Mathematical"
+                        , "Tripos", "during", "the", "last", "twenty", "years,", "which", "should", "be", "useful", "to", "Cambridge", "students."
+                }), 6);
+
+
 		TextJustification().Greedy(std::vector<std::string>({ "This", "is", "an", "example", "of", "text", "justification." }), 16);
 		TextJustification().Greedy(std::vector<std::string>({ "This", "is", "an", "example", "of", "text", "justification." }), 14);
 		TextJustification().Greedy(std::vector<std::string>({ "Text", "justification", "is", "an", "example", "of", "this." }), 16);
@@ -8435,6 +8487,22 @@ int main()
     }
     {
         Find3PointsFormLargestTriangle().BruteForce(std::vector<std::vector<int>>({{0,0},{0,1},{1,0},{0,2},{2,0}}));
+    }
+    {
+        std::vector<std::vector<char>> board(
+                {
+                        { ' ','X','X','O','O' },
+                        { 'X','O','O','X','X' },
+                        { 'O','X','O','O','X' },
+                        { 'X','X',' ','X','O' },
+                        { 'X','X','X','O','X' },
+                        { ' ',' ',' ','X',' ' },
+                });
+        RemoveSurroundedPiecesInMatrix().BFS(board, 1, 1);
+        RemoveSurroundedPiecesInMatrix().BFS(board, 1, 3);
+        RemoveSurroundedPiecesInMatrix().BFS(board, 2, 0);
+        RemoveSurroundedPiecesInMatrix().BFS(board, 2, 1);
+        RemoveSurroundedPiecesInMatrix().BFS(board, 4, 3);
     }
 
 #endif
