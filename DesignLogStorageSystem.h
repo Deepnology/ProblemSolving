@@ -26,6 +26,8 @@ Note:
 There will be at most 300 operations of Put or Retrieve.
 Year ranges from [2000,2017]. Hour ranges from [00,23].
 Output for Retrieve has no order required.
+
+Use Trie !!!
 */
 class DesignLogStorageSystem
 {
