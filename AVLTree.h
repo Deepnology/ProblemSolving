@@ -34,6 +34,7 @@ And if the insertions and deletions are less frequent and search is more frequen
 Insert/Delete: O(height) = O(logn) time
 
 see also BinarySearchTree.h, RedBlackTree.h
+
 */
 class AVLTree
 {
