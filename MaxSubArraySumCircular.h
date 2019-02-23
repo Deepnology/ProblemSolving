@@ -25,18 +25,20 @@ public:
 	{
 		int maxNonCircular = this->maxSubArrSum(A);
 		int maxCircular = this->circularMaxSubArrSum_DP1D(A);
-		int maxOf2 = std::max(maxNonCircular, maxCircular);
-		std::cout << "MaxSubArraySumCircular DP1D for \"" << Debug::ToStr1D<int>()(A) << "\": " << maxOf2 << " (nonCircular: " << maxNonCircular << ", circular: " << maxCircular << ")" << std::endl;
-		return maxOf2;
+		int res = maxNonCircular > 0 ? std::max(maxNonCircular, maxCircular) : maxNonCircular;
+		//note: when all nums in A are negative, maxSubArrSum = max(A), minSubArrSum = sum(A)
+		std::cout << "MaxSubArraySumCircular DP1D for \"" << Debug::ToStr1D<int>()(A) << "\": " << res << " (nonCircular: " << maxNonCircular << ", circular: " << maxCircular << ")" << std::endl;
+		return res;
 	}
 
 	int Math(const std::vector<int> & A)
 	{
 		int maxNonCircular = this->maxSubArrSum(A);
 		int maxCircular = std::accumulate(A.cbegin(), A.cend(), 0) - this->minSubArrSum(A);//the total sum subtract the min subarray sum
-		int maxOf2 = std::max(maxNonCircular, maxCircular);
-		std::cout << "MaxSubArraySumCircular Math for \"" << Debug::ToStr1D<int>()(A) << "\": " << maxOf2 << " (nonCircular: " << maxNonCircular << ", circular: " << maxCircular << ")" << std::endl;
-		return maxOf2;
+		int res = maxNonCircular > 0 ? std::max(maxNonCircular, maxCircular) : maxNonCircular;
+		//note: when all nums in A are negative, maxSubArrSum = max(A), minSubArrSum = sum(A)
+		std::cout << "MaxSubArraySumCircular Math for \"" << Debug::ToStr1D<int>()(A) << "\": " << res << " (nonCircular: " << maxNonCircular << ", circular: " << maxCircular << ")" << std::endl;
+		return res;
 	}
 
 private:
