@@ -20,6 +20,7 @@ For each node, it will be subdivided into four children nodes until the values i
 Each node has another two boolean attributes : isLeaf and val.
 isLeaf is true if and only if the node is a leaf node.
 The val attribute for a leaf node contains the value of the region it represents.
+
  */
 class QuadTree
 {
