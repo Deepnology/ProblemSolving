@@ -65,7 +65,7 @@ public:
 		Node * upperRight = recur(grid, row, col+len/2, len/2);
 		Node * bottomLeft = recur(grid, row+len/2, col, len/2);
 		Node * bottomRight = recur(grid, row+len/2, col+len/2, len/2);
-		Node * cur;
+
 		if (upperLeft->isLeaf && upperRight->isLeaf && bottomLeft->isLeaf && bottomRight->isLeaf)
 			if (upperLeft->val == upperRight->val && upperRight->val == bottomLeft->val && bottomLeft->val == bottomRight->val)
 			{
