@@ -15,6 +15,7 @@
 //#define _LinkedList_
 //#define _2DGrid_
 #define _BinaryTree_
+//#define _QuadTree_
 //#define _Heap_
 //#define _Graph_
 //#define _RMQLCA_
@@ -442,6 +443,7 @@
 #include "MinSumOf2IntFromADigitArr.h"
 #include "MaxProductCutting.h"
 #include "MaxPriceCutting.h"
+#include "MaxPriceCutting2.h"
 #include "AllBinaryStrWithWildCard.h"
 #include "WordBreak.h"
 #include "LongestWordMadeOfOthers.h"
@@ -805,6 +807,10 @@
 #include "ConvertBSTtoMinHeap.h"
 #include "PrintBinaryTreeIn2DArray.h"
 #include "SerializeDeserializeNaryTree.h"
+#include "MinDiff2NodesInBST.h"
+
+/*Quad Tree*/
+#include "QuadTree.h"
 
 /*Heap*/
 #include "BinaryMinHeap.h"
@@ -4817,6 +4823,11 @@ int main()
 		MaxPriceCutting().DP1D_Recur(std::vector<int>({ 3, 5, 18, 9, 10, 17, 17, 20 }), 8);
 		MaxPriceCutting().DP1D_Iterate(std::vector<int>({ 3, 5, 18, 9, 10, 17, 17, 20 }), 8);
 	}
+    {
+        MaxPriceCutting2().DFSRecur(1, 10, std::vector<int>({26,103,59}));
+        MaxPriceCutting2().DFSRecur(100, 10, std::vector<int>({26,103,59}));
+        MaxPriceCutting2().DFSRecur(1, 10, std::vector<int>({30,59,110}));
+    }
 	{
 		AllBinaryStrWithWildCard().Recur(std::string("1?00?101"));
 	}
@@ -10087,7 +10098,9 @@ int main()
 		root->right->right = new BinaryTreeVerticalOrderTraversal::TreeNode(7);
 		PrintBinaryTree<BinaryTreeVerticalOrderTraversal::TreeNode, std::ostringstream>(root, bstOss);
 		std::cout << bstOss.str() << std::endl;
-		BinaryTreeVerticalOrderTraversal().HashMap(root);
+		BinaryTreeVerticalOrderTraversal().BFS_I(root);
+        BinaryTreeVerticalOrderTraversal().BFS_II(root);
+        BinaryTreeVerticalOrderTraversal().DFS_II(root);
 		bstOss.str(std::string());
 		BinaryTreeVerticalOrderTraversal::DeleteTree(root);
 	}
@@ -10453,6 +10466,42 @@ int main()
         PrintBinaryTreeIn2DArray::DeleteTree(r);
     }
 
+#endif
+#ifdef _QuadTree_
+	/*QuadTree*/
+    RdCout ? redirect_cout::to_file("Out_QuadTree.txt") : redirect_cout::to_cout();
+    PrintH("QuadTree");
+    {
+        QuadTree::Node * root = QuadTree().Construct(std::vector<std::vector<int>>(
+                {
+                        {1,1,1,1,0,0,0,0},
+                        {1,1,1,1,0,0,0,0},
+                        {1,1,1,1,1,1,1,1},
+                        {1,1,1,1,1,1,1,1},
+                        {1,1,1,1,0,0,0,0},
+                        {1,1,1,1,0,0,0,0},
+                        {1,1,1,1,0,0,0,0},
+                        {1,1,1,1,0,0,0,0},
+                }));
+
+        QuadTree::Node * t1 = QuadTree().Construct(std::vector<std::vector<int>>(
+                {
+                        {1,1,1,1},
+                        {1,1,1,1},
+                        {0,0,0,0},
+                        {0,0,0,0},
+
+                }));
+        QuadTree::Node * t2 = QuadTree().Construct(std::vector<std::vector<int>>(
+                {
+                        {1,1,0,0},
+                        {1,1,1,1},
+                        {1,1,0,0},
+                        {1,1,0,0},
+
+                }));
+        QuadTree::Node * t1ORt2 = QuadTree().Intersect(t1, t2);
+    }
 #endif
 #ifdef _Heap_
 	/*Heap*/
@@ -13362,8 +13411,10 @@ int main()
         //DesignPattern_Command::Test();
         //DesignPattern_ChainOfResponsibility::Test();
         //DesignPattern_FactoryMethod::Test();
-        DesignPattern_Builder::Test();
+        //DesignPattern_Builder::Test();
 
+        //DesignPattern_Interpreter::Test();
+        DesignPattern_Memento::Test();
         //DesignPattern_Strategy::Test();
         //DesignPattern_TemplateMethod::Test();
         //DesignPattern_Visitor::Test();
