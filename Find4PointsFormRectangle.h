@@ -100,4 +100,91 @@ public:
         return false;
     }
 };
+/*
+Leetcode: Minimum Area Rectangle
+Given a set of points in the xy-plane, determine the minimum area of a rectangle formed from these points, with sides parallel to the x and y axes.
+If there isn't any rectangle, return 0.
+Example 1:
+Input: [[1,1],[1,3],[3,1],[3,3],[2,2]]
+Output: 4
+Example 2:
+Input: [[1,1],[1,3],[3,1],[3,3],[4,1],[4,3]]
+Output: 2
+ */
+class Find4PointsFormRectangle_MinArea
+{
+public:
+    Find4PointsFormRectangle_MinArea(){}
+    ~Find4PointsFormRectangle_MinArea(){}
+
+    //BruteForce: enumerate all possible 4 points, O(N^4) time
+    int AxisAligned_xToYsHashMap(std::vector<std::vector<int>> && points) //O(N^2) time
+    {
+        int res = INT_MAX;
+        std::unordered_map<int, std::set<int>> xToYs;
+        for (auto & p : points)
+            xToYs[p[0]].insert(p[1]);
+        for (auto i = xToYs.begin(); i != xToYs.end(); ++i)
+            for (auto j = std::next(i); j != xToYs.end(); ++j)
+            {
+                std::vector<int> commonY;//sorted in incr order
+                auto p = i->second.begin();
+                auto q = j->second.begin();
+                while (p != i->second.end() && q != j->second.end())
+                {
+                    if (*p == *q)
+                    {
+                        commonY.push_back(*p);
+                        ++p; ++q;
+                    }
+                    else if (*p < *q)
+                        ++p;
+                    else
+                        ++q;
+                }
+                if (commonY.size() < 2) continue;
+                int diffX = std::abs(i->first - j->first);
+                int diffY = INT_MAX;
+                int N = commonY.size();
+                for (int k = 0; k+1 < N; ++k)
+                    diffY = std::min(diffY, commonY[k+1]-commonY[k]);
+                res = std::min(res, diffX * diffY);
+            }
+        res = res == INT_MAX ? 0 : res;
+        std::cout << "Find4PointsFormRectangle_MinArea AxisAligned_xToYsHashMap for [" << Debug::ToStr1D<int>()(points) << "]: " << res << std::endl;
+        return res;
+    }
+    int AxisAligned_CheckDiagonalPairs(std::vector<std::vector<int>> && points) //O(N^2) time
+    {
+        //use hashSet to store all points, then enumerate all pairs of points and
+        //check if that pair satisfies diagonal property and if so,
+        //check if the pair of points form the other diagonal exist in the hashSet, O(N^2) time
+        int res = INT_MAX;
+        std::unordered_set<int> ptSet;
+        constexpr int LEN = 40001;
+        for (auto & p : points)
+            ptSet.insert(p[0]*LEN+p[1]);
+        int N = points.size();
+        for (int i = 0; i < N; ++i)
+            for (int j = i+1; j < N; ++j)
+                if (points[i][0] != points[j][0] && points[i][1] != points[j][1])
+                    //x1 != x2 && y1 != y2, eliminate vertical line and horizontal line
+                {
+                    if (ptSet.count(points[i][0]*LEN+points[j][1]) && ptSet.count(points[j][0]*LEN+points[i][1]))
+                        //check if both (x1,y2) and (x2,y1) exist
+                    {
+                        int diffX = std::abs(points[i][0]-points[j][0]);
+                        int diffY = std::abs(points[i][1]-points[j][1]);
+                        res = std::min(res, diffX * diffY);
+                    }
+                }
+        res = res == INT_MAX ? 0 : res;
+        std::cout << "Find4PointsFormRectangle_MinArea AxisAligned_CheckDiagonalPairs for [" << Debug::ToStr1D<int>()(points) << "]: " << res << std::endl;
+        return res;
+    }
+};
+/*
+Find4PointsFormRectangle_MinArea AxisAligned_xToYsHashMap for [[1,1], [1,3], [3,1], [3,3], [4,1], [4,3]]: 2
+Find4PointsFormRectangle_MinArea AxisAligned_CheckDiagonalPairs for [[1,1], [1,3], [3,1], [3,3], [4,1], [4,3]]: 2
+ */
 #endif
