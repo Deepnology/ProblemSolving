@@ -9,12 +9,12 @@
 //#define _Interval_
 //#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
-//#define _FindSubstringSubsequence_
+#define _FindSubstringSubsequence_
 //#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
-#define _BinaryTree_
+//#define _BinaryTree_
 //#define _QuadTree_
 //#define _Heap_
 //#define _Graph_
@@ -166,6 +166,7 @@
 #include "MaxNumBySwap2Digits.h"
 #include "CountPrimeSetBitsOfNums.h"
 #include "CountBinaryNumsConvertableToEitherOf3.h"
+#include "CountConsecuNumsWTgtSum.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -377,6 +378,7 @@
 #include "EqualGlobalAndLocalInversions.h"
 #include "MinimizeMaxDistToGasStation.h"
 #include "MaxNumPartitionsToSort.h"
+#include "MinCostHireKWorkers.h"
 
 /*Interval*/
 #include "MergeIntervals.h"
@@ -523,6 +525,7 @@
 #include "SubstrWConcatAllWords.h"
 #include "NumOfDistinctSubstr.h"
 #include "MinLexicographicStrRotation.h"
+#include "MinLexicographicStrRotationK.h"
 #include "MaxSubArraySum.h"
 #include "MaxSubArraySumCircular.h"
 #include "MaxIncrSubArraySum.h"
@@ -726,6 +729,7 @@
 #include "Find3PointsFormLargestTriangle.h"
 #include "RobotRoomCleaner.h"
 #include "RemoveSurroundedPiecesInMatrix.h"
+#include "ReachingPoints2D.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -808,6 +812,9 @@
 #include "PrintBinaryTreeIn2DArray.h"
 #include "SerializeDeserializeNaryTree.h"
 #include "MinDiff2NodesInBST.h"
+#include "RangeSumOfNodesInBST.h"
+#include "FlipEquivalentBinaryTrees.h"
+#include "SameLeafValSeqBinaryTrees.h"
 
 /*Quad Tree*/
 #include "QuadTree.h"
@@ -880,6 +887,7 @@
 #include "OnePathVisitAllRooms.h"
 #include "GraphToTreeRedundantEdge.h"
 #include "CrackSafe.h"
+#include "SumOfDistBtwCurAndAllOtherNodesInTree.h"
 
 /*RMQ LCA*/
 #include "RangeSumQuerySegmentTree.h"
@@ -2149,6 +2157,9 @@ int main()
     {
         CountBinaryNumsConvertableToEitherOf3().Solve(1073741727, 1073741631, 1073741535);
         CountBinaryNumsConvertableToEitherOf3().Solve(1073741809, 1073741808, 1073741809);
+    }
+    {
+        CountConsecuNumsWTgtSum().UseFormula(15);
     }
 
 #endif
@@ -4334,6 +4345,9 @@ int main()
         MaxNumPartitionsToSort().FromIdxSeqArr(std::vector<int>({1,0,2,3,4}));
         MaxNumPartitionsToSort().WithDuplicates(std::vector<int>({2,1,3,4,4}));
     }
+    {
+        MinCostHireKWorkers().SortAndMaxHeap(std::vector<int>({10,20,5}), std::vector<int>({70,50,30}),2);
+    }
 
 #endif
 #ifdef _Interval_
@@ -5541,6 +5555,9 @@ int main()
 		MinLexicographicStrRotation().Iterate(std::string("alabala"));
 		MinLexicographicStrRotation().Iterate(std::string("baabaa"));
 		MinLexicographicStrRotation().Iterate(std::string("bcabdadab"));
+
+		MinLexicographicStrRotationK().OrderlyQueue("cba", 1);
+        MinLexicographicStrRotationK().OrderlyQueue("baaca", 3);
 	}
 	{
 		int begin, end;
@@ -8515,6 +8532,13 @@ int main()
         RemoveSurroundedPiecesInMatrix().BFS(board, 2, 1);
         RemoveSurroundedPiecesInMatrix().BFS(board, 4, 3);
     }
+    {
+        Find4PointsFormRectangle_MinArea().AxisAligned_xToYsHashMap(std::vector<std::vector<int>>({{1,1},{1,3},{3,1},{3,3},{4,1},{4,3}}));
+        Find4PointsFormRectangle_MinArea().AxisAligned_CheckDiagonalPairs(std::vector<std::vector<int>>({{1,1},{1,3},{3,1},{3,3},{4,1},{4,3}}));
+    }
+    {
+        ReachingPoints2D().Recur(3,7,64,27);
+    }
 
 #endif
 #ifdef _BinaryTree_
@@ -10464,6 +10488,31 @@ int main()
         PrintBinaryTreeIn2DArray().ToStrRecur(r);
         bstOss.str(std::string());
         PrintBinaryTreeIn2DArray::DeleteTree(r);
+    }
+    {
+        FlipEquivalentBinaryTrees::TreeNode * r1 = new FlipEquivalentBinaryTrees::TreeNode(1);
+        r1->left = new FlipEquivalentBinaryTrees::TreeNode(2);
+        r1->left->left = new FlipEquivalentBinaryTrees::TreeNode(4);
+        r1->left->right = new FlipEquivalentBinaryTrees::TreeNode(5);
+        r1->left->right->left = new FlipEquivalentBinaryTrees::TreeNode(7);
+        r1->left->right->right = new FlipEquivalentBinaryTrees::TreeNode(8);
+        r1->right = new FlipEquivalentBinaryTrees::TreeNode(3);
+        r1->right->left = new FlipEquivalentBinaryTrees::TreeNode(6);
+        FlipEquivalentBinaryTrees::TreeNode * r2 = new FlipEquivalentBinaryTrees::TreeNode(1);
+        r2->left = new FlipEquivalentBinaryTrees::TreeNode(3);
+        r2->left->right = new FlipEquivalentBinaryTrees::TreeNode(6);
+        r2->right = new FlipEquivalentBinaryTrees::TreeNode(2);
+        r2->right->left = new FlipEquivalentBinaryTrees::TreeNode(4);
+        r2->right->right = new FlipEquivalentBinaryTrees::TreeNode(5);
+        r2->right->right->left = new FlipEquivalentBinaryTrees::TreeNode(8);
+        r2->right->right->right = new FlipEquivalentBinaryTrees::TreeNode(7);
+        PrintBinaryTree<FlipEquivalentBinaryTrees::TreeNode, std::ostringstream>(r1, bstOss);
+        PrintBinaryTree<FlipEquivalentBinaryTrees::TreeNode, std::ostringstream>(r2, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        FlipEquivalentBinaryTrees().Recur(r1, r2);
+        bstOss.str(std::string());
+        FlipEquivalentBinaryTrees::DeleteTree(r1);
+        FlipEquivalentBinaryTrees::DeleteTree(r2);
     }
 
 #endif
@@ -13015,6 +13064,9 @@ int main()
     {
         CrackSafe().deBruijnSeq(2, 2);
         CrackSafe().deBruijnSeq(3, 3);
+    }
+    {
+        SumOfDistBtwCurAndAllOtherNodesInTree().TwoPassDFS(6, std::vector<std::vector<int>>({{0,1},{0,2},{2,3},{2,4},{2,5}}));
     }
 
 #endif
