@@ -23,13 +23,28 @@ but since we want to find the one with the smallest lexicographical permutation,
  I D I D D D I
 1 3 2 7 6 5 4 8
 => reverse consecutive Ds' nums
+
+Leetcode: DI String Match (not necessarily the smallest permutation)
+Given a string S that only contains "I" (increase) or "D" (decrease), let N = S.length.
+Return any permutation A of [0, 1, ..., N] such that for all i = 0, ..., N-1:
+If S[i] == "I", then A[i] < A[i+1]
+If S[i] == "D", then A[i] > A[i+1]
+Example 1:
+Input: "IDID"
+Output: [0,4,1,3,2]
+Example 2:
+Input: "III"
+Output: [0,1,2,3]
+Example 3:
+Input: "DDI"
+Output: [3,2,0,1]
 */
 class SmallestPermutationFromIncrDecrArray
 {
 public:
 	SmallestPermutationFromIncrDecrArray() {}
 
-	std::vector<int> findPermutation(std::string s)
+	std::vector<int> FindSmallestPermutation(std::string s)
 	{
 		int N = s.size();
 		std::vector<int> res;//[1:N+1] permutation
@@ -61,9 +76,23 @@ public:
 		std::cout << "SmallestPermutationFromIncrDecrArray for \"" << s << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
+
+	std::vector<int> FindAnyPermutation(std::string s)
+	{
+		int i = 0; int j = s.size();
+		std::vector<int> res;
+		for (auto & c : s)
+			res.push_back(c == 'I' ? i++ : j--);
+		res.push_back(i);
+
+		std::cout << "SmallestPermutationFromIncrDecrArray FindAny for \"" << s << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
 };
 /*
 SmallestPermutationFromIncrDecrArray for "IDIDDDI": 1, 3, 2, 7, 6, 5, 4, 8
 SmallestPermutationFromIncrDecrArray for "DDIIDDD": 3, 2, 1, 4, 8, 7, 6, 5
+SmallestPermutationFromIncrDecrArray FindAny for "IDIDDDI": 0, 7, 1, 6, 5, 4, 2, 3
+SmallestPermutationFromIncrDecrArray FindAny for "DDIIDDD": 7, 6, 0, 1, 5, 4, 3, 2
 */
 #endif
