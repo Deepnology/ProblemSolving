@@ -31,6 +31,8 @@ http://users.cis.fiu.edu/~weiss/dsaa_c++4/code/BinarySearchTree.h
 The worst case time complexity of Binary Search Tree operations like search, insert, delete is O(n).
 The worst case occurs when the tree is skewed.
 We can get the worst case time complexity as O(height) = O(logn) with AVL Trees and Red Black Trees.
+
+Leetcode: Insert into a Binary Search Tree
 */
 class BinarySearchTree
 {
