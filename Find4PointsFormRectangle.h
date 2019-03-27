@@ -69,7 +69,7 @@ public:
         double dist;
         std::vector<int> center;
     };
-    bool Exist_NonAxisAlignedRect_UseDiagonalIntersection(const std::vector<std::vector<int>> & points) //O(N^2) time avg, O(N^4) time worst case
+    bool Exist_NonAxisAlignedRect_UseDiagonalIntersection(const std::vector<std::vector<int>> & points) //O(N^2) time
     {
         std::vector<PointPairLine> allPairs;
         int N = points.size();
@@ -94,7 +94,7 @@ public:
             int L = p.second.size();
             for (int i = 0; i < L-1; ++i)
                 for (int j = i+1; j < L; ++j)
-                    if (p.second[i].center[0] == p.second[j].center[1] && p.second[i].center[1] == p.second[j].center[1])
+                    if (p.second[i].center[0] == p.second[j].center[0] && p.second[i].center[1] == p.second[j].center[1])
                         return true;
         }
         return false;
@@ -110,6 +110,19 @@ Output: 4
 Example 2:
 Input: [[1,1],[1,3],[3,1],[3,3],[4,1],[4,3]]
 Output: 2
+
+Leetcode: Minimum Area Rectangle II
+Given a set of points in the xy-plane, determine the minimum area of any rectangle formed from these points, with sides not necessarily parallel to the x and y axes.
+If there isn't any rectangle, return 0.
+Input: [[1,2],[2,1],[1,0],[0,1]]
+Output: 2.00000
+Explanation: The minimum area rectangle occurs at [1,2],[2,1],[1,0],[0,1], with an area of 2.
+Input: [[0,1],[2,1],[1,1],[1,0],[2,0]]
+Output: 1.00000
+Explanation: The minimum area rectangle occurs at [1,0],[1,1],[2,1],[2,0], with an area of 1.
+Input: [[3,1],[1,1],[0,1],[2,1],[3,3],[3,2],[0,2],[2,3]]
+Output: 2.00000
+Explanation: The minimum area rectangle occurs at [2,1],[2,3],[3,3],[3,1], with an area of 2.
  */
 class Find4PointsFormRectangle_MinArea
 {
@@ -182,9 +195,69 @@ public:
         std::cout << "Find4PointsFormRectangle_MinArea AxisAligned_CheckDiagonalPairs for [" << Debug::ToStr1D<int>()(points) << "]: " << res << std::endl;
         return res;
     }
+
+    struct PointPairLine
+    {
+        PointPairLine(const std::vector<int> & a_, const std::vector<int> & b_):a(a_), b(b_), dist(Dist(a,b)), center(Center(a,b)){}
+        std::vector<int> a;
+        std::vector<int> b;
+        double dist;
+        std::vector<double> center;
+        double Dist(const std::vector<int> & a, const std::vector<int> & b)
+        {
+            int deltaX = a[0]-b[0];
+            int deltaY = a[1]-b[1];
+            return std::sqrt(deltaX*deltaX + deltaY*deltaY);
+        }
+        std::vector<double> Center(const std::vector<int> & a, const std::vector<int> & b)
+        {
+            return {((double)a[0]+(double)b[0])/2.0, ((double)a[1]+(double)b[1])/2.0};
+        }
+        double RectArea(const std::vector<int> & otherPoint)
+        {
+            double len1 = Dist(a, otherPoint);
+            double len2 = Dist(b, otherPoint);
+            return len1*len2;
+        }
+    };
+    double NonAxisAligned_CheckDiagonalPairs(std::vector<std::vector<int>> && points) //O(N^2) time
+    {
+        std::vector<PointPairLine> allPairs;
+        int N = points.size();
+
+        //enumerate all point pairs
+        for (int i = 0; i < N; ++i)
+            for (int j = i + 1; j < N; ++j)
+            {
+                allPairs.push_back(PointPairLine(points[i], points[j]));
+            }
+
+        std::unordered_map<double, std::vector<PointPairLine>> distToPairs;
+        int M = allPairs.size();
+        for (int i = 0; i < M; ++i)
+            distToPairs[allPairs[i].dist].push_back(allPairs[i]);
+
+        double minArea = std::numeric_limits<double>::max();
+        //compare all pairs with same dists, if both dist and center are equal, we found a rectangle
+        for (auto & p : distToPairs)
+        {
+            int L = p.second.size();
+            for (int i = 0; i < L-1; ++i)
+                for (int j = i+1; j < L; ++j)
+                    if (p.second[i].center[0] == p.second[j].center[0] && p.second[i].center[1] == p.second[j].center[1])
+                    {
+                        double curArea = p.second[i].RectArea(p.second[j].a);
+                        minArea = std::min(minArea, curArea);
+                    }
+        }
+        minArea = minArea == std::numeric_limits<double>::max() ? 0 : minArea;
+        std::cout << "Find4PointsFormRectangle_MinArea NonAxisAligned_CheckDiagonalPairs for [" << Debug::ToStr1D<int>()(points) << "]: " << minArea << std::endl;
+        return minArea;
+    }
 };
 /*
 Find4PointsFormRectangle_MinArea AxisAligned_xToYsHashMap for [[1,1], [1,3], [3,1], [3,3], [4,1], [4,3]]: 2
 Find4PointsFormRectangle_MinArea AxisAligned_CheckDiagonalPairs for [[1,1], [1,3], [3,1], [3,3], [4,1], [4,3]]: 2
+Find4PointsFormRectangle_MinArea NonAxisAligned_CheckDiagonalPairs for [[1,2], [2,1], [1,0], [0,1]]: 2
  */
 #endif
