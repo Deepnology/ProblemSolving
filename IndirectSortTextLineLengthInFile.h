@@ -87,6 +87,18 @@ Each line contains an id (a mix of lowercase chars and digits) and followed by e
 Lines with numbers should be rearrange to the end of the log with original order kept.
 Lines with words should be rearrange to the begin of the log based on the lexicographical order of the words.
 If there is a tie, order by the lexicographical order of their ids.
+
+Leetcode: Reorder log files
+You have an array of logs.  Each log is a space delimited string of words.
+For each log, the first word in each log is an alphanumeric identifier.  Then, either:
+Each word after the identifier will consist only of lowercase letters, or;
+Each word after the identifier will consist only of digits.
+We will call these two varieties of logs letter-logs and digit-logs.  It is guaranteed that each log has at least one word after its identifier.
+Reorder the logs so that all of the letter-logs come before any digit-log.  The letter-logs are ordered lexicographically ignoring identifier, with the identifier used in case of ties.  The digit-logs should be put in their original order.
+Return the final order of the logs.
+Example 1:
+Input: ["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
+Output: ["g1 act car","a8 act zoo","ab1 off key dog","a1 9 2 3 1","zo4 4 7"]
  */
 class IndirectSortTextLinesInLogFile
 {
@@ -100,7 +112,7 @@ public:
 		std::vector<const std::string *> v;
 		for (auto & s : log)
 			v.push_back(&s);
-		std::sort(v.begin(), v.end(), [](const std::string * a, const std::string * b)->bool
+		std::sort(v.begin(), v.end(), [](const std::string * a, const std::string * b)->bool const
 		{
 			int i = 0; int A = a->size();
 			while (i < A && (*a)[i] != ' ')
@@ -137,9 +149,33 @@ public:
         std::cout << "IndirectSortTextLinesInLogFile for [" << Debug::ToStr1D<std::string>()(log) << "]: " << std::endl << Debug::ToStr1D<std::string>()(res) << std::endl;
 		return res;
 	}
+
+	struct Comp
+	{
+		bool operator()(const std::string & a, const std::string & b) const
+		{
+			int i = a.find(' ');
+			int j = b.find(' ');
+			if(isdigit(a[i+1]))
+				return false;
+			else if (isdigit(b[j+1]))
+				return true;
+			else
+				return a.substr(i+1) < b.substr(j+1);
+		}
+	};
+	std::vector<std::string> UseStableSort(std::vector<std::string> && logs)
+	{
+		std::cout << "IndirectSortTextLinesInLogFile UseStableSort for [" << Debug::ToStr1D<std::string>()(logs) << "]: ";
+		std::stable_sort(logs.begin(), logs.end(), Comp());
+		std::cout << Debug::ToStr1D<std::string>()(logs) << std::endl;
+		return logs;
+	}
 };
 /*
 IndirectSortTextLinesInLogFile for [zz 93 1, a2da abd fjdks lkdf, b3ds gfi skl, sji akdk jige, d1ka 123 345 943 32, dkj dks jdf, d0k 8342 372 83, dki dks jdf]:
 a2da abd fjdks lkdf, sji akdk jige, dki dks jdf, dkj dks jdf, b3ds gfi skl, zz 93 1, d1ka 123 345 943 32, d0k 8342 372 83
+
+IndirectSortTextLinesInLogFile UseStableSort for [a1 9 2 3 1, g1 act car, zo4 4 7, ab1 off key dog, a8 act zoo]: g1 act car, a8 act zoo, ab1 off key dog, a1 9 2 3 1, zo4 4 7
  */
 #endif
