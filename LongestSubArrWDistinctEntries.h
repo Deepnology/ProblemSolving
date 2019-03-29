@@ -23,8 +23,15 @@ SlideWindow HashTable: O(n) time, O(c) space, where c is the distinct entries in
 Leetcode: Longest Substring with At Most Two Distinct Characters
 Given a string S, find the length of the longest substring T that contains at most 2 distinct characters.
 For example, Given S = "eceba", T is "ece" which its length is 3.
-http://blog.csdn.net/whuwangyi/article/details/42451289
-http://www.danielbit.com/blog/puzzle/leetcode/leetcode-longest-substring-with-at-most-two-distinct-characters
+Leetcode: Fruit into baskets
+In a row of trees, the i-th tree produces fruit with type tree[i].
+You start at any tree of your choice, then repeatedly perform the following steps:
+Add one piece of fruit from this tree to your baskets.  If you cannot, stop.
+Move to the next tree to the right of the current tree.  If there is no tree to the right, stop.
+Note that you do not have any choice after the initial choice of starting tree: you must perform step 1, then step 2, then back to step 1, then step 2, and so on until you stop.
+You have two baskets, and each basket can carry any quantity of fruit, but you want each basket to only carry one type of fruit each.
+What is the total amount of fruit you can collect with this procedure?
+
 SlideWindow HashTable: O(n) time, O(1) space
 SlideWindow 2Ptrs: O(n) time, O(1) space
 
