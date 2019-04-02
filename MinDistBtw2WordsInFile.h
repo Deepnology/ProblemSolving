@@ -143,7 +143,7 @@ public:
 	std::vector<int> TwoScan(const std::string & s, char c)
 	{
 		int N = s.size();
-		std::vector<int> res(N, -1);
+		std::vector<int> res(N, INT_MAX);
 		int lastIdx = -1;
 		for (int i = 0; i < N; ++i)
 		{
