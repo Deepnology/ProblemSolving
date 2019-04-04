@@ -31,6 +31,25 @@ Note:
 S has length at most 26, and no character is repeated in S.
 T has length at most 200.
 S and T consist of lowercase letters only.
+
+Leetcode: Verifying an Alien Dictionary
+In an alien language, surprisingly they also use english lowercase letters, but possibly in a different order.
+The order of the alphabet is some permutation of lowercase letters.
+Given a sequence of words written in the alien language, and the order of the alphabet,
+ return true if and only if the given words are sorted lexicographicaly in this alien language.
+Example 1:
+Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+Output: true
+Explanation: As 'h' comes before 'l' in this language, then the sequence is sorted.
+Example 2:
+Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
+Output: false
+Explanation: As 'd' comes after 'l' in this language, then words[0] > words[1], hence the sequence is unsorted.
+Example 3:
+Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+Output: false
+Explanation: The first three characters "app" match, and the second string is shorter (in size.)
+According to lexicographical rules "apple" > "app", because 'l' > ' ', where ' ' is defined as the blank character which is less than any other character.
  */
 class SortStringsWithNewAlphabet
 {
@@ -93,6 +112,30 @@ public:
         //2. traverse the trie to output all words
 
         return std::vector<std::string>();
+    }
+
+    bool IsAlienSorted(std::vector<std::string> & words, std::string order)
+    {
+        std::unordered_map<char,int> toIdx;
+        int N = order.size();
+        for (int i = 0; i < N; ++i)
+            toIdx[order[i]] = i;
+        N = words.size();
+        for (int i = 0; i < N-1; ++i)
+        {
+            int M = std::min(words[i].size(), words[i+1].size());
+            int j = 0;
+            for (; j < M; ++j)
+                if (toIdx[words[i][j]] == toIdx[words[i+1][j]])
+                    continue;
+                else if (toIdx[words[i][j]] < toIdx[words[i+1][j]])
+                    break;
+                else
+                    return false;
+            if (j == M && words[i].size() > words[i+1].size())
+                return false;
+        }
+        return true;
     }
 };
 /*
