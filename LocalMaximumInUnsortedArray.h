@@ -15,6 +15,12 @@ The array may contain multiple peaks, in that case return the index to any one o
 You may imagine that "num[-1] = num[n] = INT_MIN".
 For example, in array [1, 2, 3, 1], 3 is a peak element and your function should return the index number 2.
 
+Leetcode: Peak index in a mountain array
+Let's call an array A a mountain if the following properties hold:
+A.length >= 3
+There exists some 0 < i < A.length - 1 such that A[0] < A[1] < ... A[i-1] < A[i] > A[i+1] > ... > A[A.length - 1]
+Given an array that is definitely a mountain, return any i such that A[0] < A[1] < ... A[i-1] < A[i] > A[i+1] > ... > A[A.length - 1].
+
 BinarySearch: O(logn) time, O(1) space
 */
 class LocalMaximumInUnsortedArray
