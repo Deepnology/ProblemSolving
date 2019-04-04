@@ -9,6 +9,7 @@ Example:
 a = [[0, 2], [5, 10], [13, 23], [24, 25]]
 b = [[1, 5], [8, 12], [15, 18], [20, 24]]
 Expected output: [[1, 2], [5, 5], [8, 10], [15, 18], [20, 24]]
+Leetcode: Interval List Intersections
  */
 class IntersectionOfListsOfIntervals
 {
