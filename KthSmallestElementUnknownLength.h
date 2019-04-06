@@ -93,4 +93,39 @@ Assuming the time complexity of the selection algorithm is proportional to the l
 Clearly more storage leads to faster run times (in the extreme we read all n and do a single selection)
 , so there is a trade-off with respect to how much storage we want.
 */
+
+/*
+Leetcode: Kth Largest Element in a Stream
+Design a class to find the kth largest element in a stream.
+Note that it is the kth largest element in the sorted order, not the kth distinct element.
+Your KthLargest class will have a constructor which accepts an integer k and an integer array nums, which contains initial elements from the stream.
+For each call to the method KthLargest.add, return the element representing the kth largest element in the stream.
+Example:
+int k = 3;
+int[] arr = [4,5,8,2];
+KthLargest kthLargest = new KthLargest(3, arr);
+kthLargest.add(3);   // returns 4
+kthLargest.add(5);   // returns 5
+kthLargest.add(10);  // returns 5
+kthLargest.add(9);   // returns 8
+kthLargest.add(4);   // returns 8
+ */
+class KthLargestElementInAStream
+{
+	std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
+	int K;
+public:
+	KthLargestElementInAStream(int k, std::vector<int> nums) : K(k)
+	{
+		for (const auto & i : nums)
+			Add(i);
+	}
+	int Add(int val)
+	{
+		minHeap.push(val);
+		if (minHeap.size() > K)
+			minHeap.pop();
+		return minHeap.top();
+	}
+};
 #endif
