@@ -51,7 +51,7 @@ public:
 		IntervalNode * left;
 		IntervalNode * right;
 
-		int compare(int _lo, int _hi)
+		int compare(int _lo, int _hi) const
 		{
 			//1. compare lo
 			if (lo < _lo) return -1;
@@ -191,7 +191,7 @@ public:
 			return a[0] == b[0] ? a[1] && !b[1] : a[0] > b[0];
 		}
 	};
-	void SweepLine(std::vector<std::vector<int>> & rects)//[loX,hiX,loY,hiY]
+	void SweepLine(std::vector<std::vector<int>> && rects)//[loX,hiX,loY,hiY]
 	{
 		int N = rects.size();
 		std::priority_queue<std::vector<int>, std::vector<std::vector<int>>, Greater> minHeap;
