@@ -19,6 +19,27 @@ Output: 1
 Explanation:
 We can extend "e" and "o" in the word "hello" to get "heeellooo".
 We can't extend "helo" to get "heeellooo" because the group "ll" is not size 3 or more.
+
+Leetcode: Long Pressed Name
+Your friend is typing his name into a keyboard.
+Sometimes, when typing a character c, the key might get long pressed, and the character will be typed 1 or more times.
+You examine the typed characters of the keyboard.
+Return True if it is possible that it was your friends name, with some characters (possibly none) being long pressed.
+Example 1:
+Input: name = "alex", typed = "aaleex"
+Output: true
+Explanation: 'a' and 'e' in 'alex' were long pressed.
+Example 2:
+Input: name = "saeed", typed = "ssaaedd"
+Output: false
+Explanation: 'e' must have been pressed twice, but it wasn't in the typed output.
+Example 3:
+Input: name = "leelee", typed = "lleeelee"
+Output: true
+Example 4:
+Input: name = "laiden", typed = "laiden"
+Output: true
+Explanation: It's not necessary to long press any character.
  */
 class CompareStretchyWords
 {
@@ -64,8 +85,38 @@ public:
         }
         return i == N && j == M;
     }
+
+    bool IsLongPressedName(std::string name, std::string typed)
+    {
+        //same as Expressive Words
+        int N = typed.size();
+        int M = name.size();
+        int i = 0;
+        int j = 0;
+        while (i < N && j < M)
+        {
+            if (typed[i] != name[j])
+                return false;
+            int ii = i;
+            while (ii < N && typed[ii] == typed[i])
+                ++ii;
+            int jj = j;
+            while (jj < M && name[jj] == name[j])
+                ++jj;
+            int lenA = ii-i;
+            int lenB = jj-j;
+            if ((lenA < 2 && lenA != lenB) || //1 char must be exactly same
+                (lenA >= 2 && !(lenA >= lenB))) //3 or more repeated chars must be equal or more
+                return false;
+            i = ii;
+            j = jj;
+        }
+        std::cout << "CompareStretchyWords IsLongPressedName for [" << name << "], [" << typed << "]: " << (i==N&&j==M) << std::endl;
+        return i == N && j == M;
+    }
 };
 /*
 CompareStretchyWords for [heeellooo] from [hello, hi, helo]: 1
+CompareStretchyWords IsLongPressedName for [leelee], [lleeelee]: 1
  */
 #endif
