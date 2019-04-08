@@ -12,6 +12,7 @@ A subarray A[i...j] is bitonic if there is a k with i <= k <= j such that
 A[i] <= A[i + 1] ... <= A[k] >= A[k + 1] >= .. A[j - 1] >= A[j].
 
 O(n) time, O(1) space
+see LBSubArr.h
 */
 class LongestBitonicSubArray
 {
