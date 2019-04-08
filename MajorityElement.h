@@ -33,6 +33,7 @@ The algorithm should run in linear time and in O(1) space.
 Hint: How many majority elements could it possibly have?
 Equivalent to GeneralizedMajorityElements.h
 
+see also FindNRepeatedNumInSize2NArray.h
 */
 class MajorityElement
 {
