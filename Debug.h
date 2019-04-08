@@ -367,6 +367,25 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
+		void operator()(const std::unordered_map<T, std::map<T, U>> & m)
+		{
+			std::ostringstream oss;
+			int count = 0;
+			for (typename std::unordered_map<T, std::map<T, U>>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
+			{
+				oss << "Row#" << count++ << "	= " << i->first << ": ";
+				int M = i->second.size();
+				int cnt = 0;
+				for (typename std::map<T, U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
+				{
+					oss << "[" << j->first << "," << j->second << "]";
+					if (++cnt != M)
+						oss << ", ";
+				}
+				oss << std::endl;
+			}
+			std::cout << oss.str() << std::endl;
+		}
 		void operator()(const std::unordered_map<T, std::unordered_set<U>> & m)
 		{
 			std::ostringstream oss;
