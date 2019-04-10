@@ -16,7 +16,16 @@ class SumOfAllSubArrMins
 public:
     SumOfAllSubArrMins(){}
     ~SumOfAllSubArrMins(){}
-
+    /*
+    ex: [3,1,2,4]
+    for 3: the boundary is [3]
+    for 1: the boundary is [3,1,2,4]
+    for 2: the boundary is [2,4]
+    for 4: the boundary is [4]
+    the number of subarrays for a number n: (idxOf(n)-leftBoundary) * (rightBoundary-idxOf(n))
+    the total sums of n appearing in these subarrays: n*(idxOf(n)-leftBoundary)*(rightBoundary-idxOf(n))
+    After a number n pops out from an increasing stack, the current stack top is n's left_boundary, the number forcing n to pop is n's right_boundary.
+    */
     int UseMonotoneIncrStk(std::vector<int> && A)
     {
         int N = A.size();
