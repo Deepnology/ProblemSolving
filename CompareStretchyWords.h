@@ -106,7 +106,7 @@ public:
             int lenA = ii-i;
             int lenB = jj-j;
             if ((lenA < 2 && lenA != lenB) || //1 char must be exactly same
-                (lenA >= 2 && !(lenA >= lenB))) //3 or more repeated chars must be equal or more
+                (lenA >= 2 && !(lenA >= lenB))) //2 or more repeated chars must be equal or more
                 return false;
             i = ii;
             j = jj;
