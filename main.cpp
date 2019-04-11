@@ -49,6 +49,7 @@
 #include "AddGetFraudulentTransactionsInOrder.h"
 #include "DesignMealCombinationSystem.h"
 #include "DesignLeetcodeOJ.h"
+#include "TimeBasedKeyValStore.h"
 
 /*Math*/
 #include "EggDrop.h"
@@ -167,6 +168,7 @@
 #include "CountPrimeSetBitsOfNums.h"
 #include "CountBinaryNumsConvertableToEitherOf3.h"
 #include "CountConsecuNumsWTgtSum.h"
+#include "RunLenEncodedIterator.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -211,6 +213,7 @@
 #include "StackWithMax.h"
 #include "StackPermutation.h"
 #include "RoundRobinScheduling.h"
+#include "MaxFreqStack.h"
 
 /*1D Array*/
 #include "AllUniqueElements.h"
@@ -259,6 +262,7 @@
 #include "BuildingsViewSunset.h"
 #include "ThreeSum.h"
 #include "ThreeSumClosest.h"
+#include "ThreeSumWithMultiplicity.h"
 #include "FourSum.h"
 #include "TwoSum.h"
 #include "TwoSumAbsSortedArray.h"
@@ -282,6 +286,10 @@
 #include "MoveZerosToEndOfArray.h"
 #include "SwapAdjacentInLRString.h"
 #include "AsteroidCollision.h"
+#include "MoveEvenNumsToFrontInArray.h"
+#include "NumOfFriendRequests.h"
+#include "AltEvenOddNumArray.h"
+#include "FindNRepeatedNumInSize2NArray.h"
 
 /*Sort Search Select*/
 #include "Partition.h"
@@ -379,6 +387,10 @@
 #include "MinimizeMaxDistToGasStation.h"
 #include "MaxNumPartitionsToSort.h"
 #include "MinCostHireKWorkers.h"
+#include "KClosest2DPointsToOrigin.h"
+#include "MonotonicArray.h"
+#include "MinFlip01StrToMonotoneIncr.h"
+#include "RevealCardsInIncrOrder.h"
 
 /*Interval*/
 #include "MergeIntervals.h"
@@ -488,6 +500,8 @@
 #include "MinStickersToSpellWord.h"
 #include "Game24.h"
 #include "MaxPointsDeleteAndEarn.h"
+#include "PartitionArrToDoubleValuedPairs.h"
+#include "PartitionSameNumsInGroupsWSameSizes.h"
 
 /*Trie Suffix Tree Array*/
 #include "SuffixArray.h"
@@ -584,6 +598,13 @@
 #include "MaxMSubArrSumWSizeK.h"
 #include "AllSubstrSizeKContainDistinctChars.h"
 #include "MaxSubArrSumSizeK.h"
+#include "SumOfAllSubArrMins.h"
+#include "CountSubArrWSumDivisibleByK.h"
+#include "MaxDistToClosestPerson.h"
+#include "LBSubArr.h"
+#include "LongestAlternatingSubArr.h"
+#include "LongestFibonacciSubseq.h"
+#include "AllNumsInLeftSubArrLessEqualRight.h"
 
 /*Compare String*/
 #include "EditDistance.h"
@@ -604,6 +625,10 @@
 #include "LongestWordInDictThruDeleting.h"
 #include "LongestLadderWordInDict.h"
 #include "CompareStringsWBackspace.h"
+#include "CountUniqueEmailAddr.h"
+#include "ConvertSentenceToGoatLatin.h"
+#include "CompareStretchyWords.h"
+#include "CountSubdomainVisits.h"
 
 /*Text Lines*/
 #include "NeatPrintWordWrap.h"
@@ -730,6 +755,12 @@
 #include "RobotRoomCleaner.h"
 #include "RemoveSurroundedPiecesInMatrix.h"
 #include "ReachingPoints2D.h"
+#include "OrthogonalLineSegmentIntersection.h"
+#include "OrthogonalRectangleIntersection.h"
+#include "OrthogonalRectangleIntersection2.h"
+#include "MinMovesInSnakeLadderBoard.h"
+#include "CandyCrush.h"
+#include "CountMagic3x3SquareInGrid.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -794,6 +825,7 @@
 #include "ClosestValBST.h"
 #include "BinaryTreeVerticalOrderTraversal.h"
 #include "CountUnivalueSubtrees.h"
+#include "UnivaluedBinaryTree.h"
 #include "LargestBSTSubtree.h"
 #include "LargestInRangeBSTSubtree.h"
 #include "FlattenNestedListIterator.h"
@@ -815,6 +847,11 @@
 #include "RangeSumOfNodesInBST.h"
 #include "FlipEquivalentBinaryTrees.h"
 #include "SameLeafValSeqBinaryTrees.h"
+#include "DistributeNCoinsToNNodesInBinaryTree.h"
+#include "MinCamerasBinaryTree.h"
+#include "FlattenBinaryTreeInInorder.h"
+#include "SubtreeContainingAllDeepestNodes.h"
+#include "BinaryTreeLevelOrderArrToInOrderArr.h"
 
 /*Quad Tree*/
 #include "QuadTree.h"
@@ -888,6 +925,7 @@
 #include "GraphToTreeRedundantEdge.h"
 #include "CrackSafe.h"
 #include "SumOfDistBtwCurAndAllOtherNodesInTree.h"
+#include "ShortestPathVisitAllNodesInGraph.h"
 
 /*RMQ LCA*/
 #include "RangeSumQuerySegmentTree.h"
@@ -1240,6 +1278,15 @@ int main()
         DesignLeetcodeOJ::OJSingleton::Instance().Print();
         DesignLeetcodeOJ::OJSingleton::Instance().Print();
         DesignLeetcodeOJ::OJSingleton::Instance().Print();
+    }
+    {
+        TimeBasedKeyValStore timeMap;
+        timeMap.Set("foo", "bar", 1);
+        timeMap.Get("foo", 1);
+        timeMap.Get("foo", 3);
+        timeMap.Set("foo", "bar2", 4);
+        timeMap.Get("foo", 4);
+        timeMap.Get("foo", 5);
     }
 
 #endif
@@ -2161,6 +2208,13 @@ int main()
     {
         CountConsecuNumsWTgtSum().UseFormula(15);
     }
+    {
+        RunLenEncodedIterator i(std::vector<int>({3,8,0,9,2,5}));
+        i.Next(2);
+        i.Next(1);
+        i.Next(1);
+        i.Next(2);
+    }
 
 #endif
 #ifdef _Random_
@@ -2624,6 +2678,19 @@ int main()
     {
         RoundRobinScheduling().Test();
     }
+    {
+        MaxFreqStack s;
+        s.Push(5);
+        s.Push(7);
+        s.Push(5);
+        s.Push(7);
+        s.Push(4);
+        s.Push(5);
+        s.Pop();
+        s.Pop();
+        s.Pop();
+        s.Pop();
+    }
 
 #endif
 #ifdef _1DArray_
@@ -3039,6 +3106,11 @@ int main()
 
 		ThreeSumSmaller().Sort_Greedy(std::vector<int>({ -2,0,1,3 }), 2);
 	}
+    {
+        ThreeSumWithMultiplicity().UseSort(std::vector<int>({1,1,2,2,3,3,4,4,5,5}),8);
+        ThreeSumWithMultiplicity().DP(std::vector<int>({1,1,2,2,3,3,4,4,5,5}),8);
+        ThreeSumWithMultiplicity().UseHashMap(std::vector<int>({1,1,2,2,3,3,4,4,5,5}),8);
+    }
 	{
 		int fourSum[] = { 1, 0, -1, 0, -2, 2 };
 		FourSum().FindAll_Sort_Greedy(std::vector<int>(fourSum, fourSum + sizeof(fourSum) / sizeof(int)), 0);
@@ -3239,6 +3311,18 @@ int main()
     }
     {
         AsteroidCollision().UseStack(std::vector<int>({1,2,8,-8,-2,-6}));
+    }
+    {
+        MoveEvenNumsToFrontInArray().UnStable(std::vector<int>({3,1,2,4}));
+    }
+    {
+        NumOfFriendRequests().Test(std::vector<int>({20,30,100,110,120}));
+    }
+    {
+        AltEvenOddNumArray().TwoPointers(std::vector<int>({4,2,5,7}));
+    }
+    {
+        FindNRepeatedNumInSize2NArray().Test(std::vector<int>({5,1,5,2,5,3,5,4}));
     }
 
 #endif
@@ -3940,6 +4024,7 @@ int main()
 	{
 		IndirectSortTextLineLengthInFile().Test();
         IndirectSortTextLinesInLogFile().Sort(std::vector<std::string>({"zz 93 1", "a2da abd fjdks lkdf", "b3ds gfi skl", "sji akdk jige", "d1ka 123 345 943 32", "dkj dks jdf", "d0k 8342 372 83", "dki dks jdf"}));
+        IndirectSortTextLinesInLogFile().UseStableSort(std::vector<std::string>({"a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"}));
 	}
 	{
 		LeastDistanceSort().IndirectAndPermute(std::vector<int>({ 41, 67, 34, 0, 69, 24, 78, 58, 62, 64, 5, 45, 81, 27, 61 }));
@@ -4347,6 +4432,19 @@ int main()
     }
     {
         MinCostHireKWorkers().SortAndMaxHeap(std::vector<int>({10,20,5}), std::vector<int>({70,50,30}),2);
+    }
+    {
+        KClosest2DPointsToOrigin().Test(std::vector<std::vector<int>>({{3,3},{5,-1},{-2,4}}), 2);
+    }
+    {
+        MonotonicArray().Valid(std::vector<int>({1,2,2,3}));
+    }
+    {
+        MinFlip01StrToMonotoneIncr().PrefixSum("010110");
+        MinFlip01StrToMonotoneIncr().DP("010110");
+    }
+    {
+        RevealCardsInIncrOrder().ReverseProcessUseQueue(std::vector<int>({17,13,11,2,3,5,7}));
     }
 
 #endif
@@ -5103,8 +5201,10 @@ int main()
 		PlusMinusCombinationSum().NumOfWaysDP2D(std::vector<int>({ 1, 1, 1, 1, 1 }), 3);
 	}
 	{
-		SmallestPermutationFromIncrDecrArray().findPermutation(std::string("IDIDDDI"));
-		SmallestPermutationFromIncrDecrArray().findPermutation(std::string("DDIIDDD"));
+		SmallestPermutationFromIncrDecrArray().FindSmallestPermutation(std::string("IDIDDDI"));
+		SmallestPermutationFromIncrDecrArray().FindSmallestPermutation(std::string("DDIIDDD"));
+        SmallestPermutationFromIncrDecrArray().FindAnyPermutation(std::string("IDIDDDI"));
+        SmallestPermutationFromIncrDecrArray().FindAnyPermutation(std::string("DDIIDDD"));
 	}
 	{
 		BeautifulArrangement().Recur(4);
@@ -5155,6 +5255,12 @@ int main()
     }
     {
         MaxPointsDeleteAndEarn().DP(std::vector<int>({2,2,3,3,3,4}));
+    }
+    {
+        PartitionArrToDoubleValuedPairs().Test(std::vector<int>({4,-2,2,-4}));
+    }
+    {
+        PartitionSameNumsInGroupsWSameSizes().Valid(std::vector<int>({1,1,2,2,2,2}));
     }
 
 #endif
@@ -6093,6 +6199,31 @@ int main()
         AllSubstrSizeKContainDistinctChars().SlideWindow1(std::string("awaglknagawunagwkwagl"), 4);
         AllSubstrSizeKContainDistinctChars().SlideWindow2(std::string("awaglknagawunagwkwagl"), 4);
     }
+    {
+        SumOfAllSubArrMins().UseMonotoneIncrStk(std::vector<int>({3,1,2,4}));
+    }
+    {
+        CountSubArrWSumDivisibleByK().UsePrefixSumMap(std::vector<int>({4,5,0,-2,-3,1}), 5);
+    }
+    {
+        MaxDistToClosestPerson().FindLongest0sSubArr(std::vector<int>({1,0,0,0,1,0,1}));
+        MaxDistToClosestPerson().FindLongest0sSubArr(std::vector<int>({1,0,0,0}));
+    }
+    {
+        LBSubArr().BruteForce(std::vector<int>({2,1,4,7,3,2,5}));
+        LBSubArr().DP(std::vector<int>({2,1,4,7,3,2,5}));
+        LBSubArr().OnePass(std::vector<int>({2,1,4,7,3,2,5}));
+    }
+    {
+        LongestAlternatingSubArr().Solve(std::vector<int>({9,4,2,10,7,8,8,1,9}));
+    }
+    {
+        LongestFibonacciSubseq().BruteForce(std::vector<int>({1,2,3,4,5,6,7,8}));
+        LongestFibonacciSubseq().DP(std::vector<int>({1,2,3,4,5,6,7,8}));
+    }
+    {
+        AllNumsInLeftSubArrLessEqualRight().Test(std::vector<int>({1,1,1,0,6,12}));
+    }
 
 #endif
 #ifdef _CompareString_
@@ -6210,6 +6341,19 @@ int main()
     }
     {
         CompareStringsWBackspace().Test("a##C", "#a#C");
+    }
+    {
+        CountUniqueEmailAddr().UseHashSet(std::vector<std::string>({"test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"}));
+    }
+    {
+        ConvertSentenceToGoatLatin().Solve(std::string("The quick brown fox jumped over the lazy dog"));
+    }
+    {
+        CompareStretchyWords().Count(std::string("heeellooo"), std::vector<std::string>({"hello","hi","helo"}));
+        CompareStretchyWords().IsLongPressedName("leelee", "lleeelee");
+    }
+    {
+        CountSubdomainVisits().UseHashMap(std::vector<std::string>({"900 google.mail.com", "50 yahoo.com", "1 intel.mail.com", "5 wiki.org"}));
     }
 
 #endif
@@ -8535,9 +8679,50 @@ int main()
     {
         Find4PointsFormRectangle_MinArea().AxisAligned_xToYsHashMap(std::vector<std::vector<int>>({{1,1},{1,3},{3,1},{3,3},{4,1},{4,3}}));
         Find4PointsFormRectangle_MinArea().AxisAligned_CheckDiagonalPairs(std::vector<std::vector<int>>({{1,1},{1,3},{3,1},{3,3},{4,1},{4,3}}));
+        Find4PointsFormRectangle_MinArea().NonAxisAligned_CheckDiagonalPairs(std::vector<std::vector<int>>({{1,2},{2,1},{1,0},{0,1}}));
     }
     {
         ReachingPoints2D().Recur(3,7,64,27);
+    }
+    {
+        //OrthogonalRectangleIntersection().SweepLine(std::vector<std::vector<int>>({{0,2,0,2},{1,2,0,3},{1,3,0,1}}));
+
+        OrthogonalRectangleIntersection2().BruteForce(std::vector<std::vector<int>>({{0,0,2,2},{1,0,2,3},{1,0,3,1}}));
+        OrthogonalRectangleIntersection2().SweepLine(std::vector<std::vector<int>>({{0,0,2,2},{1,0,2,3},{1,0,3,1}}));
+    }
+    {
+        MinMovesInSnakeLadderBoard().BFS(std::vector<std::vector<int>>(
+                {
+                        {-1,-1,-1,-1,-1,-1},
+                        {-1,-1,-1,-1,-1,-1},
+                        {-1,-1,-1,-1,-1,-1},
+                        {-1,35,-1,-1,13,-1},
+                        {-1,-1,-1,-1,-1,-1},
+                        {-1,15,-1,-1,-1,-1}
+                }));
+    }
+    {
+        CandyCrush().Solve(std::vector<std::vector<int>>(
+                {
+                        {110,5,112,113,114},
+                        {210,211,5,213,214},
+                        {310,311,3,313,314},
+                        {410,411,412,5,414},
+                        {5,1,512,3,3},
+                        {610,4,1,613,614},
+                        {710,1,2,713,714},
+                        {810,1,2,1,1},
+                        {1,1,2,2,2},
+                        {4,1,4,4,1014}
+                }));
+    }
+    {
+        CountMagic3x3SquareInGrid().BruteForce(std::vector<std::vector<int>>(
+                {
+                        {4,3,8,4},
+                        {9,5,1,9},
+                        {2,7,6,2}
+                }));
     }
 
 #endif
@@ -10513,6 +10698,66 @@ int main()
         bstOss.str(std::string());
         FlipEquivalentBinaryTrees::DeleteTree(r1);
         FlipEquivalentBinaryTrees::DeleteTree(r2);
+    }
+    {
+        MinCamerasBinaryTree::TreeNode * r1 = new MinCamerasBinaryTree::TreeNode(0);
+        r1->left = new MinCamerasBinaryTree::TreeNode(0);
+        r1->left->left = new MinCamerasBinaryTree::TreeNode(0);
+        r1->left->right = new MinCamerasBinaryTree::TreeNode(0);
+        PrintBinaryTree<MinCamerasBinaryTree::TreeNode, std::ostringstream>(r1, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        MinCamerasBinaryTree().Recur(r1);
+        bstOss.str(std::string());
+        MinCamerasBinaryTree::DeleteTree(r1);
+        MinCamerasBinaryTree::TreeNode * r2 = new MinCamerasBinaryTree::TreeNode(0);
+        r2->left = new MinCamerasBinaryTree::TreeNode(0);
+        r2->left->left = new MinCamerasBinaryTree::TreeNode(0);
+        r2->left->left->left = new MinCamerasBinaryTree::TreeNode(0);
+        r2->left->left->left->right = new MinCamerasBinaryTree::TreeNode(0);
+        PrintBinaryTree<MinCamerasBinaryTree::TreeNode, std::ostringstream>(r2, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        MinCamerasBinaryTree().Recur(r2);
+        bstOss.str(std::string());
+        MinCamerasBinaryTree::DeleteTree(r2);
+    }
+    {
+        FlattenBinaryTreeInInorder::TreeNode * r = new FlattenBinaryTreeInInorder::TreeNode(5);
+        r->left = new FlattenBinaryTreeInInorder::TreeNode(3);
+        r->left->left = new FlattenBinaryTreeInInorder::TreeNode(2);
+        r->left->right = new FlattenBinaryTreeInInorder::TreeNode(4);
+        r->left->left->left = new FlattenBinaryTreeInInorder::TreeNode(1);
+        r->right = new FlattenBinaryTreeInInorder::TreeNode(6);
+        //r->right->right = new FlattenBinaryTreeInInorder::TreeNode(8);
+        //r->right->right->left = new FlattenBinaryTreeInInorder::TreeNode(7);
+        //r->right->right->right = new FlattenBinaryTreeInInorder::TreeNode(9);
+        bstOss << "FlattenBinaryTreeInInorder:" << std::endl;
+        PrintBinaryTree<FlattenBinaryTreeInInorder::TreeNode, std::ostringstream>(r, bstOss);
+        FlattenBinaryTreeInInorder::TreeNode * res = FlattenBinaryTreeInInorder().Iterate(r);
+        PrintBinaryTree<FlattenBinaryTreeInInorder::TreeNode, std::ostringstream>(res, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        FlattenBinaryTreeInInorder::DeleteTree(res);
+    }
+    {
+        SubtreeContainingAllDeepestNodes::TreeNode * r = new SubtreeContainingAllDeepestNodes::TreeNode(3);
+        r->left = new SubtreeContainingAllDeepestNodes::TreeNode(5);
+        r->left->left = new SubtreeContainingAllDeepestNodes::TreeNode(6);
+        r->left->right = new SubtreeContainingAllDeepestNodes::TreeNode(2);
+        r->left->right->left = new SubtreeContainingAllDeepestNodes::TreeNode(7);
+        r->left->right->right = new SubtreeContainingAllDeepestNodes::TreeNode(4);
+        r->right = new SubtreeContainingAllDeepestNodes::TreeNode(1);
+        r->right->left = new SubtreeContainingAllDeepestNodes::TreeNode(0);
+        r->right->right = new SubtreeContainingAllDeepestNodes::TreeNode(8);
+        bstOss << "SubtreeContainingAllDeepestNodes: " << std::endl;
+        PrintBinaryTree<SubtreeContainingAllDeepestNodes::TreeNode, std::ostringstream>(r, bstOss);
+        SubtreeContainingAllDeepestNodes::TreeNode * res = SubtreeContainingAllDeepestNodes().Recur(r);
+        PrintBinaryTree<SubtreeContainingAllDeepestNodes::TreeNode, std::ostringstream>(res, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        SubtreeContainingAllDeepestNodes::DeleteTree(r);
+    }
+    {
+        BinaryTreeLevelOrderArrToInOrderArr().Recur(std::vector<int>({4, 2, 6, 1, 3, 5, 7}));
     }
 
 #endif
@@ -13067,6 +13312,10 @@ int main()
     }
     {
         SumOfDistBtwCurAndAllOtherNodesInTree().TwoPassDFS(6, std::vector<std::vector<int>>({{0,1},{0,2},{2,3},{2,4},{2,5}}));
+    }
+    {
+        ShortestPathVisitAllNodesInGraph().Test(std::vector<std::vector<int>>({{1,2,3},{0},{0},{0}}));
+        ShortestPathVisitAllNodesInGraph().Test(std::vector<std::vector<int>>({{1},{0,2,4},{1,3,4},{2},{1,2}}));
     }
 
 #endif
