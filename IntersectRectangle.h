@@ -45,6 +45,8 @@ II. The intersection area for two rectangles if overlapped:
 (TopRight.x, TopRight.y) = (min(TopRight1.x,TopRight2.x), min(TopRight1.y, TopRight2.y))
 
 O(1) time
+
+Leetcode: Rectangle Overlap
 */
 class IntersectRectangle
 {
