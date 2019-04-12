@@ -205,7 +205,7 @@ class RandNonRepeat1toN
 	std::vector<int> m_sorted;
 	std::mt19937 m_generator;
 public:
-	explicit RandNonRepeat1toN(int n) : N(n), m_sorted(), m_generator(this->currentTime()) 
+	explicit RandNonRepeat1toN(int n) : N(n), m_sorted(), m_generator(this->currentTime())
 	{
 		m_sorted.reserve(N);
 	}
@@ -291,6 +291,71 @@ private:
 		return distribution(m_generator);
 	}
 };
+class RandNonRepeat1toN_HashMap //best, same as RandomSubset.h
+{
+	int N;
+	int count;
+	std::unordered_map<int,int> m_map;//use 0-based
+
+public:
+	explicit RandNonRepeat1toN_HashMap(int n) : N(n), count(0), m_map()
+	{
+
+	}
+	~RandNonRepeat1toN_HashMap() {}
+	int Next()
+	{
+		if (count == N) return 0;
+		int curRand = rand() % (N-count) + count;//rand in [count,N-1], which is 0-based
+		auto itr1 = m_map.find(curRand);
+		auto itr2 = m_map.find(count);
+		if (itr1 == m_map.end() && itr2 == m_map.end())
+		{
+			m_map[curRand] = count;
+			m_map[count] = curRand;
+		}
+		else if (itr1 == m_map.end() && itr2 != m_map.end())
+		{
+			m_map[curRand] = itr2->second;
+			itr2->second = curRand;
+		}
+		else if (itr1 != m_map.end() && itr2 == m_map.end())
+		{
+			m_map[count] = itr1->second;
+			itr1->second = count;
+		}
+		else
+		{
+			std::swap(itr1->second, itr2->second);
+		}
+		int res = m_map[count] + 1;//convert to 1-based
+		++count;
+		return res;
+	}
+	std::vector<int> Roll()
+	{
+		//O(NlogN) time
+		std::vector<int> res;
+		std::unordered_set<int> check;
+		int buf;
+		while ((buf = this->Next()) != 0)
+		{
+			if (check.count(buf) != 0)
+				std::cout << "RandNonRepeat1toN_HashMap Roll found duplicate: " << buf << "!!!!" << std::endl;
+			check.insert(buf);
+
+			res.push_back(buf);
+		}
+		//std::cout << Debug::ToStr1D<int>()(m_sorted) << std::endl;
+		std::cout << "RandNonRepeat1toN_HashMap Roll for \"1~" << N << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
+	void Reset()
+	{
+		count = 0;
+		m_map.clear();
+	}
+};
 /*
 68: 13,14
 68: 14,13
@@ -329,5 +394,6 @@ Rand1toNExcludeKSortedNum BinarySearch for "1~100 Exclude 4, 13, 19, 25, 27, 31,
 83: 16,15
 Rand1toNExcludeKSortedNum BinarySearch for "1~100 Exclude 4, 13, 19, 25, 27, 31, 39, 43, 52, 58, 64, 67, 73, 81, 88, 94": 99, 99
 RandNonRepeat1toN Roll for "1~100": 25, 19, 23, 86, 100, 18, 70, 30, 47, 74, 94, 73, 37, 95, 8, 43, 92, 77, 3, 54, 61, 41, 33, 78, 72, 12, 44, 81, 88, 51, 76, 20, 60, 10, 36, 9, 80, 79, 97, 65, 26, 84, 14, 46, 83, 69, 50, 99, 35, 87, 63, 11, 39, 2, 28, 82, 4, 85, 89, 52, 64, 21, 7, 91, 13, 1, 90, 24, 56, 57, 40, 48, 5, 38, 49, 55, 34, 17, 71, 96, 66, 45, 29, 42, 32, 62, 93, 75, 98, 15, 6, 58, 68, 31, 53, 22, 27, 67, 59, 16
+RandNonRepeat1toN_HashMap Roll for "1~100": 65, 44, 72, 79, 84, 15, 30, 75, 34, 80, 57, 49, 7, 5, 31, 86, 59, 78, 53, 14, 42, 95, 20, 100, 8, 93, 98, 39, 97, 9, 27, 88, 82, 46, 10, 41, 64, 85, 73, 96, 60, 28, 18, 45, 74, 26, 36, 66, 25, 68, 32, 99, 52, 3, 4, 94, 71, 47, 48, 55, 77, 40, 22, 19, 33, 76, 69, 56, 43, 83, 21, 67, 6, 1, 16, 12, 91, 92, 51, 62, 89, 70, 2, 35, 61, 87, 54, 24, 90, 11, 50, 29, 17, 13, 63, 37, 23, 58, 38, 81
 */
 #endif
