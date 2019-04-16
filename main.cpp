@@ -9,11 +9,11 @@
 //#define _Interval_
 //#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
-#define _FindSubstringSubsequence_
-//#define _CompareString_
+//#define _FindSubstringSubsequence_
+#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
-//#define _2DGrid_
+#define _2DGrid_
 //#define _BinaryTree_
 //#define _QuadTree_
 //#define _Heap_
@@ -188,6 +188,7 @@
 #include "RandomPickIndicesOfTarget.h"
 #include "InsertDeleteGetWeightedRandom.h"
 #include "RandomPickNumsInRangeWoRepeat.h"
+#include "Rand2DPointInNonOvlpRects.h"
 
 /*Stack Queue*/
 #include "SortStack.h"
@@ -391,6 +392,7 @@
 #include "MonotonicArray.h"
 #include "MinFlip01StrToMonotoneIncr.h"
 #include "RevealCardsInIncrOrder.h"
+#include "MaxProfitAssignWork.h"
 
 /*Interval*/
 #include "MergeIntervals.h"
@@ -512,6 +514,7 @@
 #include "MaxXORof2NumsInArray.h"
 #include "SearchWordWithPrefixSuffix.h"
 #include "SerializeDeserializeTrie.h"
+#include "OneCharMismatchDictionary.h"
 
 /*Find Substring Subsequence*/
 #include "AllSubstr.h"
@@ -605,6 +608,7 @@
 #include "LongestAlternatingSubArr.h"
 #include "LongestFibonacciSubseq.h"
 #include "AllNumsInLeftSubArrLessEqualRight.h"
+#include "CountSubArrWKDistinctEntries.h"
 
 /*Compare String*/
 #include "EditDistance.h"
@@ -629,6 +633,7 @@
 #include "ConvertSentenceToGoatLatin.h"
 #include "CompareStretchyWords.h"
 #include "CountSubdomainVisits.h"
+#include "VowelSpellChecker.h"
 
 /*Text Lines*/
 #include "NeatPrintWordWrap.h"
@@ -761,6 +766,9 @@
 #include "MinMovesInSnakeLadderBoard.h"
 #include "CandyCrush.h"
 #include "CountMagic3x3SquareInGrid.h"
+#include "PourWater.h"
+#include "ShortestBridgeBtw2Islands.h"
+#include "RoundTripMaxPickupIn2DMatrix.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -2275,6 +2283,7 @@ int main()
 			Rand1toNExcludeKSortedNum().BinarySearch(100, std::vector<int>({ 4, 13, 19, 25, 27, 31, 39, 43, 52, 58, 64, 67, 73, 81, 88, 94 }));
 
 		RandNonRepeat1toN(100).Roll();
+		RandNonRepeat1toN_HashMap(100).Roll();
 	}
     {
         for (int i = 0; i < 1; ++i)
@@ -2339,6 +2348,14 @@ int main()
         r.GetRandom();
         r.Insert("B", 0);
         r.GetRandom();
+    }
+    {
+        Rand2DPointInNonOvlpRects r(std::vector<std::vector<int>>({{-2,-2,-1,-1},{1,0,3,0}}));
+        r.Pick();
+        r.Pick();
+        r.Pick();
+        r.Pick();
+        r.Pick();
     }
 
 #endif
@@ -2668,12 +2685,8 @@ int main()
         s.top();
     }
     {
-        StackPermutation().Validate(std::vector<int>({1,2,3,4,5}), std::vector<int>({5,4,3,2,1}));
-        StackPermutation().Validate(std::vector<int>({1,2,3,4,5}), std::vector<int>({1,2,3,4,5}));
-        StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({6,8,4,7,5}));
-        StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({6,4,5,7,8}));
-        StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({6,4,7,8,5}));
-        StackPermutation().Validate(std::vector<int>({5,7,8,4,6}), std::vector<int>({7,8,4,6,5}));
+        StackPermutation().Validate1(std::vector<int>({1,2,3,4,5}), std::vector<int>({4,5,3,2,1}));
+        StackPermutation().Validate(std::vector<int>({1,2,3,4,5}), std::vector<int>({4,5,3,2,1}));
     }
     {
         RoundRobinScheduling().Test();
@@ -4446,6 +4459,9 @@ int main()
     {
         RevealCardsInIncrOrder().ReverseProcessUseQueue(std::vector<int>({17,13,11,2,3,5,7}));
     }
+    {
+        MaxProfitAssignWork().SortplusTwoPtrs(std::vector<int>({2,4,6,8,10}), std::vector<int>({10,20,30,40,50}), std::vector<int>({4,5,6,7}));
+    }
 
 #endif
 #ifdef _Interval_
@@ -5402,6 +5418,14 @@ int main()
         SerializeDeserializeTrie::Trie * root2 = SerializeDeserializeTrie().Deserialize(s);
         SerializeDeserializeTrie().Serialize(root2);
     }
+    {
+        OneCharMismatchDictionary d;
+        d.BuildDict(std::vector<std::string>({"hello", "leetcode"}));
+        d.Search("hello");
+        d.Search("hhllo");
+        d.Search("hell");
+        d.Search("leetcoded");
+    }
 
 #endif
 #ifdef _FindSubstringSubsequence_
@@ -6224,6 +6248,9 @@ int main()
     {
         AllNumsInLeftSubArrLessEqualRight().Test(std::vector<int>({1,1,1,0,6,12}));
     }
+    {
+        CountSubArrWKDistinctEntries().Solve(std::vector<int>({1,2,1,2,3}), 2);
+    }
 
 #endif
 #ifdef _CompareString_
@@ -6354,6 +6381,9 @@ int main()
     }
     {
         CountSubdomainVisits().UseHashMap(std::vector<std::string>({"900 google.mail.com", "50 yahoo.com", "1 intel.mail.com", "5 wiki.org"}));
+    }
+    {
+        VowelSpellChecker().UseHashMaps(std::vector<std::string>({"KiTe","kite","hare","Hare"}), std::vector<std::string>({"kite","Kite","KiTe","Hare","HARE","Hear","hear","keti","keet","keto"}));
     }
 
 #endif
@@ -8722,6 +8752,35 @@ int main()
                         {4,3,8,4},
                         {9,5,1,9},
                         {2,7,6,2}
+                }));
+    }
+    {
+        PourWater().Solve(std::vector<int>({2,1,1,2,1,2,2}), 4, 3);
+    }
+    {
+        ShortestBridgeBtw2Islands().DFSplusBFS(std::vector<std::vector<int>>(
+                {
+                        {1,1,1,1,1},
+                        {1,0,0,0,1},
+                        {1,0,1,0,1},
+                        {1,0,0,0,1},
+                        {1,1,1,1,1}
+                }));
+        ShortestBridgeBtw2Islands().DFSplus2DirBFS(std::vector<std::vector<int>>(
+                {
+                        {1,1,1,1,1},
+                        {1,0,0,0,1},
+                        {1,0,1,0,1},
+                        {1,0,0,0,1},
+                        {1,1,1,1,1}
+                }));
+    }
+    {
+        RoundTripMaxPickupIn2DMatrix().DP3D(std::vector<std::vector<int>>(
+                {
+                        {0, 1, -1},
+                        {1, 0, -1},
+                        {1, 1,  1}
                 }));
     }
 
