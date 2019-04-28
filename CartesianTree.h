@@ -34,8 +34,32 @@ see also LargestRectHistogram.h, AllStockSpans.h
 see also MinFirstBST.h, Treap.h, LowestCommonAncestorBinaryTree.h
 see also ConvertSortedArrayToBinarySearchTree.h, ConvertSortedListToBinarySearchTree.h
 see also ConstructBSTFromTraversal.h
+
+Leetcode: Maximum Binary Tree II
+We are given the root node of a maximum tree: a tree where every node has a value greater than any other value in its subtree.
+Just as in the previous problem, the given tree was constructed from an list A (root = Construct(A)) recursively with the following Construct(A) routine:
+If A is empty, return null.
+Otherwise, let A[i] be the largest element of A.  Create a root node with value A[i].
+The left child of root will be Construct([A[0], A[1], ..., A[i-1]])
+The right child of root will be Construct([A[i+1], A[i+2], ..., A[A.length - 1]])
+Return root.
+Note that we were not given A directly, only a root node root = Construct(A).
+Suppose B is a copy of A with the value val appended to it.  It is guaranteed that B has unique values.
+Return Construct(B).
+Example 1:
+Input: root = [4,1,3,null,null,2], val = 5
+Output: [5,4,null,1,3,null,null,2]
+Explanation: A = [1,4,2,3], B = [1,4,2,3,5]
+Example 2:
+Input: root = [5,2,4,null,1], val = 3
+Output: [5,2,4,null,1,null,3]
+Explanation: A = [2,1,5,4], B = [2,1,5,4,3]
+Example 3:
+Input: root = [5,2,3,null,1], val = 4
+Output: [5,2,4,null,1,3]
+Explanation: A = [2,1,5,3], B = [2,1,5,3,4]
 */
-class CartesianTree
+class CartesianTree// minHeap
 {
 public:
 	CartesianTree(){}
@@ -146,6 +170,26 @@ private:
 		return{ foundCount, foundCount == 2 ? root : nullptr };
 	}
 
+	//if val is the smallest, val will be the new root, old root will be its right child
+	//otherwise, the new node with val will always be the left child
+	TreeNode * InsertIntoMinTree(TreeNode* root, int val)
+	{
+		TreeNode * v = new TreeNode(val);
+		if (val < root->val)
+		{
+			v->right = root;
+			return v;
+		}
+		TreeNode * cur = root;
+		while (cur->left && cur->left->val < val)
+			cur = cur->left;
+		//now cur->val >= val
+		//make cur->left to be v's right
+		//make v to be cur's left
+		v->right = cur->left;
+		cur->left = v;
+		return root;
+	}
 public:
 	static void DeleteTree(TreeNode * root)
 	{
@@ -158,6 +202,84 @@ public:
 		//post order
 		delete root;
 		root = 0;
+	}
+};
+class CartesianTree_MaxHeap// Leetcode
+{
+public:
+	CartesianTree_MaxHeap(){}
+	struct TreeNode
+	{
+		TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+		int val;
+		TreeNode * left;
+		TreeNode * right;
+	};
+	//Cartesian Tree:
+	//inorder traversal of the tree will be the original array and max heap property is kept
+	TreeNode * ConstructStack(std::vector<int>& inorder) //inorder is not necessarily sorted
+	{
+        int N = inorder.size();
+        std::stack<TreeNode *> stk;//nodes' vals sorted in decreasing order
+                                   //this sorted stack (from left to right, bottom to top) actually keeps track of the rightmost path nodes starting from root
+
+        TreeNode * root = new TreeNode(inorder[0]);
+        stk.push(root);
+        for (int i = 1; i < N; ++i)
+        {
+            TreeNode * cur = new TreeNode(inorder[i]);
+
+            //insert cur to the rightmost path nodes in stk
+            TreeNode * highestLeftChild = NULL;
+            while (!stk.empty() && stk.top()->val < cur->val)
+            {
+                highestLeftChild = stk.top();
+                stk.pop();
+            }
+            cur->left = highestLeftChild;
+            if (!stk.empty())
+                stk.top()->right = cur;
+
+            stk.push(cur);
+            root = cur->val > root->val ? cur : root;
+        }
+        return root;
+	}
+	TreeNode * ConstructRecur(std::vector<int>& inorder) //inorder is not necessarily sorted
+	{
+		return recur(inorder, 0, inorder.size()-1);
+	}
+	TreeNode * recur(std::vector<int> & inorder, int left, int right)
+	{
+		if (left > right) return NULL;
+		int maxIdx = left;//find the idx of the max num in inorder[left:right]
+		for (int i = left; i <= right; ++i)
+			if (inorder[i] > inorder[maxIdx])
+				maxIdx = i;
+		TreeNode * cur = new TreeNode(inorder[maxIdx]);
+		cur->left = recur(inorder, left, maxIdx-1);
+		cur->right = recur(inorder, maxIdx+1, right);
+		return cur;
+	}
+	//if val is the largest, val will be the new root, old root will be its left child
+	//otherwise, the new node with val will always be the right child
+	TreeNode* InsertIntoMaxTree(TreeNode* root, int val)
+	{
+		TreeNode * v = new TreeNode(val);
+		if (val > root->val)
+		{
+			v->left = root;
+			return v;
+		}
+		TreeNode * cur = root;
+		while (cur->right && cur->right->val > val)
+			cur = cur->right;
+		//now cur->val <= val
+		//make cur->right to be v's left
+		//make v to be cur's right
+		v->left = cur->right;
+		cur->right = v;
+		return root;
 	}
 };
 /*
