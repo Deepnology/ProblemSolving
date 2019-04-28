@@ -27,6 +27,13 @@ Leetcode: Construct Binary Tree from Preorder and Inorder Traversal
 // Brute Force, O(n^2) time in worst case of left-skewed tree, O(n) time in best case of right-skewed tree, O(nlog(n)) time in the case of balanced BST, O(h) space
 // Hash Table, O(n) time, O(n) space
 
+Leetcode: Construct Binary Tree from Preorder and Postorder Traversal
+Return any binary tree that matches the given preorder and postorder traversals.
+Values in the traversals pre and post are distinct positive integers.
+Example 1:
+Input: pre = [1,2,4,5,3,6,7], post = [4,5,2,6,7,3,1]
+Output: [1,2,3,4,5,6,7]
+
 See also ConstructBSTFromTraversal.h
 */
 class ConstructBinaryTreeFrom2Traversals
@@ -240,6 +247,56 @@ public:
 		return root;
 	}
 
+
+public:
+	//3. from preorder and postorder
+	//3.1 brute force
+	TreeNode * BruteForce_PrePost(std::vector<int> && pre, std::vector<int> && post)
+	{
+		int N = post.size();
+		return recur(pre, post, 0, pre.size()-1, 0, post.size()-1);
+	}
+private:
+	TreeNode * recur(std::vector<int> & pre, std::vector<int> & post, int preS, int preE, int postS, int postE)
+	{
+		if (preS > preE || postS > postE) return NULL;
+		TreeNode * cur = new TreeNode(pre[preS]);
+		if (preS + 1 > preE) return cur;
+		//preS+1 is the begin of left subtree
+		int leftSubtBeginVal = pre[preS+1];
+		int postIdx = postS;
+		for (; postIdx < postE; ++postIdx)
+			if (post[postIdx] == leftSubtBeginVal)
+				break;
+		int leftSubtLen = postIdx - postS + 1;
+		cur->left = recur(pre, post, preS+1, preS+leftSubtLen, postS, postIdx);//shrink preS
+		cur->right = recur(pre, post, preS+leftSubtLen+1, preE, postIdx+1, postE-1);//shrink postE
+		return cur;
+	}
+public:
+	//3.2 hash table
+	TreeNode * HashTable_PrePost(std::vector<int> && pre, std::vector<int> && post)
+	{
+		int N = post.size();
+		std::unordered_map<int,int> toPostIdx;
+		for (int i = 0; i < N; ++i)
+			toPostIdx.insert({post[i],i});
+		return recur(pre, post, 0, pre.size()-1, 0, post.size()-1, toPostIdx);
+	}
+private:
+	TreeNode * recur(std::vector<int> & pre, std::vector<int> & post, int preS, int preE, int postS, int postE, std::unordered_map<int,int> & toPostIdx)
+	{
+		if (preS > preE || postS > postE) return NULL;
+		TreeNode * cur = new TreeNode(pre[preS]);
+		if (preS + 1 > preE) return cur;
+		//preS+1 is the begin of left subtree
+		int postIdx = toPostIdx[pre[preS+1]];
+		int leftSubtLen = postIdx - postS + 1;
+		cur->left = recur(pre, post, preS+1, preS+leftSubtLen, postS, postIdx, toPostIdx);//shrink preS
+		cur->right = recur(pre, post, preS+leftSubtLen+1, preE, postIdx+1, postE-1, toPostIdx);//shrink postE
+		return cur;
+	}
+
 public:
 	static void DeleteTree(TreeNode * root)
 	{
@@ -374,5 +431,47 @@ ConstructBinaryTreeFrom2Traversals IterateStack PreIn-Order:
  /   \   /   \   /   \   /   \   /   \   /   \   /   \   /   \
  X   X   X   X   X   X   5   5   X   X   X   X   X   X   X   X
  N   N   N   N   N   N   4   6   N   N   N   N   N   N   N   N
+
+
+ConstructBinaryTreeFrom2Traversals BruteForce PrePost-Order:
+7, 1, 0, 3, 2, 5, 4, 6, 9, 8, 10
+0, 2, 4, 6, 5, 3, 1, 8, 10, 9, 7
+
+                               1
+                ______________ 7______________
+               /                               \
+               2                               2
+        ______ 1______                  ______ 9______
+       /               \               /               \
+       3               3               3               3
+    __ 0__          __ 3__          __ 8__          __10__
+   /       \       /       \       /       \       /       \
+   X       X       4       4       X       X       X       X
+   N       N       2       5       N       N       N       N
+ /   \   /   \   /   \   /   \   /   \   /   \   /   \   /   \
+ X   X   X   X   X   X   5   5   X   X   X   X   X   X   X   X
+ N   N   N   N   N   N   4   6   N   N   N   N   N   N   N   N
+
+
+ConstructBinaryTreeFrom2Traversals HashTable PrePost-Order:
+7, 1, 0, 3, 2, 5, 4, 6, 9, 8, 10
+0, 2, 4, 6, 5, 3, 1, 8, 10, 9, 7
+
+                               1
+                ______________ 7______________
+               /                               \
+               2                               2
+        ______ 1______                  ______ 9______
+       /               \               /               \
+       3               3               3               3
+    __ 0__          __ 3__          __ 8__          __10__
+   /       \       /       \       /       \       /       \
+   X       X       4       4       X       X       X       X
+   N       N       2       5       N       N       N       N
+ /   \   /   \   /   \   /   \   /   \   /   \   /   \   /   \
+ X   X   X   X   X   X   5   5   X   X   X   X   X   X   X   X
+ N   N   N   N   N   N   4   6   N   N   N   N   N   N   N   N
+
+
 */
 #endif
