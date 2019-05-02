@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 /*
+Leetcode: Design HashMap
 http://blog.csdn.net/u013325815/article/details/52907170
 */
 class ImplementHashMap //use <string, int> for simplicity
