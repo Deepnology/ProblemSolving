@@ -396,5 +396,6 @@ ValidParenthesesMinAdd for "())": 1+0
 ValidParenthesesMinAdd for "(((": 0+3
 ValidParenthesesMinAdd for "()": 0+0
 ValidParenthesesMinAdd for "()))((": 2+2
+ValidParenthesesMinAdd for ")))()))": 5+0
 */
 #endif
