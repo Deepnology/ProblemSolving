@@ -347,6 +347,8 @@ public:
 				++res;
 			}
 		}
+		//res will be min num of '(' to add at front, balance will be min num of ')' to add at end
+		std::cout << "ValidParenthesesMinAdd for \"" << S << "\": " << res << "+" << balance << std::endl;
 		return res + balance;
 	}
 };
@@ -387,5 +389,12 @@ ValidParentheses CloseInCorrectOrder for "({[)(}{])}": 0
 ValidParentheses Stack_CloseInCorrectOrder for "[{()}]": 1
 ValidParentheses CloseInCorrectOrder for "[{()}]": 1
 ValidParentheses CloseInArbitraryOrder for "({[)(}{])}": 1
+
+
+ValidParenthesesMinAdd for ")(()(": 1+2
+ValidParenthesesMinAdd for "())": 1+0
+ValidParenthesesMinAdd for "(((": 0+3
+ValidParenthesesMinAdd for "()": 0+0
+ValidParenthesesMinAdd for "()))((": 2+2
 */
 #endif
