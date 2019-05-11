@@ -77,7 +77,7 @@ public:
 
 			//1. check valid 1 digit numbers
 			if (s[i - 1] != '0')//s[i-1] can be '1'~'9'
-				dp[i] = dp[i - 1];
+				dp[i] += dp[i - 1];
 			//2. check valid 2 digit numbers
 			if (i - 2 >= 0)
 				if (s[i - 2] == '1' || //s[i-1] can be '0'~'9'
@@ -118,7 +118,7 @@ public:
 			}
 			//1. check valid 1 digit numbers
 			if (s[i - 1] != '0')//s[i-1] can be '1'~'9'
-				res = dp1;
+				res += dp1;
 			//2. check valid 2 digit numbers
 			if (i - 2 >= 0)
 				if (s[i - 2] == '1' || //s[i-1] can be '0'~'9'
