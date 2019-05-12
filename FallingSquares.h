@@ -76,7 +76,7 @@ public:
                     topIntervals[right+1] = itr->second;//add an interval
                 if (itr->first < left)//cur interval extends to the left of [left,right]:
                 {
-                    itr->second = {right-1, itr->second.second};//shrink cur interval
+                    itr->second = {left-1, itr->second.second};//shrink cur interval
                     ++itr;
                 }
                 else//erase overlapped intervals
