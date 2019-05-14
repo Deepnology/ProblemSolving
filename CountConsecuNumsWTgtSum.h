@@ -25,26 +25,56 @@ public:
 
     int UseFormula(int N)
     {
-        //arithmetic sequence summation
-        //Sn = (a1 + an) * n / 2
-        //   = a1 * n + n * (n - 1) * d / 2
-        //so
-        //a1 * n = Sn - n * (n - 1) * d / 2, where d=1
-        //a1 = Sn / n - (n - 1) / 2 > 0
-        //n * (n - 1) < 2 * Sn
+        //use formula: O(sqrt(N)) time
+        //(a1+an)*n/2 = N
+        //(a1+(a1+len-1))*len/2 = N
+        //2*a1+len-1 = 2*N/len
+        //2*a1 = 2*N/len-len+1 ..................(1)
+        //a1 = ((2*N-len*len)/len + 1) / 2 ......(2)
         int res = 0;
-        for (int n = 1; n*(n-1) < 2*N; ++n) //enumerate n in [1:sqrt(N)]: O(sqrt(N)) time
+        for (int len = 1; len*len <= 2*N; ++len) //from (2)
         {
-            int a1n = N - n*(n-1)/2; //a1n means a1*n
-            //now a1n must be > 0
-            if (a1n % n == 0) //means a1 can be a valid integer
-                ++res;
+            if (2*N % len == 0) //from (1)
+            {
+                if ((2*N/len - len + 1) % 2 == 0) // from (1)
+                {
+                    int a1 = (2*N/len-len+1)/2;
+                    int aLen = a1+len-1;
+                    std::cout << "[" << a1 << "," << aLen << "]" << std::endl;
+                    ++res;
+                }
+            }
         }
         std::cout << "CountConsecuNumsWTgtSum UseFormula for " << N << ": " << res << std::endl;
         return res;
     }
+
+    int BruteForce(int N)
+    {
+        //brute force: O(N^2) time
+        int res = 0;
+        for (int i = 1; i <= N; ++i)
+        {
+            int sum = 0;
+            int cur = i;
+            while (sum+cur <= N)
+            {
+                sum += cur;
+                ++cur;
+            }
+            if (sum == N)
+                ++res;
+        }
+        std::cout << "CountConsecuNumsWTgtSum BruteForce for " << N << ": " << res << std::endl;
+        return res;
+    }
 };
 /*
+CountConsecuNumsWTgtSum BruteForce for 15: 4
+[15,15]
+[7,8]
+[4,6]
+[1,5]
 CountConsecuNumsWTgtSum UseFormula for 15: 4
  */
 #endif
