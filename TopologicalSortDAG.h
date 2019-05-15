@@ -81,6 +81,49 @@ private:
 		}
 		stk.push(v);
 	}
+public:
+	std::vector<int> BFS_AdjacencyMatrix(const std::vector<std::vector<int> > & DAGadjMatrix)
+	{
+		std::unordered_map<int,int> inDegree;
+		int N = DAGadjMatrix.size();
+		for (int i = 0; i < N; ++i)
+			for (int j = 0; j < N; ++j)
+			{
+				if (!inDegree.count(i))
+					inDegree[i] = 0;
+				if (j != i && DAGadjMatrix[i][j])
+					++inDegree[j];
+			}
+		std::vector<int> res;
+		std::queue<int> que;
+		for (auto & p : inDegree)
+			if (p.second == 0)
+				que.push(p.first);
+		while (!que.empty())
+		{
+			int cur = que.front(); que.pop();
+			res.push_back(cur);
+			for (int i = 0; i < N; ++i)
+			{
+				if (i != cur && DAGadjMatrix[cur][i])
+				{
+					if (inDegree[i] > 0)
+					{
+						--inDegree[i];
+						if (inDegree[i] == 0)
+							que.push(i);
+					}
+				}
+			}
+		}
+		for (auto & p : inDegree)
+			if (p.second > 0)
+				return {};
+
+		Debug::Print2D<int>()(DAGadjMatrix, false);
+		std::cout << "TopologicalSortDAG BFS_AdjacencyMatrix: " << Debug::ToStr1D<int>()(res) << std::endl;
+		return res;
+	}
 };
 
 class UniqueTopologicalOrdering
@@ -122,6 +165,15 @@ Row#4	= 1, 1, 0, 0, 0, 0
 Row#5	= 1, 0, 1, 0, 0, 0
 
 TopologicalSortDAG DFS_AdjacencyMatrix: 5, 4, 2, 3, 1, 0
+[rY][cX]
+Row#0	= 0, 0, 0, 0, 0, 0
+Row#1	= 0, 0, 0, 0, 0, 0
+Row#2	= 0, 0, 0, 1, 0, 0
+Row#3	= 0, 1, 0, 0, 0, 0
+Row#4	= 1, 1, 0, 0, 0, 0
+Row#5	= 1, 0, 1, 0, 0, 0
+
+TopologicalSortDAG BFS_AdjacencyMatrix: 5, 4, 2, 0, 3, 1
 UniqueTopologicalOrdering CheckMissedEdges for "5, 4, 2, 3, 1, 0": [5,4], [4,2], [1,0] =>
 The DAG adjMatrix has No Unique Topological Ordering (has No Hamiltonian path that visit each vertex exactly once)
 
@@ -141,6 +193,14 @@ Row#3	= 0, 0, 0, 0, 1
 Row#4	= 0, 0, 0, 0, 0
 
 TopologicalSortDAG DFS_AdjacencyMatrix: 0, 1, 3, 2, 4
+[rY][cX]
+Row#0	= 0, 1, 0, 0, 1
+Row#1	= 0, 0, 1, 1, 1
+Row#2	= 0, 0, 0, 0, 1
+Row#3	= 0, 0, 0, 0, 1
+Row#4	= 0, 0, 0, 0, 0
+
+TopologicalSortDAG BFS_AdjacencyMatrix: 0, 1, 2, 3, 4
 UniqueTopologicalOrdering CheckMissedEdges for "0, 1, 3, 2, 4": [3,2] =>
 The DAG adjMatrix has No Unique Topological Ordering (has No Hamiltonian path that visit each vertex exactly once)
 */
