@@ -27,6 +27,7 @@ The vertices of the graph are the 26 letters.
 The edge between two letters represents an existing string with starting and ending letters, respectively.
 If an Eulerian path exists in the directed graph, all the string can be connected in a chain.
 
+can be solved using topological sort, see also UniqueSequenceReconstructable.h
 */
 class ConnectAllStrInChain
 {
