@@ -20,7 +20,55 @@ For each node, it will be subdivided into four children nodes until the values i
 Each node has another two boolean attributes : isLeaf and val.
 isLeaf is true if and only if the node is a leaf node.
 The val attribute for a leaf node contains the value of the region it represents.
+For example, below are two quad trees A and B:
 
+A:
++-------+-------+   T: true
+|       |       |   F: false
+|   T   |   T   |
+|       |       |
++-------+-------+
+|       |       |
+|   F   |   F   |
+|       |       |
++-------+-------+
+topLeft: T
+topRight: T
+bottomLeft: F
+bottomRight: F
+
+B:
++-------+---+---+
+|       | F | F |
+|   T   +---+---+
+|       | T | T |
++-------+---+---+
+|       |       |
+|   T   |   F   |
+|       |       |
++-------+-------+
+topLeft: T
+topRight:
+     topLeft: F
+     topRight: F
+     bottomLeft: T
+     bottomRight: T
+bottomLeft: T
+bottomRight: F
+
+Your task is to implement a function that will take two quadtrees and return a quadtree
+ that represents the logical OR (or union) of the two trees.
+
+A:                 B:                 C (A or B):
++-------+-------+  +-------+---+---+  +-------+-------+
+|       |       |  |       | F | F |  |       |       |
+|   T   |   T   |  |   T   +---+---+  |   T   |   T   |
+|       |       |  |       | T | T |  |       |       |
++-------+-------+  +-------+---+---+  +-------+-------+
+|       |       |  |       |       |  |       |       |
+|   F   |   F   |  |   T   |   F   |  |   T   |   F   |
+|       |       |  |       |       |  |       |       |
++-------+-------+  +-------+-------+  +-------+-------+
  */
 class QuadTree
 {
