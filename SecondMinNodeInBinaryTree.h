@@ -46,7 +46,7 @@ public:
 	void recur(TreeNode * cur, int & res)
 	{
 		if (cur == NULL || cur->left == NULL) return;
-		//now cur must have 2 child nodes, and cur->val must be greater than both cur->left->val and cur->right->val
+
 		if (cur->left->val == cur->right->val)//need to search for both subtrees
 		{
 			recur(cur->left, res);
