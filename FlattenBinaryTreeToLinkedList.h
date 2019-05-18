@@ -75,6 +75,35 @@ public:
 		TreeNode * right;
 	};
 
+	void UsePreorderStk(TreeNode * root) //easier
+	{
+		std::stack<TreeNode*> stk;
+		if (root)
+			stk.push(root);
+		TreeNode * pre = NULL;
+		while (!stk.empty())
+		{
+			TreeNode * cur = stk.top();
+			stk.pop();
+
+			if (cur->right)
+				stk.push(cur->right);
+			if (cur->left)
+				stk.push(cur->left);
+
+			if (pre == NULL)
+			{
+				pre = cur;
+			}
+			else
+			{
+				pre->right = cur;
+				pre = pre->right;
+			}
+			pre->left = NULL;
+		}
+	}
+
 	void GO(TreeNode * root)
 	{
 		while (root != NULL)
