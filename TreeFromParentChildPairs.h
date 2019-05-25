@@ -66,6 +66,8 @@ public:
 		}
 		/**/
 
+		/*
+		//approach 1
 		std::vector<std::string> resStk;
 		while (!root.empty())
 		{
@@ -89,6 +91,26 @@ public:
 			}
 		}
 		std::reverse(resStk.begin(), resStk.end());
+		*/
+
+		//approach 2
+		std::vector<std::string> resStk;
+		while (!root.empty())
+		{
+			//DFS traversal using stack for each root (since there is no cycle and traversal is from root and adj vertices are removed after visited, we don't need to keep track of visited vertices)
+			std::stack<std::string> stk;
+			stk.push(*root.begin());
+			root.erase(root.begin());
+			while (!stk.empty())
+			{
+				std::string curNode = stk.top();
+				stk.pop();
+				for (auto itr = adjSet[curNode].begin(); itr != adjSet[curNode].end(); ++itr)
+					stk.push(*itr);
+				resStk.push_back(curNode);
+			}
+		}
+
 
 		std::cout << "TreeFromParentChildPairs TraverseDFS for \"" << Debug::ToStr1D<std::string>()(parentChildPairs) << "\": " << std::endl << Debug::ToStr1D<std::string>()(resStk) << std::endl;
 		return resStk;
