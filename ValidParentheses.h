@@ -350,6 +350,8 @@ public:
 		//res will be min num of '(' to add at front, balance will be min num of ')' to add at end
 		std::cout << "ValidParenthesesMinAdd for \"" << S << "\": " << res << "+" << balance << std::endl;
 		return res + balance;
+
+        //ValidParenthesesMinRemove: res will be min num of ')' to remove at front, balance will be min num of '(' to remove at end
 	}
 };
 /*
