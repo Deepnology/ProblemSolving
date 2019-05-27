@@ -28,10 +28,10 @@ Output: 6
 grid[i][j] contains only '.', '#', '@', 'a'-'f' and 'A'-'F'
 The number of keys is in [1, 6].  Each key has a different letter and opens exactly one lock.
  */
-class ShortestPathGetAllKeys
+class ShortestPathGetAllKeys2dGrid
 {
 public:
-    ShortestPathGetAllKeys(){}
+    ShortestPathGetAllKeys2dGrid(){}
 
     int BFS(std::vector<std::string> && grid)
     {
