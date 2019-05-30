@@ -182,7 +182,7 @@ public:
 	}
 	int CountMaxAtATimeII_Simple(const std::vector<std::pair<int, int>> & intervals)//connected interval boundary counts for 1, i.e., [start,end), (Leetcode: Meeting Rooms II)
 	{
-		std::map<int, int> balance;//<timeIdx, balancedIntervalCount> where timeIdx is sorted in incr order
+		std::map<int, int> balance;//<timeIdx, StartEndSum> where timeIdx is sorted in incr order
 		for (auto & i : intervals)
 		{
 			balance[i.first] += 1;//increment at start
