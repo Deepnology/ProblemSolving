@@ -53,7 +53,7 @@ public:
 	int CountTotal(const std::vector<int> & circles)
 	{
 		int N = circles.size();
-		std::vector<std::pair<int, int> > intervals(N);//first: start, second: end
+		std::vector<std::pair<int, int>> intervals(N);//first: start, second: end
 		for (int i = 0; i < N; ++i)
 		{
 			intervals[i].first = i - circles[i];
@@ -72,7 +72,7 @@ public:
 		   then intervals between current and the rightmost are intersections
 		*/
 		int countIntersection = 0;
-		std::vector<std::pair<int, int> > intersections;
+		std::vector<std::pair<int, int>> intersections;
 		for (int i = 0; i < N; ++i)
 		{
 			auto iter = std::upper_bound(intervals.begin(), intervals.end(), intervals[i].second, [](const int & a, const std::pair<int, int> & b)->bool
@@ -96,11 +96,11 @@ public:
 		return countIntersection;
 	}
 
-	int CountMaxAtATime(const std::vector<std::pair<int, int> > & intervals)//connected interval boundary counts for 2
+	int CountMaxAtATime(const std::vector<std::pair<int, int>> & intervals)//connected interval boundary counts for 2, i.e. [start,end]
 	{
 		int N = intervals.size();
 		
-		std::vector<std::pair<int, bool> > endPoints;//first: start/end point of an interval, second: true/false for start/end
+		std::vector<std::pair<int, bool>> endPoints;//first: start/end point of an interval, second: true/false for start/end
 		for (int i = 0; i < N; ++i)
 		{
 			endPoints.push_back(std::make_pair(intervals[i].first, true));
@@ -109,10 +109,10 @@ public:
 		//1. sort all of the start and end points
 		std::sort(endPoints.begin(), endPoints.end(), [](const std::pair<int, bool> & a, const std::pair<int, bool> & b)->bool
 		{
-			return a.first != b.first ? a.first < b.first : (a.second && !b.second);//start points always come before end points
+			return a.first != b.first ? a.first < b.first : (a.second && !b.second);//start points always come before end points for [start,end]
 		});
 
-		//2. for each point from left, increment the itersection count when it is a start, decrement when it is an end
+		//2. for each point from left, increment the intersection count when it is a start, decrement when it is an end
 		//   keep track of the max intersection count
 		int maxCount = 0;
 		int count = 0;
@@ -136,11 +136,15 @@ public:
 		std::cout << "IntersectionOfIntervals CountMaxAtATime for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << std::endl;
 		return maxCount;
 	}
-	int CountMaxAtATimeII(const std::vector<std::pair<int, int> > & intervals)//connected interval boundary counts for 1 (Leetcode: Meeting Rooms II)
+
+	//==================================================
+	//==================================================
+
+	int CountMaxAtATimeII(const std::vector<std::pair<int, int> > & intervals)//connected interval boundary counts for 1, i.e., [start,end), (Leetcode: Meeting Rooms II)
 	{
 		int N = intervals.size();
 
-		std::vector<std::pair<int, bool> > endPoints;//first: start/end point of an interval, second: true/false for start/end
+		std::vector<std::pair<int, bool>> endPoints;//first: start/end point of an interval, second: true/false for start/end
 		for (int i = 0; i < N; ++i)
 		{
 			endPoints.push_back(std::make_pair(intervals[i].first, true));
@@ -149,7 +153,7 @@ public:
 		//1. sort all of the start and end points
 		std::sort(endPoints.begin(), endPoints.end(), [](const std::pair<int, bool> & a, const std::pair<int, bool> & b)->bool
 		{
-			return a.first != b.first ? a.first < b.first : (!a.second && b.second);//end points always come before start points
+			return a.first != b.first ? a.first < b.first : (!a.second && b.second);//end points always come before start points for [start,end)
 		});
 
 		//2. for each point from left, increment the itersection count when it is a start, decrement when it is an end
@@ -176,7 +180,7 @@ public:
 		std::cout << "IntersectionOfIntervals CountMaxAtATimeII for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << std::endl;
 		return maxCount;
 	}
-	int CountMaxAtATimeII_Simple(const std::vector<std::pair<int, int>> & intervals)//connected interval boundary counts for 1 (Leetcode: Meeting Rooms II)
+	int CountMaxAtATimeII_Simple(const std::vector<std::pair<int, int>> & intervals)//connected interval boundary counts for 1, i.e., [start,end), (Leetcode: Meeting Rooms II)
 	{
 		std::map<int, int> balance;//<timeIdx, balancedIntervalCount> where timeIdx is sorted in incr order
 		for (auto & i : intervals)
@@ -184,25 +188,32 @@ public:
 			balance[i.first] += 1;//increment at start
 			balance[i.second] -= 1;//decrement at end
 		}
-		int count = 0;
-		int maxCount = 0;
-		for (auto & i : balance)
-		{
-			count += i.second;//cur interval count
-			maxCount = std::max(maxCount, count);
-		}
-		std::vector<std::pair<int,int>> maxItvls;//intervals with max overlaps
-		count = 0;
+		int count = 0;//numOvlpItvl
+		int maxCount = 0;//maxNumOvlpItvl
 		for (auto & i : balance)
 		{
 			count += i.second;
-			//std::cout << i.first << "," << i.second << ":" << count << std::endl;
-			if (count == maxCount && (maxItvls.empty() || maxItvls.back().second != -1))
-				maxItvls.push_back({i.first, -1});
-			else if (count < maxCount && !maxItvls.empty() && maxItvls.back().second == -1)
-				maxItvls.back().second = i.first;
+			maxCount = std::max(maxCount, count);
 		}
-		std::cout << "IntersectionOfIntervals CountMaxAtATimeII_Simple for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << ", At: " << Debug::ToStr1D<int>()(maxItvls) << std::endl;
+		std::vector<std::pair<int,int>> maxItvls;//intervals with max overlapped intervals
+		std::vector<std::pair<int,int>> intersections;//intervals with at least 2 overlapped intervals
+		count = 0;
+		for (auto itr = balance.begin(); itr != balance.end(); ++itr)
+		{
+			count += itr->second;
+			std::cout << "TimeIdx:StartEndSum,NumOvlp   " << itr->first << ":" << itr->second << "," << count << std::endl;
+
+			if (count == maxCount && (maxItvls.empty() || maxItvls.back().second != INT_MIN))
+				maxItvls.push_back({itr->first, INT_MIN});
+			else if (count < maxCount && !maxItvls.empty() && maxItvls.back().second == INT_MIN)
+				maxItvls.back().second = itr->first;
+
+			if (count >= 2 && (intersections.empty() || intersections.back().second != INT_MIN))
+			    intersections.push_back({itr->first, INT_MIN});
+			else if (count < 2 && !intersections.empty() && intersections.back().second == INT_MIN)
+			    intersections.back().second = itr->first;
+		}
+		std::cout << "IntersectionOfIntervals CountMaxAtATimeII_Simple for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << ", At: " << Debug::ToStr1D<int>()(maxItvls) << ", Intersections: " << Debug::ToStr1D<int>()(intersections) << std::endl;
 		return maxCount;
 	}
 };
@@ -308,8 +319,39 @@ IntersectionOfIntervals CountMaxAtATimeII for "[-4,6], [-1,1], [0,4], [0,8], [2,
 IntersectionOfIntervals CountMaxAtATimeII for "[10,19], [2,10]": 1
 
 
-IntersectionOfIntervals CountMaxAtATimeII_Simple for "[-2,2], [-1,3], [0,4], [2,4], [2,6], [3,7], [5,7]": 4, At: [2,4]
-IntersectionOfIntervals CountMaxAtATimeII_Simple for "[-4,6], [-1,1], [0,4], [0,8], [2,4], [5,5]": 4, At: [0,1], [2,4]
-IntersectionOfIntervals CountMaxAtATimeII_Simple for "[10,19], [2,10]": 1, At: [2,19]
+TimeIdx:StartEndSum,NumOvlp   -2:1,1
+TimeIdx:StartEndSum,NumOvlp   -1:1,2
+TimeIdx:StartEndSum,NumOvlp   0:1,3
+TimeIdx:StartEndSum,NumOvlp   2:1,4
+TimeIdx:StartEndSum,NumOvlp   3:0,4
+TimeIdx:StartEndSum,NumOvlp   4:-2,2
+TimeIdx:StartEndSum,NumOvlp   5:1,3
+TimeIdx:StartEndSum,NumOvlp   6:-1,2
+TimeIdx:StartEndSum,NumOvlp   7:-2,0
+IntersectionOfIntervals CountMaxAtATimeII_Simple for "[-2,2], [-1,3], [0,4], [2,4], [2,6], [3,7], [5,7]": 4, At: [2,4], Intersections: [-1,7]
+TimeIdx:StartEndSum,NumOvlp   -4:1,1
+TimeIdx:StartEndSum,NumOvlp   -1:1,2
+TimeIdx:StartEndSum,NumOvlp   0:2,4
+TimeIdx:StartEndSum,NumOvlp   1:-1,3
+TimeIdx:StartEndSum,NumOvlp   2:1,4
+TimeIdx:StartEndSum,NumOvlp   4:-2,2
+TimeIdx:StartEndSum,NumOvlp   5:0,2
+TimeIdx:StartEndSum,NumOvlp   6:-1,1
+TimeIdx:StartEndSum,NumOvlp   8:-1,0
+IntersectionOfIntervals CountMaxAtATimeII_Simple for "[-4,6], [-1,1], [0,4], [0,8], [2,4], [5,5]": 4, At: [0,1], [2,4], Intersections: [-1,6]
+TimeIdx:StartEndSum,NumOvlp   2:1,1
+TimeIdx:StartEndSum,NumOvlp   10:0,1
+TimeIdx:StartEndSum,NumOvlp   19:-1,0
+IntersectionOfIntervals CountMaxAtATimeII_Simple for "[10,19], [2,10]": 1, At: [2,19], Intersections:
+TimeIdx:StartEndSum,NumOvlp   1:1,1
+TimeIdx:StartEndSum,NumOvlp   2:1,2
+TimeIdx:StartEndSum,NumOvlp   6:-1,1
+TimeIdx:StartEndSum,NumOvlp   9:1,2
+TimeIdx:StartEndSum,NumOvlp   10:-1,1
+TimeIdx:StartEndSum,NumOvlp   12:-1,0
+TimeIdx:StartEndSum,NumOvlp   14:1,1
+TimeIdx:StartEndSum,NumOvlp   16:0,1
+TimeIdx:StartEndSum,NumOvlp   17:-1,0
+IntersectionOfIntervals CountMaxAtATimeII_Simple for "[1,10], [2,6], [9,12], [14,16], [16,17]": 2, At: [2,6], [9,10], Intersections: [2,6], [9,10]
 */
 #endif
