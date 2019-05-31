@@ -116,6 +116,26 @@ public:
 	//Sparse Array Dot Product
 	//naive: [a1,a2,a3] dot [b1,b2,b3] = a1*b1+a2*b2+a3*b3
 	//hash table: save (idx,non-0-Val) pairs in two hash table
+	int SparseArrayDotProduct_HashMap(const std::vector<int> & A, const std::vector<int> & B)
+	{
+		std::unordered_map<int,int> a;//<idx,val>
+		std::unordered_map<int,int> b;//<idx,val>
+		int N = A.size();
+		for (int i = 0; i < N; ++i)
+			if (A[i]) a.insert({i,A[i]});
+		int M = B.size();
+		for (int i = 0; i < M; ++i)
+			if (B[i]) b.insert({i,B[i]});
+		int res = 0;
+		for (auto p : a)
+		{
+			if (b.count(p.first))
+				res += p.second*b[p.first];
+		}
+
+		std::cout << "SparseArrayDotProduct HashMap for \"" << Debug::ToStr1D<int>()(A) << "\", \"" << Debug::ToStr1D<int>()(B) << "\": " << res << std::endl;
+		return res;
+	}
 	int SparseArrayDotProduct_ModifiedMergeTwoSortedArrays(const std::vector<int> & A, const std::vector<int> & B)
 	{
 		std::vector<std::pair<int, int>> a;
@@ -194,6 +214,7 @@ SparseMatrixMultiplication SaveBinHashMap for the above 2 Matrix:
 Row#0	= 7, 0, 0
 Row#1	= -7, 0, 3
 
+SparseArrayDotProduct HashMap for "1, 2, 0, 0, 5, 0, 0, 0, 4, 0, 0, 3", "1, 0, 0, 2, 0, 0, 0, 0, 4, 0, 2, 3": 26
 SparseArrayDotProduct ModifiedMergeTwoSortedArrays for "1, 2, 0, 0, 5, 0, 0, 0, 4, 0, 0, 3", "1, 0, 0, 2, 0, 0, 0, 0, 4, 0, 2, 3": 26
 */
 #endif
