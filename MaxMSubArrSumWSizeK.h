@@ -34,15 +34,17 @@ public:
 
         std::vector<std::vector<int>> dp(M, std::vector<int>(N, 0));
         std::vector<std::vector<int>> idx(M, std::vector<int>(N, 0));
-        for (int m = 0; m < M; ++m)
+
+        for (int m = 0; m < M; ++m) // enumerate num of subarrays
         {
-            for (int i = (m+1)*K-1; i < N; ++i)
+            for (int i = (m+1)*K-1; i < N; ++i) // i is the end idx of each subarray: sliding window of size K
             {
-                int curMax = prefixSum[i] - (i-K<0?0:prefixSum[i-K]) + (m-1<0||i-K<0?0:dp[m-1][i-K]);
-                if (curMax > dp[m][i-1])
+                // curSum = prefixSum[i] - prefixSum[i-K] + dp[m-1][i-K]
+                int curSum = prefixSum[i] - (i-K<0?0:prefixSum[i-K]) + (m-1<0||i-K<0?0:dp[m-1][i-K]);
+                if (curSum > dp[m][i-1])
                 {
-                    dp[m][i] = curMax;
-                    idx[m][i] = i-K+1;
+                    dp[m][i] = curSum;
+                    idx[m][i] = i-K+1; // the begin idx of cur subarray
                 }
                 else
                 {
@@ -52,7 +54,7 @@ public:
             }
         }
 
-        std::vector<int> res(M);
+        std::vector<int> res(M); // the begin idx of each subarray
         int prev = N-1;
         for (int m = M-1; m >= 0; --m)
         {
