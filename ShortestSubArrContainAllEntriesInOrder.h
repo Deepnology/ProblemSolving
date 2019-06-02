@@ -110,10 +110,12 @@ public:
         {
             if (toIdx.count(S[i]))
             {
+                //replace the nearest begin of cur char with the nearest begin of its prev char
+                //from back to front such that for duplicated chars in T, it's just a right shift
                 for (int j = toIdx[S[i]].size()-1; j >= 0; --j)
                 {
                     int idx = toIdx[S[i]][j];
-                    dp[idx] = (idx==0) ? i : dp[idx-1];
+                    dp[idx] = (idx==0) ? i : dp[idx-1]; //if cur char is begin of T, record cur idx; otherwise, right shift (can be either -1 or non -1)
                     if (idx == M-1 && dp[idx] != -1 && i-dp[idx]+1 < minLen)
                     {
                         minLen = i-dp[idx]+1;
