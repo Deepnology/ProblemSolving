@@ -88,5 +88,6 @@ private:
 };
 /*
 LocalMaximumInUnsortedArray Strickly_Iterate for "6, 5, 1, 4, 5, 7, 10, 1, 9, 1, 5, 7, 4, 8, 7, 10, 4, 10, 9, 9": 6
+LocalMaximumInUnsortedArray Strickly_Iterate for "1, 2, 1, 2, 3, 4, 5, 6, 7": 8
 */
 #endif
