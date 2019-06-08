@@ -8,6 +8,7 @@
 /*
 http://www.geeksforgeeks.org/given-a-number-find-next-smallest-palindrome-larger-than-this-number/
 http://www.ardendertat.com/2011/12/01/programming-interview-questions-19-find-next-palindrome-number/
+see ClosestPalindromeNum.h
 */
 class NextPrePalindromeNum
 {
