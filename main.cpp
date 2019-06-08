@@ -1,7 +1,7 @@
 //#define _HashMap_
 //#define _Design_
 //#define _Math_
-//#define _BitNumberOperation_
+#define _BitNumberOperation_
 //#define _Random_
 //#define _StackQueue_
 //#define _1DArray_
@@ -10,10 +10,10 @@
 //#define _PermuteCombinePartition_
 //#define _TrieSuffixArray_
 //#define _FindSubstringSubsequence_
-#define _CompareString_
+//#define _CompareString_
 //#define _TextLines_
 //#define _LinkedList_
-#define _2DGrid_
+//#define _2DGrid_
 //#define _BinaryTree_
 //#define _QuadTree_
 //#define _Heap_
@@ -50,11 +50,13 @@
 #include "DesignMealCombinationSystem.h"
 #include "DesignLeetcodeOJ.h"
 #include "TimeBasedKeyValStore.h"
+#include "NumberOfRecentCalls.h"
 
 /*Math*/
 #include "EggDrop.h"
 #include "WaterAndJugProblem.h"
 #include "TrainPassCaveProblem.h"
+#include "Custom21Game.h"
 
 /*Bit Number Operation*/
 #include "SwapInPlace.h"
@@ -146,6 +148,7 @@
 #include "EncodeDecodeStrings.h"
 #include "NimGame.h"
 #include "NextPrePalindromeNum.h"
+#include "ClosestPalindromeNum.h"
 #include "PalindromeNumber.h"
 #include "IntToHexStr.h"
 #include "NumberComplement.h"
@@ -169,6 +172,8 @@
 #include "CountBinaryNumsConvertableToEitherOf3.h"
 #include "CountConsecuNumsWTgtSum.h"
 #include "RunLenEncodedIterator.h"
+#include "RunLenEncodedIterator2.h"
+#include "CountNumsWSameDigitDiff.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -215,6 +220,7 @@
 #include "StackPermutation.h"
 #include "RoundRobinScheduling.h"
 #include "MaxFreqStack.h"
+#include "ScoreOfParentheses.h"
 
 /*1D Array*/
 #include "AllUniqueElements.h"
@@ -291,6 +297,10 @@
 #include "NumOfFriendRequests.h"
 #include "AltEvenOddNumArray.h"
 #include "FindNRepeatedNumInSize2NArray.h"
+#include "PushDomino1DArray.h"
+#include "PrisonCell1DArrayAfterNDays.h"
+#include "MinSwapToPairCouplesInArray.h"
+#include "MinRoundTripTicketFrom2Arr.h"
 
 /*Sort Search Select*/
 #include "Partition.h"
@@ -393,6 +403,9 @@
 #include "MinFlip01StrToMonotoneIncr.h"
 #include "RevealCardsInIncrOrder.h"
 #include "MaxProfitAssignWork.h"
+#include "MinNumBoatsToSavePeople.h"
+#include "KthSmallestNumInMissingRangeOfSortedArr.h"
+#include "PancakeSort.h"
 
 /*Interval*/
 #include "MergeIntervals.h"
@@ -504,6 +517,8 @@
 #include "MaxPointsDeleteAndEarn.h"
 #include "PartitionArrToDoubleValuedPairs.h"
 #include "PartitionSameNumsInGroupsWSameSizes.h"
+#include "ArrPermutationConsecuNumSumIsSquare.h"
+#include "MinCostOfMultiDayPassTickets.h"
 
 /*Trie Suffix Tree Array*/
 #include "SuffixArray.h"
@@ -609,6 +624,7 @@
 #include "LongestFibonacciSubseq.h"
 #include "AllNumsInLeftSubArrLessEqualRight.h"
 #include "CountSubArrWKDistinctEntries.h"
+#include "CountSubsetsWMinMaxSumEqualK.h"
 
 /*Compare String*/
 #include "EditDistance.h"
@@ -634,6 +650,7 @@
 #include "CompareStretchyWords.h"
 #include "CountSubdomainVisits.h"
 #include "VowelSpellChecker.h"
+#include "FindTgtWordGivenMatchCountComp.h"
 
 /*Text Lines*/
 #include "NeatPrintWordWrap.h"
@@ -678,6 +695,8 @@
 #include "TraverseMultilevelLinkedList.h"
 #include "InsertNodeCyclicSortedLinkedList.h"
 #include "LinkedListComponents.h"
+#include "ImplementLinkedList.h"
+#include "NextGreaterNodeInLinkedList.h"
 
 /*2D Grid*/
 #include "MinPathSum.h"
@@ -769,6 +788,10 @@
 #include "PourWater.h"
 #include "ShortestBridgeBtw2Islands.h"
 #include "RoundTripMaxPickupIn2DMatrix.h"
+#include "MaxStonesRemovedWSameRowOrCol.h"
+#include "MinimizeMaxNumInPath2DGrid.h"
+#include "StackTrianglesToPyramid.h"
+#include "CountRegionsCutBySlashes2DGrid.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -860,6 +883,14 @@
 #include "FlattenBinaryTreeInInorder.h"
 #include "SubtreeContainingAllDeepestNodes.h"
 #include "BinaryTreeLevelOrderArrToInOrderArr.h"
+#include "MaxDiffBtwNodeAncestorBinaryTree.h"
+#include "BinaryTreeRootToLeafPath.h"
+#include "AllPossibleFullBinaryTree.h"
+#include "RemoveSubtWAll0sBinaryTree.h"
+#include "EncodeDecodeNaryTreeToBinaryTree.h"
+#include "CompleteBinaryTreeInserter.h"
+#include "MinSwapLRChildToTgtPreorderBinaryTree.h"
+#include "ConstructBinaryTreeFromTraversalWDepth.h"
 
 /*Quad Tree*/
 #include "QuadTree.h"
@@ -934,6 +965,9 @@
 #include "CrackSafe.h"
 #include "SumOfDistBtwCurAndAllOtherNodesInTree.h"
 #include "ShortestPathVisitAllNodesInGraph.h"
+#include "Remove1MalNodeMinimizeInfectedNodes.h"
+#include "ConnectedComponentsByStrSwap2Chars.h"
+#include "ConnectedComponentsByIntCommonFactor.h"
 
 /*RMQ LCA*/
 #include "RangeSumQuerySegmentTree.h"
@@ -1296,6 +1330,10 @@ int main()
         timeMap.Get("foo", 4);
         timeMap.Get("foo", 5);
     }
+    {
+        NumberOfRecentCalls c;
+        c.Ping(1); c.Ping(100); c.Ping(3001); c.Ping(3002);
+    }
 
 #endif
 #ifdef _Math_
@@ -1321,6 +1359,10 @@ int main()
 		WaterAndJugProblem().canMeasureWater(3, 5, 4);
 		WaterAndJugProblem().canMeasureWater(2, 6, 5);
 	}
+    {
+        Custom21Game().DP(21, 17, 10);
+    }
+
 #endif
 #ifdef _BitNumberOperation_
 	/*Bit Number Operation*/
@@ -2088,6 +2130,11 @@ int main()
 		NextPrePalindromeNum().Next(12921);//already a palindrome
 		NextPrePalindromeNum().Next(89999);
 		NextPrePalindromeNum().Next(948797859);
+
+        ClosestPalindromeNum().Check7Candidates("99999");//all 9s
+        ClosestPalindromeNum().Check7Candidates("12921");//already a palindrome
+        ClosestPalindromeNum().Check7Candidates("89999");
+        ClosestPalindromeNum().Check7Candidates("948797859");
 	}
 	{
 		PalindromeNumber().Valid(123454321);
@@ -2214,6 +2261,7 @@ int main()
         CountBinaryNumsConvertableToEitherOf3().Solve(1073741809, 1073741808, 1073741809);
     }
     {
+        CountConsecuNumsWTgtSum().BruteForce(15);
         CountConsecuNumsWTgtSum().UseFormula(15);
     }
     {
@@ -2222,6 +2270,12 @@ int main()
         i.Next(1);
         i.Next(1);
         i.Next(2);
+
+        RunLenEncodedIterator2 i2(std::string("L1e2t1C1o1d1e1"));
+        i2.Next();i2.Next();i2.Next();i2.Next();i2.Next();i2.Next();i2.Next();i2.HasNext();i2.Next();i2.HasNext();i2.Next();
+    }
+    {
+        CountNumsWSameDigitDiff().BFS(2, 1);
     }
 
 #endif
@@ -2542,7 +2596,13 @@ int main()
 		ValidParentheses().Test(std::string("[{()}]"));
 		ValidParentheses().Test(std::string("({[)(}{])}"));
 		ValidParentheses().Test(std::string("[{{(())}}]{[[[]]]}"));
-		
+
+		ValidParenthesesMinAdd().OnePass(std::string(")(()("));
+        ValidParenthesesMinAdd().OnePass(std::string("())"));
+        ValidParenthesesMinAdd().OnePass(std::string("((("));
+        ValidParenthesesMinAdd().OnePass(std::string("()"));
+        ValidParenthesesMinAdd().OnePass(std::string("()))(("));
+        ValidParenthesesMinAdd().OnePass(std::string(")))()))"));
 	}
 	{
 		SimplifyPath().Stack(std::string("/a/./b/../../c/"));
@@ -2703,6 +2763,10 @@ int main()
         s.Pop();
         s.Pop();
         s.Pop();
+    }
+    {
+        ScoreOfParentheses().UseStack(std::string("(()(()))"));
+        ScoreOfParentheses().ConstSpace(std::string("(()(()))"));
     }
 
 #endif
@@ -3336,6 +3400,18 @@ int main()
     }
     {
         FindNRepeatedNumInSize2NArray().Test(std::vector<int>({5,1,5,2,5,3,5,4}));
+    }
+    {
+        PushDomino1DArray().Solve(std::string(".L.R...LR..L.."));
+    }
+    {
+        PrisonCell1DArrayAfterNDays().Solve(std::vector<int>({0,1,0,1,1,0,0,1}), 7);
+    }
+    {
+        MinSwapToPairCouplesInArray().UnionFind(std::vector<int>({0, 2, 1, 3}));
+    }
+    {
+        MinRoundTripTicketFrom2Arr().ThreeScans(std::vector<int>({5,3,2,4,6,7,1}), std::vector<int>({4,3,5,7,6,2,6}));
     }
 
 #endif
@@ -4011,6 +4087,8 @@ int main()
 		std::vector<int> v = TestCase::RandVec(20, 1, 10);
 		LocalMinimaInUnsortedArray().Index_Strickly_AllowDup(v);
 		LocalMaximumInUnsortedArray().Strickly_Iterate(v);
+
+        LocalMaximumInUnsortedArray().Strickly_Iterate(std::vector<int>({1,2,1,2,3,4,5,6,7}));
 	}
 	{
 		BinarySearchUnknownLength().Iterate(std::vector<int>({ 3, 5, 24, 27, 34, 41, 45, 58, 61, 62, 64, 67, 69, 78, 78, 78, 81 }), 78);
@@ -4462,6 +4540,16 @@ int main()
     {
         MaxProfitAssignWork().SortplusTwoPtrs(std::vector<int>({2,4,6,8,10}), std::vector<int>({10,20,30,40,50}), std::vector<int>({4,5,6,7}));
     }
+    {
+        MinNumBoatsToSavePeople().SortGreedy(std::vector<int>({3,2,2,1}),3);
+    }
+    {
+        for (int i = 1; i < 10; ++i)
+            KthSmallestNumInMissingRangeOfSortedArr().BinarySearch(std::vector<int>({2,4,7,8,9,15}), i);
+    }
+    {
+        PancakeSort().FindRevFrontArrSizeSeq(std::vector<int>({3,2,4,1}));
+    }
 
 #endif
 #ifdef _Interval_
@@ -4484,13 +4572,14 @@ int main()
 		InsertInterval::Interval(5, 19));
 	}
 	{
+	    //========[start,end]
 		IntersectionOfIntervals().CountTotal(std::vector<int>({ 2, 2, 2, 1, 2, 2, 1 }));
 		IntersectionOfIntervals().CountTotal(std::vector<int>({ 1, 5, 2, 1, 4, 0 }));
 
 		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int>>({ { -2, 2 }, { -1, 3 }, { 0, 4 }, { 2, 4 }, { 2, 6 }, { 3, 7 }, { 5, 7 } }));
 		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int>>({ { -4, 6 }, { -1, 1 }, { 0, 4 }, { 0, 8 }, { 2, 4 }, { 5, 5 } }));
 		IntersectionOfIntervals().CountMaxAtATime(std::vector<std::pair<int, int>>({ { 10, 19 }, { 2, 10 } }));
-
+        //========[start,end)
 		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { -2, 2 },{ -1, 3 },{ 0, 4 },{ 2, 4 },{ 2, 6 },{ 3, 7 },{ 5, 7 } }));
 		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { -4, 6 },{ -1, 1 },{ 0, 4 },{ 0, 8 },{ 2, 4 },{ 5, 5 } }));
 		IntersectionOfIntervals().CountMaxAtATimeII(std::vector<std::pair<int, int>>({ { 10, 19 },{ 2, 10 } }));
@@ -4498,6 +4587,7 @@ int main()
         IntersectionOfIntervals().CountMaxAtATimeII_Simple(std::vector<std::pair<int, int>>({ { -2, 2 },{ -1, 3 },{ 0, 4 },{ 2, 4 },{ 2, 6 },{ 3, 7 },{ 5, 7 } }));
         IntersectionOfIntervals().CountMaxAtATimeII_Simple(std::vector<std::pair<int, int>>({ { -4, 6 },{ -1, 1 },{ 0, 4 },{ 0, 8 },{ 2, 4 },{ 5, 5 } }));
         IntersectionOfIntervals().CountMaxAtATimeII_Simple(std::vector<std::pair<int, int>>({ { 10, 19 },{ 2, 10 } }));
+        IntersectionOfIntervals().CountMaxAtATimeII_Simple(std::vector<std::pair<int, int>>({ { 1, 10 },{ 2, 6 },{ 9, 12 },{ 14, 16 },{ 16, 17 } }));
 	}
 	{
 		LeastPointsCoveringAllIntervals().TwoSortedSets(std::vector<std::pair<int, int>>({ { -2, 2 }, { -1, 3 }, { 0, 4 }, { 2, 4 }, { 2, 6 }, { 5, 7 } }));
@@ -5278,6 +5368,12 @@ int main()
     {
         PartitionSameNumsInGroupsWSameSizes().Valid(std::vector<int>({1,1,2,2,2,2}));
     }
+    {
+        ArrPermutationConsecuNumSumIsSquare().DFS(std::vector<int>({1,17,8}));
+    }
+    {
+        MinCostOfMultiDayPassTickets().DP(std::vector<int>({1,4,6,7,8,20}), std::vector<int>({2,7,15}));
+    }
 
 #endif
 #ifdef _TrieSuffixArray_
@@ -5822,14 +5918,17 @@ int main()
 		LongestBitonicSubArray().Len(std::vector<int>({ 9, 1, 3, 7, 4, 2, 5, 8, 10, 7, 6, 3, 5, 7, 1 }));
 	}
 	{
-		LAPSubseq().ExistArithmeitcThree(std::vector<int>({ 1, 7, 10, 13, 14, 19 }));//[1, 7, 13, 19]
-		LAPSubseq().Len_DP2D(std::vector<int>({ 1, 7, 10, 13, 14, 19 }));//[1, 7, 13, 19]
+		LAPSubseq().ExistArithmeitcThree_Sorted(std::vector<int>({ 1, 7, 10, 13, 14, 19 }));//[1, 7, 13, 19]
+		LAPSubseq().Len_DP2D_Sorted(std::vector<int>({ 1, 7, 10, 13, 14, 19 }));//[1, 7, 13, 19]
 
-		LAPSubseq().ExistArithmeitcThree(std::vector<int>({ 1, 7, 10, 15, 27, 29 }));//[1, 15, 29]
-		LAPSubseq().Len_DP2D(std::vector<int>({ 1, 7, 10, 15, 27, 29 }));//[1, 15, 29]
+		LAPSubseq().ExistArithmeitcThree_Sorted(std::vector<int>({ 1, 7, 10, 15, 27, 29 }));//[1, 15, 29]
+		LAPSubseq().Len_DP2D_Sorted(std::vector<int>({ 1, 7, 10, 15, 27, 29 }));//[1, 15, 29]
 
-		LAPSubseq().ExistArithmeitcThree(std::vector<int>({ 2, 4, 6, 8, 10 }));//[2, 4, 6, 8, 10]
-		LAPSubseq().Len_DP2D(std::vector<int>({ 2, 4, 6, 8, 10 }));//[2, 4, 6, 8, 10]
+		LAPSubseq().ExistArithmeitcThree_Sorted(std::vector<int>({ 2, 4, 6, 8, 10 }));//[2, 4, 6, 8, 10]
+		LAPSubseq().Len_DP2D_Sorted(std::vector<int>({ 2, 4, 6, 8, 10 }));//[2, 4, 6, 8, 10]
+
+		LAPSubseq().Len_DP2D(std::vector<int>({ 20,1,15,3,10,5,8 }));
+		LAPSubseq().FindAll_FixRecur(std::vector<int>({ 20,1,15,3,10,5,8 }));
 	}
 	{
 		LongestEqualSumSubArrFrom2Arr().BruteForce_PrefixSums(std::vector<int>({ 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0 }), std::vector<int>({ 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0 }));
@@ -6124,6 +6223,8 @@ int main()
 
 		LongestConsecu1s_AtMost1Replace().SlideWindow(std::vector<int>({ 1,0,1,1,0 }));
 		LongestConsecu1s_AtMost1Replace().FromStream(std::vector<int>({ 1,0,1,1,0 }));
+
+		LongestConsecu1s_AtMostKReplace().SlideWindow(std::vector<int>({1,1,1,0,0,0,1,1,1,1,0}),2);
 	}
 	{
 		Pattern132().SolveStack(std::vector<int>({ 8,6,5,7,3,4,2,1,0,1,3,4,5 }));
@@ -6250,6 +6351,9 @@ int main()
     }
     {
         CountSubArrWKDistinctEntries().Solve(std::vector<int>({1,2,1,2,3}), 2);
+    }
+    {
+        CountSubsetsWMinMaxSumEqualK().TwoPtrsFromSortedArr(std::vector<int>({1,2,3,4,5}), 6);
     }
 
 #endif
@@ -6384,6 +6488,10 @@ int main()
     }
     {
         VowelSpellChecker().UseHashMaps(std::vector<std::string>({"KiTe","kite","hare","Hare"}), std::vector<std::string>({"kite","Kite","KiTe","Hare","HARE","Hear","hear","keti","keet","keto"}));
+    }
+    {
+        FindTgtWordGivenMatchCountComp::Master m;
+        FindTgtWordGivenMatchCountComp().Solve(std::vector<std::string>({"acckzz","ccbazz","eiowzz","abcczz"}), m);
     }
 
 #endif
@@ -7485,6 +7593,20 @@ int main()
         l.Remove(13);
         l.Insert(8);
     }
+    {
+        NextGreaterNodeInLinkedList::ListNode * h = new NextGreaterNodeInLinkedList::ListNode(1);
+        h->next = new NextGreaterNodeInLinkedList::ListNode(7);
+        h->next->next = new NextGreaterNodeInLinkedList::ListNode(5);
+        h->next->next->next = new NextGreaterNodeInLinkedList::ListNode(1);
+        h->next->next->next->next = new NextGreaterNodeInLinkedList::ListNode(9);
+        h->next->next->next->next->next = new NextGreaterNodeInLinkedList::ListNode(2);
+        h->next->next->next->next->next->next = new NextGreaterNodeInLinkedList::ListNode(5);
+        h->next->next->next->next->next->next->next = new NextGreaterNodeInLinkedList::ListNode(1);
+        PrintLinkedList<NextGreaterNodeInLinkedList::ListNode, std::ostringstream>(h, llOss);
+        std::cout << llOss.str() << std::endl;
+        NextGreaterNodeInLinkedList().UseStack(h);
+        NextGreaterNodeInLinkedList::DeleteLinkedList(h);
+    }
 
 #endif
 #ifdef _2DGrid_
@@ -7784,6 +7906,8 @@ int main()
 		SpiralMatrix().Recur(spiralMatrixGrid2);
 
 		SpiralMatrix().Generate(5);
+
+		SpiralMatrix().Clockwise_RDLU_Path(1,4,0,0);
 	}
 	{
 		PascalTriangle().Generate(6);
@@ -8290,6 +8414,7 @@ int main()
 		SparseMatrixMultiplication().Naive(A1, B1);
 		SparseMatrixMultiplication().SaveBinHashMap(A1, B1);
 
+        SparseMatrixMultiplication().SparseArrayDotProduct_HashMap(std::vector<int>({ 1,2,0,0,5,0,0,0,4,0,0,3 }), std::vector<int>({ 1,0,0,2,0,0,0,0,4,0,2,3 }));
 		SparseMatrixMultiplication().SparseArrayDotProduct_ModifiedMergeTwoSortedArrays(std::vector<int>({ 1,2,0,0,5,0,0,0,4,0,0,3 }), std::vector<int>({ 1,0,0,2,0,0,0,0,4,0,2,3 }));
 	}
 	{
@@ -8783,6 +8908,43 @@ int main()
                         {1, 1,  1}
                 }));
     }
+    {
+        MaxStonesRemovedWSameRowOrCol().DFS(std::vector<std::vector<int>>({{0,0},{0,1},{1,0},{1,2},{2,1},{2,2}}));
+        MaxStonesRemovedWSameRowOrCol().UnionFind(std::vector<std::vector<int>>({{0,0},{0,1},{1,0},{1,2},{2,1},{2,2}}));
+    }
+    {
+        MinimizeMaxNumInPath2DGrid().BFS_MinHeap(std::vector<std::vector<int>>(
+                {
+                        {0,1,2,3,4},
+                        {24,23,22,21,5},
+                        {12,13,14,15,16},
+                        {11,17,18,19,20},
+                        {10,9,8,7,6}
+                }));
+        MinimizeMaxNumInPath2DGrid().BinarySearch_BFS(std::vector<std::vector<int>>(
+                {
+                        {0,1,2,3,4},
+                        {24,23,22,21,5},
+                        {12,13,14,15,16},
+                        {11,17,18,19,20},
+                        {10,9,8,7,6}
+                }));
+    }
+    {
+        StackTrianglesToPyramid().DFS(std::string("XYZ"), std::vector<std::string>({"XYD", "YZE", "DEA", "FFF"}));
+    }
+    {
+        CountRegionsCutBySlashes2DGrid().DFS(std::vector<std::string>(
+                {
+                    "/\\",
+                    "\\/"
+                }));
+        CountRegionsCutBySlashes2DGrid().UnionFind(std::vector<std::string>(
+                {
+                        "/\\",
+                        "\\/"
+                }));
+    }
 
 #endif
 #ifdef _BinaryTree_
@@ -9273,6 +9435,26 @@ int main()
 		std::cout << bstOss.str() << std::endl;
 		bstOss.str(std::string());
 		ConstructBinaryTreeFrom2Traversals::DeleteTree(cbtftRoot5);
+
+
+        ConstructBinaryTreeFrom2Traversals::TreeNode * cbtftRoot6 = ConstructBinaryTreeFrom2Traversals().BruteForce_PrePost
+                (std::vector<int>({ 7, 1, 0, 3, 2, 5, 4, 6, 9, 8, 10 }), std::vector<int>({ 0, 2, 4, 6, 5, 3, 1, 8, 10, 9, 7 }));
+        bstOss << "ConstructBinaryTreeFrom2Traversals BruteForce PrePost-Order:" << std::endl;
+        bstOss << "7, 1, 0, 3, 2, 5, 4, 6, 9, 8, 10" << std::endl << "0, 2, 4, 6, 5, 3, 1, 8, 10, 9, 7" << std::endl;
+        PrintBinaryTree<ConstructBinaryTreeFrom2Traversals::TreeNode, std::ostringstream>(cbtftRoot6, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        ConstructBinaryTreeFrom2Traversals::DeleteTree(cbtftRoot6);
+
+
+        ConstructBinaryTreeFrom2Traversals::TreeNode * cbtftRoot7 = ConstructBinaryTreeFrom2Traversals().HashTable_PrePost
+                (std::vector<int>({ 7, 1, 0, 3, 2, 5, 4, 6, 9, 8, 10 }), std::vector<int>({ 0, 2, 4, 6, 5, 3, 1, 8, 10, 9, 7 }));
+        bstOss << "ConstructBinaryTreeFrom2Traversals HashTable PrePost-Order:" << std::endl;
+        bstOss << "7, 1, 0, 3, 2, 5, 4, 6, 9, 8, 10" << std::endl << "0, 2, 4, 6, 5, 3, 1, 8, 10, 9, 7" << std::endl;
+        PrintBinaryTree<ConstructBinaryTreeFrom2Traversals::TreeNode, std::ostringstream>(cbtftRoot7, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        ConstructBinaryTreeFrom2Traversals::DeleteTree(cbtftRoot7);
 	}
 	{
 		ConstructBSTFromTraversal::TreeNode * root = ConstructBSTFromTraversal().Preorder_BruteForce_Recur(std::vector<int>({ 7, 1, 0, 3, 2, 5, 4, 6, 9, 8, 10 }));
@@ -10818,6 +11000,73 @@ int main()
     {
         BinaryTreeLevelOrderArrToInOrderArr().Recur(std::vector<int>({4, 2, 6, 1, 3, 5, 7}));
     }
+    {
+        MaxDiffBtwNodeAncestorBinaryTree::TreeNode * r = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(8);
+        r->left = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(3);
+        r->left->left = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(1);
+        r->left->right = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(6);
+        r->left->right->left = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(4);
+        r->left->right->right = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(7);
+        r->right = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(10);
+        r->right->right = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(14);
+        r->right->right->left = new MaxDiffBtwNodeAncestorBinaryTree::TreeNode(13);
+        PrintBinaryTree<MaxDiffBtwNodeAncestorBinaryTree::TreeNode, std::ostringstream>(r, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        MaxDiffBtwNodeAncestorBinaryTree().Recur(r);
+        bstOss.str(std::string());
+        MaxDiffBtwNodeAncestorBinaryTree::DeleteTree(r);
+    }
+    {
+        auto v = AllPossibleFullBinaryTree().Enumerate(7);
+        bstOss << "AllPossibleFullBinaryTree for nodeCount=7: " << std::endl;
+        for (auto root : v)
+            PrintBinaryTree<AllPossibleFullBinaryTree::TreeNode, std::ostringstream>(root, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+    }
+    {
+        RemoveSubtWAll0sBinaryTree::TreeNode * r = new RemoveSubtWAll0sBinaryTree::TreeNode(1);
+        r->right = new RemoveSubtWAll0sBinaryTree::TreeNode(0);
+        r->right->left = new RemoveSubtWAll0sBinaryTree::TreeNode(0);
+        r->right->right = new RemoveSubtWAll0sBinaryTree::TreeNode(1);
+        bstOss << "RemoveSubtWAll0sBinaryTree:" << std::endl;
+        PrintBinaryTree<RemoveSubtWAll0sBinaryTree::TreeNode, std::ostringstream>(r, bstOss);
+        r = RemoveSubtWAll0sBinaryTree().Recur(r);
+        PrintBinaryTree<RemoveSubtWAll0sBinaryTree::TreeNode, std::ostringstream>(r, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        RemoveSubtWAll0sBinaryTree::DeleteTree(r);
+    }
+    {
+        CompleteBinaryTreeInserter::TreeNode * r = new CompleteBinaryTreeInserter::TreeNode(0);
+        CompleteBinaryTreeInserter cbti(r);
+        for (int i = 1; i < 10; ++i)
+            cbti.Insert(i);
+        r = cbti.GetRoot();
+        PrintBinaryTree<CompleteBinaryTreeInserter::TreeNode, std::ostringstream>(r, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        CompleteBinaryTreeInserter::DeleteTree(r);
+    }
+    {
+        MinSwapLRChildToTgtPreorderBinaryTree::TreeNode * r = new MinSwapLRChildToTgtPreorderBinaryTree::TreeNode(1);
+        r->left = new MinSwapLRChildToTgtPreorderBinaryTree::TreeNode(2);
+        r->right = new MinSwapLRChildToTgtPreorderBinaryTree::TreeNode(3);
+        PrintBinaryTree<MinSwapLRChildToTgtPreorderBinaryTree::TreeNode, std::ostringstream>(r, bstOss);
+        auto v = MinSwapLRChildToTgtPreorderBinaryTree().Recur(r, std::vector<int>({1,3,2}));
+        bstOss << "MinSwapLRChildToTgtPreorderBinaryTree Recur: " << Debug::ToStr1D<int>()(v) << std::endl;
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        MinSwapLRChildToTgtPreorderBinaryTree::DeleteTree(r);
+    }
+    {
+        ConstructBinaryTreeFromTraversalWDepth::TreeNode * r = ConstructBinaryTreeFromTraversalWDepth().FromPreorder(std::string("1-2--3--4-5--6--7"));
+        bstOss << "ConstructBinaryTreeFromTraversalWDepth from 1-2--3--4-5--6--7:" << std::endl;
+        PrintBinaryTree<ConstructBinaryTreeFromTraversalWDepth::TreeNode, std::ostringstream>(r, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+        ConstructBinaryTreeFromTraversalWDepth::DeleteTree(r);
+    }
 
 #endif
 #ifdef _QuadTree_
@@ -11504,6 +11753,15 @@ int main()
 			{ 1, 1, 0, 0, 0, 0 },//vertex 4
 			{ 1, 0, 1, 0, 0, 0 },//vertex 5
 		}));
+        std::vector<int> topoOrdering11 = TopologicalSortDAG().BFS_AdjacencyMatrix(std::vector<std::vector<int>>(
+        {
+                { 0, 0, 0, 0, 0, 0 },//vertex 0
+                { 0, 0, 0, 0, 0, 0 },//vertex 1
+                { 0, 0, 0, 1, 0, 0 },//vertex 2
+                { 0, 1, 0, 0, 0, 0 },//vertex 3
+                { 1, 1, 0, 0, 0, 0 },//vertex 4
+                { 1, 0, 1, 0, 0, 0 },//vertex 5
+        }));
 		UniqueTopologicalOrdering().CheckMissedEdges(topoOrdering1, std::vector<std::vector<int>>(
 		{
 			{ 0, 0, 0, 0, 0, 0 },//vertex 0
@@ -11531,6 +11789,14 @@ int main()
 			{ 0, 0, 0, 0, 1 },//vertex 3
 			{ 0, 0, 0, 0, 0 },//vertex 4
 		}));
+        std::vector<int> topoOrdering22 = TopologicalSortDAG().BFS_AdjacencyMatrix(std::vector<std::vector<int>>(
+        {
+                { 0, 1, 0, 0, 1 },//vertex 0
+                { 0, 0, 1, 1, 1 },//vertex 1
+                { 0, 0, 0, 0, 1 },//vertex 2
+                { 0, 0, 0, 0, 1 },//vertex 3
+                { 0, 0, 0, 0, 0 },//vertex 4
+        }));
 		UniqueTopologicalOrdering().CheckMissedEdges(topoOrdering2, std::vector<std::vector<int>>(
 		{
 			{ 0, 1, 0, 0, 1 },//vertex 0
@@ -13375,6 +13641,42 @@ int main()
     {
         ShortestPathVisitAllNodesInGraph().Test(std::vector<std::vector<int>>({{1,2,3},{0},{0},{0}}));
         ShortestPathVisitAllNodesInGraph().Test(std::vector<std::vector<int>>({{1},{0,2,4},{1,3,4},{2},{1,2}}));
+    }
+    {
+        Remove1MalNodeMinimizeInfectedNodes().DFS(std::vector<std::vector<int>>(
+                {
+                        {1,1,0},
+                        {1,1,0},
+                        {0,0,1}
+                }),std::vector<int>({0,1}));
+        Remove1MalNodeMinimizeInfectedNodes().UnionFind(std::vector<std::vector<int>>(
+                {
+                        {1,1,0},
+                        {1,1,0},
+                        {0,0,1}
+                }),std::vector<int>({0,1}));
+        Remove1MalNodeMinimizeInfectedNodes_RemoveEdges().DFS(std::vector<std::vector<int>>(
+                {
+                        {1,1,0},
+                        {1,1,0},
+                        {0,0,1}
+                }),std::vector<int>({0,1}));
+        Remove1MalNodeMinimizeInfectedNodes_RemoveEdges().UnionFind(std::vector<std::vector<int>>(
+                {
+                        {1,1,0},
+                        {1,1,0},
+                        {0,0,1}
+                }),std::vector<int>({0,1}));
+    }
+    {
+        ConnectedComponentsByStrSwap2Chars().DFS(std::vector<std::string>({"tars","rats","arts","star"}));
+        ConnectedComponentsByStrSwap2Chars().BFS(std::vector<std::string>({"tars","rats","arts","star"}));
+        ConnectedComponentsByStrSwap2Chars().UnionFind(std::vector<std::string>({"tars","rats","arts","star"}));
+    }
+    {
+        ConnectedComponentsByIntCommonFactor().DFS(std::vector<int>({4,6,15,35}));
+        ConnectedComponentsByIntCommonFactor().BFS(std::vector<int>({4,6,15,35}));
+        ConnectedComponentsByIntCommonFactor().UnionFind(std::vector<int>({4,6,15,35}));
     }
 
 #endif
