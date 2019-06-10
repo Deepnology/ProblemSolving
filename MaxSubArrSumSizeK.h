@@ -24,7 +24,7 @@ public:
         while (end < N)
         {
             sum += v[end];
-            if (begin - end + 1 == k)
+            if (end - begin + 1 == k)
             {
                 res = std::max(res, sum);
                 sum -= v[begin++];
