@@ -25,6 +25,8 @@ L >= 1
 M >= 1
 L + M <= A.length <= 1000
 0 <= A[i] <= 1000
+
+see also MaxDiff2SubArraySum.h, MaxMSubArrSumWSizeK.h
  */
 class MaxSum2NonOvlpSubArrays
 {
