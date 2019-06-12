@@ -135,6 +135,9 @@ public:
             res += dp[i][N];
             res %= 1000000007;
         }
+
+        Debug::Print2D<int>()(dp, false);
+        std::cout << "KnightDialer DP for moves=" << N << ": " << res << std::endl;
         return res;
         //there is a O(logN) solution
     }
@@ -158,6 +161,8 @@ public:
             res += recur(i, N, dest);
             res %= 1000000007;
         }
+
+        std::cout << "KnightDialer Recur for moves=" << N << ": " << res << std::endl;
         return res;
     }
     int recur(int cur, int move, const std::vector<std::vector<int>> & dest)
@@ -243,5 +248,34 @@ Row#9	= 0, 0, 1, 0, 6, 0
 
 LMoveIdxSeqCombinationInMatrix DP for moves=5: 52
 LMoveIdxSeqCombinationInMatrix Recur for moves=5: 52
+
+[rY][cX]
+Row#0	= 0, 1
+Row#1	= 0, 1
+Row#2	= 0, 1
+Row#3	= 0, 1
+Row#4	= 0, 1
+Row#5	= 0, 1
+Row#6	= 0, 1
+Row#7	= 0, 1
+Row#8	= 0, 1
+Row#9	= 0, 1
+
+KnightDialer DP for moves=1: 10
+[rY][cX]
+Row#0	= 0, 1, 2
+Row#1	= 0, 1, 2
+Row#2	= 0, 1, 2
+Row#3	= 0, 1, 3
+Row#4	= 0, 1, 0
+Row#5	= 0, 1, 3
+Row#6	= 0, 1, 2
+Row#7	= 0, 1, 2
+Row#8	= 0, 1, 2
+Row#9	= 0, 1, 2
+
+KnightDialer DP for moves=2: 20
+KnightDialer Recur for moves=1: 10
+KnightDialer Recur for moves=2: 20
  */
 #endif
