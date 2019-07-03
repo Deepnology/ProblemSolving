@@ -174,6 +174,7 @@
 #include "RunLenEncodedIterator.h"
 #include "RunLenEncodedIterator2.h"
 #include "CountNumsWSameDigitDiff.h"
+#include "IsLittleEndian.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -221,6 +222,7 @@
 #include "RoundRobinScheduling.h"
 #include "MaxFreqStack.h"
 #include "ScoreOfParentheses.h"
+#include "RemoveOutermostParenOfEachPrimitive.h"
 
 /*1D Array*/
 #include "AllUniqueElements.h"
@@ -625,6 +627,7 @@
 #include "AllNumsInLeftSubArrLessEqualRight.h"
 #include "CountSubArrWKDistinctEntries.h"
 #include "CountSubsetsWMinMaxSumEqualK.h"
+#include "MaxSum2NonOvlpSubArrays.h"
 
 /*Compare String*/
 #include "EditDistance.h"
@@ -697,6 +700,7 @@
 #include "LinkedListComponents.h"
 #include "ImplementLinkedList.h"
 #include "NextGreaterNodeInLinkedList.h"
+#include "PrintLinkedListInReverse.h"
 
 /*2D Grid*/
 #include "MinPathSum.h"
@@ -792,6 +796,7 @@
 #include "MinimizeMaxNumInPath2DGrid.h"
 #include "StackTrianglesToPyramid.h"
 #include "CountRegionsCutBySlashes2DGrid.h"
+#include "EscapeInLarge2DMazeWithBlocks.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -2277,6 +2282,12 @@ int main()
     {
         CountNumsWSameDigitDiff().BFS(2, 1);
     }
+    {
+        IsLittleEndian().Check();
+        IsLittleEndian().ReverseBytesToConvert(255);
+        IsLittleEndian().ReverseBytesToConvert2(255);
+        IsLittleEndian().ReverseBytesToConvert3(255);
+    }
 
 #endif
 #ifdef _Random_
@@ -2767,6 +2778,9 @@ int main()
     {
         ScoreOfParentheses().UseStack(std::string("(()(()))"));
         ScoreOfParentheses().ConstSpace(std::string("(()(()))"));
+    }
+    {
+        RemoveOutermostParenOfEachPrimitive().OneScan(std::string("(()())(())(()(()))"));
     }
 
 #endif
@@ -6355,6 +6369,9 @@ int main()
     {
         CountSubsetsWMinMaxSumEqualK().TwoPtrsFromSortedArr(std::vector<int>({1,2,3,4,5}), 6);
     }
+    {
+        MaxSum2NonOvlpSubArrays().DP_SlideWindow(std::vector<int>({2,1,5,6,0,9,5,0,3,8}), 4, 3);
+    }
 
 #endif
 #ifdef _CompareString_
@@ -7606,6 +7623,20 @@ int main()
         std::cout << llOss.str() << std::endl;
         NextGreaterNodeInLinkedList().UseStack(h);
         NextGreaterNodeInLinkedList::DeleteLinkedList(h);
+        llOss.str(std::string());
+    }
+    {
+        PrintLinkedListInReverse::ListNode * h = new PrintLinkedListInReverse::ListNode(1);
+        h->next = new PrintLinkedListInReverse::ListNode(2);
+        h->next->next = new PrintLinkedListInReverse::ListNode(3);
+        h->next->next->next = new PrintLinkedListInReverse::ListNode(4);
+        PrintLinkedList<PrintLinkedListInReverse::ListNode, std::ostringstream>(h, llOss);
+        std::cout << llOss.str() << std::endl; llOss.str(std::string());
+        PrintLinkedListInReverse().DivideConquer(h);
+        h->next->next->next->next = new PrintLinkedListInReverse::ListNode(5);
+        PrintLinkedList<PrintLinkedListInReverse::ListNode, std::ostringstream>(h, llOss);
+        std::cout << llOss.str() << std::endl; llOss.str(std::string());
+        PrintLinkedListInReverse().DivideConquer(h);
     }
 
 #endif
@@ -8731,6 +8762,11 @@ int main()
             LMoveIdxSeqCombinationInMatrix().DP(move);
             LMoveIdxSeqCombinationInMatrix().Recur(move);
         }
+
+        KnightDialer().DP(1);
+        KnightDialer().DP(2);
+        KnightDialer().Recur(1);
+        KnightDialer().Recur(2);
     }
     {
         FindMinCol1In01Matrix().LinearSearchFromUpperRightCorner(std::vector<std::vector<int>>(
@@ -8944,6 +8980,9 @@ int main()
                         "/\\",
                         "\\/"
                 }));
+    }
+    {
+        EscapeInLarge2DMazeWithBlocks().IsEscapePossible(std::vector<std::vector<int>>({{0,1},{1,0}}), std::vector<int>({0,0}), std::vector<int>({0,2}));
     }
 
 #endif
