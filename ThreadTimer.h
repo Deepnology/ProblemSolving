@@ -1,8 +1,3 @@
-/*****************************************
-	ThreadTimer.h
-	Copyright (c) 2017 David Feng
-	Distributed under the MIT License.
-*****************************************/
 #ifndef THREAD_TIMER_H
 #define THREAD_TIMER_H
 #include <boost/thread/thread.hpp>
