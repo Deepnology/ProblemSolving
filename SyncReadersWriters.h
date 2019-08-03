@@ -1,8 +1,3 @@
-/*****************************************
-	SyncReadersWriters.h
-	Copyright (c) 2017 David Feng
-	Distributed under the MIT License.
-*****************************************/
 #ifndef	SYNC_READERS_WRITERS_H
 #define SYNC_READERS_WRITERS_H
 #include <boost/thread/thread.hpp>
