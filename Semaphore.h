@@ -1,8 +1,3 @@
-/*****************************************
-	Semaphore.h
-	Copyright (c) 2017 David Feng
-	Distributed under the MIT License.
-*****************************************/
 #ifndef SEMAPHORE_H
 #define SEMAPHORE_H
 #include <boost/thread/condition.hpp>
