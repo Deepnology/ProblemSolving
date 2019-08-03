@@ -1,8 +1,3 @@
-/*****************************************
-	ThreadMgr.h
-	Copyright (c) 2017 David Feng
-	Distributed under the MIT License.
-*****************************************/
 #ifndef THREAD_MGR_H
 #define THREAD_MGR_H
 #include <boost/thread/thread.hpp>
