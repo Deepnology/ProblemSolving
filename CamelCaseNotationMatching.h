@@ -3,6 +3,7 @@
 #include "Debug.h"
 #include <cctype>
 /*
+Leetcode: Camelcase Matching
 Google
 https://careercup.com/question?id=5660887265312768
 http://www.geeksforgeeks.org/print-words-matching-pattern-camelcase-notation-dictonary/
@@ -42,6 +43,7 @@ public:
 	CamelCaseNotationMatching() {}
 	~CamelCaseNotationMatching() {}
 
+	//this also matches "FooBarTest", "FB" (but Leetcode's version doesn't)
 	std::vector<std::string> Linear(const std::vector<std::string> & strs, const std::string & pattern)
 	{
 		std::vector<std::string> res;
@@ -94,6 +96,31 @@ public:
 		std::cout << "CamelCaseNotationMatching Linear for \"" << Debug::ToStr1D<std::string>()(strs) << "\", pattern=\"" << pattern << "\": " << Debug::ToStr1D<std::string>()(res) << std::endl;
 		return res;
 	}
+
+	//Leetcode: Camecase Matching
+	std::vector<bool> Better(std::vector<std::string> && strs, std::string && pattern)
+	{
+		std::vector<bool> res;
+		for (auto & s : strs)
+			res.push_back(match(s, pattern));
+
+		std::cout << "CamelCaseNotationMatching Better for \"" << Debug::ToStr1D<std::string>()(strs) << "\", pattern=\"" << pattern << "\": " << Debug::ToStr1D<bool>()(res) << std::endl;
+		return res;
+	}
+	bool match(const std::string & s, const std::string & p)
+	{
+		int N = s.size();
+		int M = p.size();
+		int j = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			if (j < M && s[i] == p[j]) //matches both upper case and lower case
+				++j;
+			else if (isupper(s[i])) //not matched but s[i] is a upper case
+				return false;
+		}
+		return j == M;
+	}
 };
 /*
 CamelCaseNotationMatching Linear for "HelloMars, HelloWorld, HelloWorldMars, HiHo", pattern="H": HelloMars, HelloWorld, HelloWorldMars, HiHo
@@ -112,5 +139,7 @@ CamelCaseNotationMatching Linear for "WelcomeGeek, WelcomeToGeeksForGeeks, Geeks
 CamelCaseNotationMatching Linear for "WelcomeGeek, WelcomeToGeeksForGeeks, GeeksForGeeks", pattern="We": WelcomeGeek, WelcomeToGeeksForGeeks
 CamelCaseNotationMatching Linear for "WelcomeGeek, WelcomeToGeeksForGeeks, GeeksForGeeks", pattern="WeGe": WelcomeGeek
 CamelCaseNotationMatching Linear for "WelcomeGeek, WelcomeToGeeksForGeeks, GeeksForGeeks", pattern="Ge": GeeksForGeeks
+
+CamelCaseNotationMatching Better for "FooBar, FooBarTest, FootBall, FrameBuffer, ForceFeedBack", pattern="FB": 1, 0, 1, 1, 0
 */
 #endif
