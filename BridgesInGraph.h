@@ -17,6 +17,13 @@ http://www.geeksforgeeks.org/bridge-in-a-graph/
 An edge in an undirected connected graph is a bridge iff removing it disconnects the graph.
 For an undirected disconnected graph, a bridge is an edge removing which increasing number of connected components.
 
+Leetcode: Critical connections in a network
+There are n servers numbered from 0 to n-1 connected by undirected server-to-server connections forming a network
+ where connections[i] = [a, b] represents a connection between servers a and b.
+Any server can reach any other server directly or indirectly through the network.
+A critical connection is a connection that, if removed, will make some server unable to reach some other server.
+Return all critical connections in the network in any order.
+
 See also CutVerticesInGraph.h, BiconnectedGraph.h, StronglyConnectedComponents.h
 */
 class BridgesInGraph
@@ -145,6 +152,54 @@ private:
 			}
 		}
 	}
+    //Leetcode: Critical Connections in a Network
+    std::vector<std::vector<int>> FindAll_Tarjan_DFS_UndirectedAdjList(int N, std::vector<std::vector<int>> & connections)
+    {
+        std::vector<std::vector<int>> adjList(N, std::vector<int>());
+        for (auto & v : connections)
+        {
+            adjList[v[0]].push_back(v[1]);
+            adjList[v[1]].push_back(v[0]);
+        }
+        std::vector<std::vector<int>> bridges;
+        std::vector<int> visitIndex(N, -1);
+        int visitCount = -1;
+        std::vector<int> lowestReachable(N, N);
+        for (int i = 0; i < N; ++i)
+        {
+            if (visitIndex[i] == -1)
+                findAll_Tarjan_DFS_UndirectedAdjList(adjList, -1, i, visitCount, visitIndex, bridges, lowestReachable);
+        }
+        std::cout << "BridgesInGraph FindAll_Tarjan_DFS_UndirectedAdjList: " << Debug::ToStr1D<int>()(bridges) << std::endl;
+        return bridges;
+    }
+private:
+    void findAll_Tarjan_DFS_UndirectedAdjList(const std::vector<std::vector<int>> & adjList, int from, int v, int & visitCount, std::vector<int> & visitIndex, std::vector<std::vector<int>> & bridges, std::vector<int> & lowestReachable)
+    {
+        int N = adjList.size();
+        visitIndex[v] = ++visitCount;
+        lowestReachable[v] = visitIndex[v];
+        int dfsChildCount = 0;
+        for (auto & i : adjList[v])
+        {
+            if (visitIndex[i] == -1)
+            {
+                ++dfsChildCount;
+                findAll_Tarjan_DFS_UndirectedAdjList(adjList, v, i, visitCount, visitIndex, bridges, lowestReachable);
+
+                //after recursion, lowestReachable[i] might have a lower reachable vertex than lowestReachable[v]
+                lowestReachable[v] = std::min(lowestReachable[v], lowestReachable[i]);
+
+                //1 case for edge (v, i) as bridge:
+                //if i's DFS children don't have any back edge to to any DFS ancestor of v
+                if (lowestReachable[i] > visitIndex[v])
+                    bridges.push_back({v, i});
+            }
+            else if (i != from)//for undirected graph, skip v's DFS parent vertex
+                lowestReachable[v] = std::min(lowestReachable[v], visitIndex[i]);
+            //i has been visited already, check if i could be a lower reachable DFS ancestor of existing lowestReachable[v]
+        }
+    }
 };
 /*
 		1---0---3   5   6   8
