@@ -49,6 +49,14 @@ Leetcode: Unique Paths II
 // Complexity:
 // DP, O(m*n) time, O(m*n) space
 // DP, O(m*n) time, O(n) space
+
+Leetcode: Unique Path III
+ On a 2-dimensional grid, there are 4 types of squares:
+1 represents the starting square.  There is exactly one starting square.
+2 represents the ending square.  There is exactly one ending square.
+0 represents empty squares we can walk over.
+-1 represents obstacles that we cannot walk over.
+Return the number of 4-directional walks from the starting square to the ending square, that walk over every non-obstacle square exactly once.
 */
 class UniquePath
 {
@@ -245,6 +253,103 @@ Permutation FromDupArray:
 	}
 
 
+	//Unique Path III
+	//DFS: O(4^N) time where N is total num of cells
+	int CountAll_DFS(std::vector<std::vector<int>> && grid)
+	{
+        int N = grid.size(); int M = grid[0].size();
+        int startR, startC, endR, endC, total = 0, res = 0;
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < M; ++j)
+            {
+                if (grid[i][j] == 0) ++total;
+                else if (grid[i][j] == 1)
+                {
+                    startR = i; startC = j; ++total;
+                }
+                else if (grid[i][j] == 2)
+                {
+                    endR = i; endC = j; ++total;
+                }
+            }
+        recur(grid, startR, startC, endR, endC, 1, total, res);
+
+        Debug::Print2D<int>()(grid, false);
+        std::cout << "UniquePath CountAll_DFS for above grid: " << res << std::endl;
+        return res;
+	}
+	void recur(std::vector<std::vector<int>> & grid, int curR, int curC, int tgtR, int tgtC, int count, int total, int & res)
+	{
+		int N = grid.size(); int M = grid[0].size();
+		if (curR == tgtR && curC == tgtC)
+		{
+			if (count == total) ++res;
+			return;
+		}
+		std::vector<std::vector<int>> dir({{-1,0},{0,-1},{1,0},{0,1}});
+		for (int d = 0; d < 4; ++d)
+		{
+			int r = curR + dir[d][0];
+			int c = curC + dir[d][1];
+			if (r>=0 && r<N && c>=0 && c<M && (grid[r][c] == 0 || grid[r][c] == 2))
+			{
+				grid[r][c] += 3;
+				recur(grid, r, c, tgtR, tgtC, count+1, total, res);
+				grid[r][c] -= 3;
+			}
+		}
+	}
+	int CountAll_DFS_Memo(std::vector<std::vector<int>> && grid)
+	{
+		int N = grid.size(); int M = grid[0].size();
+		int startR, startC, endR, endC, total = 0;
+		std::string visit(N*M, '0');
+		std::unordered_map<std::string, int> memo;//<pathState, numWays>
+		for (int i = 0; i < N; ++i)
+			for (int j = 0; j < M; ++j)
+			{
+				if (grid[i][j] == 0) ++total;
+				else if (grid[i][j] == 1)
+				{
+					startR = i; startC = j; ++total;
+				}
+				else if (grid[i][j] == 2)
+				{
+					endR = i; endC = j; ++total;
+				}
+			}
+		visit[startR*M+startC] = '1';
+		int res = recur(grid, startR, startC, endR, endC, 1, total, visit, memo);
+
+		Debug::Print2D<int>()(grid, false);
+		std::cout << "UniquePath CountAll_DFS_Memo for above grid: " << res << std::endl;
+		return res;
+	}
+	int recur(std::vector<std::vector<int>> & grid, int curR, int curC, int tgtR, int tgtC, int count, int total, std::string & visit, std::unordered_map<std::string,int> & memo)
+	{
+		int N = grid.size(); int M = grid[0].size();
+		if (curR==tgtR && curC==tgtC)
+		{
+			if (count == total) return 1;
+			return 0;
+		}
+		std::string pathState = std::to_string(curR) + "," + std::to_string(curC) + "," + visit;
+		if (memo.count(pathState)) return memo[pathState];
+		int numWays = 0;
+		std::vector<std::vector<int>> dir({{-1,0},{0,-1},{1,0},{0,1}});
+		for (int d = 0; d < 4; ++d)
+		{
+			int r = curR + dir[d][0];
+			int c = curC + dir[d][1];
+			if (r>=0 && r<N && c>=0 && c<M && (grid[r][c] == 0 || grid[r][c] == 2) && visit[r*M+c]=='0')
+			{
+				visit[r*M+c] = '1';
+				numWays += recur(grid, r, c, tgtR, tgtC, count+1, total, visit, memo);
+				visit[r*M+c] = '0';
+			}
+		}
+		return memo[pathState] = numWays;
+	}
 };
 /*
 [cX][rY]
@@ -296,5 +401,18 @@ Row#2	= 0, 0, 0, 0
 1, 2, 0, 1
 1, 3, 3, 4
 UniquePath DP_1D w/ Obstacle: 4
+
+[rY][cX]
+Row#0	= 1, 0, 0, 0
+Row#1	= 0, 0, 0, 0
+Row#2	= 0, 0, 0, 2
+
+UniquePath CountAll_DFS for above grid: 4
+[rY][cX]
+Row#0	= 1, 0, 0, 0
+Row#1	= 0, 0, 0, 0
+Row#2	= 0, 0, 0, 2
+
+UniquePath CountAll_DFS_Memo for above grid: 4
 */
 #endif
