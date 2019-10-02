@@ -9,7 +9,7 @@
 #include "Debug.h"
 /*
 http://www.geeksforgeeks.org/count-number-of-occurrences-in-a-sorted-array/
-https://github.com/anson627/leetcode/blob/master/SearchforaRange/SearchforaRange.cpp
+Leetcode: Find First and Last Position of Element in Sorted Array
 // Given a sorted array of integers, find the starting and ending position of
 // a given target value.
 //
@@ -61,7 +61,29 @@ public:
 		return res;
 	}
 
+	std::vector<int> LowerBoundUpperBound_STL2(const std::vector<int> & nums, int target)
+	{
+		auto lb = std::lower_bound(nums.begin(), nums.end(), target,
+								   [](const int & arrVal, const int & target)
+								   {
+									   return arrVal < target;
+								   });
+		std::vector<int> res(2, -1);
+		if (lb != nums.end() && *lb == target)//found at least one target
+		{
+			res[0] = lb - nums.begin();//first target index: lower bound
+			auto ub = std::upper_bound(nums.begin(), nums.end(), target,
+									   [](const int & target, const int & arrVal)
+									   {
+										   return target < arrVal;
+									   });
+			res[1] = (--ub) - nums.begin();//last target index: upper bound - 1
+		}
 
+		std::cout << "SearchForRange LowerBoundUpperBound_STL2 for \"" << target << "\" in \"" << Debug::ToStr1D<int>()(nums) << "\": " << res[0] << ", " << res[1] << std::endl;
+		return res;
+	}
+	//see also TwoSumLessEqualClosestK.h
 };
 /*
 SearchForRange LowerBoundUpperBound_STL for "7" in "3, 4, 5, 5, 5, 6, 7, 7, 7, 8, 8": 6, 8
