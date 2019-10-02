@@ -114,4 +114,110 @@ Row#5	= 0, 0, 0, 0, 0, 0
 BurstBallons DP2D for "1, 3, 1, 5, 8, 1": 167
 BurstBallons Recur for "1, 3, 1, 5, 8, 1": 167
 */
+/*
+Leetcode: Minimum Cost to Merge Stones
+There are N piles of stones arranged in a row.  The i-th pile has stones[i] stones.
+A move consists of merging exactly K consecutive piles into one pile, and the cost of this move is equal to the total number of stones in these K piles.
+Find the minimum cost to merge all piles of stones into one pile.  If it is impossible, return -1.
+Example 1:
+Input: stones = [3,2,4,1], K = 2
+Output: 20
+Explanation:
+We start with [3, 2, 4, 1].
+We merge [3, 2] for a cost of 5, and we are left with [5, 4, 1].
+We merge [4, 1] for a cost of 5, and we are left with [5, 5].
+We merge [5, 5] for a cost of 10, and we are left with [10].
+The total cost was 20, and this is the minimum possible.
+Example 2:
+Input: stones = [3,2,4,1], K = 3
+Output: -1
+Explanation: After any merge operation, there are 2 piles left, and we can't merge anymore.  So the task is impossible.
+Example 3:
+Input: stones = [3,5,1,2,6], K = 3
+Output: 25
+Explanation:
+We start with [3, 5, 1, 2, 6].
+We merge [5, 1, 2] for a cost of 8, and we are left with [3, 8, 6].
+We merge [3, 8, 6] for a cost of 17, and we are left with [17].
+The total cost was 25, and this is the minimum possible.
+ */
+class MergeStones
+{
+public:
+	MergeStones(){}
+
+	//can merge any number of consecutive piles
+	int DP2D(std::vector<int> && stones) //O(N^3) time
+	{
+		int N = stones.size();
+		std::vector<int> prefixSum(N+1, 0);
+		for (int i = 1; i <= N; ++i)
+			prefixSum[i] = prefixSum[i-1] + stones[i-1];
+
+		std::vector<std::vector<int>> dp(N+1, std::vector<int>(N+1, INT_MAX));
+		for (int i = 1; i <= N; ++i)
+			dp[i][i] = 0;
+
+		for (int len = 2; len <= N; ++len)
+		{
+			for (int left = 1; left+len-1 <= N; ++left)
+			{
+				int right = left+len-1;
+
+				int sum = prefixSum[right] - prefixSum[left-1];
+				for (int mid = left; mid < right; ++mid)
+				{
+					if (dp[left][mid]==INT_MAX || dp[mid+1][right]==INT_MAX)
+						continue;
+					dp[left][right] = std::min(dp[left][right], dp[left][mid]+dp[mid+1][right] + sum);
+				}
+			}
+		}
+
+		return dp[1][N];
+	}
+
+	//can only merge K consecutive piles
+	int DP3D(std::vector<int> && stones, int K) //O(N^3*K) time
+	{
+		int N = stones.size();
+		if ((N-1)%(K-1) != 0)
+			return -1;
+
+		std::vector<int> prefixSum(N+1, 0);
+		for (int i = 1; i <= N; ++i)
+			prefixSum[i] = prefixSum[i-1] + stones[i-1];
+
+		//dp[i][j][k]: min cost to pile stones[i:j] into k piles
+		std::vector<std::vector<std::vector<int>>> dp(N+1, std::vector<std::vector<int>>(N+1, std::vector<int>(K+1, INT_MAX)));
+		for (int i = 1; i <= N; ++i)
+			dp[i][i][1] = 0;
+
+		for (int len = 2; len <= N; ++len)
+		{
+			for (int left = 1; left+len-1 <= N; ++left)
+			{
+				int right = left+len-1;
+
+				//====
+				for (int k = 2; k <= K; ++k)
+				{
+					for (int mid = left; mid < right; ++mid)
+					{
+						if (dp[left][mid][k-1]==INT_MAX || dp[mid+1][right][1]==INT_MAX)
+							continue;
+						dp[left][right][k] = std::min(dp[left][right][k], dp[left][mid][k-1]+dp[mid+1][right][1]);
+					}
+				}
+				//===
+
+				if (dp[left][right][K]==INT_MAX)
+					continue;
+				dp[left][right][1] = dp[left][right][K] + prefixSum[right]-prefixSum[left-1];
+			}
+		}
+
+		return dp[1][N][1];
+	}
+};
 #endif
