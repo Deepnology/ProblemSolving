@@ -57,6 +57,7 @@ public:
         return res;
     }
 
+    //Leetcode: Shortest Path in Binary Matrix
     //use minHeap to keep track of minDistFromStart of each node ONLY WHEN "edge distance between nodes are different"!
     //otherwise, just use a queue and keep track of levels
     int BFS_Queue(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & dest)
