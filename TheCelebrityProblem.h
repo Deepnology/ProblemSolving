@@ -217,4 +217,62 @@ Row#5	= 0, 1, 0, 1, 1, 0
 
 TheCelebrityProblem BruteForce for the above adjMatrix: 3
 */
+/*
+Leetcode: Find the Town Judge
+In a town, there are N people labelled from 1 to N.  There is a rumor that one of these people is secretly the town judge.
+If the town judge exists, then:
+The town judge trusts nobody.
+Everybody (except for the town judge) trusts the town judge.
+There is exactly one person that satisfies properties 1 and 2.
+You are given trust, an array of pairs trust[i] = [a, b] representing that the person labelled a trusts the person labelled b.
+If the town judge exists and can be identified, return the label of the town judge.  Otherwise, return -1.
+Example 1:
+Input: N = 2, trust = [[1,2]]
+Output: 2
+Example 2:
+Input: N = 3, trust = [[1,3],[2,3]]
+Output: 3
+Example 3:
+Input: N = 3, trust = [[1,3],[2,3],[3,1]]
+Output: -1
+Example 4:
+Input: N = 3, trust = [[1,2],[2,3]]
+Output: -1
+Example 5:
+Input: N = 4, trust = [[1,3],[1,4],[2,3],[2,4],[4,3]]
+Output: 3
+ */
+class FindTheJudgeInTown
+{
+public:
+	FindTheJudgeInTown(){}
+
+	int Solve1(int N, std::vector<std::vector<int>> && trust)
+	{
+		std::vector<int> trustCount(N, 0);
+		std::vector<int> beTrustedCount(N, 0);
+		for (auto & p : trust)
+		{
+			++trustCount[p[0]-1];
+			++beTrustedCount[p[1]-1];
+		}
+		for (int i = 0; i < N; ++i)
+			if (trustCount[i] == 0 && beTrustedCount[i] == N-1)
+				return i + 1;
+		return -1;
+	}
+	int Solve2(int N, std::vector<std::vector<int>> && trust)
+	{
+		std::vector<int> degree(N, 0);//sum of in-degree and out-degree
+		for (auto & p : trust)
+		{
+			--degree[p[0]-1];//out-degree
+			++degree[p[1]-1];//in-degree
+		}
+		for (int i = 0; i < N; ++i)
+			if (degree[i] == N-1)
+				return i+1;
+		return -1;
+	}
+};
 #endif
