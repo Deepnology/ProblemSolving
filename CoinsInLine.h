@@ -193,4 +193,59 @@ Row#5	= 0, 0, 0, 0, 0, 2
 
 CoinsInLine DP2D Iterate for "3, 2, 2, 3, 1, 2": 8
 */
+/*
+Leetcode: Stone Game
+Alex and Lee play a game with piles of stones.
+There are an even number of piles arranged in a row, and each pile has a positive integer number of stones piles[i].
+The objective of the game is to end with the most stones.
+The total number of stones is odd, so there are no ties.
+Alex and Lee take turns, with Alex starting first.
+Each turn, a player takes the entire pile of stones from either the beginning or the end of the row.
+This continues until there are no more piles left, at which point the person with the most stones wins.
+Assuming Alex and Lee play optimally, return True if and only if Alex wins the game.
+Example 1:
+Input: [5,3,4,5]
+Output: true
+Explanation:
+Alex starts first, and can only take the first 5 or the last 5.
+Say he takes the first 5, so that the row becomes [3, 4, 5].
+If Lee takes 3, then the board is [4, 5], and Alex takes 5 to win with 10 points.
+If Lee takes the last 5, then the board is [3, 4], and Alex takes 4 to win with 9 points.
+This demonstrated that taking the first 5 was a winning move for Alex, so we return true.
+ */
+class StoneGame
+{
+public:
+    StoneGame(){}
+
+    bool Can1stHandWin_DP2DRecur(std::vector<int> && piles)
+    {
+        int N = piles.size();
+        int sum = 0;
+        for (auto & p : piles)
+            sum += p;
+        std::vector<std::vector<int>> dp(N, std::vector<int>(N, -1));
+        int alex = maxValDP2DRecur(piles, 0, N-1, dp);
+        int lee = sum - alex;
+        return alex > lee;
+    }
+    int maxValDP2DRecur(const std::vector<int> & coins, int left, int right, std::vector<std::vector<int> > & dp)
+    {
+        if (left > right)
+            return 0;
+
+        if (dp[left][right] != -1)
+            return dp[left][right];
+
+        int maxValPickFront = coins[left] +
+                              std::min(this->maxValDP2DRecur(coins, left + 2, right, dp),//when B picks front
+                                       this->maxValDP2DRecur(coins, left + 1, right - 1, dp));//when B picks back
+
+        int maxValPickBack = coins[right] +
+                             std::min(this->maxValDP2DRecur(coins, left + 1, right - 1, dp),//when B picks front
+                                      this->maxValDP2DRecur(coins, left, right - 2, dp));//when B picks back
+
+        return dp[left][right] = std::max(maxValPickFront, maxValPickBack);
+    }
+};
 #endif
