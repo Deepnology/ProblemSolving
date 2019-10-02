@@ -48,28 +48,33 @@ public:
 	{
 		int N = X.size();
 		int M = Y.size();
-		std::vector<std::vector<int> > dp(N + 1, std::vector<int>(M + 1, 0));
+		std::vector<std::vector<int>> dp(N + 1, std::vector<int>(M + 1, 0));
 		//dp[i][j]: LCS Len from X[0]~X[i-1] and Y[0]~[j-1]
-		std::string LCS;
-
+		std::vector<std::vector<std::string>> dp2(N+1, std::vector<std::string>(M+1, ""));
+		//dp2[i][j]: LCS from X[0]~X[i-1] and Y[0]~Y[j-1]
 		for (int i = 0; i <= N; ++i)
 		{	
 			for (int j = 0; j <= M; ++j)
 			{
 				if (i == 0 || j == 0)//first row || first column
+				{
 					dp[i][j] = 0;
-
+					dp2[i][j] = "";
+				}
 				else if (X[i - 1] == Y[j - 1])
 				{
 					dp[i][j] = dp[i - 1][j - 1] + 1;
-					LCS.push_back(X[i - 1]);
+					dp2[i][j] = dp2[i - 1][j - 1] + X[i - 1];
 				}
 				else
+				{
 					dp[i][j] = std::max(dp[i - 1][j], dp[i][j - 1]);
+					dp2[i][j] = dp2[i - 1][j].size() > dp2[i][j - 1].size() ? dp2[i - 1][j] : dp2[i][j - 1];
+				}
 			}
 		}
 		Debug::Print2D<int>()(dp, false);
-		std::cout << "LCS Len DP2D_Iterate for \"" << X << "\" and \"" << Y << "\": " << dp[N][M] << ", " << LCS << std::endl;
+		std::cout << "LCS Len DP2D_Iterate for \"" << X << "\" and \"" << Y << "\": " << dp[N][M] << ", " << dp2[N][M] << std::endl;
 		return  dp[N][M];
 	}
 };
