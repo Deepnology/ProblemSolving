@@ -216,6 +216,25 @@ public:
 		std::cout << "IntersectionOfIntervals CountMaxAtATimeII_Simple for \"" << Debug::ToStr1D<int>()(intervals) << "\": " << maxCount << ", At: " << Debug::ToStr1D<int>()(maxItvls) << ", Intersections: " << Debug::ToStr1D<int>()(intersections) << std::endl;
 		return maxCount;
 	}
+
+
+	//Leetcode: Car Pooling
+	bool CarPooling(std::vector<std::vector<int>> && trips, int capacity)
+	{
+		std::map<int,int> map;//<stop,numPassengers> where stop is sorted in incr order
+		for(auto & v : trips)
+		{
+			map[v[1]] += v[0];
+			map[v[2]] -= v[0];
+		}
+		for(auto & s : map)
+		{
+			capacity -= s.second;
+			if (capacity < 0)
+				return false;
+		}
+		return true;
+	}
 };
 /*
 -|---|---|---|---|---|---|---|---|---|---
