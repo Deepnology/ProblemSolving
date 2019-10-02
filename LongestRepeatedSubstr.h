@@ -10,6 +10,7 @@
 #include "Debug.h"
 #include "SuffixArray.h"
 /*
+Leetcode: Longest Repeating Substring, Longest Duplicate Substring
 suffix array
 http://introcs.cs.princeton.edu/java/42sort/LRS.java.html
 The longest repeated substring problem is the problem of finding the longest substring of a string that occurs at least twice. 
@@ -163,6 +164,74 @@ public:
 		std::cout << "LongestRepeatedSubstr BruteForce_HashMap for \"" << K << "\" in \"" << s << "\": " << res << std::endl;
 		return res;
 	}
+
+	std::string DP(const std::string & s)
+	{
+		int N = s.size();
+		std::vector<std::vector<int>> dp(N+1, std::vector<int>(N+1, 0)); //dp[i][j]: substrs ending at i and ending at j
+		int maxLen = 0; int begin;
+		for (int i = 1; i <= N; ++i)
+			for (int j = i+1; j <= N; ++j)
+				if (s[i-1] == s[j-1])
+				{
+					dp[i][j] = dp[i-1][j-1]+1;
+					if (dp[i][j] > maxLen)
+					{
+						maxLen = dp[i][j];
+						begin = i-maxLen;
+					}
+				}
+
+		std::cout << "LongestRepeatedSubstr DP for \"" << s << "\": " << s.substr(begin, maxLen) << std::endl;
+		return s.substr(begin, maxLen);
+	}
+
+	std::string BinarySearchLen(const std::string & s)
+	{
+		int N = s.size();
+		int left = 1; //min len
+		int right = N-1; //max len
+		int begin;
+		while (left <= right) //O(NlogN) time
+		{
+			int mid = (left+right)/2;
+			if (search(s, mid, begin)) //O(N) time
+				left = mid + 1;
+			else
+				right = mid - 1;
+		}
+        //now right is len of longest repeated substr
+        search(s, right, begin);//search one more time to find begin with len=right
+		std::cout << "LongestRepeatedSubstr BinarySearchLen for \"" << s << "\": " << s.substr(begin, right) << std::endl;
+		return s.substr(begin, right);
+	}
+private:
+	bool search(const std::string & s, int k, int & begin) //O(N) time, k is len
+	{
+		long mod = 1000000007;//or use prime form 6*k+1 or 6*k-1
+		long powK = 1;
+		for (int i = 0; i < k; ++i)
+			powK = powK*26%mod;
+		std::unordered_set<long> visit;
+		int N = s.size();
+		long hash = 0; //rolling hash of substr w/ len=k
+		for (int i = 0; i < N; ++i)
+		{
+			hash = (hash*26+(s[i]-'a')) % mod;
+			if (i >= k)
+				hash = (hash - (s[i-k]-'a')*powK%mod + mod) % mod;
+			if (i >= k-1)
+			{
+				if (visit.count(hash))
+                {
+				    begin = i-k+1;
+                    return true;
+                }
+				visit.insert(hash);
+			}
+		}
+		return false;
+	}
 };
 /*
 SuffixArray for "aababbaab":
@@ -185,6 +254,8 @@ b
 ba
 b
 LongestRepeatedSubstr SuffixArray for "aababbaab": aab
+LongestRepeatedSubstr DP for "aababbaab": aab
+LongestRepeatedSubstr BinarySearchLen for "aababbaab": aab
 SuffixArraySimple for "aababbaab":
 0:	aab--------------->1
 1:	aababbaab--------->1
@@ -231,6 +302,8 @@ si
 s
 ssi
 LongestRepeatedSubstr SuffixArray for "mississippi": issi
+LongestRepeatedSubstr DP for "mississippi": issi
+LongestRepeatedSubstr BinarySearchLen for "mississippi": issi
 SuffixArraySimple for "mississippi":
 0:	i---------------->1
 1:	ippi------------->1
