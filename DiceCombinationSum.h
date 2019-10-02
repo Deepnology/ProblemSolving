@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "Debug.h"
 /*
+Leetcode: Number of Dice Rolls With Target Sum
 http://www.geeksforgeeks.org/dice-throw-problem/
 Given n dices with m faces, numbered from 1 to m.
 Count the number of ways to get sum X.
@@ -35,6 +36,7 @@ public:
 				for (int face = 1; face <= faceCount && face < sum; ++face)
 				{
 					dp[sum][dice] += dp[sum - face][dice - 1];
+					dp[sum][dice] %= 1000000007;
 				}
 			}
 		}
