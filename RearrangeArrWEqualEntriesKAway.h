@@ -309,6 +309,75 @@ public:
         return res;
     }
 };
+class RearrangeArrWo3ConsecuEqualChars //Amazon OA
+{
+public:
+	RearrangeArrWo3ConsecuEqualChars(){}
+	struct Less
+	{
+		bool operator()(const std::pair<int,char> & a, const std::pair<int,char> & b) const
+		{
+			return a.first < b.first;
+		}
+	};
+	std::string UseMaxHeap(int countA, int countB, int countC)
+	{
+		std::priority_queue<std::pair<int,char>, std::vector<std::pair<int,char>>, Less> maxHeap;
+		maxHeap.push({countA, 'a'});
+		maxHeap.push({countB, 'b'});
+		maxHeap.push({countC, 'c'});
+		std::string res;
+		while (!maxHeap.empty())
+		{
+			std::vector<std::pair<int,char>> remains;
+			auto cur = maxHeap.top();
+			maxHeap.pop();
+			if (!res.empty() && res.back() == cur.second)
+			{
+				if (maxHeap.empty())
+				{
+					std::cout << "RearrangeArrWo3ConsecuEqualChars UseMaxHeap for " << countA << ", " << countB << ", " << countC << ": impossible " << res << std::endl;
+					return "impossible";
+				}
+				auto nxt = maxHeap.top();
+				maxHeap.pop();
+				if (nxt.first >= 2)
+				{
+					res.push_back(nxt.second);
+					res.push_back(nxt.second);
+					nxt.first -= 2;
+				} else
+				{
+					res.push_back(nxt.second);
+					--nxt.first;
+				}
+				if (nxt.first > 0)
+					remains.push_back(nxt);
+				maxHeap.push(cur);
+			} else
+			{
+				if (cur.first >= 2)
+				{
+					res.push_back(cur.second);
+					res.push_back(cur.second);
+					cur.first -= 2;
+				} else
+				{
+					res.push_back(cur.second);
+					--cur.first;
+				}
+				if (cur.first > 0)
+					remains.push_back(cur);
+			}
+
+			for (auto & p : remains)
+				maxHeap.push(p);
+		}
+
+		std::cout << "RearrangeArrWo3ConsecuEqualChars UseMaxHeap for " << countA << ", " << countB << ", " << countC << ": " << res << std::endl;
+		return res;
+	}
+};
 /*
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "2", "aabbcc": abcabc
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "3", "aabbcc": abcabc
@@ -328,5 +397,10 @@ RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, a,
 RearrangeArrWEqualCharsKAway CountLessSpace_WithSameOrder for "2" from "a, a, a, d, b, b, c, c": 16
 RearrangeArrWithoutAdjacentEqualChars for "aab": aba
 RearrangeArrWithoutAdjacentEqualChars for "aabb": abab
+
+RearrangeArrWo3ConsecuEqualChars UseMaxHeap for 1, 1, 6: ccaccbcc
+RearrangeArrWo3ConsecuEqualChars UseMaxHeap for 1, 2, 3: ccbbac
+RearrangeArrWo3ConsecuEqualChars UseMaxHeap for 3, 3, 3: aabbccabc
+RearrangeArrWo3ConsecuEqualChars UseMaxHeap for 1, 1, 9: impossible ccaccbcc
 */
 #endif
