@@ -142,4 +142,66 @@ public:
 SortStringsWithNewAlphabet for alpha=[zyxwvutsr], word=[xrxuvwztvxzyurz]: zzzyxxxwvvuutrr
 SortStringsWithNewAlphabet for alpha=[zyxwvutsr], words=[suzwy, rux, yrwu, tyzvx, rt, xvyr, r, uv, vs, w, y, z]: z, y, yrwu, xvyr, tyzvx, w, vs, uv, rt, suzwy, r, rux
  */
+/*
+Leetcode: Relative Sort Array
+Given two arrays arr1 and arr2, the elements of arr2 are distinct, and all elements in arr2 are also in arr1.
+Sort the elements of arr1 such that the relative ordering of items in arr1 are the same as in arr2.
+Elements that don't appear in arr2 should be placed at the end of arr1 in ascending order.
+Example 1:
+Input: arr1 = [2,3,1,3,2,4,6,7,9,2,19], arr2 = [2,1,4,3,9,6]
+Output: [2,2,2,1,4,3,3,9,6,7,19]
+Constraints:
+arr1.length, arr2.length <= 1000
+0 <= arr1[i], arr2[i] <= 1000
+Each arr2[i] is distinct.
+Each arr2[i] is in arr1.
+ */
+class SortStringWithNewAlphabet2
+{
+public:
+    std::vector<int> UseHashMap(std::vector<int> & arr1, std::vector<int> & arr2)
+    {
+        std::unordered_map<int,int> count;
+        for (auto & i : arr1)
+            ++count[i];
+        std::vector<int> res;
+        for (auto & i : arr2)
+            if (count.count(i))
+            {
+                while (count[i] > 0)
+                {
+                    --count[i];
+                    res.push_back(i);
+                }
+                count.erase(i);
+            }
+
+        int begin = res.size();
+        for (auto & p : count)
+            while (p.second > 0)
+            {
+                res.push_back(p.first);
+                --p.second;
+            }
+        std::sort(res.begin()+begin, res.end());
+        return res;
+    }
+    std::vector<int> UseHashMap2(std::vector<int> & arr1, std::vector<int> & arr2)
+    {
+        //this is faster
+        std::unordered_map<int,int> toIdx;
+        int N = arr2.size();
+        for (int i = 0; i < N; ++i)
+            toIdx[arr2[i]] = i;
+        for (auto & i : arr1)
+            if (!toIdx.count(i))
+                toIdx[i] = 1000+i;
+        std::sort(arr1.begin(), arr1.end(), [&](const int & a, const int & b)
+        {
+            return toIdx[a] < toIdx[b];
+        });
+        return arr1;
+
+    }
+};
 #endif
