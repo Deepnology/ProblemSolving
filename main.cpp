@@ -14,12 +14,12 @@
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
-//#define _BinaryTree_
+#define _BinaryTree_
 //#define _QuadTree_
 //#define _Heap_
 //#define _Graph_
 //#define _RMQLCA_
-#define _Scheduling_
+//#define _Scheduling_
 //#define _ThreadSafe_
 //#define _DesignPattern_
 //#define _CPP_
@@ -176,6 +176,8 @@
 #include "RunLenEncodedIterator2.h"
 #include "CountNumsWSameDigitDiff.h"
 #include "IsLittleEndian.h"
+#include "KthSymbolInGrammar.h"
+#include "DecodeNestedRepeatedStrAtIndex.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -303,6 +305,13 @@
 #include "PrisonCell1DArrayAfterNDays.h"
 #include "MinSwapToPairCouplesInArray.h"
 #include "MinRoundTripTicketFrom2Arr.h"
+#include "FindPairWithMaxAppeal.h"
+#include "TwoSumLessEqualClosestK.h"
+#include "MinDiceFlipToAllSameFaces.h"
+#include "MinNumRefuelingStops.h"
+#include "RepeatRemoveAdjDuplicatesInString.h"
+#include "CountPairWSumDivisibleByK.h"
+#include "RepeatReverseSubstrsInParentheses.h"
 
 /*Sort Search Select*/
 #include "Partition.h"
@@ -408,6 +417,7 @@
 #include "MinNumBoatsToSavePeople.h"
 #include "KthSmallestNumInMissingRangeOfSortedArr.h"
 #include "PancakeSort.h"
+#include "MinCostScheduleHalfHalfTo2Cities.h"
 
 /*Interval*/
 #include "MergeIntervals.h"
@@ -521,6 +531,7 @@
 #include "PartitionSameNumsInGroupsWSameSizes.h"
 #include "ArrPermutationConsecuNumSumIsSquare.h"
 #include "MinCostOfMultiDayPassTickets.h"
+#include "AssignBikesToWorkersWShortestDist.h"
 
 /*Trie Suffix Tree Array*/
 #include "SuffixArray.h"
@@ -532,6 +543,8 @@
 #include "SearchWordWithPrefixSuffix.h"
 #include "SerializeDeserializeTrie.h"
 #include "OneCharMismatchDictionary.h"
+#include "DesignInMemoryFileSystem.h"
+#include "StreamCharacterChecker.h"
 
 /*Find Substring Subsequence*/
 #include "AllSubstr.h"
@@ -619,6 +632,7 @@
 #include "AllSubstrSizeKContainDistinctChars.h"
 #include "MaxSubArrSumSizeK.h"
 #include "SumOfAllSubArrMins.h"
+#include "CountSubArrWLeftmostNumLessEqualToAll.h"
 #include "CountSubArrWSumDivisibleByK.h"
 #include "MaxDistToClosestPerson.h"
 #include "LBSubArr.h"
@@ -628,6 +642,8 @@
 #include "CountSubArrWKDistinctEntries.h"
 #include "CountSubsetsWMinMaxSumEqualK.h"
 #include "MaxSum2NonOvlpSubArrays.h"
+#include "LongestVowelsRemoveAtMost2Substrs.h"
+#include "ShortestCommonSuperSeq.h"
 
 /*Compare String*/
 #include "EditDistance.h"
@@ -654,6 +670,7 @@
 #include "CountSubdomainVisits.h"
 #include "VowelSpellChecker.h"
 #include "FindTgtWordGivenMatchCountComp.h"
+#include "FindDuplicateFilesInSystem.h"
 
 /*Text Lines*/
 #include "NeatPrintWordWrap.h"
@@ -797,6 +814,7 @@
 #include "StackTrianglesToPyramid.h"
 #include "CountRegionsCutBySlashes2DGrid.h"
 #include "EscapeInLarge2DMazeWithBlocks.h"
+#include "CountSubMatrixWSumEqualK.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -896,6 +914,10 @@
 #include "CompleteBinaryTreeInserter.h"
 #include "MinSwapLRChildToTgtPreorderBinaryTree.h"
 #include "ConstructBinaryTreeFromTraversalWDepth.h"
+#include "MaxAvgSubtree.h"
+#include "PathInZigZagLabelledBinaryTree.h"
+#include "CountNumOfAtomsInChemicalFormula.h"
+#include "MinCostBinaryTreeFromLeafValues.h"
 
 /*Quad Tree*/
 #include "QuadTree.h"
@@ -973,6 +995,8 @@
 #include "Remove1MalNodeMinimizeInfectedNodes.h"
 #include "ConnectedComponentsByStrSwap2Chars.h"
 #include "ConnectedComponentsByIntCommonFactor.h"
+#include "MinCostConnectAllNodesInGraph.h"
+#include "KSwapStrings.h"
 
 /*RMQ LCA*/
 #include "RangeSumQuerySegmentTree.h"
@@ -1004,6 +1028,11 @@
 #include "SyncProducersConsumers.h"
 #include "SyncCigaretteSmokers.h"
 #include "SyncDiningPhilosophers.h"
+#include "SyncPrintInOrder123.h"
+#include "SyncPrintFooBarAlter.h"
+#include "SyncPrintZeroOddZeroEven.h"
+#include "SyncBuildH2O.h"
+#include "SyncPrintFizzBuzz.h"
 
 /*DesignPattern*/
 #include "DesignPattern_AbstractFactory.h"
@@ -2291,6 +2320,12 @@ int main()
         IsLittleEndian().ReverseBytesToConvert2(255);
         IsLittleEndian().ReverseBytesToConvert3(255);
     }
+    {
+        KthSymbolInGrammar().Recur(4, 5);
+    }
+    {
+        DecodeNestedRepeatedStrAtIndex().Recur(std::string("leet2code3"), 10);
+    }
 
 #endif
 #ifdef _Random_
@@ -3225,6 +3260,8 @@ int main()
 
         CountPairWSumEqualK().HashMap(std::vector<int>({1,1,1}), 2);
 
+        CountPairWSumDivisibleByK().HashMap(std::vector<int>({30,20,150,100,40}));
+
         TwoSum_().FindAllUniquePairs(std::vector<int>({0,0,1,1,1,2,2,3}), 2);
         TwoSum_().FindAllUniquePairs_NoSort(std::vector<int>({0,0,1,1,1,2,2,3}), 2);
         TwoSum_().FindAllIndexPairs(std::vector<int>({0,0,1,1,1,2,2,3}), 2);
@@ -3426,6 +3463,40 @@ int main()
     }
     {
         MinRoundTripTicketFrom2Arr().ThreeScans(std::vector<int>({5,3,2,4,6,7,1}), std::vector<int>({4,3,5,7,6,2,6}));
+    }
+    {
+        FindPairWithMaxAppeal().TwoPtrs(std::vector<int>({1, 3, -1}));
+        FindPairWithMaxAppeal().TwoPtrs(std::vector<int>({1, 6, 1, 1, 1, 1, 7}));
+        FindPairWithMaxAppeal().TwoPtrs(std::vector<int>({6, 2, 7, 4, 4, 1, 6}));
+        FindPairWithMaxAppeal().TwoPtrs(std::vector<int>({3,3,1,8,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}));
+        FindPairWithMaxAppeal().TwoPtrs(std::vector<int>({3, 5, 0, 0, 0, 0, 0, 0, 0, 0, 1}));
+
+        FindPairWithMaxAbsDiffFrom2Arr().Solve(std::vector<int>({1,-2,-5,0,10}), std::vector<int>({0,-2,-1,-7,-4}));
+    }
+    {
+        TwoSumLessEqualClosestK().Sort(std::vector<int>({34,23,1,24,75,33,54,8}), 60);
+
+        TwoSumLessEqualClosestKFrom2Arr().FindAll(10000, {{1,3000},{2,5000},{3,7000},{4,10000}}, {{1,2000},{2,3000},{3,4000},{4,5000}});
+        TwoSumLessEqualClosestKFrom2Arr().FindAll(7000, {{1,2000},{2,4000},{3,6000}}, {{1,2000}});
+    }
+    {
+        MinDiceFlipToAllSameFaces().Naive(std::vector<int>({1, 1, 6}));
+        MinDiceFlipToAllSameFaces().Better(std::vector<int>({1, 1, 6}));
+        MinDiceFlipToAllSameFaces().Naive(std::vector<int>({1, 6, 2, 3}));
+        MinDiceFlipToAllSameFaces().Better(std::vector<int>({1, 6, 2, 3}));
+    }
+    {
+        MinNumRefuelingStops().MaxHeap(100, 10, std::vector<std::vector<int>>({{10,60},{20,30},{30,30},{60,40}}));
+        MinNumRefuelingStops().DP(100, 10, std::vector<std::vector<int>>({{10,60},{20,30},{30,30},{60,40}}));
+    }
+    {
+        RepeatRemoveAdjDuplicatesInString().UseStack("abbaca");
+        RepeatRemoveAdjDuplicatesInString().UseStack("deeedbbcccbdaa", 3);
+
+        ValidateRepeatRemoveSubstrABC().UseStack("abcabcababcc");
+    }
+    {
+        RepeatReverseSubstrsInParentheses().UseStack("(u(love)i)");
     }
 
 #endif
@@ -4171,6 +4242,11 @@ int main()
 
         RearrangeArrWithoutAdjacentEqualChars().Linear(std::string("aab"));
         RearrangeArrWithoutAdjacentEqualChars().Linear(std::string("aabb"));
+
+        RearrangeArrWo3ConsecuEqualChars().UseMaxHeap(1, 1, 6);
+        RearrangeArrWo3ConsecuEqualChars().UseMaxHeap(1, 2, 3);
+        RearrangeArrWo3ConsecuEqualChars().UseMaxHeap(3, 3, 3);
+        RearrangeArrWo3ConsecuEqualChars().UseMaxHeap(1, 1, 9);
 	}
 	{
 		for (int i = 1; i <= 35; i += 20)
@@ -4564,6 +4640,9 @@ int main()
     {
         PancakeSort().FindRevFrontArrSizeSeq(std::vector<int>({3,2,4,1}));
     }
+    {
+        MinCostScheduleHalfHalfTo2Cities().SortBySavings(std::vector<std::vector<int>>({{10,20},{30,200},{400,50},{30,20}}));
+    }
 
 #endif
 #ifdef _Interval_
@@ -4659,9 +4738,13 @@ int main()
         IntersectionOfListsOfIntervals().Linear(std::vector<std::pair<int,int>>({{0, 4}, {7, 12}}), std::vector<std::pair<int,int>>({{1, 3}, {5, 8}, {9, 11}}));
     }
     {
-        LeastNumOfIntervalsCoverRange().SortGreedy(std::vector<std::pair<int,int>>({{3,4},{2,7},{0,3},{4,6}}), std::pair<int,int>({0,6}));
-        LeastNumOfIntervalsCoverRange().SortGreedy(std::vector<std::pair<int,int>>({{0,3},{4,7}}), std::pair<int,int>({0,6}));
-        LeastNumOfIntervalsCoverRange().SortGreedy(std::vector<std::pair<int,int>>({{3,4},{2,7},{0,3},{4,6}}), std::pair<int,int>({-1,6}));
+        LeastNumOfIntervalsCoverRange().SortGreedy(std::vector<std::vector<int>>({{3,4},{2,7},{0,3},{4,6}}), 6);
+        LeastNumOfIntervalsCoverRange().SortGreedy(std::vector<std::vector<int>>({{0,3},{4,7}}), 6);
+        LeastNumOfIntervalsCoverRange().HashMap(std::vector<std::vector<int>>({{3,4},{2,7},{0,3},{4,6}}), 6);
+        LeastNumOfIntervalsCoverRange().HashMap(std::vector<std::vector<int>>({{0,3},{4,7}}), 6);
+        LeastNumOfIntervalsCoverRange().SortGreedy2(std::vector<std::pair<int,int>>({{3,4},{2,7},{0,3},{4,6}}), std::pair<int,int>({0,6}));
+        LeastNumOfIntervalsCoverRange().SortGreedy2(std::vector<std::pair<int,int>>({{0,3},{4,7}}), std::pair<int,int>({0,6}));
+        LeastNumOfIntervalsCoverRange().SortGreedy2(std::vector<std::pair<int,int>>({{3,4},{2,7},{0,3},{4,6}}), std::pair<int,int>({-1,6}));
     }
     {
         AddBoldTagInStrMergeInterval().MergeInterval(std::string("aaabbcc"), std::vector<std::string>({"aaa","aab","bc"}));
@@ -5388,6 +5471,13 @@ int main()
     {
         MinCostOfMultiDayPassTickets().DP(std::vector<int>({1,4,6,7,8,20}), std::vector<int>({2,7,15}));
     }
+    {
+        AssignBikesToWorkersWShortestDist().ShortestPairDistFirst_MinHeap(std::vector<std::vector<int>>({{0,0},{1,1},{2,0}}), std::vector<std::vector<int>>({{1,0},{2,2},{2,1}}));
+        AssignBikesToWorkersWShortestDist().ShortestPairDistFirst_BucketSort(std::vector<std::vector<int>>({{0,0},{1,1},{2,0}}), std::vector<std::vector<int>>({{1,0},{2,2},{2,1}}));
+        AssignBikesToWorkersWShortestDist().MinAllPairDistSums_DFS(std::vector<std::vector<int>>({{0,0},{1,1},{2,0}}), std::vector<std::vector<int>>({{1,0},{2,2},{2,1}}));
+        AssignBikesToWorkersWShortestDist().MinAllPairDistSums_DFS_Memo(std::vector<std::vector<int>>({{0,0},{1,1},{2,0}}), std::vector<std::vector<int>>({{1,0},{2,2},{2,1}}));
+        AssignBikesToWorkersWShortestDist().MinAllPairDistSums_BFS_MinHeap(std::vector<std::vector<int>>({{0,0},{1,1},{2,0}}), std::vector<std::vector<int>>({{1,0},{2,2},{2,1}}));
+    }
 
 #endif
 #ifdef _TrieSuffixArray_
@@ -5691,11 +5781,16 @@ int main()
 	}
 	{
 		LongestRepeatedSubstr().SuffixArray("aababbaab");
+        LongestRepeatedSubstr().DP("aababbaab");
+        LongestRepeatedSubstr().BinarySearchLen("aababbaab");
 		LongestRepeatedSubstr().AtLeastKRepeats_SuffixArray("aababbaab", 3);
 		LongestRepeatedSubstr().BruteForce_HashMap("aababbaab", 3);
-		ShortestUniqueSubstr().SuffixArray("aabbabbaab");
-		ShortestUniqueSubstr().BruteForce_HashMap("aabbabbaab");
+		ShortestUniqueSubstr().SuffixArray("aababbaab");
+		ShortestUniqueSubstr().BruteForce_HashMap("aababbaab");
+
 		LongestRepeatedSubstr().SuffixArray("mississippi");
+        LongestRepeatedSubstr().DP("mississippi");
+        LongestRepeatedSubstr().BinarySearchLen("mississippi");
 		LongestRepeatedSubstr().AtLeastKRepeats_SuffixArray("mississippi", 2);
 		LongestRepeatedSubstr().BruteForce_HashMap("mississippi", 2);
 		ShortestUniqueSubstr().SuffixArray("mississippi");
@@ -5703,6 +5798,8 @@ int main()
 	}
 	{
 		LongestSubstrWoRepeatChars().FindFirstOne_SlideWindow("abcdefgdijkxyz");//abcdefg=7, efgdijkxyz=10
+        LongestSubstrWoRepeatChars().FindFirstOne_SlideWindow2("abcdefgdijkxyz");//abcdefg=7, efgdijkxyz=10
+        SubstrWDistinctCharsSizeK().FindAll_SlideWindow("awaglknagawunagwkwagl", 4);
 
 		LongestSubArrWDistinctEntries().HashTable(std::vector<int>({ 1, 2, 3, 4, 5, 6, 7, 4, 8, 9, 10, 11, 12, 13 }));
 		LongestSubArrWDistinctEntries().HashTable(std::vector<int>({ 5, 7, 5, 11, 13, 2, 11, 19, 2, 11 }));
@@ -5914,6 +6011,8 @@ int main()
 
 		LongestSubArrWEqualSum().HashMap(std::vector<int>({ 1, -1, 5, -2, 3 }), 3);
 		LongestSubArrWEqualSum().HashMap(std::vector<int>({ -2, -1, 2, 1 }), 1);
+
+		LongestSubArrWMoreGreaterThan8NumCount().LongestOneAndMinusOneSubArrWPositiveSum(std::vector<int>({9,9,6,0,6,6,9}));
 	}
 	{
         SubArrayWGivenSum().SlideWindow_NonNegativeArr(std::vector<int>({ 0, 0, 0 }), 0);
@@ -6059,6 +6158,7 @@ int main()
 	{
 		LCS().Len_Recur(std::string("abcedfghi"), std::string("bxefhki"));
 		LCS().Len_DP2D_Iterate(std::string("abcedfghi"), std::string("bxefhki"));
+		ShortestCommonSuperSeq().UseLCS(std::string("abcedfghi"), std::string("bxefhki"));
 	}
 	{
 		LCSubstr().Len_DP2D("acabcd", "caabcd");
@@ -6340,6 +6440,8 @@ int main()
     }
     {
         SumOfAllSubArrMins().UseMonotoneIncrStk(std::vector<int>({3,1,2,4}));
+
+        CountSubArrWLeftmostNumLessEqualToAll().UseStack(std::vector<int>({1,4,2,5,3,1}));
     }
     {
         CountSubArrWSumDivisibleByK().UsePrefixSumMap(std::vector<int>({4,5,0,-2,-3,1}), 5);
@@ -6371,6 +6473,12 @@ int main()
     }
     {
         MaxSum2NonOvlpSubArrays().DP_SlideWindow(std::vector<int>({2,1,5,6,0,9,5,0,3,8}), 4, 3);
+    }
+    {
+        LongestVowelsRemoveAtMost2Substrs().Solve("aaabbbaabbabaaababaaa");
+        LongestVowelsRemoveAtMost2Substrs().Solve("bbaaaaabbaabb");
+        LongestVowelsRemoveAtMost2Substrs().Solve("aaaa");
+        LongestVowelsRemoveAtMost2Substrs().Solve("bbbb");
     }
 
 #endif
@@ -6461,6 +6569,8 @@ int main()
 		CamelCaseNotationMatching().Linear(std::vector<std::string>({ "WelcomeGeek", "WelcomeToGeeksForGeeks", "GeeksForGeeks" }), std::string("We"));
 		CamelCaseNotationMatching().Linear(std::vector<std::string>({ "WelcomeGeek", "WelcomeToGeeksForGeeks", "GeeksForGeeks" }), std::string("WeGe"));
 		CamelCaseNotationMatching().Linear(std::vector<std::string>({ "WelcomeGeek", "WelcomeToGeeksForGeeks", "GeeksForGeeks" }), std::string("Ge"));
+
+		CamelCaseNotationMatching().Better(std::vector<std::string>({"FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"}), std::string("FB"));
 	}
 	{
 		ClosestRepetition().Iterate_HashTable(std::vector<std::string>({ "All", "work", "and", "no", "play", "makes", "for", "no", "work", "no", "fun", "and", "no", "results" }));
@@ -6509,6 +6619,9 @@ int main()
     {
         FindTgtWordGivenMatchCountComp::Master m;
         FindTgtWordGivenMatchCountComp().Solve(std::vector<std::string>({"acckzz","ccbazz","eiowzz","abcczz"}), m);
+    }
+    {
+        FindDuplicateFilesInSystem().UseHashMap(std::vector<std::string>({"root/a 1.txt(abcd) 2.txt(efgh)", "root/c 3.txt(abcd)", "root/c/d 4.txt(efgh)", "root 4.txt(efgh)"}));
     }
 
 #endif
@@ -7795,6 +7908,19 @@ int main()
 		);
 		UniquePath().DP_2D_wObstacle(uniquePathGridObstacle);
 		UniquePath().DP_1D_wObstacle(uniquePathGridObstacle);
+
+		UniquePath().CountAll_DFS(std::vector<std::vector<int>>(
+		        {
+                        {1,0,0,0},
+                        {0,0,0,0},
+                        {0,0,0,2}
+		        }));
+        UniquePath().CountAll_DFS_Memo(std::vector<std::vector<int>>(
+                {
+                        {1,0,0,0},
+                        {0,0,0,0},
+                        {0,0,0,2}
+                }));
 	}
 	{
 		char wordSearchRow0[] = { 'A', 'B', 'C', 'E' };
@@ -8983,6 +9109,13 @@ int main()
     }
     {
         EscapeInLarge2DMazeWithBlocks().IsEscapePossible(std::vector<std::vector<int>>({{0,1},{1,0}}), std::vector<int>({0,0}), std::vector<int>({0,2}));
+    }
+    {
+        CountSubMatrixWSumEqualK().UsePrefixSumMap(std::vector<std::vector<int>>({
+            {0,1,0},
+            {1,1,1},
+            {0,1,0}
+        }), 0);
     }
 
 #endif
@@ -11105,6 +11238,28 @@ int main()
         std::cout << bstOss.str() << std::endl;
         bstOss.str(std::string());
         ConstructBinaryTreeFromTraversalWDepth::DeleteTree(r);
+    }
+    {
+        MaxAvgSubtree::TreeNode * root = new MaxAvgSubtree::TreeNode(20);
+        root->children.push_back(new MaxAvgSubtree::TreeNode(12));
+        root->children.push_back(new MaxAvgSubtree::TreeNode(18));
+        root->children[0]->children.push_back(new MaxAvgSubtree::TreeNode(11));
+        root->children[0]->children.push_back(new MaxAvgSubtree::TreeNode(2));
+        root->children[0]->children.push_back(new MaxAvgSubtree::TreeNode(3));
+        root->children[1]->children.push_back(new MaxAvgSubtree::TreeNode(15));
+        root->children[1]->children.push_back(new MaxAvgSubtree::TreeNode(8));
+        MaxAvgSubtree().Recur(root);
+        MaxAvgSubtree().Recur2(root);
+    }
+    {
+        PathInZigZagLabelledBinaryTree().Solve(14);
+    }
+    {
+        CountNumOfAtomsInChemicalFormula().Recur(std::string("K4(ON(SO3)2)2"));
+    }
+    {
+        MinCostBinaryTreeFromLeafValues().Greedy(std::vector<int>({6,2,4}));
+        MinCostBinaryTreeFromLeafValues().Stack(std::vector<int>({6,2,4}));
     }
 
 #endif
@@ -13717,6 +13872,16 @@ int main()
         ConnectedComponentsByIntCommonFactor().BFS(std::vector<int>({4,6,15,35}));
         ConnectedComponentsByIntCommonFactor().UnionFind(std::vector<int>({4,6,15,35}));
     }
+    {
+        MinCostConnectAllNodesInGraph().UnionFind(3, std::vector<std::vector<int>>({{1,2,5},{1,3,6},{2,3,1}}));
+        MinCostConnectAllNodesInGraph2().UnionFind(6, std::vector<std::vector<int>>({{1,4},{4,5},{2,3}}), std::vector<std::vector<int>>({{1,2,5},{1,3,10},{1,6,2},{5,6,5}}));
+        MinCostRepairAllEdgesInGraph().UnionFind(5, std::vector<std::vector<int>>({{1,2},{2,3},{3,4},{4,5},{1,5}}), std::vector<std::vector<int>>({{1,2,12},{3,4,30},{1,5,8}}));
+        MinCostRepairAllEdgesInGraph().UnionFind(6, std::vector<std::vector<int>>({{1,2},{2,3},{4,5},{3,5},{1,6},{2,4}}), std::vector<std::vector<int>>({{1,6,410},{2,4,800}}));
+        MinCostRepairAllEdgesInGraph().UnionFind(6, std::vector<std::vector<int>>({{1,2},{2,3},{4,5},{5,6},{1,5},{2,4},{3,4}}), std::vector<std::vector<int>>({{1,5,110},{2,4,84},{3,4,79}}));
+    }
+    {
+        KSwapStrings().BFS("aabc", "abca");
+    }
 
 #endif
 #ifdef _RMQLCA_
@@ -14089,7 +14254,7 @@ int main()
 	{
 		//thread_mgr::Test();
 		//thread_pool::Test();
-        thread_pool2::Test();
+        //thread_pool2::Test();
 	}
 	{
 		//ImplementAsyncCallback::Test();
@@ -14109,6 +14274,25 @@ int main()
 	{
 		//SyncDiningPhilosophers::Test();
 	}
+    {
+        //SyncPrintInOrder123_Atomic().Test();
+        //SyncPrintInOrder123_PromiseFuture().Test();
+        //SyncPrintInOrder123_MutexCondition().Test();
+    }
+    {
+        //SyncPrintFooBarAlter_Atomic(10).Test();
+        //SyncPrintFooBarAlter_MutexCondition(10).Test();
+    }
+    {
+        //SyncPrintZeroOddZeroEven_MutexCondition(10).Test();
+    }
+    {
+        //SyncBuildH2O_MutexCondition().Test();
+    }
+    {
+        //SyncPrintFizzBuzz_MutexCondition(20).Test();
+    }
+
 #endif
 
 #ifdef _DesignPattern_
