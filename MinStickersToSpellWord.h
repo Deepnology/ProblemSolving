@@ -36,6 +36,59 @@ class MinStickersToSpellWord
 public:
     MinStickersToSpellWord(){}
 
+    int BFS(const std::vector<std::string> & stickers, std::string target)
+    {
+        int N = stickers.size();
+        std::vector<std::vector<int>> charCount(N, std::vector<int>(26, 0));
+        for (int i = 0; i < N; ++i)
+            for (auto & c : stickers[i])
+                ++charCount[i][c-'a'];
+        std::unordered_set<std::string> visit;
+        std::string empty = ToStr(std::vector<int>(26, 0));
+        std::vector<int> curTgt(26, 0);
+        for (auto & c : target)
+            ++curTgt[c-'a'];
+        visit.insert(ToStr(curTgt));
+        std::queue<std::vector<int>> que;
+        que.push(curTgt);
+        int res = 0;
+        while(!que.empty())
+        {
+            int levelCount = que.size();
+            while (levelCount-->0)
+            {
+                curTgt = que.front(); que.pop();
+                for (int i = 0; i < N; ++i)
+                {
+                    bool applied = false;
+                    std::vector<int> nxtTgt(26, 0);
+                    for (int j = 0; j < 26; ++j)
+                        if (curTgt[j])
+                        {
+                            if (charCount[i][j])
+                            {
+                                applied = true;
+                                if (curTgt[j]-charCount[i][j] > 0)
+                                    nxtTgt[j] = curTgt[j]-charCount[i][j];
+                            }
+                            else
+                                nxtTgt[j] = curTgt[j];
+                        }
+                    if (!applied) continue;
+                    std::string nxtTgtStr = ToStr(nxtTgt);
+                    if (nxtTgtStr == empty) return res+1;
+                    if (!visit.count(nxtTgtStr))
+                    {
+                        visit.insert(nxtTgtStr);
+                        que.push(nxtTgt);
+                    }
+                }
+            }
+            ++res;
+        }
+        return -1;
+    }
+
     int DFS_DP(const std::vector<std::string> & stickers, std::string target)
     {
         int N = stickers.size();
