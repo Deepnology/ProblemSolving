@@ -45,6 +45,28 @@ public:
 		std::cout << "DiceCombinationSum NumOfWays_DP2D for \"diceCount=" << diceCount << "\", \"faceCount=\"" << faceCount << "\", \"targetSum=" << targetSum << "\": " << dp[targetSum][diceCount] << std::endl;
 		return dp[targetSum][diceCount];
 	}
+
+	int NumOfWays_Recur(int diceCount, int faceCount, int targetSum)
+    {
+	    int res = recur(diceCount, faceCount, targetSum, 0, 0);
+        std::cout << "DiceCombinationSum NumOfWays_Recur for \"diceCount=" << diceCount << "\", \"faceCount=\"" << faceCount << "\", \"targetSum=" << targetSum << "\": " << res << std::endl;
+	    return res;
+    }
+    int recur(int diceCount, int faceCount, int targetSum, int curDice, int curSum)
+    {
+        if (curDice == diceCount)
+        {
+            if (curSum == targetSum)
+                return 1;
+            return 0;
+        }
+        int res = 0;
+        for (int face = 1; face <= faceCount && face <= targetSum-curSum; ++face)
+        {
+            res += recur(diceCount, faceCount, targetSum, curDice+1, curSum+face);
+        }
+        return res;
+    }
 };
 /*
 [rY][cX]
@@ -75,5 +97,9 @@ Row#0	= 0, 0, 0
 Row#1	= 0, 1, 0
 
 DiceCombinationSum NumOfWays_DP2D for "diceCount=2", "faceCount="6", "targetSum=1": 0
+
+DiceCombinationSum NumOfWays_Recur for "diceCount=2", "faceCount="6", "targetSum=10": 3
+DiceCombinationSum NumOfWays_Recur for "diceCount=2", "faceCount="6", "targetSum=5": 4
+DiceCombinationSum NumOfWays_Recur for "diceCount=2", "faceCount="6", "targetSum=1": 0
 */
 #endif
