@@ -23,6 +23,36 @@ public:
 
     int Solve(std::vector<int> && A, int K)
     {
+        int res = 0;
+        std::unordered_map<int, int> lastIdx;//lastIdx of all entries in window
+        int left = 0;
+        int right = 0;
+        while(right < A.size())
+        {
+            lastIdx[A[right]] = right;
+
+            while (lastIdx.size() > K)
+            {
+                if (lastIdx[A[left]] == left)
+                    lastIdx.erase(A[left]);
+                ++left;//shrink window
+            }
+            if (lastIdx.size() == K)
+            {
+                int minIdx = right;
+                for (auto p : lastIdx)
+                    minIdx = std::min(minIdx, p.second);
+                res += minIdx - left + 1;
+                // Any window start between [left, minIdx] and end with right is a qualified answer
+            }
+            ++right;
+        }
+        std::cout << "CountSubArrWKDistinctEntries for [" << Debug::ToStr1D<int>()(A) << "], K=" << K << ": " << res << std::endl;
+        return res;
+    }
+
+    int Solve2(std::vector<int> && A, int K)
+    {
         int atMostK = CountSubarrAtMostKDistinct(A, K);
         int atMostKMinus1 = CountSubarrAtMostKDistinct(A, K-1);
         int res = atMostK - atMostKMinus1;
