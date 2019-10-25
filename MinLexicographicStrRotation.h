@@ -73,43 +73,43 @@ public:
 		std::string concat = s + s;
 		int N = concat.size();
 		int minBegin = -1;//1. keep track of minBegin
-		int equalCount = 0;//2. keep track of the current equal elements in [minBegin,minBegin+equalCount) and [i-equalCount,i)
-		//the current element i has to compare with the next element of [minBegin,minBegin+equalCount)
+		int commonLen = 0;//2. keep track of the current equal elements in [minBegin,minBegin+commonLen) and [i-commonLen,i)
+		//the current element i has to compare with the next element of [minBegin,minBegin+commonLen)
 		for (int i = 0; i < N; ++i)
 		{
 			if (minBegin == -1)
 			{
 				minBegin = i;
 				
-				this->Print(concat, i, minBegin, equalCount);
+				this->Print(concat, i, minBegin, commonLen);
 			}
 			else if (concat[i] < concat[minBegin])//cur is smaller than minBegin
 			{
-				this->Print(concat, i, minBegin, equalCount);
+				this->Print(concat, i, minBegin, commonLen);
 
 				minBegin = i;
-				equalCount = 0;
+				commonLen = 0;
 			}
-			else if (concat[i] == concat[minBegin + equalCount])//cur is equal to the next of [minBegin,minBegin+equalCount)
+			else if (concat[i] == concat[minBegin + commonLen])//cur is equal to the next of [minBegin,minBegin+commonLen)
 			{
-				this->Print(concat, i, minBegin, equalCount);
+				this->Print(concat, i, minBegin, commonLen);
 
-				++equalCount;
+				++commonLen;
 			}
-			else if (concat[i] < concat[minBegin + equalCount])//cur is smaller than the next of [minBegin,minBegin+equalCount)
+			else if (concat[i] < concat[minBegin + commonLen])//cur is smaller than the next of [minBegin,minBegin+commonLen)
 			{
-				this->Print(concat, i, minBegin, equalCount);
+				this->Print(concat, i, minBegin, commonLen);
 
-				minBegin = i - equalCount;//update minBegin to i-equalCount (the leftmost equal element of cur)
-				equalCount = 0;//reset
+				minBegin = i - commonLen;//update minBegin to i-commonLen (the leftmost equal element of cur)
+				commonLen = 0;//reset
 				if (concat[i] == concat[minBegin])
-					equalCount = 1;
+					commonLen = 1;
 			}
-			else//cur is greater than the next of [minBegin,minBegin+equalCount)
+			else//cur is greater than the next of [minBegin,minBegin+commonLen)
 			{
-				this->Print(concat, i, minBegin, equalCount);
+				this->Print(concat, i, minBegin, commonLen);
 
-				equalCount = 0;//reset
+				commonLen = 0;//reset
 			}
 		}
 
@@ -118,7 +118,7 @@ public:
 	}
 
 private:
-	void Print(const std::string & concat, int i, int minBegin, int equalCount)
+	void Print(const std::string & concat, int i, int minBegin, int commonLen)
 	{
 		std::ostringstream oss;
 		for (int j = 0; j < i; ++j)
@@ -129,11 +129,11 @@ private:
 		oss.str(std::string());
 		for (int j = 0; j < minBegin; ++j)
 			oss << " ";
-		if (equalCount == 0)
+		if (commonLen == 0)
 			oss << "^";
 		else
 		{
-			for (int j = 0; j < equalCount; ++j)
+			for (int j = 0; j < commonLen; ++j)
 				oss << "-";
 			oss << "^";
 		}
@@ -327,6 +327,44 @@ bcabdadabbcabdadab
 bcabdadabbcabdadab
        -^
 MinLexicographicStrRotation Iterate for "bcabdadab": abbcabdad
+
+|
+ABCAABABCAAB
+^
+ |
+ABCAABABCAAB
+^
+  |
+ABCAABABCAAB
+^
+   |
+ABCAABABCAAB
+^
+    |
+ABCAABABCAAB
+-^
+     |
+ABCAABABCAAB
+   -^
+      |
+ABCAABABCAAB
+   ^
+       |
+ABCAABABCAAB
+   -^
+        |
+ABCAABABCAAB
+   ^
+         |
+ABCAABABCAAB
+   ^
+          |
+ABCAABABCAAB
+   -^
+           |
+ABCAABABCAAB
+   --^
+MinLexicographicStrRotation Iterate for "ABCAAB": AABABC
 */
 
 
