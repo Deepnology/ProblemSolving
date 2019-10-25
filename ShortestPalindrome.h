@@ -146,11 +146,14 @@ private:
 /*
 ShortestPalindrome BruteForce for "abcd": dcbabcd
 ShortestPalindrome BruteForce for "abbacd": dcabbacd
+ShortestPalindrome BruteForce for "abacd": dcabacd
 ShortestPalindrome BruteForce for "abba": abba
 LPS for "abcddcba": 0, 0, 0, 0, 0, 0, 0, 1
 ShortestPalindrome UseLPS_KMP for "abcd": dcbabcd
 LPS for "abbacddcabba": 0, 0, 0, 1, 0, 0, 0, 0, 1, 2, 3, 4
 ShortestPalindrome UseLPS_KMP for "abbacd": dcabbacd
+LPS for "abacddcaba": 0, 0, 1, 0, 0, 0, 0, 1, 2, 3
+ShortestPalindrome UseLPS_KMP for "abacd": dcabacd
 LPS for "abbaabba": 0, 0, 0, 1, 1, 2, 3, 4
 ShortestPalindrome UseLPS_KMP for "abba": abba
 */
