@@ -48,6 +48,16 @@ Example 2:
 Input: S = "aaab"
 Output: ""
 This is a special case of Rearrange String k Distance Apart, where k is equal to 2.
+Leetcode: Distant Barcodes
+In a warehouse, there is a row of barcodes, where the i-th barcode is barcodes[i].
+Rearrange the barcodes so that no two adjacent barcodes are equal.
+You may return any answer, and it is guaranteed an answer exists.
+Example 1:
+Input: [1,1,1,2,2,2]
+Output: [2,1,2,1,2,1]
+Example 2:
+Input: [1,1,1,1,2,2,3,3]
+Output: [1,3,1,3,2,1,2,1]
 */
 class RearrangeArrWEqualEntriesKAway
 {
@@ -306,6 +316,52 @@ public:
         }
 
         std::cout << "RearrangeArrWithoutAdjacentEqualChars for \"" << s << "\": " << res << std::endl;
+        return res;
+    }
+
+    std::vector<int> Linear(std::vector<int> && s) //Leetcode: Distant Barcodes
+    {
+        int N = s.size();
+        std::unordered_map<int,int> count;
+        for (auto i : s)
+            ++count[i];
+        int maxCount = 0;
+        int maxNum = 0;
+        for (auto & p : count)
+            if (maxCount < p.second)
+            {
+                maxCount = p.second;
+                maxNum = p.first;
+            }
+        std::vector<int> res(N);
+        if (N%2==0 && maxCount>N/2) return res;//the most frequent char cannot exceed half length
+        if (N%2==1 && maxCount>N/2+1) return res;//the most frequent char cannot exceed half length + 1
+
+        //1. fill up the most frequent char
+        int i = 0;
+        for (; i<N && count.count(maxNum); i += 2)
+        {
+            res[i] = maxNum;
+            --count[maxNum];
+            if (count[maxNum]==0) count.erase(maxNum);
+        }
+        //2. fill up the remaining chars
+        int curNum = 0;
+        for (; i<N; i += 2)
+        {
+            while (!count.count(curNum)) ++curNum;
+            res[i] = curNum;
+            --count[curNum];
+            if (count[curNum]==0) count.erase(curNum);
+        }
+        for (i=1; i<N; i+=2)
+        {
+            while (!count.count(curNum)) ++curNum;
+            res[i] = curNum;
+            --count[curNum];
+            if (count[curNum]==0) count.erase(curNum);
+        }
+        std::cout << "RearrangeArrWithoutAdjacentEqualChars for \"" << Debug::ToStr1D<int>()(s) << "\": " << Debug::ToStr1D<int>()(res) << std::endl;
         return res;
     }
 };
