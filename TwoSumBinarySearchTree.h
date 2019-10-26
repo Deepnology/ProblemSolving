@@ -13,6 +13,9 @@ Find two nodes from a binary search tree that sum to a target value
 Greedy: O(n) time, O(h) space
 
 Refer to TwoSum.h for finding two elements that sum to a target value from a sorted array
+
+Leetcode: Two Sum BSTs
+Given two binary search trees, return True if and only if there is a node in the first tree and a node in the second tree whose values sum up to a given integer target.
 */
 class TwoSumBinarySearchTree
 {
@@ -91,6 +94,39 @@ public:
 		std::string res2 = found2 == NULL ? "NULL" : std::to_string(found2->val);
 		std::cout << "TwoSumBinarySearchTree Greedy for \"" << target << "\": " << res1 << ", " << res2 << std::endl;
 		return std::make_pair(found1, found2);
+	}
+
+	bool From2BSTs(TreeNode * root1, TreeNode * root2, int target)
+	{
+		//inorder traversal for root1, reversed inorder traversal for root2
+		std::stack<TreeNode*> stk1, stk2;
+		for (; root1 != NULL; root1 = root1->left)
+			stk1.push(root1);
+		for (; root2 != NULL; root2 = root2->right)
+			stk2.push(root2);
+
+		while (!stk1.empty() && !stk2.empty())
+		{
+			int sum = stk1.top()->val + stk2.top()->val;
+			if (sum == target)
+				return true;
+			else if (sum < target) //advance root1
+			{
+				TreeNode * cur = stk1.top();
+				stk1.pop();
+				for (cur = cur->right; cur != NULL; cur = cur->left)
+					stk1.push(cur);
+			}
+			else //advance root2
+			{
+				TreeNode * cur = stk2.top();
+				stk2.pop();
+				for (cur = cur->left; cur != NULL; cur = cur->right)
+					stk2.push(cur);
+			}
+		}
+
+		return false;
 	}
 
 public:
