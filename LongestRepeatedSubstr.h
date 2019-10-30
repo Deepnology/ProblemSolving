@@ -185,6 +185,31 @@ public:
 		std::cout << "LongestRepeatedSubstr DP for \"" << s << "\": " << s.substr(begin, maxLen) << std::endl;
 		return s.substr(begin, maxLen);
 	}
+    std::string DP2(const std::string & s)
+    {
+        int N = s.size();
+        std::vector<std::vector<int>> dp(N+1, std::vector<int>(N+1, 0)); //dp[i][j]: substrs ending at i and ending at j
+        int maxLen = 0; int begin;
+        for (int i = 0; i <= N; ++i)
+            for (int j = 0; j < i; ++j)
+                if (i==0 || j==0)
+                    dp[i][j] = 0;
+                else if (s[i-1] == s[j-1])
+                {
+                    dp[i][j] = dp[i-1][j-1]+1;
+                    if (dp[i][j] > maxLen)
+                    {
+                        maxLen = dp[i][j];
+                        begin = i-maxLen;
+                    }
+                }
+                else
+                    dp[i][j] = 0;
+
+
+        std::cout << "LongestRepeatedSubstr DP2 for \"" << s << "\": " << s.substr(begin, maxLen) << std::endl;
+        return s.substr(begin, maxLen);
+    }
 
 	std::string BinarySearchLen(const std::string & s)
 	{
@@ -255,6 +280,7 @@ ba
 b
 LongestRepeatedSubstr SuffixArray for "aababbaab": aab
 LongestRepeatedSubstr DP for "aababbaab": aab
+LongestRepeatedSubstr DP2 for "aababbaab": aab
 LongestRepeatedSubstr BinarySearchLen for "aababbaab": aab
 SuffixArraySimple for "aababbaab":
 0:	aab--------------->1
@@ -303,6 +329,7 @@ s
 ssi
 LongestRepeatedSubstr SuffixArray for "mississippi": issi
 LongestRepeatedSubstr DP for "mississippi": issi
+LongestRepeatedSubstr DP2 for "mississippi": issi
 LongestRepeatedSubstr BinarySearchLen for "mississippi": issi
 SuffixArraySimple for "mississippi":
 0:	i---------------->1
