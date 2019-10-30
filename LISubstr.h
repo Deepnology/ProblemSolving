@@ -25,6 +25,22 @@ public:
 	LISubstr(){}
 	~LISubstr(){}
 
+	int DP(std::vector<int> & nums)
+	{
+		int N = nums.size();
+		int incr = 1;//LIS ending at nums[i] including nums[i]
+		int res = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			if (i > 0 && nums[i-1] < nums[i])
+				incr = incr + 1;
+			else
+				incr = 1;
+			res = std::max(res, incr);
+		}
+		return res;
+	}
+
 	int Len_HeuristicSkip(const std::vector<int> & x)
 	{
 		int N = x.size();
