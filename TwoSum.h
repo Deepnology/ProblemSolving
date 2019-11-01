@@ -252,6 +252,7 @@ public:
 //given an integer array, count number of pairs whose sum equal to k.
 //pairs with same values but from different index are counted separated
 //{1,1,1}, k=2: there are 3 pairs not 1 pair
+//see NumberOfEquivalentDominoPairs.h
 class CountPairWSumEqualK
 {
 public:
