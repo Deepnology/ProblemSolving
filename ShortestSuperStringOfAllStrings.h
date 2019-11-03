@@ -19,7 +19,8 @@ Note:
 class ShortestSuperStringOfAllStrings
 {
 public:
-    //traveling salesman problem: find shortest path that visit each node only once
+    //traveling salesman problem: find shortest path from a src node that visit each node only once and return to it
+    //(shortest Hamiltonian cycle)
     std::string DP(std::vector<std::string> && A)
     {//O(N^2 * 2^N) time
         int N = A.size();
