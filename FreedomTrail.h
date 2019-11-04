@@ -211,10 +211,10 @@ public:
 	}
 };
 /*
-FreedomTrail DP2D for "godding", "oin": 8
-FreedomTrail DFS_DP for "godding", "oin": 8
-FreedomTrail BFS_DP for "godding", "oin": 8
-FreedomTrail BFS_DP_Simple for "godding", "oin": 8
+FreedomTrail DP2D for "godding", "ond": 9
+FreedomTrail DFS_DP for "godding", "ond": 9
+FreedomTrail BFS_DP for "godding", "ond": 9
+FreedomTrail BFS_DP_Simple for "godding", "ond": 9
 FreedomTrail DP2D for "czjdn", "zzznnnjjjdddccc": 23
 FreedomTrail DFS_DP for "czjdn", "zzznnnjjjdddccc": 23
 FreedomTrail BFS_DP for "czjdn", "zzznnnjjjdddccc": 23
