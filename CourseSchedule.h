@@ -219,14 +219,14 @@ public:
 
 		std::multiset<int> durations;
 		int N = courses.size();
-		int curEnd = 0;
+		int curSum = 0;
 		for (int i = 0; i < N; ++i)
 		{
-			curEnd += courses[i][0];
+			curSum += courses[i][0];
 			durations.insert(courses[i][0]);
-			while (!durations.empty() && curEnd > courses[i][1])//greedily remove longest duration courses to maximize num of total courses
+			while (!durations.empty() && curSum > courses[i][1])//greedily remove longest duration courses to maximize num of total courses
 			{
-				curEnd -= *std::prev(durations.end());
+				curSum -= *std::prev(durations.end());
 				durations.erase(std::prev(durations.end()));
 			}
 		}
