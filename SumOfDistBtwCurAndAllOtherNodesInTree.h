@@ -43,12 +43,9 @@ public:
         //now:
         //count[i]: children node count at node i (include i)
         //res[i]: edge count for all pairs "starting from i to all its children"
-        //for (auto i : count)
-        //    std::cout << i << ",";
-        //std::cout << std::endl;
-        //for (auto i : res)
-        //    std::cout << i << ",";
-        //std::cout << std::endl;
+        std::cout << "count[] = " << Debug::ToStr1D<int>()(count) << std::endl;
+        std::cout << "res[] = " << Debug::ToStr1D<int>()(res) << std::endl;
+
         dfs2(adjSet, 0, visit2, count, res, N);
 
         std::cout << "SumOfDistBtwCurAndAllOtherNodesInTree TwoPassDFS for [" << Debug::ToStr1D<int>()(edges) << "]: " << Debug::ToStr1D<int>()(res) << std::endl;
@@ -86,6 +83,13 @@ public:
     }
 };
 /*
+count[] = 6, 1, 4, 1, 1, 1
+res[] = 8, 0, 3, 0, 0, 0
+SumOfDistBtwCurAndAllOtherNodesInTree TwoPassDFS for [[0,1], [0,2], [2,3], [2,4], [2,5]]: 8, 12, 6, 10, 10, 10
+
+now use 1 instead of 0:
+count[] = 5, 6, 4, 1, 1, 1
+res[] = 7, 12, 3, 0, 0, 0
 SumOfDistBtwCurAndAllOtherNodesInTree TwoPassDFS for [[0,1], [0,2], [2,3], [2,4], [2,5]]: 8, 12, 6, 10, 10, 10
  */
 #endif
