@@ -61,6 +61,7 @@ private:
 };
 /*
 CrackSafe deBruijinSeq for 2 digits in [0:1]: 00110
+CrackSafe deBruijinSeq for 3 digits in [0:1]: 0001011100
 CrackSafe deBruijinSeq for 3 digits in [0:2]: 00010020110120210221112122200
  */
 #endif
