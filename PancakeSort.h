@@ -32,13 +32,13 @@ public:
     {
         int N = A.size();
         std::vector<int> res;
-        for (int back = 0; back < N; ++back)//back is size in the back
+        for (int frontLen = N; frontLen > 0; --frontLen)
         {
-            auto maxItr = std::max_element(A.begin(), A.end() - back);
-            res.push_back(maxItr - A.begin() + 1);//+1 is to transform to size
-            res.push_back(N - back);
+            auto maxItr = std::max_element(A.begin(), A.begin() + frontLen);
             std::reverse(A.begin(), maxItr + 1);//reverse A[0:maxItr] to move maxNum to front
-            std::reverse(A.begin(), A.end() - back);//reverse A[0:N-back) to move maxNum to prev of back
+            res.push_back(maxItr - A.begin() + 1);//+1 is to transform to size
+            std::reverse(A.begin(), A.begin() + frontLen);//reverse A[0:frontLen) to move maxNum to prev of back
+            res.push_back(frontLen);
         }
 
         std::cout << "PancakeSort FindRevFrontArrSizeSeq for [" << Debug::ToStr1D<int>()(A) << "]: " << Debug::ToStr1D<int>()(res) << std::endl;
