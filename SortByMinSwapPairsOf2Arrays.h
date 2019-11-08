@@ -24,6 +24,29 @@ class SortByMinSwapPairsOf2Arrays
 public:
     SortByMinSwapPairsOf2Arrays(){}
 
+    int DFS(std::vector<int> && A, std::vector<int> && B)
+    {
+        int N = A.size();
+        std::vector<std::vector<int>> dp(N, std::vector<int>(2, -1));
+        int res = recur(A, B, 0, 0, dp);
+        std::cout << "SortByMinSwapPairsOf2Arrays DFS for [" << Debug::ToStr1D<int>()(A) << "], [" << Debug::ToStr1D<int>()(B) << "]: " << res << std::endl;
+        return res;
+    }
+    int recur(std::vector<int> & A, std::vector<int> & B, int begin, int swapped, std::vector<std::vector<int>> & dp)
+    {
+        int N = A.size();
+        if (begin == N) return 0;
+        if (dp[begin][swapped] != -1) return dp[begin][swapped];
+        int minSwap = INT_MAX;
+        if (begin == 0 || (A[begin-1] < A[begin] && B[begin-1] < B[begin]))
+            minSwap = recur(A, B, begin+1, 0, dp);
+        std::swap(A[begin], B[begin]);
+        if (begin == 0 || (A[begin-1] < A[begin] && B[begin-1] < B[begin]))
+            minSwap = std::min(minSwap, recur(A, B, begin+1, 1, dp)+1);
+        std::swap(A[begin], B[begin]);
+        return dp[begin][swapped] = minSwap;
+    }
+
     int DP(const std::vector<int> & A, const std::vector<int> & B)
     {
         int N = A.size();
@@ -86,12 +109,14 @@ public:
     }
 };
 /*
+SortByMinSwapPairsOf2Arrays DFS for [1, 3, 5, 4], [1, 2, 3, 7]: 1
 notSwap:  0, 0, 0, 2
 swap:     1, 1, 2, 1
 SortByMinSwapPairsOf2Arrays DP for [1, 3, 5, 4], [1, 2, 3, 7]: 1
 notSwap:  0, 0, 0, 2
 swap:     1, 1, 2, 1
 SortByMinSwapPairsOf2Arrays DP2 for [1, 3, 5, 4], [1, 2, 3, 7]: 1
+SortByMinSwapPairsOf2Arrays DFS for [0, 4, 4, 5, 9], [0, 1, 6, 8, 10]: 1
 notSwap:  0, 0, 1, 1, 1
 swap:     1, 1, 1, 2, 2
 SortByMinSwapPairsOf2Arrays DP for [0, 4, 4, 5, 9], [0, 1, 6, 8, 10]: 1
