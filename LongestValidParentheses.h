@@ -15,6 +15,9 @@ Another example is ")()())", where the longest valid parentheses substring is "(
 Complexity:
 Stack based: O(n) time, O(n) space
 Two Scans: O(n) time, O(1) space
+
+Leetcode: Minimum Remove to Make Valid Parentheses (Find Longest Valid Parentheses Subseq)
+
 See also ValidParentheses.h, RemoveInvalidParentheses.h
 */
 class LongestValidParentheses
