@@ -240,7 +240,7 @@ Note that the cargo must be shipped in the order given, so using a ship of capac
 class MinMaxSubarrSumToPartitionKSubarr
 {
 public:
-    int FindMinMaxSubarrSum(const std::vector<int> & weights, int K)
+    int BinarySearch(const std::vector<int> & weights, int K)
     {
         int right = std::accumulate(weights.begin(), weights.end(), 0);
         int left = *std::max_element(weights.begin(), weights.end());
@@ -253,6 +253,7 @@ public:
             else
                 left = mid+1;
         }
+        std::cout << "MinMaxSubarrSumToPartitionKSubarr BinarySearch for [" << Debug::ToStr1D<int>()(weights) << "], k=" << K << ": " << left << std::endl;
         return left;
     }
 private:
@@ -416,5 +417,7 @@ Row#9	= 573, 304, 224, 158, 145
 PaintersPartitionFairWorkload DP2D_Iterate for "5" in "85, 39, 64, 11, 70, 80, 78, 61, 65, 20": 145
 PaintersPartitionFairWorkload BinarySearchGreedyPartition for "5" in "85, 39, 64, 11, 70, 80, 78, 61, 65, 20": 145, (124, 145, 80, 139, 85)
 PaintersPartitionFairWorkload BinarySearchGreedyPartition2 for "5" in "85, 39, 64, 11, 70, 80, 78, 61, 65, 20": 145
+
+MinMaxSubarrSumToPartitionKSubarr BinarySearch for [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], k=5: 15
 */
 #endif
