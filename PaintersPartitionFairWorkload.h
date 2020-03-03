@@ -182,49 +182,42 @@ private:
 	}
 
 public:
-	int BinarySearchGreedyPartition2(const std::vector<int> & A, int K)
-	{
-		int N = A.size();
-		int max = INT_MIN;
-		for (int i = 0; i < N; ++i)
-			if (A[i] > max)
-				max = A[i];
-		int sum = 0;
-		for (int i = 0; i < N; ++i)
-			sum += A[i];
-
-		int lo = max;
-		int hi = sum;
-		while (lo < hi)
-		{
-			int mid = lo + (hi - lo) / 2;
-			int requiredPainters = this->getRequiredPainterCount(A, mid);
-			if (requiredPainters <= K)
-				hi = mid;
-			else
-				lo = mid + 1;
-		}
-
-		std::cout << "PaintersPartitionFairWorkload BinarySearchGreedyPartition2 for \"" << K << "\" in \"" << Debug::ToStr1D<int>()(A) << "\": " << lo << std::endl;
-		return lo;
-	}
+    int BinarySearchGreedyPartition2(const std::vector<int> & A, int K)
+    {
+        long long lo = *std::min_element(A.begin(),A.end());
+        long long hi = 0;
+        for (auto & i : A) hi += (long long)i;
+        while (lo <= hi)
+        {
+            long long mid = lo + (hi - lo) / 2;
+            bool valid = canPartitionAtMostKSubarrs(A, K, mid);
+            if (valid)
+                hi = mid - 1;
+            else
+                lo = mid + 1;
+        }
+        std::cout << "PaintersPartitionFairWorkload BinarySearchGreedyPartition2 for \"" << K << "\" in \"" << Debug::ToStr1D<int>()(A) << "\": " << lo << std::endl;
+        return (int)lo;
+    }
 private:
-	int getRequiredPainterCount(const std::vector<int> & A, int maxLengthPerPainter)
-	{
-		int total = 0;
-		int painterCount = 1;
-		int N = A.size();
-		for (int i = 0; i < N; ++i)
-		{
-			total += A[i];
-			if (total > maxLengthPerPainter)
-			{
-				total = A[i];
-				++painterCount;
-			}
-		}
-		return painterCount;
-	}
+    bool canPartitionAtMostKSubarrs(const std::vector<int> & A, int K, long long limit)
+    {
+        int N = A.size();
+        int i = 0;
+        int curK = 0;
+        long long curSum = 0;
+        while (i < N && curK < K)
+        {
+            while (i < N && curSum + (long long)A[i] <= limit)
+            {
+                curSum += (long long)A[i++];
+            }
+            curSum = 0;
+            ++curK;
+        }
+        return i == N;
+    }
+
 };
 /*
 Elements of programming interview:
