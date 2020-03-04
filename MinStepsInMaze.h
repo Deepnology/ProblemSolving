@@ -107,6 +107,11 @@ public:
         std::cout << "MinStepsInMaze BFS_Queue for above maze from [" << Debug::ToStr1D<int>()(start) << "] to [" << Debug::ToStr1D<int>()(dest) << "]: " << dist << std::endl;
         return dist;
     }
+
+    int BFS_Queue_2dir(const std::vector<std::vector<int>> & maze, const std::vector<int> & start, const std::vector<int> & dest)
+    {
+        return 0;
+    }
 };
 /*
 [rY][cX]
