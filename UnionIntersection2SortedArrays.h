@@ -8,6 +8,7 @@
 /*
 Leetcode: Intersection of Two Arrays (intersections without duplicate)
 Leetcode: Intersection of Two Arrays II (intersections including all duplicates)
+Leetcode: Intersection of Three Sorted Arrays
 Elements of programming interview, Sorting: Compute the intersection of two sorted arrays
 http://www.geeksforgeeks.org/union-and-intersection-of-two-sorted-arrays-2/
 http://www.geeksforgeeks.org/find-common-elements-three-sorted-arrays/
@@ -144,17 +145,12 @@ public:
 				++j;
 				++k;
 			}
-			else if (v1[i] < v2[j])
+			else
 			{
-				++i;
-			}
-			else if (v2[j] < v3[k])
-			{
-				++j;
-			}
-			else//v3[k] is the smallest
-			{
-				++k;
+				int minVal = std::min(v1[i], std::min(v2[j], v3[k]));
+				if (v1[i] == minVal) ++i;
+				if (v2[j] == minVal) ++j;
+				if (v3[k] == minVal) ++k;
 			}
 		}
 
@@ -183,17 +179,12 @@ public:
 				++j;
 				++k;
 			}
-			else if (v1[i] < v2[j])
+			else
 			{
-				++i;
-			}
-			else if (v2[j] < v3[k])
-			{
-				++j;
-			}
-			else//v3[k] is the smallest
-			{
-				++k;
+				int minVal = std::min(v1[i], std::min(v2[j], v3[k]));
+				if (v1[i] == minVal) ++i;
+				if (v2[j] == minVal) ++j;
+				if (v3[k] == minVal) ++k;
 			}
 		}
 
