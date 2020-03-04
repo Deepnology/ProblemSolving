@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "Debug.h"
 /*
+Leetcode: Valid Palindrome III
 Elements of programming interview, DynamicProgramming: Compute the Levenshtein distance, variant
 Given a string A, compute the minimum number of characters you need to delete from A to make the resulting string a palindrome.
 Facebook
