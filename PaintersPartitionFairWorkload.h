@@ -99,10 +99,13 @@ private:
 			return dp2d[curSize - 1][K - 1];
 
 		int subPartitionBest = INT_MAX;
-		for (int leftSize = 1; leftSize <= curSize; ++leftSize)
+		for (int leftSize = 1; leftSize < curSize; ++leftSize)
+		{
+			if (K-1 > leftSize) continue; //condition to make sure left array size >= K-1  !!!
 			subPartitionBest = std::min(subPartitionBest,
-			std::max(this->minMaxPartitionSumDP2DRecur(A, leftSize, K - 1, prefixSum, dp2d), prefixSum[curSize - 1] - prefixSum[leftSize - 1]));
-
+										std::max(this->minMaxPartitionSumDP2DRecur(A, leftSize, K - 1, prefixSum, dp2d),
+												 prefixSum[curSize - 1] - prefixSum[leftSize - 1]));
+		}
 		return dp2d[curSize - 1][K - 1] = subPartitionBest;
 	}
 
