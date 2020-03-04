@@ -32,13 +32,14 @@ public:
 
 	int recur(const std::string & s, int k, int left, int right)
 	{
+		if (left > right) return 0;
 		std::vector<int> count(26, 0);
 		for (int i = left; i <= right; ++i)
-			++count[s[i] - 'a'];
+			++count[s[i]-'a'];
 		bool allValidChars = true;
 		for (int i = left; i <= right; ++i)
 		{
-			if (count[s[i] - 'a'] < k)
+			if (count[s[i]-'a'] < k)
 			{
 				allValidChars = false;
 				break;
@@ -46,21 +47,21 @@ public:
 		}
 		if (allValidChars) return right - left + 1;
 
-		int maxLen = 0;
-		int i = left;
-		while (i <= right)
+		for (int i = left; i <= right; ++i)
 		{
-			int begin = i;
-			while (i <= right && count[s[i] - 'a'] >= k)
-				++i;
-			if (i == begin)
+			if (count[s[i]-'a'] < k)
 			{
-				++i; continue;
+				int j = i;
+				while (j <= right && count[s[j]-'a'] < k) ++j;
+				return std::max(recur(s, k, left, i-1), recur(s, k, j, right));
 			}
-			//now all chars in s[begin:i-1] are >= k
-			maxLen = std::max(maxLen, recur(s, k, begin, i - 1));
 		}
-		return maxLen;
+		return right - left + 1;//won't reach here
+	}
+
+	int Use_LongestSubstrWAtMostKDistinctChars(std::string s, int k) //O(N) time
+	{
+		return 0;
 	}
 };
 /*
