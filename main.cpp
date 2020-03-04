@@ -1,5 +1,5 @@
 //#define _HashMap_
-//#define _Design_
+#define _Design_
 //#define _Math_
 //#define _BitNumberOperation_
 //#define _Random_
@@ -14,7 +14,7 @@
 //#define _TextLines_
 //#define _LinkedList_
 //#define _2DGrid_
-#define _BinaryTree_
+//#define _BinaryTree_
 //#define _QuadTree_
 //#define _Heap_
 //#define _Graph_
@@ -52,6 +52,7 @@
 #include "DesignLeetcodeOJ.h"
 #include "TimeBasedKeyValStore.h"
 #include "NumberOfRecentCalls.h"
+#include "SnapshotArray.h"
 
 /*Math*/
 #include "EggDrop.h"
@@ -178,6 +179,9 @@
 #include "IsLittleEndian.h"
 #include "KthSymbolInGrammar.h"
 #include "DecodeNestedRepeatedStrAtIndex.h"
+#include "NextGreaterPrimePalindromeNum.h"
+#include "NumOfDaysInGivenMonth.h"
+#include "IsArmstrongNumber.h"
 
 /*Random*/
 #include "ShuffleArray.h"
@@ -251,7 +255,6 @@
 #include "TwoDiffDupInIdxSeqArray.h"
 #include "MultiDupInIdxSeqArray.h"
 #include "Vector.h"
-#include "String.h"
 #include "ReplaceAllSpacesWPercent20.h"
 #include "RearrangeToWaveArray.h"
 #include "FirstDupInUnsortedArray.h"
@@ -312,6 +315,7 @@
 #include "RepeatRemoveAdjDuplicatesInString.h"
 #include "CountPairWSumDivisibleByK.h"
 #include "RepeatReverseSubstrsInParentheses.h"
+#include "NumOfEquivalentDominoPairs.h"
 
 /*Sort Search Select*/
 #include "Partition.h"
@@ -469,6 +473,7 @@
 #include "SynthesizeExpression.h"
 #include "SynthesizeExpressionEquation.h"
 #include "PaintersPartitionFairWorkload.h"
+#include "MaxMinSubarrSumToPartitionKSubarr.h"
 #include "Fair2TaskAssignment.h"
 #include "BalancedPartitionWMin2SumDiff.h"
 #include "BalancedPartitionWEqual2Sum.h"
@@ -532,6 +537,8 @@
 #include "ArrPermutationConsecuNumSumIsSquare.h"
 #include "MinCostOfMultiDayPassTickets.h"
 #include "AssignBikesToWorkersWShortestDist.h"
+#include "CountPermu1toNWPrimeOnPrimeIdx.h"
+#include "PartitionArrMinimizeSumOfEachSubArrMax.h"
 
 /*Trie Suffix Tree Array*/
 #include "SuffixArray.h"
@@ -644,6 +651,10 @@
 #include "MaxSum2NonOvlpSubArrays.h"
 #include "LongestVowelsRemoveAtMost2Substrs.h"
 #include "ShortestCommonSuperSeq.h"
+#include "MinSwapToGroup1From01Arr.h"
+#include "CountSubstrSizeKWDistinctChars.h"
+#include "CountSubArrWMaxInRange.h"
+#include "MinConsecuKFlipIn01Arr.h"
 
 /*Compare String*/
 #include "EditDistance.h"
@@ -815,6 +826,9 @@
 #include "CountRegionsCutBySlashes2DGrid.h"
 #include "EscapeInLarge2DMazeWithBlocks.h"
 #include "CountSubMatrixWSumEqualK.h"
+#include "MaxSumPathInMatrix.h"
+#include "MinKnightMoveInfinite2DGrid.h"
+#include "MaxPathSumIn2DGrid.h"
 
 /*Binary Tree*/
 #include "PrintBinaryTree.h"
@@ -918,6 +932,7 @@
 #include "PathInZigZagLabelledBinaryTree.h"
 #include "CountNumOfAtomsInChemicalFormula.h"
 #include "MinCostBinaryTreeFromLeafValues.h"
+#include "DeleteNodesOnNoRLPathWGreaterEqualSum.h"
 
 /*Quad Tree*/
 #include "QuadTree.h"
@@ -997,6 +1012,9 @@
 #include "ConnectedComponentsByIntCommonFactor.h"
 #include "MinCostConnectAllNodesInGraph.h"
 #include "KSwapStrings.h"
+#include "ShortestSuperStringOfAllStrings.h"
+#include "ShortestPathWAltColorsInGraph.h"
+#include "MinLexicographicStrBySwapPairs.h"
 
 /*RMQ LCA*/
 #include "RangeSumQuerySegmentTree.h"
@@ -2326,6 +2344,19 @@ int main()
     {
         DecodeNestedRepeatedStrAtIndex().Recur(std::string("leet2code3"), 10);
     }
+    {
+        NextGreaterPrimePalindromeNum().Solve(123321);
+        NextGreaterPrimePalindromeNum().Solve(12321);
+        NextGreaterPrimePalindromeNum().Solve(99);
+        std::cout << "NextGreaterPalindromeNum for 129921: " << NextGreaterPrimePalindromeNum().NextPalindrome(129921) << std::endl;
+        std::cout << "NextGreaterPalindromeNum for 12921: " << NextGreaterPrimePalindromeNum().NextPalindrome(12921) << std::endl;
+    }
+    {
+        NumOfDaysInGivenMonth().Solve(2000, 2);
+    }
+    {
+        IsArmstrongNumber().Solve(153);
+    }
 
 #endif
 #ifdef _Random_
@@ -3498,6 +3529,9 @@ int main()
     {
         RepeatReverseSubstrsInParentheses().UseStack("(u(love)i)");
     }
+    {
+        NumOfEquivalentDominoPairs().Solve(std::vector<std::vector<int>>({{1,2},{1,2},{1,2}}));
+    }
 
 #endif
 #ifdef _SortSearchSelect_
@@ -4508,8 +4542,10 @@ int main()
         FindAnagramMappings().UseHashMap(std::vector<int>({12, 28, 46, 32, 50}), std::vector<int>({50, 12, 32, 46, 28}));
     }
     {
+        SortByMinSwapPairsOf2Arrays().DFS(std::vector<int>({1,3,5,4}), std::vector<int>({1,2,3,7}));
         SortByMinSwapPairsOf2Arrays().DP(std::vector<int>({1,3,5,4}), std::vector<int>({1,2,3,7}));
         SortByMinSwapPairsOf2Arrays().DP2(std::vector<int>({1,3,5,4}), std::vector<int>({1,2,3,7}));
+        SortByMinSwapPairsOf2Arrays().DFS(std::vector<int>({0,4,4,5,9}), std::vector<int>({0,1,6,8,10}));
         SortByMinSwapPairsOf2Arrays().DP(std::vector<int>({0,4,4,5,9}), std::vector<int>({0,1,6,8,10}));
         SortByMinSwapPairsOf2Arrays().DP2(std::vector<int>({0,4,4,5,9}), std::vector<int>({0,1,6,8,10}));
     }
@@ -4598,6 +4634,25 @@ int main()
         bst.QueryLoginCount(20);
         bst.QueryLoginCount(70);
         bst.QueryLoginCount(15);
+
+        LoginCountFromUnorderedStream_PrefixSum_Map m;
+        m.Insert(2, 1);
+        m.Insert(10, 1);
+        m.Insert(5, 1);
+        m.Insert(6, -1);
+        m.Insert(20, -1);
+        m.Insert(6, 1);
+        m.Insert(13, -1);
+        m.Insert(8, -1);
+        m.Insert(11, 1);
+        m.Insert(30, 1);
+        m.Insert(40, 1);
+        m.Insert(25, -1);
+        m.Insert(50, -1);
+        m.QueryLoginCount(45);
+        m.QueryLoginCount(20);
+        m.QueryLoginCount(70);
+        m.QueryLoginCount(15);
     }
     {
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,0,2}));
@@ -4943,6 +4998,9 @@ int main()
 		DiceCombinationSum().NumOfWays_DP2D(2, 6, 10);
 		DiceCombinationSum().NumOfWays_DP2D(2, 6, 5);
 		DiceCombinationSum().NumOfWays_DP2D(2, 6, 1);
+		DiceCombinationSum().NumOfWays_Recur(2, 6, 10);
+        DiceCombinationSum().NumOfWays_Recur(2, 6, 5);
+        DiceCombinationSum().NumOfWays_Recur(2, 6, 1);
 	}
 	{
 		FactorCombinations().Recur(1);
@@ -5045,6 +5103,9 @@ int main()
 		PaintersPartitionFairWorkload().DP2D_Iterate(v, 5);
 		PaintersPartitionFairWorkload().BinarySearchGreedyPartition(v, 5);
 		PaintersPartitionFairWorkload().BinarySearchGreedyPartition2(v, 5);
+
+		MinMaxSubarrSumToPartitionKSubarr().BinarySearch(std::vector<int>({1,2,3,4,5,6,7,8,9,10}),5);
+		MaxMinSubarrSumToPartitionKSubarr().BinarySearch(std::vector<int>({1,2,3,4,5,6,7,8,9}),5);
 	}
 	{
 		Fair2TaskAssignment().Partition(std::vector<int>({ 18, 3, 12, 9, 7, 17, 4, 11, 14, 20, 5, 1, 8, 15, 6, 10, 13, 16, 19, 2 }));
@@ -5478,6 +5539,13 @@ int main()
         AssignBikesToWorkersWShortestDist().MinAllPairDistSums_DFS_Memo(std::vector<std::vector<int>>({{0,0},{1,1},{2,0}}), std::vector<std::vector<int>>({{1,0},{2,2},{2,1}}));
         AssignBikesToWorkersWShortestDist().MinAllPairDistSums_BFS_MinHeap(std::vector<std::vector<int>>({{0,0},{1,1},{2,0}}), std::vector<std::vector<int>>({{1,0},{2,2},{2,1}}));
     }
+    {
+        CountPermu1toNWPrimeOnPrimeIdx().Solve(100);
+    }
+    {
+        PartitionArrMinimizeSumOfEachSubArrMax().Recur(std::vector<int>({30,10,40,20,50}),2);
+        PartitionArrMinimizeSumOfEachSubArrMax().Recur(std::vector<int>({74303,20452,66120,44483,5370,68585}),5);
+    }
 
 #endif
 #ifdef _TrieSuffixArray_
@@ -5782,6 +5850,7 @@ int main()
 	{
 		LongestRepeatedSubstr().SuffixArray("aababbaab");
         LongestRepeatedSubstr().DP("aababbaab");
+        LongestRepeatedSubstr().DP2("aababbaab");
         LongestRepeatedSubstr().BinarySearchLen("aababbaab");
 		LongestRepeatedSubstr().AtLeastKRepeats_SuffixArray("aababbaab", 3);
 		LongestRepeatedSubstr().BruteForce_HashMap("aababbaab", 3);
@@ -5790,6 +5859,7 @@ int main()
 
 		LongestRepeatedSubstr().SuffixArray("mississippi");
         LongestRepeatedSubstr().DP("mississippi");
+        LongestRepeatedSubstr().DP2("mississippi");
         LongestRepeatedSubstr().BinarySearchLen("mississippi");
 		LongestRepeatedSubstr().AtLeastKRepeats_SuffixArray("mississippi", 2);
 		LongestRepeatedSubstr().BruteForce_HashMap("mississippi", 2);
@@ -5884,6 +5954,7 @@ int main()
 		MinLexicographicStrRotation().SuffixArray(std::string("alabala"));
 		MinLexicographicStrRotation().SuffixArray(std::string("baabaa"));
 		MinLexicographicStrRotation().SuffixArray(std::string("bcabdadab"));
+        MinLexicographicStrRotation().SuffixArray(std::string("ABCAAB"));
 		//MinLexicographicStrRotation().SuffixArray(std::string("ab"));
 		//MinLexicographicStrRotation().SuffixArray(std::string("aa"));
 		//MinLexicographicStrRotation().SuffixArray(std::string("ba"));
@@ -5892,9 +5963,12 @@ int main()
 		MinLexicographicStrRotation().Iterate(std::string("alabala"));
 		MinLexicographicStrRotation().Iterate(std::string("baabaa"));
 		MinLexicographicStrRotation().Iterate(std::string("bcabdadab"));
+        MinLexicographicStrRotation().Iterate(std::string("ABCAAB"));
 
 		MinLexicographicStrRotationK().OrderlyQueue("cba", 1);
         MinLexicographicStrRotationK().OrderlyQueue("baaca", 3);
+        MinLexicographicStrRotationK().OrderlyQueue("ABCAAB", 1);
+        MinLexicographicStrRotationK().OrderlyQueue("ABCAAB", 2);
 	}
 	{
 		int begin, end;
@@ -6305,9 +6379,11 @@ int main()
 	{
 		ShortestPalindrome().BruteForce(std::string("abcd"));
 		ShortestPalindrome().BruteForce(std::string("abbacd"));
+        ShortestPalindrome().BruteForce(std::string("abacd"));
 		ShortestPalindrome().BruteForce(std::string("abba"));
 		ShortestPalindrome().UseLPS_KMP(std::string("abcd"));
 		ShortestPalindrome().UseLPS_KMP(std::string("abbacd"));
+        ShortestPalindrome().UseLPS_KMP(std::string("abacd"));
 		ShortestPalindrome().UseLPS_KMP(std::string("abba"));
 	}
 	{
@@ -6479,6 +6555,18 @@ int main()
         LongestVowelsRemoveAtMost2Substrs().Solve("bbaaaaabbaabb");
         LongestVowelsRemoveAtMost2Substrs().Solve("aaaa");
         LongestVowelsRemoveAtMost2Substrs().Solve("bbbb");
+    }
+    {
+        MinSwapToGroup1From01Arr().SlideWindow(std::vector<int>({1,0,1,0,1,0,0,1,1,0,1}));
+    }
+    {
+        CountSubstrSizeKWDistinctChars().SlideWindow(std::string("havefunonleetcode"), 5);
+    }
+    {
+        CountSubArrWMaxInRange().SlideWindow(std::vector<int>({2,1,4,3}),2,3);
+    }
+    {
+        MinConsecuKFlipIn01Arr().SlideWindow(std::vector<int>({0,0,0,1,0,1,1,0}),3);
     }
 
 #endif
@@ -9117,6 +9205,28 @@ int main()
             {0,1,0}
         }), 0);
     }
+    {
+        MaxSumPathInMatrix().DFS(std::vector<std::vector<int>>(
+                {
+                        {0,6,0},
+                        {5,8,7},
+                        {0,9,0}
+                }));
+    }
+    {
+        MinKnightMoveInfinite2DGrid().AStarSearch(5,5);
+        MinKnightMoveInfinite2DGrid().BidirectionalBFS(5,5);
+    }
+    {
+        MaxPathSumIn2DGrid().DFS(std::vector<std::vector<int>>(
+                {
+                    {1,0,7},
+                    {2,0,6},
+                    {3,4,5},
+                    {0,3,0},
+                    {9,0,20}
+                }));
+    }
 
 #endif
 #ifdef _BinaryTree_
@@ -11261,6 +11371,24 @@ int main()
         MinCostBinaryTreeFromLeafValues().Greedy(std::vector<int>({6,2,4}));
         MinCostBinaryTreeFromLeafValues().Stack(std::vector<int>({6,2,4}));
     }
+    {
+        DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode * root = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(5);
+        root->left = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(4);
+        root->left->left = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(11);
+        root->left->left->left = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(7);
+        root->left->left->right = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(1);
+        root->right = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(8);
+        root->right->left = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(17);
+        root->right->right = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(4);
+        root->right->right->left = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(5);
+        root->right->right->right = new DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode(3);
+        bstOss << "DeleteNodesOnNoRLPathWGreaterEqualSum for limit=22:" << std::endl;
+        PrintBinaryTree<DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode, std::ostringstream>(root, bstOss);
+        root = DeleteNodesOnNoRLPathWGreaterEqualSum().GetSufficientSubset(root, 22);
+        PrintBinaryTree<DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode, std::ostringstream>(root, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+    }
 
 #endif
 #ifdef _QuadTree_
@@ -13120,7 +13248,7 @@ int main()
 	}
 	{
 		//see elements of programming interview p.127
-		DiameterOfTree().DivideConquerRecur_DiAdjMatrix(std::vector<std::vector<int>>(
+		DiameterOfTree().DFSRecur_DiAdjMatrix(std::vector<std::vector<int>>(
 		{
 			{ 0, 7, 0, 0, 0, 14, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//0
 			{ 0, 0, 4, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },//1
@@ -13693,10 +13821,10 @@ int main()
         RemoveInvalidParentheses().DFS(std::string("()()))(()))(()(()))(()"));
 	}
 	{
-		FreedomTrail().DP2D(std::string("godding"), std::string("oin"));
-		FreedomTrail().DFS_DP(std::string("godding"), std::string("oin"));
-		FreedomTrail().BFS_DP(std::string("godding"), std::string("oin"));
-        FreedomTrail().BFS_DP_Simple(std::string("godding"), std::string("oin"));
+		FreedomTrail().DP2D(std::string("godding"), std::string("ond"));
+		FreedomTrail().DFS_DP(std::string("godding"), std::string("ond"));
+		FreedomTrail().BFS_DP(std::string("godding"), std::string("ond"));
+        FreedomTrail().BFS_DP_Simple(std::string("godding"), std::string("ond"));
 		FreedomTrail().DP2D(std::string("czjdn"), std::string("zzznnnjjjdddccc"));
 		FreedomTrail().DFS_DP(std::string("czjdn"), std::string("zzznnnjjjdddccc"));
 		FreedomTrail().BFS_DP(std::string("czjdn"), std::string("zzznnnjjjdddccc"));
@@ -13827,6 +13955,7 @@ int main()
     }
     {
         CrackSafe().deBruijnSeq(2, 2);
+        CrackSafe().deBruijnSeq(3, 2);
         CrackSafe().deBruijnSeq(3, 3);
     }
     {
@@ -13881,6 +14010,15 @@ int main()
     }
     {
         KSwapStrings().BFS("aabc", "abca");
+    }
+    {
+        ShortestSuperStringOfAllStrings().DP(std::vector<std::string>({"catg","ctaagt","gcta","ttca","atgcatc"}));
+    }
+    {
+        ShortestPathWAltColorsInGraph().BFS(3, std::vector<std::vector<int>>({{0,1},{0,2}}), std::vector<std::vector<int>>({{1,0}}));
+    }
+    {
+        MinLexicographicStrBySwapPairs().UnionFind(std::string("dcab"), std::vector<std::vector<int>>({{0,3},{1,2},{0,2}}));
     }
 
 #endif
