@@ -29,7 +29,7 @@ BruteForce Recur: exponential time
 DP2D Iterate: O(K*N^2) time, O(K*N) space
 GreedyBinarySearch: O(N*logW) time, O(1) space, where W is total number of work that are to be partitioned
 GreedyBinarySearch2: O(N log N + N log max(A)) time in worst case, O(N log N) time in average
-see also MaxPriceCutting.h, MaxProductCutting.h
+see also MaxPriceCutting.h, MaxProductCutting.h, PartitionArrMinimizeSumOfEachSubArrMax.h
 */
 class PaintersPartitionFairWorkload
 {
@@ -53,10 +53,13 @@ private:
 			return A[0];
 
 		int subPartitionBest = INT_MAX;
-		for (int leftSize = 1; leftSize <= curSize; ++leftSize)
-			subPartitionBest = std::min(subPartitionBest, 
-			std::max(this->minMaxPartitionSumRecur(A, leftSize, K - 1), this->sumRange(A, leftSize, curSize - 1)));
-
+		for (int leftSize = 1; leftSize < curSize; ++leftSize)
+        {
+            if (K-1 > leftSize) continue; //condition to make sure left array size >= K-1  !!!
+            subPartitionBest = std::min(subPartitionBest,
+                                        std::max(this->minMaxPartitionSumRecur(A, leftSize, K - 1),
+                                                 this->sumRange(A, leftSize, curSize - 1)));
+        }
 		return subPartitionBest;
 	}
 	int sumRange(const std::vector<int> & A, int from, int to)
