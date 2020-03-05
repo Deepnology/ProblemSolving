@@ -1349,4 +1349,21 @@ namespace Debug
 		}
 	};
 }
+
+#if __cplusplus < 201703L
+namespace std
+{
+	int gcd(int a, int b)
+	{
+		while (b)
+		{
+			int tmp = b;
+			b = a % b;
+			a = tmp;
+		}
+		return a;
+	}
+
+}
+#endif
 #endif
