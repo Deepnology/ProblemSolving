@@ -118,7 +118,7 @@ public:
 		}
 		for (auto & p : inDegree)
 			if (p.second > 0)
-				return {};
+				return std::vector<int>();
 
 		Debug::Print2D<int>()(DAGadjMatrix, false);
 		std::cout << "TopologicalSortDAG BFS_AdjacencyMatrix: " << Debug::ToStr1D<int>()(res) << std::endl;
