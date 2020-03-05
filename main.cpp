@@ -21,7 +21,7 @@
 //#define _RMQLCA_
 //#define _Scheduling_
 //#define _ThreadSafe_
-//#define _DesignPattern_
+#define _DesignPattern_
 //#define _CPP_
 //#define _PrintFileNameByTag_
 //#define _PrintVSSolutionTree_
@@ -40,16 +40,14 @@
 #include "DesignHitCounter.h"
 #include "DesignPhoneDirectory.h"
 #include "InsertDeleteGetRandom.h"
+#include "InsertDeleteGetWeightedRandom.h"
 #include "DesignSearchAutocompleteSystem.h"
 #include "DesignLogStorageSystem.h"
 #include "ExcelSumFormula.h"
-#include "DesignSearchAutocompleteSystem.h"
 #include "DesignTypeaheadSuggestion.h"
 #include "DesignAPIRateLimiter.h"
 #include "AddGetTopKStockPrice.h"
 #include "AddGetFraudulentTransactionsInOrder.h"
-#include "DesignMealCombinationSystem.h"
-#include "DesignLeetcodeOJ.h"
 #include "TimeBasedKeyValStore.h"
 #include "NumberOfRecentCalls.h"
 #include "SnapshotArray.h"
@@ -199,7 +197,6 @@
 #include "RandomSubset.h"
 #include "RandomFromExponentialDist.h"
 #include "RandomPickIndicesOfTarget.h"
-#include "InsertDeleteGetWeightedRandom.h"
 #include "RandomPickNumsInRangeWoRepeat.h"
 #include "Rand2DPointInNonOvlpRects.h"
 
@@ -1079,6 +1076,8 @@
 #include "DesignPattern_Strategy.h"
 #include "DesignPattern_TemplateMethod.h"
 #include "DesignPattern_Visitor.h"
+#include "DesignMealCombinationSystem.h"
+#include "DesignLeetcodeOJ.h"
 
 /*CPP*/
 #include "MakeFinal.h"
@@ -1339,6 +1338,30 @@ int main()
 		r2.getRandom();
 	}
     {
+        InsertDeleteGetWeightedRandom r;
+        r.Insert("A", 1);
+        r.GetRandom();
+        r.Insert("B", 2);
+        r.GetRandom();
+        r.Insert("A", 3);
+        r.GetRandom();
+        r.Insert("C", 1);
+        r.GetRandom();
+        r.Insert("A", 0);
+        r.GetRandom();
+        r.Insert("B", 0);
+        r.GetRandom();
+        r.Insert("C", 0);
+        r.Insert("A", 1);
+        r.Insert("B", 2);
+        r.Insert("C", 3);
+        r.GetRandom();
+        r.Insert("A", 0);
+        r.GetRandom();
+        r.Insert("B", 0);
+        r.GetRandom();
+    }
+    {
         ExcelSumFormula e(3, 'C');
         e.set(1, 'A', 2);
         e.sum(3, 'C', std::vector<std::string>({"A1", "A1:B2"}));
@@ -1367,14 +1390,6 @@ int main()
         a.Add("c", 0, 130, "ff");
         a.GetAllTransactionsInOrder();
         a.GetAllFradulentTransactionsInOrder();
-    }
-    {
-        DesignMealCombinationSystem::Kitchen k(400,200,400,600,400,300,300,400);
-    }
-    {
-        DesignLeetcodeOJ::OJSingleton::Instance().Print();
-        DesignLeetcodeOJ::OJSingleton::Instance().Print();
-        DesignLeetcodeOJ::OJSingleton::Instance().Print();
     }
     {
         TimeBasedKeyValStore timeMap;
@@ -2459,30 +2474,6 @@ int main()
 		r.Pick(3);
 		r.Pick(1);
 	}
-    {
-        InsertDeleteGetWeightedRandom r;
-        r.Insert("A", 1);
-        r.GetRandom();
-        r.Insert("B", 2);
-        r.GetRandom();
-        r.Insert("A", 3);
-        r.GetRandom();
-        r.Insert("C", 1);
-        r.GetRandom();
-        r.Insert("A", 0);
-        r.GetRandom();
-        r.Insert("B", 0);
-        r.GetRandom();
-        r.Insert("C", 0);
-        r.Insert("A", 1);
-        r.Insert("B", 2);
-        r.Insert("C", 3);
-        r.GetRandom();
-        r.Insert("A", 0);
-        r.GetRandom();
-        r.Insert("B", 0);
-        r.GetRandom();
-    }
     {
         Rand2DPointInNonOvlpRects r(std::vector<std::vector<int>>({{-2,-2,-1,-1},{1,0,3,0}}));
         r.Pick();
@@ -9071,15 +9062,11 @@ int main()
                         { ' ','X','X','O','O' },
                         { 'X','O','O','X','X' },
                         { 'O','X','O','O','X' },
-                        { 'X','X',' ','X','O' },
+                        { 'X','X','X','X','O' },
                         { 'X','X','X','O','X' },
-                        { ' ',' ',' ','X',' ' },
+                        { ' ','O',' ','X',' ' },
                 });
-        RemoveSurroundedPiecesInMatrix().BFS(board, 1, 1);
-        RemoveSurroundedPiecesInMatrix().BFS(board, 1, 3);
-        RemoveSurroundedPiecesInMatrix().BFS(board, 2, 0);
-        RemoveSurroundedPiecesInMatrix().BFS(board, 2, 1);
-        RemoveSurroundedPiecesInMatrix().BFS(board, 4, 3);
+        RemoveSurroundedPiecesInMatrix().BFS(board);
     }
     {
         Find4PointsFormRectangle_MinArea().AxisAligned_xToYsHashMap(std::vector<std::vector<int>>({{1,1},{1,3},{3,1},{3,3},{4,1},{4,3}}));
@@ -14449,6 +14436,14 @@ int main()
         //DesignPattern_Strategy::Test();
         //DesignPattern_TemplateMethod::Test();
         //DesignPattern_Visitor::Test();
+    }
+    {
+        DesignMealCombinationSystem::Kitchen k(400,200,400,600,400,300,300,400);
+    }
+    {
+        DesignLeetcodeOJ::OJSingleton::Instance().Print();
+        DesignLeetcodeOJ::OJSingleton::Instance().Print();
+        DesignLeetcodeOJ::OJSingleton::Instance().Print();
     }
 #endif
 
