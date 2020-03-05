@@ -10,9 +10,23 @@ class RemoveSurroundedPiecesInMatrix
 public:
     RemoveSurroundedPiecesInMatrix(){}
 
-    void BFS(std::vector<std::vector<char>> & board, int row, int col)
+    void BFS(std::vector<std::vector<char>> & board)
     {
         Debug::Print2D<char>()(board, false);
+        int N = board.size();
+        int M = board[0].size();
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < M; ++j)
+            {
+                if (board[i][j] == 'O')
+                    BFS(board, i, j);
+            }
+        std::cout << "RemoveSurroundedPiecesInMatrix for above grid:" << std::endl;
+        Debug::Print2D<char>()(board, false);
+    }
+
+    void BFS(std::vector<std::vector<char>> & board, int row, int col)
+    {
         char piece = board[row][col];
         if (piece == ' ') return;
         int N = board.size();
@@ -28,20 +42,13 @@ public:
             int curR = que.front() / M;
             int curC = que.front() % M;
             que.pop();
-            std::cout << curR << "," << curC << std::endl;
-            if (curR == 0 || curR == N-1 || curC == 0 || curC == M-1)
-            {
-                surrounded = false;
-                break;
-            }
             for (int i = 0; i < 4; ++i)
             {
                 int nxtR = curR + dir[i][0];
                 int nxtC = curC + dir[i][1];
                 if (nxtR >= 0 && nxtR < N && nxtC >= 0 && nxtC < M)
                 {
-                    if (board[nxtR][nxtC] == ' ' ||
-                            board[nxtR][nxtC] == piece && (nxtR == 0 || nxtR == N-1 || nxtC == 0 || nxtC == M-1))
+                    if (board[nxtR][nxtC] == ' ')
                     {
                         surrounded = false;
                         break;
@@ -60,9 +67,24 @@ public:
             for (auto & i : visit)
                 board[i / M][i % M] = ' ';
         }
-
-        std::cout << "RemoveSurroundedPiecesInMatrix for [" << row << "," << col << "]:" << std::endl;
-        Debug::Print2D<char>()(board, false);
     }
 };
+/*
+[rY][cX]
+Row#0	=  , X, X, O, O
+Row#1	= X, O, O, X, X
+Row#2	= O, X, O, O, X
+Row#3	= X, X, X, X, O
+Row#4	= X, X, X, O, X
+Row#5	=  , O,  , X,
+
+RemoveSurroundedPiecesInMatrix for above grid:
+[rY][cX]
+Row#0	=  , X, X,  ,
+Row#1	= X,  ,  , X, X
+Row#2	=  , X,  ,  , X
+Row#3	= X, X, X, X,
+Row#4	= X, X, X,  , X
+Row#5	=  , O,  , X,
+ */
 #endif
