@@ -1,5 +1,5 @@
 #define _HashMap_
-#define _Design_
+#define _DesignDS_
 #define _Math_
 #define _BitNumberOperation_
 #define _Random_
@@ -30,27 +30,27 @@
 #include "HashMap/ImplementHashMap.h"
 #include "HashMap/ConsistentHashing.h"
 
-/*Design*/
-#include "Design/LRUCache.h"
-#include "Design/LFUCache.h"
-#include "Design/AllOoneIncrDecrGetMaxMin.h"
-#include "Design/ClientsCreditsInfo.h"
-#include "Design/DesignTwitter.h"
-#include "Design/LoggerRateLimiter.h"
-#include "Design/DesignHitCounter.h"
-#include "Design/DesignPhoneDirectory.h"
-#include "Design/InsertDeleteGetRandom.h"
-#include "Design/InsertDeleteGetWeightedRandom.h"
-#include "Design/DesignSearchAutocompleteSystem.h"
-#include "Design/DesignLogStorageSystem.h"
-#include "Design/ExcelSumFormula.h"
-#include "Design/DesignTypeaheadSuggestion.h"
-#include "Design/DesignAPIRateLimiter.h"
-#include "Design/AddGetTopKStockPrice.h"
-#include "Design/AddGetFraudulentTransactionsInOrder.h"
-#include "Design/TimeBasedKeyValStore.h"
-#include "Design/NumberOfRecentCalls.h"
-#include "Design/SnapshotArray.h"
+/*DesignDS*/
+#include "DesignDS/LRUCache.h"
+#include "DesignDS/LFUCache.h"
+#include "DesignDS/AllOoneIncrDecrGetMaxMin.h"
+#include "DesignDS/ClientsCreditsInfo.h"
+#include "DesignDS/DesignTwitter.h"
+#include "DesignDS/LoggerRateLimiter.h"
+#include "DesignDS/DesignHitCounter.h"
+#include "DesignDS/DesignPhoneDirectory.h"
+#include "DesignDS/InsertDeleteGetRandom.h"
+#include "DesignDS/InsertDeleteGetWeightedRandom.h"
+#include "DesignDS/DesignSearchAutocompleteSystem.h"
+#include "DesignDS/DesignLogStorageSystem.h"
+#include "DesignDS/ExcelSumFormula.h"
+#include "DesignDS/DesignTypeaheadSuggestion.h"
+#include "DesignDS/DesignAPIRateLimiter.h"
+#include "DesignDS/AddGetTopKStockPrice.h"
+#include "DesignDS/AddGetFraudulentTransactionsInOrder.h"
+#include "DesignDS/TimeBasedKeyValStore.h"
+#include "DesignDS/NumberOfRecentCalls.h"
+#include "DesignDS/SnapshotArray.h"
 
 /*Math*/
 #include "Math/EggDrop.h"
@@ -1122,9 +1122,9 @@ int main()
     }
 
 #endif
-#ifdef _Design_
-	RdCout ? redirect_cout::to_file("Out_Design.txt") : redirect_cout::to_cout();
-	PrintH("Design");
+#ifdef _DesignDS_
+	RdCout ? redirect_cout::to_file("Out_DesignDS.txt") : redirect_cout::to_cout();
+	PrintH("DesignDS");
 	{
 		LRUCache<std::string, int> lrucache(3);
 		lrucache.Set("A", 1);
