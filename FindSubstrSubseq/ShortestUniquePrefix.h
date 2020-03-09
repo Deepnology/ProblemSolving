@@ -1,7 +1,7 @@
 /*SuffixArray*/
 #ifndef SHORTEST_UNIQUE_PREFIX_H
 #define SHORTEST_UNIQUE_PREFIX_H
-#include "TrieST.h"
+#include "../TrieSuffixArray/TrieST.h"
 #include "Debug.h"
 /*
 Elements of programming interview, HashTable: Find the shortest unique prefix

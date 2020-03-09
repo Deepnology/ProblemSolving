@@ -7,7 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include "Debug.h"
-#include "SuffixArray.h"
+#include "../TrieSuffixArray/SuffixArray.h"
 /*
 http://www.stanford.edu/class/cs97si/suffix-array.pdf
 https://icpcarchive.ecs.baylor.edu/index.php?option=onlinejudge&page=show_problem&problem=756

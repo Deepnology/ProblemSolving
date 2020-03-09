@@ -7,7 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include "Debug.h"
-#include "SuffixArray.h"
+#include "../TrieSuffixArray/SuffixArray.h"
 /*
 Kmismatch
 Given a text, txt, with length N, a pattern, pat, with length M, and a mismatching threshold k.

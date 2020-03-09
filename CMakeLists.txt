@@ -8,7 +8,7 @@ set(Boost_USE_STSTIC_RUNTIME ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_DEBUG_LIBS ON)
 set(Boost_USE_RELEASE_LIBS ON)
-
+include_directories(Utility)
 find_package(Boost 1.65.1 REQUIRED COMPONENTS thread regex filesystem)
 if (Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})

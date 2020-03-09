@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <algorithm>
 #include "Debug.h"
-#include "SuffixArray.h"
+#include "../TrieSuffixArray/SuffixArray.h"
 /*
 http://www.stanford.edu/class/cs97si/suffix-array.pdf
 http://www.quora.com/Programming-Interviews/Given-a-string-how-do-I-find-the-number-of-distinct-substrings-of-the-string

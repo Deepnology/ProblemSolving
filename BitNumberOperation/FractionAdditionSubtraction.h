@@ -22,7 +22,7 @@ Input:"5/3+1/3"
 Output: "2/1"
 Note:
 The input string only contains '0' to '9', '/', '+' and '-'. So does the output.
-Each fraction (input and output) has format ¡Ónumerator/denominator.
+Each fraction (input and output) has format +OR- numerator/denominator.
 If the first input fraction or the output is positive, then '+' will be omitted.
 The input only contains valid irreducible fractions, where the numerator and denominator of each fraction will always be in the range [1,10]. If the denominator is 1, it means this fraction is actually an integer in a fraction format defined above.
 The number of given fractions will be in the range [1,10].
@@ -33,7 +33,7 @@ class FractionAdditionSubtraction
 public:
 	FractionAdditionSubtraction() {}
 
-	std::string fractionAddition(std::string expression)
+	std::string Evaluate(std::string expression)
 	{
 		std::istringstream iss(expression);
 		int DVD = 0;

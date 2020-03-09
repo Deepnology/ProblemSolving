@@ -8,7 +8,7 @@
 #include <cctype>//ispunct, isspace
 #include <algorithm>
 #include "Debug.h"
-#include "SuffixArray.h"
+#include "../TrieSuffixArray/SuffixArray.h"
 /*
 Elements of programming interview, Strings: Test palindromicity
 http://stackoverflow.com/questions/2033903/algorithm-to-find-palindromes

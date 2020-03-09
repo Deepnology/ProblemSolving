@@ -1,5 +1,6 @@
 #ifndef _COUNT_OUT_OF_INCR_ORDER_NUMS_IN_ARR_H
 #define _COUNT_OUT_OF_INCR_ORDER_NUMS_IN_ARR_H
+#include "Debug.h"
 /*
 Leetcode: Height Checker
 Students are asked to stand in non-decreasing order of heights for an annual photo.

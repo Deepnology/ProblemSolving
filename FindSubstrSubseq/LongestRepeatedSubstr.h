@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include "Debug.h"
-#include "SuffixArray.h"
+#include "../TrieSuffixArray/SuffixArray.h"
 /*
 Leetcode: Longest Repeating Substring, Longest Duplicate Substring
 suffix array

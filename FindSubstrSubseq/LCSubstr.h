@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include "Debug.h"
-#include "SuffixArray.h"
+#include "../TrieSuffixArray/SuffixArray.h"
 /*
 Leetcode: Maximum Length of Repeated Subarray
 DP:

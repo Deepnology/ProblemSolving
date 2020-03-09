@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 #include "Debug.h"
-#include "MinPairDiff2SortedArrays.h"
+#include "../SortSearchSelect/MinPairDiff2SortedArrays.h"
 /*
 Cracking the coding interview: Hard
 http://k2code.blogspot.tw/2014/04/shortest-distances-between-two-words-in.html
