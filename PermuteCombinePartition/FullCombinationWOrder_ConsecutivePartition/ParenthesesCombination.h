@@ -8,16 +8,12 @@
 #include "Debug.h"
 /*
 Elements of programming interview, Recursion: Enumerate strings of balanced parens
-https://github.com/anson627/leetcode/blob/master/GenerateParentheses/GenerateParentheses.cpp
-// Given n pairs of parentheses, write a function to generate all combinations
-// of well-formed parentheses.
-//
-// For example, given n = 3, a solution set is:
-//
-// "((()))", "(()())", "(())()", "()(())", "()()()"
-//
-// Complexity:
-// O(n!)
+Leetcode: Generate Parentheses
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+For example, given n = 3, a solution set is:
+"((()))", "(()())", "(())()", "()(())", "()()()"
+Complexity:
+O(n!)
 
 See also CatalanNumber.h, UniqueBinarySearchTree.h
 */

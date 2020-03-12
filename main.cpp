@@ -180,6 +180,7 @@
 #include "BitNumberOperation/NextGreaterPrimePalindromeNum.h"
 #include "BitNumberOperation/NumOfDaysInGivenMonth.h"
 #include "BitNumberOperation/IsArmstrongNumber.h"
+#include "BitNumberOperation/ValidNumsRotatingAllDigitsUpsideDown.h"
 
 /*Random*/
 #include "Random/ShuffleArray.h"
@@ -441,101 +442,100 @@
 #include "Interval/ExamRoom.h"
 
 /*Permute Combine Partition*/
-#include "PermuteCombinePartition/Permutations.h"
-#include "PermuteCombinePartition/Permutations2.h"
-#include "PermuteCombinePartition/KthPermutationSequence.h"
-#include "PermuteCombinePartition/Combinations.h"
-#include "PermuteCombinePartition/Combinations2.h"
-#include "PermuteCombinePartition/CombinationSum.h"
-#include "PermuteCombinePartition/KSum.h"
-#include "PermuteCombinePartition/SubsetSumProblem.h"
-#include "PermuteCombinePartition/CombinationPrimeSum1toN.h"
-#include "PermuteCombinePartition/DiceCombinationSum.h"
-#include "PermuteCombinePartition/FactorCombinations.h"
-#include "PermuteCombinePartition/Subsets.h"
-#include "PermuteCombinePartition/Knapsack.h"
-#include "PermuteCombinePartition/FractionalKnapsack.h"
-#include "PermuteCombinePartition/MatrixChainMultiplication.h"
-#include "PermuteCombinePartition/MaxVerticesSumOfPolygon.h"
-#include "PermuteCombinePartition/MaxSumParenthesizeArithmeticExpr.h"
-#include "PermuteCombinePartition/MinCostPolygonTriangulation.h"
-#include "PermuteCombinePartition/RestoreIPAddress.h"
-#include "PermuteCombinePartition/DecodeWays.h"
-#include "PermuteCombinePartition/NextPermutation.h"
-#include "PermuteCombinePartition/PreviousPermutation.h"
-#include "PermuteCombinePartition/LetterCombinationPhoneNum.h"
-#include "PermuteCombinePartition/ParenthesesCombination.h"
-#include "PermuteCombinePartition/Swap0ConvertPermutation.h"
-#include "PermuteCombinePartition/ParenthesizeBoolExpr.h"
-#include "PermuteCombinePartition/SynthesizeExpression.h"
-#include "PermuteCombinePartition/SynthesizeExpressionEquation.h"
-#include "PermuteCombinePartition/PaintersPartitionFairWorkload.h"
-#include "PermuteCombinePartition/MaxMinSubarrSumToPartitionKSubarr.h"
-#include "PermuteCombinePartition/Fair2TaskAssignment.h"
-#include "PermuteCombinePartition/BalancedPartitionWMin2SumDiff.h"
-#include "PermuteCombinePartition/BalancedPartitionWEqual2Sum.h"
-#include "PermuteCombinePartition/BinPacking.h"
-#include "PermuteCombinePartition/BinPacking2.h"
-#include "PermuteCombinePartition/AllSubArrayPartitions.h"
-#include "PermuteCombinePartition/MinNonSubsetSumSortedArray.h"
-#include "PermuteCombinePartition/MeasureWithDefectiveJugs.h"
-#include "PermuteCombinePartition/MonotoneDecimalNums.h"
-#include "PermuteCombinePartition/StricklyMonotoneDecimalNums.h"
-#include "PermuteCombinePartition/FirstFitPacking.h"
-#include "PermuteCombinePartition/MaxPermutedConcatNum.h"
-#include "PermuteCombinePartition/MinSumOf2IntFromADigitArr.h"
-#include "PermuteCombinePartition/MaxProductCutting.h"
-#include "PermuteCombinePartition/MaxPriceCutting.h"
-#include "PermuteCombinePartition/MaxPriceCutting2.h"
-#include "PermuteCombinePartition/AllBinaryStrWithWildCard.h"
-#include "PermuteCombinePartition/WordBreak.h"
-#include "PermuteCombinePartition/LongestWordMadeOfOthers.h"
-#include "PermuteCombinePartition/ParenthesizeArithmeticExpr.h"
-#include "PermuteCombinePartition/PaintHouseCombinations.h"
-#include "PermuteCombinePartition/PaintFenceCombinations.h"
-#include "PermuteCombinePartition/BurstBallons.h"
-#include "PermuteCombinePartition/BombsInACircle.h"
-#include "PermuteCombinePartition/GeneralizedAbbreviation.h"
-#include "PermuteCombinePartition/ConvertAllWordsToMinUniqueAbbrs.h"
-#include "PermuteCombinePartition/PatchingArray.h"
-#include "PermuteCombinePartition/CountNumbersWithUniqueDigits.h"
-#include "PermuteCombinePartition/EqualSum2SubArrPartition.h"
-#include "PermuteCombinePartition/EquilibriumIndexOfArray.h"
-#include "PermuteCombinePartition/MinEqualSumSubArrPartition.h"
-#include "PermuteCombinePartition/HouseRobber.h"
-#include "PermuteCombinePartition/TwoAssemblyLineScheduling.h"
-#include "PermuteCombinePartition/Interleave2Strings.h"
-#include "PermuteCombinePartition/InterleavingString.h"
+#include "PermuteCombinePartition/Permutation/Permutations.h"
+#include "PermuteCombinePartition/Permutation/Permutations2.h"
+#include "PermuteCombinePartition/Permutation/KthPermutationSequence.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/Combinations.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/Simple/Combinations2.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/CombinationSum.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/KSum.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/SubsetSumProblem.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/CombinationPrimeSum1toN.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/DiceCombinationSum.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/FactorCombinations.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/Subsets.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/Knapsack.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/FractionalKnapsack.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/MatrixChainMultiplication.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/MaxVerticesSumOfPolygon.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/MaxSumParenthesizeArithmeticExpr.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/MinCostPolygonTriangulation.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/RestoreIPAddress.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/DecodeWays.h"
+#include "PermuteCombinePartition/Permutation/NextPermutation.h"
+#include "PermuteCombinePartition/Permutation/PreviousPermutation.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/Simple/LetterCombinationPhoneNum.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/ParenthesesCombination.h"
+#include "PermuteCombinePartition/Permutation/Swap0ConvertPermutation.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/ParenthesizeBoolExpr.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SynthesizeExpression.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SynthesizeExpressionEquation.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/PaintersPartitionFairWorkload.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/MaxMinSubarrSumToPartitionKSubarr.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/Fair2TaskAssignment.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/BalancedPartitionWMin2SumDiff.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/BalancedPartitionWEqual2Sum.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/MultiBinAccumuSum/BinPacking.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/MultiBinAccumuSum/BinPacking2.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/AllSubArrayPartitions.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/MinNonSubsetSumSortedArray.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/MeasureWithDefectiveJugs.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/MonotoneDecimalNums.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/StricklyMonotoneDecimalNums.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/MultiBinAccumuSum/FirstFitPacking.h"
+#include "PermuteCombinePartition/Permutation/MaxPermutedConcatNum.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/MinSumOf2IntFromADigitArr.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/MaxProductCutting.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/MaxPriceCutting.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/MaxPriceCutting2.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/Simple/AllBinaryStrWithWildCard.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/WordBreak.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/LongestWordMadeOfOthers.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/ParenthesizeArithmeticExpr.h"
+#include "PermuteCombinePartition/PartialCombinationWOrder/PaintHouseCombinations.h"
+#include "PermuteCombinePartition/PartialCombinationWOrder/PaintFenceCombinations.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/BurstBallons.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/BombsInACircle.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/GeneralizedAbbreviation.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/ConvertAllWordsToMinUniqueAbbrs.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/PatchingArray.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/CountNumbersWithUniqueDigits.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/EqualSum2SubArrPartition.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/EquilibriumIndexOfArray.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/MinEqualSumSubArrPartition.h"
+#include "PermuteCombinePartition/PartialCombinationWOrder/HouseRobber.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SingleBinAccumuSum/TwoAssemblyLineScheduling.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/Interleave2Strings.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/InterleavingString.h"
 #include "PermuteCombinePartition/KPalindrome.h"
-#include "PermuteCombinePartition/WordPattern.h"
-#include "PermuteCombinePartition/PalindromePartitioning.h"
-#include "PermuteCombinePartition/PermutedPalindrome.h"
-#include "PermuteCombinePartition/ScrambleString.h"
-#include "PermuteCombinePartition/abcCombination_1b_2cs.h"
-#include "PermuteCombinePartition/BinaryStrWoConsecu1s.h"
-#include "PermuteCombinePartition/BinStrCombinationWGiven0n1Count.h"
-#include "PermuteCombinePartition/PlusMinusCombinationSum.h"
-#include "PermuteCombinePartition/SmallestPermutationFromIncrDecrArray.h"
-#include "PermuteCombinePartition/BeautifulArrangement.h"
-#include "PermuteCombinePartition/MatchsticksToSquare.h"
-#include "PermuteCombinePartition/EqualSum4SubArrExcludeSplitter.h"
-#include "PermuteCombinePartition/OptimalDivision.h"
-#include "PermuteCombinePartition/RemoveBoxes.h"
-#include "PermuteCombinePartition/MaxSumOfPairMins.h"
-#include "PermuteCombinePartition/RemoveConsecuSameChars.h"
-#include "PermuteCombinePartition/PartitionSameCharsInSingleSubstr.h"
-#include "PermuteCombinePartition/NextClosestTime.h"
-#include "PermuteCombinePartition/PartitionIntoFibonacciSeq.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/WordPattern.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/PalindromePartitioning.h"
+#include "PermuteCombinePartition/Permutation/PermutedPalindrome.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/ScrambleString.h"
+#include "PermuteCombinePartition/PartialCombinationWOrder/abcCombination_1b_2cs.h"
+#include "PermuteCombinePartition/PartialCombinationWOrder/BinaryStrWoConsecu1s.h"
+#include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/BinStrCombinationWGiven0n1Count.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SingleBinAccumuSum/PlusMinusCombinationSum.h"
+#include "PermuteCombinePartition/Permutation/SmallestPermutationFromIncrDecrArray.h"
+#include "PermuteCombinePartition/Permutation/BeautifulArrangement.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/MatchsticksToSquare.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/EqualSum4SubArrExcludeSplitter.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/OptimalDivision.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/RemoveBoxes.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/MaxSumOfPairMins.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/PartitionSameCharsInSingleSubstr.h"
+#include "PermuteCombinePartition/NextClosestTimeReuseCurDigits.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/PartitionIntoFibonacciSeq.h"
 #include "PermuteCombinePartition/MinStickersToSpellWord.h"
-#include "PermuteCombinePartition/Game24.h"
-#include "PermuteCombinePartition/MaxPointsDeleteAndEarn.h"
-#include "PermuteCombinePartition/PartitionArrToDoubleValuedPairs.h"
-#include "PermuteCombinePartition/PartitionSameNumsInGroupsWSameSizes.h"
-#include "PermuteCombinePartition/ArrPermutationConsecuNumSumIsSquare.h"
-#include "PermuteCombinePartition/MinCostOfMultiDayPassTickets.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/Game24.h"
+#include "PermuteCombinePartition/PartialCombinationWOrder/MaxSumOfConsecuNumSeqInArr.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/PartitionArrToDoubleValuedPairs.h"
+#include "PermuteCombinePartition/FullCombinationWoOrder_NonConsecutivePartition/PartitionSameNumsInGroupsWSameSizes.h"
+#include "PermuteCombinePartition/Permutation/ArrPermutationConsecuNumSumIsSquare.h"
+#include "PermuteCombinePartition/PartialCombinationWOrder/MinCostOfMultiDayPassTickets.h"
 #include "PermuteCombinePartition/AssignBikesToWorkersWShortestDist.h"
-#include "PermuteCombinePartition/CountPermu1toNWPrimeOnPrimeIdx.h"
-#include "PermuteCombinePartition/PartitionArrMinimizeSumOfEachSubArrMax.h"
+#include "PermuteCombinePartition/Permutation/CountPermu1toNWPrimeOnPrimeIdx.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/PartitionArrMinimizeSumOfEachSubArrMax.h"
 
 /*Trie Suffix Array*/
 #include "TrieSuffixArray/SuffixArray.h"
@@ -927,6 +927,7 @@
 #include "BinaryTree/CountNumOfAtomsInChemicalFormula.h"
 #include "BinaryTree/MinCostBinaryTreeFromLeafValues.h"
 #include "BinaryTree/DeleteNodesOnNoRLPathWGreaterEqualSum.h"
+#include "BinaryTree/LCAOfDeepestLeavesBinaryTree.h"
 
 /*Quad Tree*/
 #include "QuadTree/QuadTree.h"
@@ -2370,6 +2371,10 @@ int main()
     }
     {
         IsArmstrongNumber().Solve(153);
+    }
+    {
+        ValidNumsRotatingAllDigitsUpsideDown().CountDiffValidNumsFrom1toN(10);
+        ValidNumsRotatingAllDigitsUpsideDown().CountDiffValidNumsFrom1toN_Better(10);
     }
 
 #endif
@@ -5484,18 +5489,11 @@ int main()
 		MaxSumOfPairMins().Sort(std::vector<int>({ 1,4,3,2 }));
 	}
 	{
-		RemoveConsecuSameChars().Linear("aacbbbccd");
-		RemoveConsecuSameChars().Linear("aabbba");
-		RemoveConsecuSameChars().Linear("aabbccccdd");
-		RemoveConsecuSameChars().Linear("aabbcccbadd");
-		RemoveConsecuSameChars().Linear("abbbdbbccddaccddddccaaddcb");
-	}
-    {
         PartitionSameCharsInSingleSubstr().TwoScanHashMap(std::string("ababcbacadefegdehijhklij"));
     }
     {
-        NextClosestTime().Solve(std::string("19:34"));
-        NextClosestTime().Solve(std::string("23:59"));
+        NextClosestTimeReuseCurDigits().Solve(std::string("19:34"));
+        NextClosestTimeReuseCurDigits().Solve(std::string("23:59"));
     }
     {
         PartitionIntoFibonacciSeq().Recur_FindAnyOne(std::string("1101111"));
@@ -5508,7 +5506,7 @@ int main()
         Game24().DFS(std::vector<int>({4,1,8,7}));
     }
     {
-        MaxPointsDeleteAndEarn().DP(std::vector<int>({2,2,3,3,3,4}));
+        MaxSumOfConsecuNumSeqInArr().DP(std::vector<int>({2,2,3,3,3,4}));
     }
     {
         PartitionArrToDoubleValuedPairs().Test(std::vector<int>({4,-2,2,-4}));
@@ -11363,6 +11361,18 @@ int main()
         PrintBinaryTree<DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode, std::ostringstream>(root, bstOss);
         root = DeleteNodesOnNoRLPathWGreaterEqualSum().GetSufficientSubset(root, 22);
         PrintBinaryTree<DeleteNodesOnNoRLPathWGreaterEqualSum::TreeNode, std::ostringstream>(root, bstOss);
+        std::cout << bstOss.str() << std::endl;
+        bstOss.str(std::string());
+    }
+    {
+        LCAOfDeepestLeavesBinaryTree::TreeNode * root = new LCAOfDeepestLeavesBinaryTree::TreeNode(1);
+        root->left = new LCAOfDeepestLeavesBinaryTree::TreeNode(2);
+        root->right = new LCAOfDeepestLeavesBinaryTree::TreeNode(3);
+        root->left->left = new LCAOfDeepestLeavesBinaryTree::TreeNode(4);
+        PrintBinaryTree<LCAOfDeepestLeavesBinaryTree::TreeNode, std::ostringstream>(root, bstOss);
+        bstOss << "LCAOfDeepestLeavesBinaryTree:" << std::endl;
+        LCAOfDeepestLeavesBinaryTree::TreeNode * res = LCAOfDeepestLeavesBinaryTree().Recur(root);
+        PrintBinaryTree<LCAOfDeepestLeavesBinaryTree::TreeNode, std::ostringstream>(res, bstOss);
         std::cout << bstOss.str() << std::endl;
         bstOss.str(std::string());
     }

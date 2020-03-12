@@ -1,5 +1,5 @@
-#ifndef _MAX_POINTS_DELETE_AND_EARN_H
-#define _MAX_POINTS_DELETE_AND_EARN_H
+#ifndef _MAX_SUM_OF_CONSECU_NUM_SEQ_IN_ARR_H
+#define _MAX_SUM_OF_CONSECU_NUM_SEQ_IN_ARR_H
 #include "Debug.h"
 /*
 Leetcode: Delete And Earn
@@ -25,10 +25,10 @@ Note:
 The length of nums is at most 20000.
 Each element nums[i] is an integer in the range [1, 10000].
  */
-class MaxPointsDeleteAndEarn
+class MaxSumOfConsecuNumSeqInArr
 {
 public:
-    MaxPointsDeleteAndEarn(){}
+    MaxSumOfConsecuNumSeqInArr(){}
 
     int DP(const std::vector<int> & nums) //nums[i] are in [1:10000]
     {
@@ -43,11 +43,11 @@ public:
         for (int i = 2; i <= 10000; ++i)
             dp[i] = std::max(dp[i-1], count[i]*i + dp[i-2]);//max(exclude cur, include cur)
 
-        std::cout << "MaxPointsDeleteAndEarn DP for [" << Debug::ToStr1D<int>()(nums) << "]: " << dp[10000] << std::endl;
+        std::cout << "MaxSumOfConsecuNumSeqInArr DP for [" << Debug::ToStr1D<int>()(nums) << "]: " << dp[10000] << std::endl;
         return dp[10000];
     }
 };
 /*
-MaxPointsDeleteAndEarn DP for [2, 2, 3, 3, 3, 4]: 9
+MaxSumOfConsecuNumSeqInArr DP for [2, 2, 3, 3, 3, 4]: 9
  */
 #endif
