@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "Debug.h"
 /*
-°ö¾i»PÁëÁå
+åŸ¹é¤Šèˆ‡é›éŠ
 http://www.geeksforgeeks.org/travelling-salesman-problem-set-1/
 
 Traveling salesman problem: 

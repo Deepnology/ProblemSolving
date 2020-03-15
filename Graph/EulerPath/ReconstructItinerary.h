@@ -27,7 +27,7 @@ public:
 	ReconstructItinerary() {}
 	~ReconstructItinerary() {}
 
-	std::vector<std::string> DFS_Recur(const std::vector<std::pair<std::string, std::string>> & tickets)
+	std::vector<std::string> DFS_Recur(const std::vector<std::pair<std::string, std::string>> & tickets)//Hierholzer Algorithm Find Euler Path
 	{
 		//since itinerary is required to be in the smallest lexical order, and airports can be repeated, use multiset
 		std::unordered_map<std::string, std::multiset<std::string>> adjMultiSet;//first: departure, second: a set of arrivals
@@ -58,7 +58,7 @@ private:
 	}
 
 public:
-	std::vector<std::string> DFS_Stack(const std::vector<std::pair<std::string, std::string>> & tickets)
+	std::vector<std::string> DFS_Stack(const std::vector<std::pair<std::string, std::string>> & tickets)//Hierholzer Algorithm Find Euler Path
 	{
 		//since itinerary is required to be in the smallest lexical order, and airports can be repeated, use multiset
 		std::unordered_map<std::string, std::multiset<std::string>> adjMultiSet;//first: departure, second: a set of arrivals

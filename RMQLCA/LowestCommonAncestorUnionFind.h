@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <functional>
 #include "Debug.h"
-#include "../Graph/UnionFindGraphComponent.h"
+#include "../Graph/UnionFind/UnionFindGraphComponent.h"
 /*
 http://en.wikipedia.org/wiki/Tarjan%27s_off-line_lowest_common_ancestors_algorithm
 Tarjan's algorithm:

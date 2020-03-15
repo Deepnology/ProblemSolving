@@ -12,7 +12,6 @@
 #include "Debug.h"
 /*
 Elements of programming interview, Graph: compute a shortest path with fewest edges
-���i�P����
 http://www.geeksforgeeks.org/dynamic-programming-set-23-bellman-ford-algorithm/
 Bellman Ford works for negative weight cycle
 If there exists a negative edge in a graph, the shortest path for any two vertices in the graph is meaningful only when the graph is a DAG.

@@ -35,6 +35,7 @@ org: [4,1,5,2,6,3], seqs: [[5,2,6,3],[4,1,5,2]]
 Output:
 true
 
+each sequence in seqs is a path in DAG, use these paths to build the DAG,
 find topological sort, check if there exists missed edges in topological sort and if the last node in topological sort has 0 out degree
 see also ConnectAllStrInChain.h
 */

@@ -1,15 +1,5 @@
 #ifndef CONNECT_ALL_STR_IN_CHAIN_H
 #define CONNECT_ALL_STR_IN_CHAIN_H
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <queue>
-#include <stack>
-#include <algorithm>
-#include <functional>
 #include "Debug.h"
 /*
 http://stackoverflow.com/questions/17706124/given-an-array-of-strings-return-true-if-each-string-could-be-connected-to-othe
@@ -27,7 +17,6 @@ The vertices of the graph are the 26 letters.
 The edge between two letters represents an existing string with starting and ending letters, respectively.
 If an Eulerian path exists in the directed graph, all the string can be connected in a chain.
 
-can be solved using topological sort, see also UniqueSequenceReconstructable.h
 */
 class ConnectAllStrInChain
 {
@@ -35,6 +24,77 @@ public:
 	ConnectAllStrInChain(){}
 	~ConnectAllStrInChain(){}
 
+	//use Hierholzer Algorithm to find Euler Path and Euler Circuit in a single connect component
+	bool ExistFindEulerPathInConnectedDiGraph(const std::vector<std::string> & strs)
+	{
+		//note: the order of adj vertices in DiG doesn't matter for Hierholzer Algorithm
+		std::unordered_map<char, std::unordered_set<char>> DiG;
+		for (auto & s : strs)
+        {
+            DiG[s.front()].insert(s.back());
+            if (DiG.count(s.back()) == 0) DiG.insert({s.back(),{}});//insert end vertex of edge
+        }
+		bool anyEulerPath = false;
+        bool allEulerPaths = true;
+		std::cout << "ConnectAllStrInChain HierholzerFindEulerPathInConnectedDiGraph for \"" << Debug::ToStr1D<std::string>()(strs) << "\": " << std::endl;
+		for (auto & p : DiG)
+		{
+			//find Euler Path starting with each vertex
+			std::string res = DFSStk(DiG, p.first);
+			int numEdges = res.size()-1;//the result Euler Path must contain all edges from the DiG
+			bool containAllEdges = (numEdges==strs.size());
+			for (int i = 0; i < numEdges; ++i)
+			{
+				if (!DiG.count(res[i]) || !DiG[res[i]].count(res[i+1]))
+				{
+					containAllEdges = false;
+					break;
+				}
+			}
+			anyEulerPath |= containAllEdges;
+			allEulerPaths &= containAllEdges;
+			std::cout << "EulerPath@" << p.first << " [" << res << "]: " << containAllEdges << std::endl;
+		}
+		std::cout << "AnyEulerPath: " << anyEulerPath << ", AllEulerPaths(EulerCircuit): " << allEulerPaths << std::endl;
+		return anyEulerPath;
+	}
+	std::string DFSStk(std::unordered_map<char,std::unordered_set<char>> DiG, char cur) //Hierholzer Algorithm: same as ReconstructItinerary
+	{
+		/*
+		Hierholzer Algorithm:
+		Keep going one path until stuck, then retreat and push the vertices along the route to a stack until it reaches a vertex that has alternative paths, then go along that path and repeat the process.
+		The assumption for this to work is there is guaranteed to exist one Euler path.
+		 */
+		std::stack<char> stk;
+		stk.push(cur);
+		std::string res;
+		while (!stk.empty())
+		{
+			while(!DiG[stk.top()].empty())
+			{
+				char top = stk.top();
+				stk.push(*DiG[top].begin());
+				DiG[top].erase(DiG[top].begin());
+
+			}
+			cur = stk.top();
+			stk.pop();
+			res.push_back(cur);
+		}
+		std::reverse(res.begin(), res.end());
+		return res;
+	}
+
+
+
+	/*
+	 	Eulerian directed trail:
+		iff at most 1 vertex has (out-degree) - (in-degree) = 1, at most 1 vertex has (in-degree) - (out-degree) = 1, every other vertex has equal in-degree and out-degree, and all of its vertices with nonzero degree belong to a single connected component
+		a) same as above
+		b) 0 or 1 vertex has (out-degree) - (in-degree) = 1.
+		c) 0 or 1 vertex has (in-degree) - (out-degree) = 1.
+		d) Every other vertex has equal in-dgree and out-degree.
+	 */
 	bool ExistEulerPathInDigraph(const std::vector<std::string> & strs)
 	{
 		int N = 26;
@@ -145,6 +205,29 @@ public:
 			d-->f
 
 ConnectAllStrInChain for "abc, cde, cad, def, eac": 1
+ConnectAllStrInChain HierholzerFindEulerPathInConnectedDiGraph for "abc, cde, cad, def, eac":
+EulerPath@d [df]: 0
+EulerPath@e [ecdfe]: 0
+EulerPath@c [cecdf]: 0
+EulerPath@f [f]: 0
+EulerPath@a [acecdf]: 1
+AnyEulerPath: 1, AllEulerPaths(EulerCircuit): 0
+
+
+
+ 		a-->c<->d
+		    |
+			v
+			e-->f
+
+ConnectAllStrInChain HierholzerFindEulerPathInConnectedDiGraph for "abc, cdd, cae, eef, dac":
+EulerPath@e [ef]: 0
+EulerPath@d [dcefd]: 0
+EulerPath@c [cdcef]: 0
+EulerPath@f [f]: 0
+EulerPath@a [acdcef]: 1
+AnyEulerPath: 1, AllEulerPaths(EulerCircuit): 0
+
 
 
 		c-->e
@@ -153,6 +236,13 @@ ConnectAllStrInChain for "abc, cde, cad, def, eac": 1
 		d-->f-->b
 
 ConnectAllStrInChain for "fcb, cde, cad, def, ead": 0
+ConnectAllStrInChain HierholzerFindEulerPathInConnectedDiGraph for "fcb, cde, cad, def, ead":
+EulerPath@d [dfb]: 0
+EulerPath@e [edfb]: 0
+EulerPath@c [cdedfb]: 0
+EulerPath@b [b]: 0
+EulerPath@f [fb]: 0
+AnyEulerPath: 0, AllEulerPaths(EulerCircuit): 0
 
 
 
@@ -167,5 +257,14 @@ ConnectAllStrInChain for "fcb, cde, cad, def, ead": 0
 		d
 
 ConnectAllStrInChain for "bd, fk, ab, kl, cf, ff, fa, ak, ka, lf, bc": 1
+ConnectAllStrInChain HierholzerFindEulerPathInConnectedDiGraph for "bd, fk, ab, kl, cf, ff, fa, ak, ka, lf, bc":
+EulerPath@c [cfklffakabcd]: 0
+EulerPath@l [lfkabcffakdl]: 0
+EulerPath@a [abcfklffakad]: 0
+EulerPath@k [klfkabcffakd]: 0
+EulerPath@f [fklffakabcfd]: 0
+EulerPath@d [d]: 0
+EulerPath@b [bcfklffakabd]: 1
+AnyEulerPath: 1, AllEulerPaths(EulerCircuit): 0
 */
 #endif

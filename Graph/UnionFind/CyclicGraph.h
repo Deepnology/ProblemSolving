@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <functional>
 #include "Debug.h"
-#include "GraphTransform.h"
+#include "../GraphTransform.h"
 #include "UnionFindGraphComponent.h"
 /*
 Leetcode: Graph Valid Tree

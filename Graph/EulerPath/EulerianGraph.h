@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <functional>
 #include "Debug.h"
-#include "BridgesInGraph.h"
+#include "../Tarjan/BridgesInGraph.h"
 /*
 http://www.geeksforgeeks.org/eulerian-path-and-circuit/
 http://en.wikipedia.org/wiki/Euler_path
@@ -393,6 +393,65 @@ private:
 				}
 			}
 	}
+
+public:
+	//IV. Find Euler Path for Directed Graph using Hierholzer Algorithm in a single connected component
+	void Hierholzer_FindEulerPath_ConnectedDiGraph(const std::vector<std::vector<int>> & adjM)
+	{
+		std::unordered_map<int,std::unordered_set<int>> DiG;
+		int N = adjM.size();
+		int totalEdges = 0;
+		for (int i = 0; i < N; ++i)
+		{
+		    DiG.insert({i,{}});
+			for (int j = 0; j < N; ++j)
+			{
+				if (adjM[i][j]) //might have self-cycle
+				{
+					DiG[i].insert(j);
+					++totalEdges;
+				}
+			}
+		}
+		bool allEulerPaths = true;
+		bool anyEulerPath = false;
+		std::cout << "EulerianGraph Hierholzer_FindEulerPath_ConnectedDiGraph: " << std::endl;
+		for (auto & p : DiG)
+		{
+			std::unordered_map<int,std::unordered_set<int>> G(DiG);
+			std::stack<int> stk;
+			stk.push(p.first);
+			std::vector<int> res;
+			while (!stk.empty())
+			{
+				while (!G[stk.top()].empty())
+				{
+					int top = stk.top();
+					stk.push(*G[top].begin());
+					G[top].erase(G[top].begin());
+				}
+				int cur = stk.top();
+				stk.pop();
+				res.push_back(cur);
+			}
+			std::reverse(res.begin(), res.end());
+
+			int numEdges = res.size()-1;
+			bool containAllEdges = (numEdges==totalEdges);
+			for (int i = 0; i < numEdges; ++i)
+			{
+				if (!DiG.count(res[i]) || !DiG[res[i]].count(res[i+1]))
+				{
+					containAllEdges = false;
+					break;
+				}
+			}
+			anyEulerPath |= containAllEdges;
+			allEulerPaths &= containAllEdges;
+			std::cout << "EulerPath@" << p.first << " [" << Debug::ToStr1D<int>()(res) << "]: " << containAllEdges << std::endl;
+		}
+		std::cout << "AnyEulerPath: " << anyEulerPath << ", AllEulerPaths(EulerCircuit): " << allEulerPaths << std::endl;
+	}
 };
 /*
 		1---0---3   5
@@ -466,6 +525,16 @@ Row#6	= 0, 0, 0, 1, 0, 0, 0, 0
 Row#7	= 0, 0, 0, 0, 0, 0, 0, 0
 
 EulerianGraph Directed_AdjacencyMatrix IsStronglyConnected: 0; IsWeaklyConnected: 1; DiffInOutDegreeCount: 5; InDegreeOneMoreCount: 3; OutDegreeOneMoreCount: 1 => not Eulerian
+EulerianGraph Hierholzer_FindEulerPath_ConnectedDiGraph:
+EulerPath@7 [7]: 0
+EulerPath@6 [6, 3, 6, 4, 6]: 0
+EulerPath@5 [5, 7, 3, 4, 6, 3, 6]: 0
+EulerPath@4 [4, 6, 3, 6, 4]: 0
+EulerPath@3 [3, 4, 6, 3, 6]: 0
+EulerPath@2 [2, 0, 1, 2, 3, 5, 7, 3, 4, 6, 3, 6]: 0
+EulerPath@1 [1, 2, 3, 5, 7, 3, 4, 6, 3, 6, 0, 1]: 0
+EulerPath@0 [0, 1, 2, 3, 5, 7, 3, 4, 6, 3, 6, 0]: 0
+AnyEulerPath: 0, AllEulerPaths(EulerCircuit): 0
 
 
 		0<---2<---5<-->6
@@ -487,6 +556,16 @@ Row#6	= 0, 0, 0, 0, 0, 1, 0, 0
 Row#7	= 0, 0, 0, 0, 1, 0, 1, 1
 
 EulerianGraph Directed_AdjacencyMatrix IsStronglyConnected: 0; IsWeaklyConnected: 1; DiffInOutDegreeCount: 5; InDegreeOneMoreCount: 2; OutDegreeOneMoreCount: 0 => not Eulerian
+EulerianGraph Hierholzer_FindEulerPath_ConnectedDiGraph:
+EulerPath@7 [7, 7, 6, 4, 3, 4, 5, 6, 5, 2, 2, 1, 2, 0, 1]: 0
+EulerPath@6 [6, 5, 6, 2, 0, 1, 2]: 0
+EulerPath@5 [5, 6, 5, 2, 0, 1, 2]: 0
+EulerPath@4 [4, 3, 4, 5, 6, 5, 2, 2, 1, 2, 0, 1]: 0
+EulerPath@3 [3, 4, 5, 6, 5, 2, 3, 2, 1, 2, 0, 1]: 0
+EulerPath@2 [2, 0, 1, 2]: 0
+EulerPath@1 [1, 2, 0, 1]: 0
+EulerPath@0 [0, 1, 2, 0]: 0
+AnyEulerPath: 0, AllEulerPaths(EulerCircuit): 0
 
 
 		1<--0<--3   5
@@ -504,6 +583,13 @@ Row#4	= 0, 0, 0, 1, 0, 0
 Row#5	= 0, 0, 0, 0, 0, 0
 
 EulerianGraph Directed_AdjacencyMatrix IsStronglyConnected: 0; IsWeaklyConnected: 1; DiffInOutDegreeCount: 2; InDegreeOneMoreCount: 1; OutDegreeOneMoreCount: 1 => Semi-Eulerian (has Eulerian Directed Path)
+EulerianGraph Hierholzer_FindEulerPath_ConnectedDiGraph:
+EulerPath@4 [4, 3, 0, 1, 2, 0]: 1
+EulerPath@3 [3, 0, 1, 2, 0]: 0
+EulerPath@2 [2, 0, 1, 2]: 0
+EulerPath@1 [1, 2, 0, 1]: 0
+EulerPath@0 [0, 1, 2, 0]: 0
+AnyEulerPath: 1, AllEulerPaths(EulerCircuit): 0
 
 
 		1<--0<--3   5
@@ -521,6 +607,13 @@ Row#4	= 0, 0, 0, 1, 0, 0
 Row#5	= 0, 0, 0, 0, 0, 0
 
 EulerianGraph Directed_AdjacencyMatrix IsStronglyConnected: 1; IsWeaklyConnected: 1; DiffInOutDegreeCount: 0; InDegreeOneMoreCount: 0; OutDegreeOneMoreCount: 0 => Eulerian (has Eulerian Directed Cycle)
+EulerianGraph Hierholzer_FindEulerPath_ConnectedDiGraph:
+EulerPath@4 [4, 3, 0, 1, 2, 0, 4]: 1
+EulerPath@3 [3, 0, 1, 2, 0, 4, 3]: 1
+EulerPath@2 [2, 0, 4, 3, 0, 1, 2]: 1
+EulerPath@1 [1, 2, 0, 4, 3, 0, 1]: 1
+EulerPath@0 [0, 1, 2, 0, 4, 3, 0]: 1
+AnyEulerPath: 1, AllEulerPaths(EulerCircuit): 1
 
 
 		   ----
@@ -541,5 +634,12 @@ Row#4	= 0, 0, 0, 1, 0, 0
 Row#5	= 0, 0, 0, 0, 0, 0
 
 EulerianGraph Directed_AdjacencyMatrix IsStronglyConnected: 0; IsWeaklyConnected: 1; DiffInOutDegreeCount: 4; InDegreeOneMoreCount: 2; OutDegreeOneMoreCount: 2 => not Eulerian
+EulerianGraph Hierholzer_FindEulerPath_ConnectedDiGraph:
+EulerPath@4 [4, 3, 0, 1, 3, 2, 0]: 0
+EulerPath@3 [3, 0, 1, 3, 2, 0]: 0
+EulerPath@2 [2, 0, 1, 3, 0, 2]: 0
+EulerPath@1 [1, 2, 0, 1, 3, 0]: 0
+EulerPath@0 [0, 1, 3, 0, 2, 0]: 0
+AnyEulerPath: 0, AllEulerPaths(EulerCircuit): 0
 */
 #endif

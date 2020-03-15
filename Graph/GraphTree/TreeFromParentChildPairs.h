@@ -67,7 +67,7 @@ public:
 		/**/
 
 		/*
-		//approach 1
+		//approach 1: Hierholzer Algorithm to Find Euler Path in DiGraph (works with cycle)
 		std::vector<std::string> resStk;
 		while (!root.empty())
 		{
@@ -93,7 +93,7 @@ public:
 		std::reverse(resStk.begin(), resStk.end());
 		*/
 
-		//approach 2
+		//approach 2: GenericDFSWStack (not working with cycle)
 		std::vector<std::string> resStk;
 		while (!root.empty())
 		{

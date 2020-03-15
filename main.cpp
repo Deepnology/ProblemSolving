@@ -945,71 +945,71 @@
 /*Graph*/
 #include "Graph/CloneGraph.h"
 #include "Graph/TrianglesInGraph.h"
-#include "Graph/ShortestPathInGraph.h"
+#include "Graph/ShortestPath/ShortestPathInGraph.h"
 #include "Graph/GraphSearch.h"
-#include "Graph/StronglyConnectedComponents.h"
-#include "Graph/EulerianGraph.h"
-#include "Graph/ConnectAllStrInChain.h"
-#include "Graph/TopologicalSortDAG.h"
-#include "Graph/UniqueSequenceReconstructable.h"
-#include "Graph/UnionFindGraphComponent.h"
-#include "Graph/MinSpanningTree.h"
-#include "Graph/CyclicGraph.h"
-#include "Graph/LongestPathInDAG.h"
-#include "Graph/AllPairsShortestPaths.h"
-#include "Graph/EvaluateDivisions.h"
+#include "Graph/Tarjan/StronglyConnectedComponents.h"
+#include "Graph/EulerPath/EulerianGraph.h"
+#include "Graph/EulerPath/ConnectAllStrInChain.h"
+#include "Graph/TopologicalSort/TopologicalSortDAG.h"
+#include "Graph/TopologicalSort/UniqueSequenceReconstructable.h"
+#include "Graph/UnionFind/UnionFindGraphComponent.h"
+#include "Graph/UnionFind/MinSpanningTree.h"
+#include "Graph/UnionFind/CyclicGraph.h"
+#include "Graph/TopologicalSort/LongestPathInDAG.h"
+#include "Graph/AllPairsShortestPaths/AllPairsShortestPaths.h"
+#include "Graph/AllPairsShortestPaths/EvaluateDivisions.h"
 #include "Graph/VertexColoring.h"
 #include "Graph/BipartiteGraph.h"
-#include "Graph/BridgesInGraph.h"
-#include "Graph/CutVerticesInGraph.h"
-#include "Graph/BiconnectedGraph.h"
-#include "Graph/MaxFlowInFlowNetwork.h"
-#include "Graph/MinSTCutInFlowNetwork.h"
+#include "Graph/Tarjan/BridgesInGraph.h"
+#include "Graph/Tarjan/CutVerticesInGraph.h"
+#include "Graph/Tarjan/BiconnectedGraph.h"
+#include "Graph/ResidualGraph/MaxFlowInFlowNetwork.h"
+#include "Graph/ResidualGraph/MinSTCutInFlowNetwork.h"
 #include "Graph/MaxBipartiteMatching.h"
-#include "Graph/MaxNumEdgeDisjointPaths.h"
-#include "Graph/AlphabetOrderFromGivenDictionary.h"
-#include "Graph/KEdgePathsInDigraph.h"
+#include "Graph/ResidualGraph/MaxNumEdgeDisjointPaths.h"
+#include "Graph/TopologicalSort/AlphabetOrderFromGivenDictionary.h"
+#include "Graph/ShortestPath/KEdgePathsInDigraph.h"
 #include "Graph/TheCelebrityProblem.h"
-#include "Graph/DiameterOfTree.h"
-#include "Graph/TwoExistConnectedGraph.h"
-#include "Graph/TwoForAllConnectedGraph.h"
-#include "Graph/HighwayNetworkProposal.h"
-#include "Graph/IsArbitrageExist.h"
-#include "Graph/MinDelayTaskSchedulingDAG.h"
+#include "Graph/GraphTree/DiameterOfTree.h"
+#include "Graph/UnionFind/TwoExistConnectedGraph.h"
+#include "Graph/Tarjan/TwoForAllConnectedGraph.h"
+#include "Graph/AllPairsShortestPaths/HighwayNetworkProposal.h"
+#include "Graph/ShortestPath/IsArbitrageExist.h"
+#include "Graph/TopologicalSort/MinDelayTaskSchedulingDAG.h"
 #include "Graph/TowerOfHanoi.h"
 #include "Graph/GeneralTowerOfHanoi.h"
-#include "Graph/TreeFromParentChildPairs.h"
-#include "Graph/ReconstructItinerary.h"
-#include "Graph/KillProcess.h"
-#include "Graph/GenericDFSWStack.h"
+#include "Graph/GraphTree/TreeFromParentChildPairs.h"
+#include "Graph/EulerPath/ReconstructItinerary.h"
+#include "Graph/GraphTree/KillProcess.h"
+#include "Graph/GraphTree/GenericDFSWStack.h"
 #include "Graph/WordLadder.h"
-#include "Graph/CourseSchedule.h"
-#include "Graph/TeamPhoto.h"
+#include "Graph/TopologicalSort/CourseSchedule.h"
+#include "Graph/TopologicalSort/TeamPhoto.h"
 #include "Graph/MinCashFlow.h"
-#include "Graph/MinHeightTreesInGraph.h"
+#include "Graph/GraphTree/MinHeightTreesInGraph.h"
 #include "Graph/RemoveInvalidParentheses.h"
 #include "Graph/FreedomTrail.h"
-#include "Graph/MergeAccounts.h"
-#include "Graph/LCAofDeepestLeavesGraphTree.h"
+#include "Graph/UnionFind/MergeAccounts.h"
+#include "Graph/GraphTree/LCAofDeepestLeavesGraphTree.h"
 #include "Graph/FindLoudestRicherPerson.h"
 #include "Graph/EventualSafeVerticesDirectedGraph.h"
 #include "Graph/BusRoutes.h"
 #include "Graph/MinStepsToOpen4DigitLock.h"
 #include "Graph/MinStepsSwap0In2DPuzzleBoard.h"
-#include "Graph/CheapestFlightsWithinKStops.h"
+#include "Graph/ShortestPath/CheapestFlightsWithinKStops.h"
 #include "Graph/OnePathVisitAllRooms.h"
-#include "Graph/GraphToTreeRedundantEdge.h"
-#include "Graph/CrackSafe.h"
-#include "Graph/SumOfDistBtwCurAndAllOtherNodesInTree.h"
-#include "Graph/ShortestPathVisitAllNodesInGraph.h"
-#include "Graph/Remove1MalNodeMinimizeInfectedNodes.h"
-#include "Graph/ConnectedComponentsByStrSwap2Chars.h"
-#include "Graph/ConnectedComponentsByIntCommonFactor.h"
-#include "Graph/MinCostConnectAllNodesInGraph.h"
+#include "Graph/UnionFind/GraphToTreeRedundantEdge.h"
+#include "Graph/EulerPath/CrackSafe.h"
+#include "Graph/GraphTree/SumOfDistBtwCurAndAllOtherNodesInTree.h"
+#include "Graph/HamiltonPath/ShortestPathVisitAllNodesInGraph.h"
+#include "Graph/UnionFind/Remove1MalNodeMinimizeInfectedNodes.h"
+#include "Graph/UnionFind/ConnectedComponentsByStrSwap2Chars.h"
+#include "Graph/UnionFind/ConnectedComponentsByIntCommonFactor.h"
+#include "Graph/UnionFind/MinCostConnectAllNodesInGraph.h"
 #include "Graph/KSwapStrings.h"
 #include "Graph/ShortestSuperStringOfAllStrings.h"
-#include "Graph/ShortestPathWAltColorsInGraph.h"
-#include "Graph/MinLexicographicStrBySwapPairs.h"
+#include "Graph/ShortestPath/ShortestPathWAltColorsInGraph.h"
+#include "Graph/UnionFind/MinLexicographicStrBySwapPairs.h"
 
 /*RMQ LCA*/
 #include "RMQLCA/RangeSumQuerySegmentTree.h"
@@ -11938,6 +11938,17 @@ int main()
 			{ 0, 0, 0, 1, 0, 0, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 7
 		}));
+        EulerianGraph().Hierholzer_FindEulerPath_ConnectedDiGraph(std::vector<std::vector<int>>(
+        {
+            { 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
+            { 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
+            { 1, 0, 0, 1, 0, 1, 0, 0 },//vertex 2
+            { 0, 0, 0, 0, 1, 0, 1, 0 },//vertex 3
+            { 0, 0, 0, 0, 0, 0, 1, 0 },//vertex 4
+            { 0, 0, 0, 1, 0, 0, 0, 1 },//vertex 5
+            { 0, 0, 0, 1, 0, 0, 0, 0 },//vertex 6
+            { 0, 0, 0, 0, 0, 0, 0, 0 },//vertex 7
+        }));
 		/*
 		0<---2<---5<-->6
 		|   ^^    ^    ^
@@ -11958,6 +11969,17 @@ int main()
 			{ 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 6
 			{ 0, 0, 0, 0, 1, 0, 1, 1 },//vertex 7
 		}));
+        EulerianGraph().Hierholzer_FindEulerPath_ConnectedDiGraph(std::vector<std::vector<int>>(
+        {
+            { 0, 1, 0, 0, 0, 0, 0, 0 },//vertex 0
+            { 0, 0, 1, 0, 0, 0, 0, 0 },//vertex 1
+            { 1, 0, 0, 0, 0, 0, 0, 0 },//vertex 2
+            { 0, 1, 1, 0, 1, 0, 0, 0 },//vertex 3
+            { 0, 0, 0, 1, 0, 1, 0, 0 },//vertex 4
+            { 0, 0, 1, 0, 0, 0, 1, 0 },//vertex 5
+            { 0, 0, 0, 0, 0, 1, 0, 0 },//vertex 6
+            { 0, 0, 0, 0, 1, 0, 1, 1 },//vertex 7
+        }));
 		/*
 		1<--0<--3   5
 		|  ^    ^
@@ -11974,6 +11996,14 @@ int main()
 			{ 0, 0, 0, 1, 0, 0 },//vertex 4
 			{ 0, 0, 0, 0, 0, 0 },//vertex 5
 		}));
+        EulerianGraph().Hierholzer_FindEulerPath_ConnectedDiGraph(std::vector<std::vector<int>>(
+        {
+            { 0, 1, 0, 0, 0 },//vertex 0
+            { 0, 0, 1, 0, 0 },//vertex 1
+            { 1, 0, 0, 0, 0 },//vertex 2
+            { 1, 0, 0, 0, 0 },//vertex 3
+            { 0, 0, 0, 1, 0 },//vertex 4
+        }));
 		/*
 		1<--0<--3   5
 		|  ^ \  ^
@@ -11990,6 +12020,14 @@ int main()
 			{ 0, 0, 0, 1, 0, 0 },//vertex 4
 			{ 0, 0, 0, 0, 0, 0 },//vertex 5
 		}));
+        EulerianGraph().Hierholzer_FindEulerPath_ConnectedDiGraph(std::vector<std::vector<int>>(
+        {
+            { 0, 1, 0, 0, 1 },//vertex 0
+            { 0, 0, 1, 0, 0 },//vertex 1
+            { 1, 0, 0, 0, 0 },//vertex 2
+            { 1, 0, 0, 0, 0 },//vertex 3
+            { 0, 0, 0, 1, 0 },//vertex 4
+        }));
 		/*
 		   ----
 		  /    \
@@ -12009,6 +12047,14 @@ int main()
 			{ 0, 0, 0, 1, 0, 0 },//vertex 4
 			{ 0, 0, 0, 0, 0, 0 },//vertex 5
 		}));
+        EulerianGraph().Hierholzer_FindEulerPath_ConnectedDiGraph(std::vector<std::vector<int>>(
+        {
+            { 0, 1, 0, 0, 0 },//vertex 0
+            { 0, 0, 1, 1, 0 },//vertex 1
+            { 1, 0, 0, 0, 0 },//vertex 2
+            { 1, 0, 0, 0, 0 },//vertex 3
+            { 0, 0, 0, 1, 0 },//vertex 4
+        }));
 		/*
 		a-->c<->e
 		    |
@@ -12019,6 +12065,14 @@ int main()
 		{
 			"abc", "cde", "cad", "def", "eac"
 		}));
+        ConnectAllStrInChain().ExistFindEulerPathInConnectedDiGraph(std::vector<std::string>(
+        {
+            "abc", "cde", "cad", "def", "eac"
+        }));
+        ConnectAllStrInChain().ExistFindEulerPathInConnectedDiGraph(std::vector<std::string>(
+        {
+            "abc", "cdd", "cae", "eef", "dac"
+        }));
 		/*
 		c-->e
 		| /
@@ -12029,6 +12083,10 @@ int main()
 		{
 			"fcb", "cde", "cad", "def", "ead"
 		}));
+        ConnectAllStrInChain().ExistFindEulerPathInConnectedDiGraph(std::vector<std::string>(
+        {
+            "fcb", "cde", "cad", "def", "ead"
+        }));
 		/*
 		a<-->k--->l
 		| ^   ^   |
@@ -12044,6 +12102,10 @@ int main()
 		{
 			"bd", "fk", "ab", "kl", "cf", "ff", "fa", "ak", "ka", "lf", "bc"
 		}));
+        ConnectAllStrInChain().ExistFindEulerPathInConnectedDiGraph(std::vector<std::string>(
+        {
+            "bd", "fk", "ab", "kl", "cf", "ff", "fa", "ak", "ka", "lf", "bc"
+        }));
 	}
 	{
 		/*

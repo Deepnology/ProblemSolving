@@ -11,7 +11,7 @@
 #include <functional>
 #include "Debug.h"
 #include "UnionFindGraphComponent.h"
-#include "GraphTransform.h"
+#include "../GraphTransform.h"
 /*
 http://www.seas.gwu.edu/~simhaweb/alg/lectures/module8/module8.html
 http://www.geeksforgeeks.org/greedy-algorithms-set-2-kruskals-minimum-spanning-tree-mst/
