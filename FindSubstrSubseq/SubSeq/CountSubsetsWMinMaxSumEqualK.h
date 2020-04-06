@@ -25,18 +25,11 @@ Get min and max of subset
 Add min and max and put them in Hashmap (or update the count)
 repeat this process for all subsets
 search for k in hashmap and return count of k
-input: {1,2,3,4,5}
-
-subsets:
-1, 2, 3, 4, 5, {1,2},{1,3}
-k = 5
-
+input: {1,2,3,4,5}, k = 5
+=>
 count = 5
-
-{1, 4},{2,3} {1,2,4}, {1,2,3,4} {1,3,4}
-
-
- */
+{1,4},{2,3},{1,2,4},{1,2,3,4},{1,3,4}
+*/
 class CountSubsetsWMinMaxSumEqualK
 {
 public:

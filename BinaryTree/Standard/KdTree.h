@@ -12,7 +12,7 @@
 #include <functional>
 #include "Debug.h"
 #include "PrintBinaryTree.h"
-#include "DeleteBinaryTree.h"
+#include "../DeleteBinaryTree.h"
 /*
 Chapter 12.5 k-d Trees
 http://users.cis.fiu.edu/~weiss/dsaa_c++4/code/KdTree.cpp

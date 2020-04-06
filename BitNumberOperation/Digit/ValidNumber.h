@@ -26,8 +26,8 @@ Leetcode: Valid Number
 // Regular Expression: depending on language
 // Finite State Machine: O(n) time, O(1) space
 
-follow: �e����
-be followed by: �᭱��
+follow: 前面有
+be followed by: 後面有
 
 Rules:
 1.

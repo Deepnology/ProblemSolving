@@ -35,11 +35,41 @@ Example 3:
 Input: [0,3,2,1]
 Output: true
  */
-class LBSubArr
+class LBSubArr //Longest Bitonic Subarray
 {
 public:
     LBSubArr(){}
     ~LBSubArr(){}
+
+    int SlidingWindow(std::vector<int> && A)
+    {
+        int N = A.size();
+        if (N <= 2) return 0;
+        int resLen = 0;
+        std::vector<int> res;
+        int begin = 0;
+        while (begin < N)
+        {
+            int end = begin;
+            while (end+1 < N && A[end] < A[end+1])
+                ++end;
+            bool hasIncr = (end != begin);
+            int mid = end;
+            while (end+1 < N && A[end] > A[end+1])
+                ++end;
+            bool hasDecr = (end != mid);
+            if (hasIncr && hasDecr && end-begin+1 > resLen)
+            {
+                resLen = end-begin+1;
+                res.clear();
+                for (int i = begin; i <= end; ++i)
+                    res.push_back(A[i]);
+            }
+            begin = end==begin? end+1 : end;
+        }
+        std::cout << "LBSubArr SlidingWindow for [" << Debug::ToStr1D<int>()(A) << "]: " << Debug::ToStr1D<int>()(res) << std::endl;
+        return resLen;
+    }
 
     int BruteForce(std::vector<int> && A)
     {
@@ -128,6 +158,7 @@ public:
     }
 };
 /*
+LBSubArr SlidingWindow for [2, 1, 4, 7, 3, 2, 5]: 1, 4, 7, 3, 2
 LBSubArr BruteForce for [2, 1, 4, 7, 3, 2, 5]: 5
 LBSubArr DP for [2, 1, 4, 7, 3, 2, 5]: 5
 LBSubArr OnePass for [2, 1, 4, 7, 3, 2, 5]: 5

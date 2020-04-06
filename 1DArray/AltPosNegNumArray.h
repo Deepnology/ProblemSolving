@@ -7,7 +7,7 @@
 #include <queue>
 #include <algorithm>
 #include "Debug.h"
-#include "../SortSearchSelect/StablePartition.h"
+#include "../SortSearchSelect/Partition/StablePartition.h"
 /*
 1.
 http://www.geeksforgeeks.org/rearrange-array-alternating-positive-negative-items-o1-extra-space/

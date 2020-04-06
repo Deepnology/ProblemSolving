@@ -1,5 +1,5 @@
-#ifndef PERFECT_SQUARES_H
-#define PERFECT_SQUARES_H
+#ifndef SUM_OF_AT_MOST_4_PERFECT_SQUARES_H
+#define SUM_OF_AT_MOST_4_PERFECT_SQUARES_H
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -14,11 +14,11 @@ For example, given n = 12, return 3 because 12 = 4 + 4 + 4; given n = 13, return
 FourSquareTheorem: every natural number can be represented as the sum of four integer squares
 ==> the number of perfect square numbers (1,4,9,16,...) which sum to n is AT MOST 4, but can still be less than 4
 */
-class PerfectSquares
+class SumOfAtMost4PerfectSquares
 {
 public:
-	PerfectSquares() {}
-	~PerfectSquares() {}
+	SumOfAtMost4PerfectSquares() {}
+	~SumOfAtMost4PerfectSquares() {}
 
 	int FourSquareTheorem(int n)
 	{
@@ -49,7 +49,7 @@ public:
 			}
 		}
 
-		std::cout << "PerfectSquares FourSquareTheorem for \"" << N << "\": " << res << std::endl;
+		std::cout << "SumOfAtMost4PerfectSquares FourSquareTheorem for \"" << N << "\": " << res << std::endl;
 		return res;
 	}
 
@@ -64,7 +64,7 @@ public:
 		}
 
 		std::cout << Debug::ToStr1D<int>()(dp) << std::endl;
-		std::cout << "PerfectSquares DP for \"" << n << "\": " << dp[n] << std::endl;
+		std::cout << "SumOfAtMost4PerfectSquares DP for \"" << n << "\": " << dp[n] << std::endl;
 		return dp[n];
 	}
 };

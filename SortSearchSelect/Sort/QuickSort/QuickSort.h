@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stack>
 #include "Debug.h"
-#include "Partition.h"
+#include "../../Partition/Partition.h"
 /*
 In-place O(nlogn) time sorting algorithm efficient in random accessed data structures such as array, which has good cache locality of reference.
 Tail recursion ensures tail call optimizations by compiler can be done.

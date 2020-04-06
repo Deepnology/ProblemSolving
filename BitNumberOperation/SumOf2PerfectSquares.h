@@ -1,5 +1,5 @@
-#ifndef SUM_OF_SQUARE_NUMBERS_H
-#define SUM_OF_SQUARE_NUMBERS_H
+#ifndef SUM_OF_2_PERFECT_SQUARES_H
+#define SUM_OF_2_PERFECT_SQUARES_H
 #include "Debug.h"
 /*
 Leetcode: Sum Of Square Numbers
@@ -12,10 +12,10 @@ Example 2:
 Input: 3
 Output: False
 */
-class SumOfSquareNumbers
+class SumOf2PerfectSquares
 {
 public:
-	SumOfSquareNumbers() {}
+	SumOf2PerfectSquares() {}
 
 	bool UseSqrt(int c)
 	{

@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include "Debug.h"
-#include "Partition.h"
+#include "Partition/Partition.h"
 #include "MedianOfMedians.h"
 /*
 Leetcode: Kth Largest Element In An Array

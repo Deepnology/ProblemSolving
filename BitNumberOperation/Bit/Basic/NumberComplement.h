@@ -1,7 +1,7 @@
 #ifndef NUMBER_COMPLEMENT_H
 #define NUMBER_COMPLEMENT_H
 #include "Debug.h"
-#include "IntToBinStr.h"
+#include "../../ConvertBase/IntToBinStr.h"
 /*
 Leetcode: Number Complement
 Given a positive integer, output its complement number.
@@ -9,7 +9,7 @@ The complement strategy is to flip the bits of its binary representation. (Don't
 (If flipping leading 0s, it will become one's complement, which is equal to ~n.)
 Note:
 The given integer is guaranteed to fit within the range of a 32-bit signed integer.
-You could assume no leading zero bit in the integer¡¦s binary representation.
+You could assume no leading zero bit in the integer's binary representation.
 Example 1:
 Input: 5
 Output: 2
