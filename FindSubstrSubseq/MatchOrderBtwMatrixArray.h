@@ -10,7 +10,7 @@ Both the order of the groups within the code list and the order of the fruits wi
 However, between the groups of fruits, any number, and type of fruit is allowable.
 The term "anything" is used to allow for any type of fruit to appear in that location within the group.
 
-Considder the following secret code list: [[apple,apple],[banana,anything,banana]].
+Consider the following secret code list: [[apple,apple],[banana,anything,banana]].
 Based on the above secret code list, a customer who made either of the following purchases would win the prize:
 orange, apple, apple, banana, orange, banana
 apple, apple, orange, orange, banana, apple, banana, banana
