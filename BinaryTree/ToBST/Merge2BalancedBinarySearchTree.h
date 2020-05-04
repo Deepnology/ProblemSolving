@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "../SortSearchSelect/Merge2SortedArrays.h"
+#include "../SortSearchSelect/SortedMatrix/Merge2SortedArrays.h"
 /*
 Elements of programming interview, BST: Merge 2 BSTs
 http://www.geeksforgeeks.org/merge-two-balanced-binary-search-trees/

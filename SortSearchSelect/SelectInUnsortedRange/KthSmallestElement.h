@@ -6,8 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include "Debug.h"
-#include "Partition/Partition.h"
-#include "MedianOfMedians.h"
+#include "../Partition/Partition.h"
+#include "Median/MedianOfMedians.h"
 /*
 Leetcode: Kth Largest Element In An Array
 Elements of programming interview, Searching: Find the k-th largest element

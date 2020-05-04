@@ -50,6 +50,72 @@ public:
 		std::cout << "IslandPerimeter Count for the above grid: " << res << std::endl;
 		return res;
 	}
+
+	int CountWaterNeighbors(std::vector<std::vector<int>> && grid)
+	{
+		int N = grid.size();
+		if (N == 0) return 0;
+		int M = grid[0].size();
+		if (M == 0) return 0;
+		std::vector<std::vector<int>> dir({{-1,0},{1,0},{0,1},{0,-1}});
+		int res = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			for (int j = 0; j< M; ++j)
+			{
+				if (grid[i][j] == 1)
+				{
+                    for (int d = 0; d < 4; ++d)
+                    {
+                        int ii = i + dir[d][0];
+                        int jj = j + dir[d][1];
+                        if (ii < 0 || ii == N || jj < 0 || jj == M || grid[ii][jj] == 0)
+                            ++res;
+                    }
+				}
+			}
+		}
+		return res;
+	}
+
+	//this works for finding an island w/ max perimeter in a multiple islands map
+	int CountWaterNeighborsRecur(std::vector<std::vector<int>> && grid)
+	{
+		int N = grid.size();
+		if (N == 0) return 0;
+		int M = grid[0].size();
+		if (M == 0) return 0;
+		std::vector<std::vector<int>> dir({{-1,0},{1,0},{0,1},{0,-1}});
+		int res = 0;
+		for (int i = 0; i < N; ++i)
+		{
+			for (int j = 0; j< M; ++j)
+			{
+				if (grid[i][j] == 1)
+				{
+					res = recur(grid, i, j);
+				}
+			}
+		}
+		return res;
+	}
+	int recur(std::vector<std::vector<int>> & grid, int i, int j)
+	{
+		int N = grid.size(); int M = grid[0].size();
+		grid[i][j] = -1;
+		int count = 0;
+		std::vector<std::vector<int>> dir({{-1,0},{1,0},{0,1},{0,-1}});
+		for (int d = 0; d < 4; ++d)
+		{
+			int ii = i + dir[d][0];
+			int jj = j + dir[d][1];
+			if (ii < 0 || ii == N || jj < 0 || jj == M || grid[ii][jj] == 0)
+				++count;
+			else if (grid[ii][jj] == 1) //to skip grid[ii][jj]==-1
+				count += recur(grid, ii, jj);
+		}
+		return count;
+	}
 };
 /*
 [rY][cX]

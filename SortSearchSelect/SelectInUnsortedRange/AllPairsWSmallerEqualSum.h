@@ -14,7 +14,7 @@ Given an integer array and a target threshold.
 Find all distinct pairs in the array whose sum is smaller equal than the target threshold.
 
 Algorithm
-Sort: O(nlon) time
+Sort: O(nlogn) time
 1. sort the array in incr order
 2. for each element from the smallest, binary search the lower bound of (target-v[i]) in v[i+1:N-1], and record pairs of v[i] and nums in v[i+1:lb]
 

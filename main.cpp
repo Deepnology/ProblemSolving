@@ -317,8 +317,8 @@
 
 /*Sort Search Select*/
 #include "SortSearchSelect/Partition/Partition.h"
-#include "SortSearchSelect/BinarySearch/BinarySearch.h"
-#include "SortSearchSelect/BinarySearch/BinarySearchFixedPoint.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/BinarySearch.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/BinarySearchFixedPoint.h"
 #include "SortSearchSelect/Sort/QuickSort/QuickSort.h"
 #include "SortSearchSelect/Sort/MergeSort/MergeSort.h"
 #include "SortSearchSelect/Sort/BubbleSort.h"
@@ -329,96 +329,95 @@
 #include "SortSearchSelect/Sort/BucketSort/CountingSort.h"
 #include "SortSearchSelect/Sort/BucketSort/CountingSort2.h"
 #include "SortSearchSelect/Sort/BucketSort/BucketSort.h"
-#include "SortSearchSelect/MedianOfMedians.h"
-#include "SortSearchSelect/Median2SortedArrays.h"
-#include "SortSearchSelect/KthSmallestElement2SortedArrays.h"
-#include "SortSearchSelect/MedianOfIntegerStream.h"
-#include "SortSearchSelect/Merge2SortedArrays.h"
-#include "SortSearchSelect/BinarySearch/SearchInRotatedSortedArray.h"
-#include "SortSearchSelect/RemoveDuplicatesFromSortedArray.h"
-#include "SortSearchSelect/KthSmallestElement.h"
+#include "SortSearchSelect/SelectInUnsortedRange/Median/MedianOfMedians.h"
+#include "SortSearchSelect/SortedMatrix/BinarySearchInSortedRange/Median2SortedArrays.h"
+#include "SortSearchSelect/SortedMatrix/BinarySearchInSortedRange/KthSmallestElement2SortedArrays.h"
+#include "SortSearchSelect/SelectInUnsortedRange/Median/MedianOfIntegerStream.h"
+#include "SortSearchSelect/SortedMatrix/Merge2SortedArrays.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/SearchInRotatedSortedArray.h"
+#include "SortSearchSelect/Sort/RemoveDuplicatesFromSortedArray.h"
+#include "SortSearchSelect/SelectInUnsortedRange/KthSmallestElement.h"
 #include "SortSearchSelect/Partition/SortColors.h"
-#include "SortSearchSelect/BinarySearch/SearchInterspersedSortedStrArray.h"
-#include "SortSearchSelect/BinarySearch/SearchForRange.h"
-#include "SortSearchSelect/BinarySearch/SearchInsertionPos.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/SearchInterspersedSortedStrArray.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/SearchForRange.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/SearchInsertionPos.h"
 #include "SortSearchSelect/Anagrams.h"
-#include "SortSearchSelect/MinRangeOverKSortedLists.h"
-#include "SortSearchSelect/KwayMergeSort.h"
+#include "SortSearchSelect/SortedMatrix/MinRangeOverKSortedLists.h"
+#include "SortSearchSelect/SortedMatrix/KwayMergeSort.h"
 #include "SortSearchSelect/Partition/StablePartition.h"
-#include "SortSearchSelect/SortHeightsWFrontTallers.h"
-#include "SortSearchSelect/ShortestUnsortedSubarr.h"
-#include "SortSearchSelect/KthSmallestPairSum2SortedArrays.h"
-#include "SortSearchSelect/MinPairDiff2SortedArrays.h"
+#include "SortSearchSelect/Sort/SortHeightsWFrontTallers.h"
+#include "SortSearchSelect/Sort/ShortestUnsortedSubarr.h"
+#include "SortSearchSelect/SortedMatrix/KthSmallestPairSum2SortedArrays.h"
+#include "SortSearchSelect/SortedMatrix/BinarySearchInSortedRange/MinPairDiff2SortedArrays.h"
 #include "SortSearchSelect/Sort/KAway/SortNearlySortedArray.h"
 #include "SortSearchSelect/MinCostConnectRopes.h"
-#include "SortSearchSelect/SortByPermutationOrder.h"
-#include "SortSearchSelect/ApplyPermutationOrder.h"
-#include "SortSearchSelect/InversePermutationArray.h"
-#include "SortSearchSelect/MaxNumWLeastGreaterEqualCount.h"
+#include "SortSearchSelect/PermutationOrder/SortByPermutationOrder.h"
+#include "SortSearchSelect/PermutationOrder/ApplyPermutationOrder.h"
+#include "SortSearchSelect/PermutationOrder/InversePermutationArray.h"
+#include "SortSearchSelect/SelectInUnsortedRange/MaxNumWLeastGreaterEqualCount.h"
 #include "SortSearchSelect/Sort/MergeSort/InversionsInArray.h"
 #include "SortSearchSelect/Sort/MergeSort/ReversePairs.h"
-#include "SortSearchSelect/UnionIntersection2SortedArrays.h"
+#include "SortSearchSelect/SortedMatrix/UnionIntersection2SortedArrays.h"
 #include "SortSearchSelect/Sort/QuickSort/MatchingNutsBoltsProblem.h"
 #include "SortSearchSelect/Sort/QuickSort/Sort1toNAvgOutside2Nums.h"
-#include "SortSearchSelect/BinarySearch/InterpolationSearch.h"
-#include "SortSearchSelect/SortKIncrDecrArray.h"
-#include "SortSearchSelect/FirstKClosestStars.h"
-#include "SortSearchSelect/FirstKClosestToMedianElements.h"
-#include "SortSearchSelect/BinarySearch/LocalMinimaInUnsortedArray.h"
-#include "SortSearchSelect/BinarySearch/LocalMaximumInUnsortedArray.h"
-#include "SortSearchSelect/BinarySearch/BinarySearchUnknownLength.h"
-#include "SortSearchSelect/KthSmallestElementUnknownLength.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/InterpolationSearch.h"
+#include "SortSearchSelect/Sort/SortKIncrDecrArray.h"
+#include "SortSearchSelect/Sort/BucketSort/FirstKClosestStars.h"
+#include "SortSearchSelect/Sort/BucketSort/FirstKClosestToMedianElements.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/LocalMinimaInUnsortedArray.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/LocalMaximumInUnsortedArray.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/BinarySearchUnknownLength.h"
+#include "SortSearchSelect/SelectInUnsortedRange/KthSmallestElementUnknownLength.h"
 #include "SortSearchSelect/Sort/IndirectSort/IndirectSortTextLineLengthInFile.h"
 #include "SortSearchSelect/Sort/IndirectSort/LeastDistanceSort.h"
-#include "SortSearchSelect/MedianElement.h"
-#include "SortSearchSelect/WeightedMedianElement.h"
+#include "SortSearchSelect/SelectInUnsortedRange/Median/MedianElement.h"
+#include "SortSearchSelect/SelectInUnsortedRange/Median/WeightedMedianElement.h"
 #include "SortSearchSelect/Sort/KAway/RearrangeArrWEqualEntriesKAway.h"
-#include "SortSearchSelect/KthSmallestElementInSortedMatrix.h"
-#include "SortSearchSelect/KthSmallestElementInMatrix.h"
-#include "SortSearchSelect/Search2dSortedMatrix.h"
-#include "SortSearchSelect/SaddlebackSearchSortedMatrix.h"
-#include "SortSearchSelect/YoungTableau.h"
+#include "SortSearchSelect/SortedMatrix/BinarySearchInSortedRange/KthSmallestElementInSortedMatrix.h"
+#include "SortSearchSelect/SortedMatrix/SelectInUnsortedRange/KthSmallestElementInMatrix.h"
+#include "SortSearchSelect/SortedMatrix/Search2dSortedMatrix.h"
+#include "SortSearchSelect/SortedMatrix/SaddlebackSearchSortedMatrix.h"
+#include "SortSearchSelect/SortedMatrix/Heap/YoungTableau.h"
 #include "SortSearchSelect/Sort/BucketSort/MaxGapOfSortedSuccessiveNum.h"
-#include "SortSearchSelect/AllPairsWSmallerEqualSum.h"
+#include "SortSearchSelect/SelectInUnsortedRange/AllPairsWSmallerEqualSum.h"
 #include "SortSearchSelect/GroupShiftedStrings.h"
 #include "SortSearchSelect/Sort/BucketSort/HIndex.h"
-#include "SortSearchSelect/BinarySearch/FirstBadVersion.h"
-#include "SortSearchSelect/BinarySearch/GuessNumberHigherOrLower.h"
-#include "SortSearchSelect/CreateMaxNumberFrom2Arrays.h"
-#include "SortSearchSelect/TopKFrequentElements.h"
-#include "SortSearchSelect/TopKFrequentStrings.h"
-#include "SortSearchSelect/SortTransformedArray.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/FirstBadVersion.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/GuessNumberHigherOrLower.h"
+#include "SortSearchSelect/SortedStack/CreateMaxNumberFrom2Arrays.h"
+#include "SortSearchSelect/Sort/BucketSort/TopKFrequentElements.h"
+#include "SortSearchSelect/Sort/BucketSort/TopKFrequentStrings.h"
+#include "SortSearchSelect/Sort/SortTransformedArray.h"
 #include "SortSearchSelect/MaxTop3AvgScoreStudent.h"
-#include "SortSearchSelect/SinglesFrom2SortedStrArr.h"
-#include "SortSearchSelect/SortCharsByFrequency.h"
-#include "SortSearchSelect/SlidingWindowMedian.h"
-#include "SortSearchSelect/NextGreaterElement.h"
+#include "SortSearchSelect/SortedMatrix/SinglesFrom2SortedStrArr.h"
+#include "SortSearchSelect/Sort/SortCharsByFrequency.h"
+#include "SortSearchSelect/SelectInUnsortedRange/Median/SlidingWindowMedian.h"
+#include "SortSearchSelect/SortedStack/NextGreaterElement.h"
 #include "SortSearchSelect/MaxCapitalForIPO.h"
 #include "SortSearchSelect/AssignCookiesToMaxNumChildren.h"
-#include "SortSearchSelect/BinarySearch/ArrangeCoinsStaircaseShape.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/ArrangeCoinsStaircaseShape.h"
 #include "SortSearchSelect/Partition/GenericPartition.h"
 #include "SortSearchSelect/FindAnagramMappings.h"
 #include "SortSearchSelect/SortByMinSwapPairsOf2Arrays.h"
 #include "SortSearchSelect/MaxDropLToRIn1PeakValleyArr.h"
 #include "SortSearchSelect/TwoPairsSum.h"
-#include "SortSearchSelect/OneSwapToSortedArr.h"
-#include "SortSearchSelect/SortArrWithMultiSortedSubArrs.h"
-#include "SortSearchSelect/SortStringsWithNewAlphabet.h"
-#include "SortSearchSelect/CutWoodsToKPiecesWSameLen.h"
+#include "SortSearchSelect/Sort/OneSwapToSortedArr.h"
+#include "SortSearchSelect/Sort/SortArrWithMultiSortedSubArrs.h"
+#include "SortSearchSelect/Sort/SortStringsWithNewAlphabet.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/CutWoodsToKPiecesWSameLen.h"
 #include "SortSearchSelect/PrintSeqInOrderFromUnorderedStream.h"
-#include "SortSearchSelect/LoginCountFromUnorderedStream.h"
 #include "SortSearchSelect/EqualGlobalAndLocalInversions.h"
 #include "SortSearchSelect/MinimizeMaxDistToGasStation.h"
-#include "SortSearchSelect/MaxNumPartitionsToSort.h"
+#include "SortSearchSelect/Sort/MaxNumPartitionsToSort.h"
 #include "SortSearchSelect/MinCostHireKWorkers.h"
-#include "SortSearchSelect/KClosest2DPointsToOrigin.h"
-#include "SortSearchSelect/MonotonicArray.h"
-#include "SortSearchSelect/MinFlip01StrToMonotoneIncr.h"
+#include "SortSearchSelect/Sort/BucketSort/KClosest2DPointsToOrigin.h"
+#include "SortSearchSelect/Sort/MonotonicArray.h"
+#include "SortSearchSelect/Sort/MinFlip01StrToMonotoneIncr.h"
 #include "SortSearchSelect/RevealCardsInIncrOrder.h"
 #include "SortSearchSelect/MaxProfitAssignWork.h"
 #include "SortSearchSelect/MinNumBoatsToSavePeople.h"
-#include "SortSearchSelect/KthSmallestNumInMissingRangeOfSortedArr.h"
-#include "SortSearchSelect/PancakeSort.h"
+#include "SortSearchSelect/BinarySearchInSortedRange/KthSmallestNumInMissingRangeOfSortedArr.h"
+#include "SortSearchSelect/Sort/PancakeSort.h"
 #include "SortSearchSelect/MinCostScheduleHalfHalfTo2Cities.h"
 
 /*Interval*/
@@ -440,6 +439,7 @@
 #include "Interval/RangeModule.h"
 #include "Interval/NonCoverredFromListsOfNonOvlpIntervals.h"
 #include "Interval/ExamRoom.h"
+#include "Interval/LoginCountFromUnorderedStream.h"
 
 /*Permute Combine Partition*/
 #include "PermuteCombinePartition/Permutation/Permutations.h"
@@ -4592,64 +4592,6 @@ int main()
 
     }
     {
-        LoginCountFromUnorderedStream_PrefixSum s;
-        s.Insert(2, 1);
-        s.Insert(10, 1);
-        s.Insert(5, 1);
-        s.Insert(6, -1);
-        s.Insert(20, -1);
-        s.Insert(6, 1);
-        s.Insert(13, -1);
-        s.Insert(8, -1);
-        s.Insert(11, 1);
-        s.Insert(30, 1);
-        s.Insert(40, 1);
-        s.Insert(25, -1);
-        s.Insert(50, -1);
-        s.QueryLoginCount(45);
-        s.QueryLoginCount(20);
-        s.QueryLoginCount(70);
-        s.QueryLoginCount(15);
-
-        LoginCountFromUnorderedStream_BST bst;
-        bst.Insert(2, 1);
-        bst.Insert(10, 1);
-        bst.Insert(5, 1);
-        bst.Insert(6, -1);
-        bst.Insert(20, -1);
-        bst.Insert(6, 1);
-        bst.Insert(13, -1);
-        bst.Insert(8, -1);
-        bst.Insert(11, 1);
-        bst.Insert(30, 1);
-        bst.Insert(40, 1);
-        bst.Insert(25, -1);
-        bst.Insert(50, -1);
-        bst.QueryLoginCount(45);
-        bst.QueryLoginCount(20);
-        bst.QueryLoginCount(70);
-        bst.QueryLoginCount(15);
-
-        LoginCountFromUnorderedStream_PrefixSum_Map m;
-        m.Insert(2, 1);
-        m.Insert(10, 1);
-        m.Insert(5, 1);
-        m.Insert(6, -1);
-        m.Insert(20, -1);
-        m.Insert(6, 1);
-        m.Insert(13, -1);
-        m.Insert(8, -1);
-        m.Insert(11, 1);
-        m.Insert(30, 1);
-        m.Insert(40, 1);
-        m.Insert(25, -1);
-        m.Insert(50, -1);
-        m.QueryLoginCount(45);
-        m.QueryLoginCount(20);
-        m.QueryLoginCount(70);
-        m.QueryLoginCount(15);
-    }
-    {
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,0,2}));
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,2,0}));
     }
@@ -4824,6 +4766,64 @@ int main()
         er.seat();
         er.leave(4);
         er.seat();
+    }
+    {
+        LoginCountFromUnorderedStream_PrefixSum s;
+        s.Insert(2, 1);
+        s.Insert(10, 1);
+        s.Insert(5, 1);
+        s.Insert(6, -1);
+        s.Insert(20, -1);
+        s.Insert(6, 1);
+        s.Insert(13, -1);
+        s.Insert(8, -1);
+        s.Insert(11, 1);
+        s.Insert(30, 1);
+        s.Insert(40, 1);
+        s.Insert(25, -1);
+        s.Insert(50, -1);
+        s.QueryLoginCount(45);
+        s.QueryLoginCount(20);
+        s.QueryLoginCount(70);
+        s.QueryLoginCount(15);
+
+        LoginCountFromUnorderedStream_BST bst;
+        bst.Insert(2, 1);
+        bst.Insert(10, 1);
+        bst.Insert(5, 1);
+        bst.Insert(6, -1);
+        bst.Insert(20, -1);
+        bst.Insert(6, 1);
+        bst.Insert(13, -1);
+        bst.Insert(8, -1);
+        bst.Insert(11, 1);
+        bst.Insert(30, 1);
+        bst.Insert(40, 1);
+        bst.Insert(25, -1);
+        bst.Insert(50, -1);
+        bst.QueryLoginCount(45);
+        bst.QueryLoginCount(20);
+        bst.QueryLoginCount(70);
+        bst.QueryLoginCount(15);
+
+        LoginCountFromUnorderedStream_PrefixSum_Map m;
+        m.Insert(2, 1);
+        m.Insert(10, 1);
+        m.Insert(5, 1);
+        m.Insert(6, -1);
+        m.Insert(20, -1);
+        m.Insert(6, 1);
+        m.Insert(13, -1);
+        m.Insert(8, -1);
+        m.Insert(11, 1);
+        m.Insert(30, 1);
+        m.Insert(40, 1);
+        m.Insert(25, -1);
+        m.Insert(50, -1);
+        m.QueryLoginCount(45);
+        m.QueryLoginCount(20);
+        m.QueryLoginCount(70);
+        m.QueryLoginCount(15);
     }
 
 #endif

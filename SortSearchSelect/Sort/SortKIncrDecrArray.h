@@ -8,7 +8,7 @@
 #include <functional>//std::greater
 #include <algorithm>
 #include "Debug.h"
-#include "../SortSearchSelect/KwayMergeSort.h"
+#include "../SortedMatrix/KwayMergeSort.h"
 /*
 Elements of programming interview, Heaps: Sort a k-increasing-decreasing array
 An array A of n integers is said to be k-increasing-decreasing if elements repeatedly increase up to a certain index after which they decrease
