@@ -57,7 +57,6 @@ public:
 		{
 			++n;
 		}
-
 		std::cout << "EggDrop MinTrialsWorstCase_Formula_2Eggs for \"" << K << "\" floors: " << n << std::endl;
 		return n;
 	}
@@ -65,7 +64,7 @@ public:
 public:
 	int MinTrialsWorstCase_Recur(int N, int K)
 	{
-		int res = this->minTrialsRecur(N, K);
+		int res = minTrialsRecur(N, K);
 		std::cout << "EggDrop MinTrialsWorstCase_Recur for \"" << N << "\" eggs, \"" << K << "\" floors: " << res << std::endl;
 		return res;
 	}
@@ -74,85 +73,121 @@ private:
 	{
 		if (K == 1 || K == 0)
 			return K;
-
 		if (N == 1)
 			return K;
-
 		int min = INT_MAX;
 		for (int flr = 1; flr <= K; ++flr)
 		{
-			int broken = this->minTrialsRecur(N - 1, flr - 1);
-			int nonBroken = this->minTrialsRecur(N, K - flr);
-			int count = std::max(broken, nonBroken);//choose the worst case
-			if (count < min)
-				min = count;
+			int broken = minTrialsRecur(N - 1, flr - 1);
+			int nonBroken = minTrialsRecur(N, K - flr);
+			min = std::min(min, std::max(broken, nonBroken)+1);//choose the worst case
 		}
-		return min + 1;
+		return min;
 	}
 public:
 	int MinTrialsWorstCase_DP2D_Recur(int N, int K)
 	{
-		std::vector<std::vector<int> > dp(N + 1, std::vector<int>(K + 1, -1));
-		int res = this->minTrials_DP2D_Recur(N, K, dp);
+		std::vector<std::vector<int> > dp(N+1, std::vector<int>(K+1, 0));
+		int res = minTrials_DP2D_Recur(N, K, dp);
 		Debug::Print2D<int>()(dp, false);
 		std::cout << "EggDrop MinTrialsWorstCase_DP2D_Recur for \"" << N << "\" eggs, \"" << K << "\" floors: " << res << std::endl;
 		return res;
 	}
 private:
-	int minTrials_DP2D_Recur(int N, int K, std::vector<std::vector<int> > & dp)//N: egg number, K: floor number
-	{
-		if (K == 1 || K == 0)
-			return K;
-
-		if (N == 1)
-			return K;
-
-		int min = INT_MAX;
+    int minTrials_DP2D_Recur(int N, int K, std::vector<std::vector<int>> & dp)//N: egg number, K: floor number
+    {
+        if (K == 1 || K == 0)
+            return K;
+        if (N == 1)
+            return K;
+        if (dp[N][K] != 0)
+            return dp[N][K];
+        dp[N][K] = INT_MAX;
+        /*
 		for (int flr = 1; flr <= K; ++flr)
 		{
-			int broken = dp[N - 1][flr - 1] == -1 ? dp[N - 1][flr - 1] = this->minTrialsRecur(N - 1, flr - 1) : dp[N - 1][flr - 1];
-			int nonBroken = dp[N][K - flr] == -1 ? dp[N][K - flr] = this->minTrialsRecur(N, K - flr) : dp[N][K - flr];
-			int count = std::max(broken, nonBroken);
-			if (count < min)
-				min = count;
+			int broken = minTrials_DP2D_Recur(N - 1, flr - 1, dp);
+			int nonBroken = minTrials_DP2D_Recur(N, K - flr, dp);
+			dp[N][K] = std::min(dp[N][K], std::max(broken, nonBroken)+1);
 		}
-		return min + 1;
-	}
+        */
+
+        int left = 1;
+        int right = K;
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
+            int broken = minTrials_DP2D_Recur(N-1, mid-1, dp);
+            int nonBroken = minTrials_DP2D_Recur(N, K-mid, dp);
+            dp[N][K] = std::min(dp[N][K], std::max(broken, nonBroken)+1);
+            if (broken <= nonBroken)
+                left = mid+1;
+            else
+                right = mid-1;
+        }
+
+        /*
+        for (int flr = 1; flr <= K; ++flr)
+        {
+            int broken = minTrials_DP2D_Recur(N - 1, flr - 1, dp);
+			int nonBroken = minTrials_DP2D_Recur(N, K - flr, dp);
+            dp[N][K] = broken+1;
+            if (broken >= nonBroken) break;
+        }
+        */
+        return dp[N][K];
+    }
 
 public:
 	int MinTrialsWorstCase_DP2D_Iterate(int N, int K)
 	{
-		std::vector<std::vector<int> > dp(N + 1, std::vector<int>(K + 1));//row is egg number, column is floor number	
-		
-		// We need one trial for one floor and 0 trials for 0 floors
-		for (int egg = 1; egg <= N; ++egg)
-		{
-			dp[egg][1] = 1;
-			dp[egg][0] = 0;
-		}
+		std::vector<std::vector<int> > dp(N+1, std::vector<int>(K+1, 0));//row is egg number, column is floor number
 
-		// We always need flr trials for one egg and flr floors
-		for (int flr = 1; flr <= K; ++flr)
-		{
-			dp[1][flr] = flr;
-		}
-
-		// Fill rest of the entries in table using optimal substructure property
-		for (int egg = 2; egg <= N; ++egg)
-		{
-			for (int flr = 2; flr <= K; ++flr)
-			{
-				dp[egg][flr] = INT_MAX;
+        // We always need flr trials for one egg and flr floors
+        for (int flr = 1; flr <= K; ++flr)
+        {
+            dp[1][flr] = flr;
+        }
+        // Fill rest of the entries in table using optimal substructure property
+        for (int egg = 2; egg <= N; ++egg)
+        {
+            int curF = 1;
+            for (int flr = 1; flr <= K; ++flr)
+            {
+                dp[egg][flr] = INT_MAX;
+                /*
+                //method1: O(NK^2) time
 				for (int curF = 1; curF <= flr; ++curF)
 				{
-					int broken = dp[egg - 1][curF - 1];//if broken, minTrials = dp[egg-1][curF-1]
-					int nonBroken = dp[egg][flr - curF];//if non-broken, minTrials = dp[egg][flr-curF]
-					int count = 1 + std::max(broken, nonBroken);//minTrials at curF = worst case of {broken, non-broken} minTrials + 1
-					if (count < dp[egg][flr])
-						dp[egg][flr] = count;
+					int broken = dp[egg - 1][curF - 1];
+					int nonBroken = dp[egg][flr - curF];
+					dp[egg][flr] = std::min(dp[egg][flr], std::max(broken, nonBroken)+1);
 				}
-			}
-		}
+                */
+                /*
+                //method2: O(NKlogK) time
+                int left = 1;
+                int right = flr;
+                while (left <= right)
+                {
+                    int mid = left + (right - left) / 2;
+                    int broken = dp[egg-1][mid-1];
+                    int nonBroken = dp[egg][flr-mid];
+                    dp[egg][flr] = std::min(dp[egg][flr], std::max(broken, nonBroken)+1);
+                    if (broken <= nonBroken)
+                        left = mid+1;
+                    else
+                        right =mid-1;
+                }
+                */
+
+                //method3: O(NK) time
+                while (curF <= flr && dp[egg-1][curF-1] < dp[egg][flr-curF])
+                    ++curF;
+                dp[egg][flr] = dp[egg-1][curF-1]+1;
+
+            }
+        }
 
 		Debug::Print2D<int>()(dp, false);
 		std::cout << "EggDrop MinTrialsWorstCase_DP2D_Iterate for \"" << N << "\" eggs, \"" << K << "\" floors: " << dp[N][K] << std::endl;
@@ -215,9 +250,9 @@ public:
 EggDrop MinTrialsWorstCase_Formula_2Eggs for "100" floors: 14
 EggDrop MinTrialsWorstCase_Recur for "2" eggs, "10" floors: 4
 [rY][cX]
-Row#0	= -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
-Row#1	= 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1
-Row#2	= 0, 1, 2, 2, 3, 3, 3, 4, 4, 4, -1
+Row#0	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#1	= 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+Row#2	= 0, 0, 2, 2, 3, 3, 3, 4, 4, 0, 4
 
 EggDrop MinTrialsWorstCase_DP2D_Recur for "2" eggs, "10" floors: 4
 [rY][cX]

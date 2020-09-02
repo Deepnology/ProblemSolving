@@ -1,5 +1,6 @@
 #ifndef _NUM_OF_DAYS_IN_GIVEN_MONTH_H
 #define _NUM_OF_DAYS_IN_GIVEN_MONTH_H
+#include "Debug.h"
 /*
 Leetcode: Number of Days in a Month
 Given a year Y and a month M, return how many days there are in that month.

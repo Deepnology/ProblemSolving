@@ -51,6 +51,7 @@
 #include "DesignDS/TimeBasedKeyValStore.h"
 #include "DesignDS/NumberOfRecentCalls.h"
 #include "DesignDS/SnapshotArray.h"
+#include "DesignDS/DesignSocialNetworkRecommender.h"
 
 /*Math*/
 #include "Math/EggDrop.h"
@@ -178,7 +179,7 @@
 #include "BitNumberOperation/KthSymbolInGrammar.h"
 #include "BitNumberOperation/EncodeDecode/DecodeNestedRepeatedStrAtIndex.h"
 #include "BitNumberOperation/NextPrevNum/NextGreaterPrimePalindromeNum.h"
-#include "BitNumberOperation/NumOfDaysInGivenMonth.h"
+#include "BitNumberOperation/Date/NumOfDaysInGivenMonth.h"
 #include "BitNumberOperation/Digit/IsArmstrongNumber.h"
 #include "BitNumberOperation/Digit/ValidNumsRotatingAllDigitsUpsideDown.h"
 
@@ -446,7 +447,7 @@
 #include "PermuteCombinePartition/Permutation/Permutations2.h"
 #include "PermuteCombinePartition/Permutation/KthPermutationSequence.h"
 #include "PermuteCombinePartition/PartialCombinationWoOrder/Combinations.h"
-#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/Simple/Combinations2.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SimpleCombination/Combinations2.h"
 #include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/CombinationSum.h"
 #include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/KSum.h"
 #include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/SubsetSumProblem.h"
@@ -464,7 +465,7 @@
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/DecodeWays.h"
 #include "PermuteCombinePartition/Permutation/NextPermutation.h"
 #include "PermuteCombinePartition/Permutation/PreviousPermutation.h"
-#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/Simple/LetterCombinationPhoneNum.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SimpleCombination/LetterCombinationPhoneNum.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/ParenthesesCombination.h"
 #include "PermuteCombinePartition/Permutation/Swap0ConvertPermutation.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/ParenthesizeBoolExpr.h"
@@ -488,12 +489,12 @@
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/MaxProductCutting.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/MaxPriceCutting.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SubArrSumPartition/MaxPriceCutting2.h"
-#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/Simple/AllBinaryStrWithWildCard.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SimpleCombination/AllBinaryStrWithWildCard.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/WordBreak.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/LongestWordMadeOfOthers.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/ParenthesizeArithmeticExpr.h"
-#include "PermuteCombinePartition/PartialCombinationWOrder/PaintHouseCombinations.h"
-#include "PermuteCombinePartition/PartialCombinationWOrder/PaintFenceCombinations.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/AdjRuleCombination/PaintHouseCombinations.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/AdjRuleCombination/PaintFenceCombinations.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/BurstBallons.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/BottomUpEnumerateSubRange/BombsInACircle.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/GeneralizedAbbreviation.h"
@@ -512,8 +513,8 @@
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/PalindromePartitioning.h"
 #include "PermuteCombinePartition/Permutation/PermutedPalindrome.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/ScrambleString.h"
-#include "PermuteCombinePartition/PartialCombinationWOrder/abcCombination_1b_2cs.h"
-#include "PermuteCombinePartition/PartialCombinationWOrder/BinaryStrWoConsecu1s.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/AdjRuleCombination/abcCombination_1b_2cs.h"
+#include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/AdjRuleCombination/BinaryStrWoConsecu1s.h"
 #include "PermuteCombinePartition/PartialCombinationWoOrder/SingleBinAccumuSum/BinStrCombinationWGiven0n1Count.h"
 #include "PermuteCombinePartition/FullCombinationWOrder_ConsecutivePartition/SingleBinAccumuSum/PlusMinusCombinationSum.h"
 #include "PermuteCombinePartition/Permutation/SmallestPermutationFromIncrDecrArray.h"
@@ -1403,6 +1404,9 @@ int main()
     {
         NumberOfRecentCalls c;
         c.Ping(1); c.Ping(100); c.Ping(3001); c.Ping(3002);
+    }
+    {
+        DesignSocialNetworkRecommender().Test();
     }
 
 #endif
@@ -4576,20 +4580,18 @@ int main()
         PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(std::vector<int>({4,1,4,4,5,1,2,3}));
         PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(std::vector<int>({3,5,1,2,5,4,1,2}));
         PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(std::vector<int>({7,8,5,3,4,4,5,2,1,2,6,3}));
-        /*
-        for (int i = 0; i < 10; ++i)
-        {
-            std::vector<int> v = TestCase::RandVec<int>(10, 1, 5);
-            PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(v);
-        }
-        */
+
+        //for (int i = 0; i < 10; ++i)
+        //{
+        //    std::vector<int> v = TestCase::RandVec<int>(10, 1, 5);
+        //    PrintSeqInOrderFromUnorderedStream_AllowRepeats().Test(v);
+        //}
 
         for (int i = 0; i < 1; ++i)
         {
-            PrintSeqInOrderFromUnorderedStream_AllowRepeats_ThreadSafe pat;
-            pat.Run();
+            //PrintSeqInOrderFromUnorderedStream_AllowRepeats_ThreadSafe pat;
+            //pat.Run();
         }
-
     }
     {
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,0,2}));
@@ -4853,11 +4855,20 @@ int main()
 		NextPermutation().Next(std::vector<int>({ 3, 2, 1 }));
 		NextPermutation().Next(std::vector<int>({ 1, 1, 3 }));
 		NextPermutation().Next(std::vector<int>({ 6, 2, 1, 5, 4, 3, 0 }));
+        NextPermutationOneSwap().Next(std::vector<int>({3, 1, 2}));
+        NextPermutationOneSwap().Next(std::vector<int>({1, 1, 3, 3}));
+        NextPermutationOneSwap().Next(std::vector<int>({1, 3, 1, 3}));
+        NextPermutationOneSwap().Next(std::vector<int>({1, 3, 3, 1}));
+        NextPermutationOneSwap().Next(std::vector<int>({3, 1, 3, 1}));
+        NextPermutationOneSwap().Next(std::vector<int>({3, 3, 1, 1}));//last one
+        NextPermutationOneSwap().Next(std::vector<int>({3, 1, 1, 3}));
 
 		PreviousPermutation().InPlace(std::vector<int>({ 6, 2, 3, 0, 1, 4, 5 }));
 		PreviousPermutation().InPlace(std::vector<int>({ 1, 3, 1 }));
 		PreviousPermutation().InPlace(std::vector<int>({ 1, 2, 3 }));
 		PreviousPermutation().InPlace(std::vector<int>({ 1, 3, 2 }));
+        PreviousPermutationOneSwap().Solve(std::vector<int>({3, 1, 1, 3}));
+		PreviousPermutationOneSwap().Solve(std::vector<int>({1, 3, 1, 3}));
 	}
 	{
 		KthPermutationSequence().NextPermutationBased(4, 5);

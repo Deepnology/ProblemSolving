@@ -26,8 +26,10 @@ I=============|=I|I============I
 I=============|=I|I============I
 I             | I|I            I
 I=============|=I|I============I
+
+Leetcode: Number of Ships in a Rectangle
  */
-class Count1sIn2dMatrixWithHasAPI
+class Count1sIn2dMatrixWithHasAPI //in 2D coordinate where upper left is origin
 {
 public:
     Count1sIn2dMatrixWithHasAPI(){}
@@ -81,6 +83,45 @@ public:
                 res += A[i][j];
         return res;
     }
+};
+class Count1sIn2dMatrixWithHasAPI_2 //in 2D coordinate where lower left is origin (Leetcode)
+{
+public:
+    Count1sIn2dMatrixWithHasAPI_2(){}
+private:
+    bool Has1(const std::vector<std::vector<int>> & A, const std::vector<int> & topRight, const std::vector<int> & bottomLeft)// assume this function is constant time
+    {
+        int N = A.size();
+        if (N == 0) return false;
+        int M = A[0].size();
+        if (topRight[0] < 0 || topRight[0] >= M || topRight[1] < 0 || topRight[1] >= N) return false;
+        if (bottomLeft[0] < 0 || bottomLeft[0] >= M || bottomLeft[1] < 0 || bottomLeft[1] >= N) return false;
+        if (bottomLeft[0] > topRight[0] || bottomLeft[1] < topRight[1]) return false;
+        for (int i = bottomLeft[0]; i <= topRight[0]; ++i)
+            for (int j = topRight[1]; j <= bottomLeft[1]; ++j)
+                if (A[i][j])
+                    return true;
+        return false;
+    }
+public:
+    int Count(const std::vector<std::vector<int>> & A, std::vector<int> topRight, std::vector<int> bottomLeft)
+    {
+        return recur(A, topRight, bottomLeft);
+    }
+private:
+    int recur(const std::vector<std::vector<int>> & A, std::vector<int> topR, std::vector<int> bottomL)
+    {
+        if (topR[0] < bottomL[0] || topR[1] < bottomL[1]) return 0;
+        if (!Has1(A, topR, bottomL)) return 0;
+        if (topR[0] == bottomL[0] && topR[1] == bottomL[1]) return 1;
+        int midX = (topR[0] + bottomL[0]) / 2;
+        int midY = (topR[1] + bottomL[1]) / 2;
+        return recur(A, topR, {midX+1, midY+1}) //upper right
+               + recur(A, {midX, midY}, bottomL) //bottom left
+               + recur(A, {midX, topR[1]}, {bottomL[0], midY+1}) //upper left
+               + recur(A, {topR[0], midY}, {midX+1, bottomL[1]}); //bottom right
+    }
+
 };
 /*
 [rY][cX]

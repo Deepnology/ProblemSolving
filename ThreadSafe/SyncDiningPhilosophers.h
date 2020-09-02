@@ -221,6 +221,45 @@ void Test()
 		std::cin.ignore();
 	}
 }
+/*
+Leetcode: The Dining Philosophers
+ */
+/*
+class DiningPhilosophers {
+    int m_size;
+    std::vector<sem_t> m_sFork;
+public:
+    DiningPhilosophers():m_size(5)
+    {
+        for (int i = 0; i < m_size; ++i)
+        {
+            m_sFork.push_back(sem_t());
+            sem_init(&m_sFork[i], 0, 1);
+        }
+    }
 
+    void wantsToEat(int philosopher,
+                    function<void()> pickLeftFork,
+                    function<void()> pickRightFork,
+                    function<void()> eat,
+                    function<void()> putLeftFork,
+                    function<void()> putRightFork)
+    {
+        int lower = philosopher;
+        int higher = (philosopher+1) % m_size;
+        if (lower > higher)
+            std::swap(lower, higher);
+        sem_wait(&m_sFork[lower]);
+        sem_wait(&m_sFork[higher]);
+        pickLeftFork();
+        pickRightFork();
+        eat();
+        putLeftFork();
+        putRightFork();
+        sem_post(&m_sFork[lower]);
+        sem_post(&m_sFork[higher]);
+    }
+};
+*/
 }
 #endif

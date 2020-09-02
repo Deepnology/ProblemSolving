@@ -143,6 +143,23 @@ public:
 
 		return true;
 	}
+
+	//Leetcode: Minimum Number of Steps to Make Two Strings Anagram
+    int MinCharReplaceToMake2StrAnagram(std::string s, std::string t) //s.size()=t.size()
+    {
+        std::unordered_map<char, int> count;
+        for (auto & c : s)
+            ++count[c]; //positive count means extra chars in s
+        for (auto & c : t)
+            --count[c]; //negative count means extra chars in t
+        int res = 0;
+        for (auto & p : count)
+            if (p.second < 0) //replace these chars in t w/ those chars in s, since they are equal-sized
+                res += std::abs(p.second);
+
+        std::cout << "Anagram MinCharReplaceToMake2StrAnagram for [\"" << s << "\", \"" << t << "\"]: " << res << std::endl;
+        return res;
+    }
 };
 /*
 Row#0	= aet: tea, eat, ate

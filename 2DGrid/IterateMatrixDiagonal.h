@@ -35,6 +35,21 @@ Loop with D from 0 to 2*(N-1)
 
 Now if D = i+j then j=D-i
 So we have reduced the problem to two variables: D and i (two loops)
+
+Leetcode: Diagonal Traverse II
+Each row length might be different. Traverse diagonal from bottom to top.
+Example 1:
+Input: nums = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [1,4,2,7,5,3,8,6,9]
+Example 2:
+Input: nums = [[1,2,3,4,5],[6,7],[8],[9,10,11],[12,13,14,15,16]]
+Output: [1,6,2,8,7,3,9,4,12,10,5,13,11,14,15,16]
+Example 3:
+Input: nums = [[1,2,3],[4],[5,6,7],[8],[9,10,11]]
+Output: [1,4,2,5,3,8,6,9,7,10,11]
+Example 4:
+Input: nums = [[1,2,3,4,5,6]]
+Output: [1,2,3,4,5,6]
 */
 class IterateMatrixDiagonal
 {
@@ -90,6 +105,24 @@ public:
 		Debug::Print2D<int>()(m, false);
 		std::cout << "IterateMatrixDiagonal NxM 2: " << Debug::ToStr1D<int>()(res) << std::endl;
 	}
+
+    std::vector<int> BottomUpDiag_DiffRowLen(std::vector<std::vector<int>> & nums)
+    {
+        std::unordered_map<int, std::vector<int>> diagToNums;//<i+j, list of nums on i+j diagonal>
+        int maxDiag = 0; //max of (i+j)
+        for (int i = 0; i < nums.size(); ++i)
+            for (int j = 0; j < nums[i].size(); ++j)
+            {
+                diagToNums[i+j].push_back(nums[i][j]);
+                maxDiag = std::max(maxDiag, i+j);
+            }
+        std::vector<int> res;
+        for (int i = 0; i <= maxDiag; ++i)
+            for (auto itr = diagToNums[i].rbegin(); itr != diagToNums[i].rend(); ++itr)
+                res.push_back(*itr);
+        return res;
+    }
+
 
 	void ReverseDiag_NxM(const std::vector<std::vector<int> > & m)
 	{

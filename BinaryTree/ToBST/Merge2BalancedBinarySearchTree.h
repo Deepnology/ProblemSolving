@@ -7,6 +7,10 @@
 #include <algorithm>
 #include "../SortSearchSelect/SortedMatrix/Merge2SortedArrays.h"
 /*
+Leetcode: All Elements in Two Binary Search Trees
+Given two binary search trees root1 and root2.
+Return a list containing all the integers from both trees sorted in ascending order.
+
 Elements of programming interview, BST: Merge 2 BSTs
 http://www.geeksforgeeks.org/merge-two-balanced-binary-search-trees/
 http://www.careercup.com/question?id=5261732222074880
@@ -57,6 +61,34 @@ private:
 		cur->right = this->SortedArrayToBST_PreorderRecur(num, middle + 1, end);
 		return cur;
 	}
+    std::vector<int> Merge2BSTtoSortedArray(TreeNode * root1, TreeNode * root2)
+    {
+        std::stack<TreeNode*> stk1;
+        std::stack<TreeNode*> stk2;
+        PushStack(root1, stk1);
+        PushStack(root2, stk2);
+        std::vector<int> res;
+        while (!stk1.empty() || !stk2.empty())
+        {
+            std::stack<TreeNode*> * found;
+            if (stk1.empty())
+                found = &stk2;
+            else if (stk2.empty())
+                found = &stk1;
+            else
+                found = stk1.top()->val < stk2.top()->val ? &stk1 : &stk2;
+            TreeNode * cur = found->top(); found->pop();
+            res.push_back(cur->val);
+            PushStack(cur->right, *found);
+        }
+        return res;
+    }
+    void PushStack(TreeNode * cur, std::stack<TreeNode*> & stk)
+    {
+        for (; cur; cur = cur->left)
+            stk.push(cur);
+    }
+
 
 public:
 	//2. merge in-place through 2 circular doubly linked lists

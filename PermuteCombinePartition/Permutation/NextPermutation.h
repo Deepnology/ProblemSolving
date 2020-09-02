@@ -81,6 +81,35 @@ public:
 	}
 
 };
+class NextPermutationOneSwap
+{
+public:
+	void Next(std::vector<int> && num)
+	{
+		std::string before = Debug::ToStr1D<int>()(num);
+
+		int N = num.size();
+		if (N < 2)
+			return;
+
+		int ascendingEnd = N - 1;
+		while (ascendingEnd > 0 && !(num[ascendingEnd - 1] < num[ascendingEnd]))
+			--ascendingEnd;
+
+		if (ascendingEnd > 0)
+		{
+			int pivot = ascendingEnd - 1;
+
+			//we want to find the 1st num of prev num of lower bound of pivot in an descending order sorted range, then swap it with pivot
+			int LB = std::lower_bound(num.begin() + ascendingEnd, num.end(), num[pivot], std::greater<int>()) - num.begin();
+			int prevOfLB = std::lower_bound(num.begin() + ascendingEnd, num.end(), num[LB-1], std::greater<int>()) - num.begin();
+
+			std::swap(num[pivot], num[prevOfLB]);
+		}
+
+		std::cout << "NextPermutationOneSwap for \"" << before << "\": " << Debug::ToStr1D<int>()(num) << std::endl;
+	}
+};
 /*
 NextPermutation for "1, 2, 3": 1, 3, 2
 NextPermutation for "3, 2, 1": 1, 2, 3

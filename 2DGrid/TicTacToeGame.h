@@ -8,7 +8,6 @@
 #include <algorithm>
 #include "Debug.h"
 /*
-http://www.cnblogs.com/grandyang/p/5467118.html
 Leetcode: Design Tic-Tac-Toe
 Design a Tic-tac-toe game that is played between two players on a n x n grid.
 You may assume the following rules:
@@ -55,6 +54,9 @@ Output: false
 Example 4:
 Input: board = ["XOX", "O O", "XOX"]
 Output: true
+
+Leetcode: Find Winner on a Tic Tac Toe Game
+
 */
 class TicTacToeGame
 {
@@ -278,6 +280,48 @@ public:
         if (Xwin && Xcount == Ocount) return false;
         if (Owin && Xcount == Ocount+1) return false;
         return true;
+    }
+};
+class FindWinnerTicTacToeGame
+{
+public:
+    std::string FindWinner(std::vector<std::vector<int>> & moves)
+    {
+        std::vector<int> aRowSum(3, 0);
+        std::vector<int> aColSum(3, 0);
+        int aDiagSum = 0;
+        int aRevDiagSum = 0;
+        std::vector<int> bRowSum(3, 0);
+        std::vector<int> bColSum(3, 0);
+        int bDiagSum = 0;
+        int bRevDiagSum = 0;
+        for (int i = 0; i < moves.size(); ++i)
+        {
+            if (i % 2 == 0)
+            {
+                aRowSum[moves[i][0]]++;
+                aColSum[moves[i][1]]++;
+                if (moves[i][0]==moves[i][1])
+                    aDiagSum++;
+                if (moves[i][0]+moves[i][1]==2)
+                    aRevDiagSum++;
+                if (aRowSum[moves[i][0]]==3||aColSum[moves[i][1]]==3||aDiagSum==3||aRevDiagSum==3)
+                    return "A";
+            }
+            else
+            {
+                bRowSum[moves[i][0]]++;
+                bColSum[moves[i][1]]++;
+                if (moves[i][0]==moves[i][1])
+                    bDiagSum++;
+                if (moves[i][0]+moves[i][1]==2)
+                    bRevDiagSum++;
+                if (bRowSum[moves[i][0]]==3||bColSum[moves[i][1]]==3||bDiagSum==3||bRevDiagSum==3)
+                    return "B";
+            }
+        }
+        if (moves.size() == 9) return "Draw";
+        return "Pending";
     }
 };
 /*

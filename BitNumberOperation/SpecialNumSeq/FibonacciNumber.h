@@ -23,6 +23,9 @@ A number is Fibonacci if and only if one or both of (5*n^2+4) or (5*n^2-4) is a 
 
 http://www.geeksforgeeks.org/nth-non-fibonacci-number/
 3. N-th Non Fibonacci Number
+
+4. Leetcode: N-th Tribonacci Number
+
 */
 class FibonacciNumber
 {
@@ -139,6 +142,23 @@ public:
 		std::cout << "FibonacciNumber Non-Fibonacci for \"" << n << "\": " << prev2 + n - (count - (cur - prev2 - 1)) << std::endl;
 		return prev2 + n - (count - (cur - prev2 - 1));
 	}
+
+	//4. Nth Tribonacci Number
+    int Tribonacci(int n)
+    {
+        if (n < 2) return n;
+        if (n == 2) return 1;
+        int a = 0, b = 1, c = 1;
+        int d;
+        for (int i = 3; i <= n; ++i)
+        {
+            d = a + b + c;
+            a = b;
+            b = c;
+            c = d;
+        }
+        return d;
+    }
 };
 /*
 FibonacciNumber Recur for "10": 55
