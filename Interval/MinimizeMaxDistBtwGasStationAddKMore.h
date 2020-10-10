@@ -1,5 +1,5 @@
-#ifndef _MINIMIZE_MAX_DIST_TO_GAS_STATION_H
-#define _MINIMIZE_MAX_DIST_TO_GAS_STATION_H
+#ifndef _MINIMIZE_MAX_DIST_BTW_GAS_STATION_ADD_K_MORE_H
+#define _MINIMIZE_MAX_DIST_BTW_GAS_STATION_ADD_K_MORE_H
 #include "Debug.h"
 /*
 Leetcode: Minimize max distance to gas station
@@ -9,11 +9,13 @@ Return the smallest possible value of D.
 Example:
 Input: stations = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], K = 9
 Output: 0.500000
+
+see also InsertMailBoxBtwHousesMinimizeTotalDist.h
  */
-class MinimizeMaxDistToGasStation
+class MinimizeMaxDistBtwGasStationAddKMore
 {
 public:
-    MinimizeMaxDistToGasStation(){}
+    MinimizeMaxDistBtwGasStationAddKMore(){}
 
     struct Interval
     {
@@ -54,7 +56,7 @@ public:
             maxHeap.push(cur);
         }
 
-        std::cout << "MinimizeMaxDistToGasStation MaxHeapGreedyAssign for " << K << " in [" << Debug::ToStr1D<int>()(stations) << "]: " << maxHeap.top().distance() << std::endl;
+        std::cout << "MinimizeMaxDistBtwGasStationAddKMore MaxHeapGreedyAssign for " << K << " in [" << Debug::ToStr1D<int>()(stations) << "]: " << maxHeap.top().distance() << std::endl;
         return maxHeap.top().distance();
     }
 
@@ -76,12 +78,12 @@ public:
                 left = mid;
         }
 
-        std::cout << "MinimizeMaxDistToGasStation BinarySearch for " << K << " in [" << Debug::ToStr1D<int>()(stations) << "]: " << left << std::endl;
+        std::cout << "MinimizeMaxDistBtwGasStationAddKMore BinarySearch for " << K << " in [" << Debug::ToStr1D<int>()(stations) << "]: " << left << std::endl;
         return left;
     }
 };
 /*
-MinimizeMaxDistToGasStation MaxHeapGreedyAssign for 9 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]: 0.5
-MinimizeMaxDistToGasStation BinarySearch for 9 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]: 0.5
+MinimizeMaxDistBtwGasStationAddKMore MaxHeapGreedyAssign for 9 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]: 0.5
+MinimizeMaxDistBtwGasStationAddKMore BinarySearch for 9 in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]: 0.5
  */
 #endif
