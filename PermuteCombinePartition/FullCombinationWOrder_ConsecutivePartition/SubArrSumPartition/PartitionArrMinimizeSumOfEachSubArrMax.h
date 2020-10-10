@@ -84,6 +84,32 @@ public:
         return res;
     }
 
+    //DFS: O(N^2*d) time, O(N*d) space
+    int Recur3(std::vector<int> && jobDifficulty, int d)
+    {
+        int N = jobDifficulty.size();
+        if (N < d) return -1;
+        std::vector<std::vector<int>> memo(N+1, std::vector<int>(d+1,-1));
+        int res = recur3(jobDifficulty, 0, d, memo);
+        std::cout << "PartitionArrMinimizeSumOfEachSubArrMax Recur3 for [" << Debug::ToStr1D<int>()(jobDifficulty) << "], k=" << d << ": " << res << std::endl;
+        return res;
+    }
+    int recur3(std::vector<int> & v, int idx, int k, std::vector<std::vector<int>> & memo)
+    {
+        int N = v.size();
+        if (idx == N && k == 0) return 0;
+        if (idx == N || k == 0) return INT_MAX;
+        if (memo[idx][k] != -1) return memo[idx][k];
+        int curMax = v[idx];
+        long long minMaxSum = INT_MAX;
+        for (auto i = idx; i < N; ++i)
+        {
+            curMax = std::max(curMax, v[i]);
+            minMaxSum = std::min(minMaxSum, (long long)curMax + (long long)recur3(v, i+1, k-1, memo));
+        }
+        return memo[idx][k] = (int)minMaxSum;
+    }
+
     //there are iterative DP solutions with O(N*d) time ....
 };
 /*
