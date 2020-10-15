@@ -79,6 +79,42 @@ public:
 	CourseSchedule(){}
 	~CourseSchedule(){}
 
+    bool CanFinish_BFS(int numCourses, std::vector<std::vector<int>> & prerequisites)
+    {
+        //note: forward topo sort iteration can reach all leaf nodes where the paths don't contain a cycle, and can reach all first nodes that are on a cycle and stop there
+        //note: reversed topo sort iteration will stop at a node that has an edge that doesn't lead to dest eventually, and stop at first nodes that are on a cycle
+        //BFS topo sort
+        std::vector<std::vector<int>> dgraph(numCourses, std::vector<int>());
+        std::vector<int> inDegree(numCourses, 0);
+        for (auto &e : prerequisites)
+        {
+            dgraph[e[1]].push_back(e[0]);
+            inDegree[e[0]]++;
+        }
+        std::queue<int> que;
+        std::vector<int> visit(numCourses, 0);
+        std::vector<int> res;
+        for (int i = 0; i < numCourses; ++i)
+            if (inDegree[i] == 0)
+                que.push(i);
+        while (!que.empty())
+        {
+            int cur = que.front();
+            que.pop();
+            if (visit[cur]) continue;
+            visit[cur] = 1;
+            res.push_back(cur);
+            for (int nxt : dgraph[cur])
+            {
+                --inDegree[nxt];
+                if (inDegree[nxt] == 0)
+                    que.push(nxt);
+            }
+        }
+        for (auto & d : inDegree)
+            if (d > 0) return false;//has cycle!
+        return true;
+    }
 	bool CanFinish(int numCourses, const std::vector<std::pair<int, int>> & prerequisites)//first: to, second: from
 	{
 		//1. construct DAG adjacency list (adjacency matrix: memory limit exceeded!)
@@ -119,6 +155,43 @@ public:
 		std::cout << "CourseSchedule CanFinish for \"" << numCourses << ", " << Debug::ToStr1D<int>()(prerequisites) << "\": " << !hasCycle << std::endl;
 		return !hasCycle;
 	}
+
+    std::vector<int> FindOrder_BFS(int numCourses, std::vector<std::vector<int>> & prerequisites)
+    {
+        //note: forward topo sort iteration can reach all leaf nodes where the paths don't contain a cycle, and can reach all first nodes that are on a cycle and stop there
+        //note: reversed topo sort iteration will stop at a node that has an edge that doesn't lead to dest eventually, and stop at first nodes that are on a cycle
+        //BFS topo sort
+        std::vector<std::vector<int>> dgraph(numCourses, std::vector<int>());
+        std::vector<int> inDegree(numCourses, 0);
+        for (auto &e : prerequisites)
+        {
+            dgraph[e[1]].push_back(e[0]);
+            inDegree[e[0]]++;
+        }
+        std::queue<int> que;
+        std::vector<int> visit(numCourses, 0);
+        std::vector<int> res;
+        for (int i = 0; i < numCourses; ++i)
+            if (inDegree[i] == 0)
+                que.push(i);
+        while (!que.empty())
+        {
+            int cur = que.front();
+            que.pop();
+            if (visit[cur]) continue;
+            visit[cur] = 1;
+            res.push_back(cur);
+            for (int nxt : dgraph[cur])
+            {
+                --inDegree[nxt];
+                if (inDegree[nxt] == 0)
+                    que.push(nxt);
+            }
+        }
+        for (auto & d : inDegree)
+            if (d > 0) return {};//has cycle!
+        return res;
+    }
 	std::vector<int> FindOrder(int numCourses, const std::vector<std::pair<int, int>> & prerequisites)//first: to, second: from
 	{
 		//1. construct DAG adjacency list (adjacency matrix: memory limit exceeded!)
