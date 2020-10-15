@@ -80,9 +80,9 @@ public:
 		int N = org.size();
 		if (N != stk.size()) return false;
 
-		//no need to compare one by one !!!!
-		//for (int i = 0; i < N; ++i)
-		//    if (org[i] != stk[i]) return false;
+		//need to compare one by one !!!!
+		for (int i = 0; i < N; ++i)
+		    if (org[i] != stk[i]) return false;
 
 		for (int i = 0; i < N - 1; ++i)
 		{
@@ -150,12 +150,9 @@ public:
 			res.push_back(cur);
 			for (const auto & nxt : DAG[cur])
 			{
-				if (inDegree[nxt] > 0)
-				{
-					--inDegree[nxt];
-					if (inDegree[nxt] == 0)
-						que.push(nxt);
-				}
+			    --inDegree[nxt];
+			    if (inDegree[nxt] == 0)
+			        que.push(nxt);
 			}
 		}
 		for (const auto & p : inDegree)
@@ -164,9 +161,9 @@ public:
 		int N = org.size();
 		if (N != res.size()) return false;
 
-		//no need to compare one by one !!!!
-		//for (int i = 0; i < N; ++i)
-		//    if (org[i] != res[i]) return false;
+		//need to compare one by one !!!!
+		for (int i = 0; i < N; ++i)
+		    if (org[i] != res[i]) return false;
 
 		for (int i = 0; i < N - 1; ++i)
 		{
