@@ -108,6 +108,8 @@ public:
 					DAG.insert({ words[i][j] - 'a',std::unordered_set<int>() });
 		for (int i = 0; i < N - 1; ++i)
 		{
+            if (words[i].size() > words[i+1].size() && words[i].substr(0, words[i+1].size()) == words[i+1])
+                return "";//word[i+1] is a prefix of word[i] !!!!
 			int len = std::min(words[i].size(), words[i + 1].size());
 			for (int j = 0; j < len; ++j)
 			{
@@ -168,6 +170,8 @@ public:
 					DAG.insert({ words[i][j] - 'a',std::unordered_set<int>() });
 		for (int i = 0; i < N - 1; ++i)
 		{
+            if (words[i].size() > words[i+1].size() && words[i].substr(0, words[i+1].size()) == words[i+1])
+                return "";//word[i+1] is a prefix of word[i] !!!!
 			int len = std::min(words[i].size(), words[i + 1].size());
 			for (int j = 0; j < len; ++j)
 			{
@@ -200,12 +204,9 @@ public:
 			resV.push_back(cur);
 			for (const auto & nxt : DAG[cur])
 			{
-				if (inDegree[nxt] > 0)
-				{
-					--inDegree[nxt];
-					if (inDegree[nxt] == 0)
-						que.push(nxt);
-				}
+			    --inDegree[nxt];
+			    if (inDegree[nxt] == 0)
+			        que.push(nxt);
 			}
 		}
 
