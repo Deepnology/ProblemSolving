@@ -22,6 +22,60 @@ public:
 	LongestIncrAdjConsecuNumSeqInMatrix(){}
 	~LongestIncrAdjConsecuNumSeqInMatrix(){}
 
+    int LongestPathInDAG_BFS(const std::vector<std::vector<int> > & board)
+    {
+        //LongestPathInDAG_BFS
+        if (board.empty() || board[0].empty())
+            return 0;
+        int N = board.size();
+        int M = board[0].size();
+        std::vector<std::vector<int>> dir({{1,0},{-1,0},{0,1},{0,-1}});
+        std::vector<std::vector<int>> inDegree(N, std::vector<int>(M, 0));
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < M; ++j)
+                for (int d = 0; d < 4; ++d)
+                {
+                    int r = i + dir[d][0];
+                    int c = j + dir[d][1];
+                    if (r>=0&&r<N&&c>=0&&c<M)
+                    {
+                        if (board[r][c] < board[i][j])
+                            inDegree[i][j]++;
+                    }
+                }
+        std::queue<std::vector<int>> que;
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < M; ++j)
+                if (inDegree[i][j] == 0)
+                    que.push({i,j});
+        int dist = 0;
+        while (!que.empty())
+        {
+            int count = que.size();
+            while(count-- > 0)
+            {
+                auto cur = que.front();
+                que.pop();
+                for (int d = 0; d < 4; ++d)
+                {
+                    int r = cur[0] + dir[d][0];
+                    int c = cur[1] + dir[d][1];
+                    if (r>=0&&r<N&&c>=0&&c<M)
+                    {
+                        if (board[r][c] > board[cur[0]][cur[1]])
+                        {
+                            --inDegree[r][c];
+                            if (inDegree[r][c] == 0)
+                                que.push({r, c});
+                        }
+                    }
+                }
+            }
+            ++dist;
+        }
+        return dist;
+    }
+
 	void DFS_DP2D(const std::vector<std::vector<int> > & board)
 	{
 		if (board.empty() || board[0].empty())
