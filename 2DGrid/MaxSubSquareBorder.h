@@ -16,12 +16,41 @@ Once we found the first valid square matrix, we are done.
 
 BruteForce: O(n^4) time
 Preprocess: O(n^3) time, O(n^2) space
+
+Leetcode: Largest 1-Bordered Square
+Given a 2D grid of 0s and 1s, return the number of elements in the largest square subgrid that has all 1s on its border
+ , or 0 if such a subgrid doesn't exist in the grid.
 */
 class MaxSubSquareBorder
 {
 public:
 	MaxSubSquareBorder(){}
 	~MaxSubSquareBorder(){}
+
+    int FindAreaSurroundedByMax1sSquareBorder(std::vector<std::vector<int>> & grid)
+    {
+        //O(N^3) time
+        int N = grid.size(); int M = grid[0].size();
+        std::vector<std::vector<int>> left(N, std::vector<int>(M, 0));
+        std::vector<std::vector<int>> top(N, std::vector<int>(M, 0));
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < M; ++j)
+                if (grid[i][j])
+                {
+                    left[i][j] = (j>0?left[i][j-1]+1:1);
+                    top[i][j] = (i>0?top[i-1][j]+1:1);
+                    //std::cout << i << "," << j << ":" << left[i][j] << "," << top[i][j] << std::endl;
+                }
+        for (int len = std::min(N, M); len > 0; --len)
+            for (int i = 0; i+len-1 < N; ++i)
+                for (int j = 0; j+len-1 < M; ++j)
+                    if (grid[i][j]
+                        &&left[i+len-1][j+len-1] >= len && top[i+len-1][j+len-1] >= len
+                        && left[i][j+len-1] >= len
+                        && top[i+len-1][j] >= len)
+                        return len*len;
+        return 0;
+    }
 
 	void BruteForce(const std::vector<std::vector<int> > & board)
 	{
