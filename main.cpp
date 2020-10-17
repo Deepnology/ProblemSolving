@@ -408,7 +408,6 @@
 #include "SortSearchSelect/BinarySearchInSortedRange/CutWoodsToKPiecesWSameLen.h"
 #include "SortSearchSelect/PrintSeqInOrderFromUnorderedStream.h"
 #include "SortSearchSelect/EqualGlobalAndLocalInversions.h"
-#include "SortSearchSelect/MinimizeMaxDistToGasStation.h"
 #include "SortSearchSelect/Sort/MaxNumPartitionsToSort.h"
 #include "SortSearchSelect/MinCostHireKWorkers.h"
 #include "SortSearchSelect/Sort/BucketSort/KClosest2DPointsToOrigin.h"
@@ -441,6 +440,7 @@
 #include "Interval/NonCoverredFromListsOfNonOvlpIntervals.h"
 #include "Interval/ExamRoom.h"
 #include "Interval/LoginCountFromUnorderedStream.h"
+#include "Interval/MinimizeMaxDistBtwGasStationAddKMore.h"
 
 /*Permute Combine Partition*/
 #include "PermuteCombinePartition/Permutation/Permutations.h"
@@ -844,7 +844,7 @@
 #include "BinaryTree/ToBST/ConvertSortedListToBinarySearchTree.h"
 #include "BinaryTree/RecoverAlmostBinarySearchTree.h"
 #include "BinaryTree/EnumerateSubtreeConsecuPartition/UniqueBinarySearchTree.h"
-#include "BinaryTree/Deform/FlattenBinaryTreeToLinkedList.h"
+#include "BinaryTree/Deform/FlattenBinaryTreeInPreorder.h"
 #include "BinaryTree/PopulatingNextRightPtr.h"
 #include "BinaryTree/CompareBT/SymmetricBinaryTree.h"
 #include "BinaryTree/Path/SumRootToLeafNums.h"
@@ -4598,10 +4598,6 @@ int main()
         EqualGlobalAndLocalInversions().Test(std::vector<int>({1,2,0}));
     }
     {
-        MinimizeMaxDistToGasStation().MaxHeapGreedyAssign(std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), 9);
-        MinimizeMaxDistToGasStation().BinarySearch(std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), 9);
-    }
-    {
         MaxNumPartitionsToSort().FromIdxSeqArr(std::vector<int>({1,0,2,3,4}));
         MaxNumPartitionsToSort().WithDuplicates(std::vector<int>({2,1,3,4,4}));
     }
@@ -4826,6 +4822,10 @@ int main()
         m.QueryLoginCount(20);
         m.QueryLoginCount(70);
         m.QueryLoginCount(15);
+    }
+    {
+        MinimizeMaxDistBtwGasStationAddKMore().MaxHeapGreedyAssign(std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), 9);
+        MinimizeMaxDistBtwGasStationAddKMore().BinarySearch(std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), 9);
     }
 
 #endif
@@ -5542,8 +5542,8 @@ int main()
         CountPermu1toNWPrimeOnPrimeIdx().Solve(100);
     }
     {
-        PartitionArrMinimizeSumOfEachSubArrMax().Recur(std::vector<int>({30,10,40,20,50}),2);
-        PartitionArrMinimizeSumOfEachSubArrMax().Recur(std::vector<int>({74303,20452,66120,44483,5370,68585}),5);
+        PartitionArrMinimizeSumOfEachSubArrMax().Recur2(std::vector<int>({30,10,40,20,50}),2);
+        PartitionArrMinimizeSumOfEachSubArrMax().Recur2(std::vector<int>({74303,20452,66120,44483,5370,68585}),5);
     }
     {
         AllNumsInLeftSubArrLessEqualRight().Test(std::vector<int>({1,1,1,0,6,12}));
@@ -9931,19 +9931,19 @@ int main()
 		RecoverAlmostBinarySearchTree::DeleteTree(rbstRoot);
 	}
 	{
-		FlattenBinaryTreeToLinkedList::TreeNode * fbttllRoot = new FlattenBinaryTreeToLinkedList::TreeNode(1);
-		fbttllRoot->left = new FlattenBinaryTreeToLinkedList::TreeNode(2);
-		fbttllRoot->left->left = new FlattenBinaryTreeToLinkedList::TreeNode(3);
-		fbttllRoot->left->right = new FlattenBinaryTreeToLinkedList::TreeNode(4);
-		fbttllRoot->right = new FlattenBinaryTreeToLinkedList::TreeNode(5);
-		fbttllRoot->right->right = new FlattenBinaryTreeToLinkedList::TreeNode(6);
-		bstOss << "FlattenBinaryTreeToLinkedList:" << std::endl;
-		PrintBinaryTree<FlattenBinaryTreeToLinkedList::TreeNode, std::ostringstream>(fbttllRoot, bstOss);
-		FlattenBinaryTreeToLinkedList().GO(fbttllRoot);
-		PrintBinaryTree<FlattenBinaryTreeToLinkedList::TreeNode, std::ostringstream>(fbttllRoot, bstOss);
+		FlattenBinaryTreeInPreorder::TreeNode * fbttllRoot = new FlattenBinaryTreeInPreorder::TreeNode(1);
+		fbttllRoot->left = new FlattenBinaryTreeInPreorder::TreeNode(2);
+		fbttllRoot->left->left = new FlattenBinaryTreeInPreorder::TreeNode(3);
+		fbttllRoot->left->right = new FlattenBinaryTreeInPreorder::TreeNode(4);
+		fbttllRoot->right = new FlattenBinaryTreeInPreorder::TreeNode(5);
+		fbttllRoot->right->right = new FlattenBinaryTreeInPreorder::TreeNode(6);
+		bstOss << "FlattenBinaryTreeInPreorder:" << std::endl;
+		PrintBinaryTree<FlattenBinaryTreeInPreorder::TreeNode, std::ostringstream>(fbttllRoot, bstOss);
+		FlattenBinaryTreeInPreorder().Inplace(fbttllRoot);
+		PrintBinaryTree<FlattenBinaryTreeInPreorder::TreeNode, std::ostringstream>(fbttllRoot, bstOss);
 		std::cout << bstOss.str() << std::endl;
 		bstOss.str(std::string());
-		FlattenBinaryTreeToLinkedList::DeleteTree(fbttllRoot);
+		FlattenBinaryTreeInPreorder::DeleteTree(fbttllRoot);
 	}
 	{
 		PopulatingNextRightPtr::TreeLinkNode * pnrpRootPerf = new PopulatingNextRightPtr::TreeLinkNode(1);
@@ -12768,6 +12768,15 @@ int main()
                     {0,0,0,0,0,1},
                     {0,0,0,0,0,1},
                     {0,0,0,0,0,0},
+                }));
+        LongestPathInDAG().BFS(std::vector<std::vector<int>>(
+                {
+                        {0,1,0,0,0,0},
+                        {0,0,1,0,0,0},
+                        {0,0,0,1,0,0},
+                        {0,0,0,0,0,1},
+                        {0,0,0,0,0,1},
+                        {0,0,0,0,0,0},
                 }));
 	}
 	{
