@@ -11,6 +11,12 @@ return 0.
 s = "loveleetcode",
 return 2.
 Note: You may assume the string contain only lowercase letters.
+Leetcode: First Unique Number
+You have a queue of integers, you need to retrieve the first unique integer in the queue.
+Implement the FirstUnique class:
+FirstUnique(int[] nums) Initializes the object with the numbers in the queue.
+int showFirstUnique() returns the value of the first unique integer of the queue, and returns -1 if there is no such integer.
+void add(int value) insert value to the queue.
 see also FirstUniqueURL.h
 */
 class FirstUniqueCharInString
@@ -53,5 +59,41 @@ public:
 				return i;
 		return -1;
 	}
+};
+class FirstUniqueNumber
+{
+    std::list<int> L;
+    std::unordered_map<int,std::list<int>::iterator> M;
+public:
+    FirstUniqueNumber(std::vector<int> & nums)
+    {
+        for (auto & n : nums)
+            add(n);
+    }
+
+    int showFirstUnique()
+    {
+        if (L.empty()) return -1;
+        return *L.begin();
+    }
+
+    void add(int val)
+    {
+        if (!M.count(val))
+        {
+            L.push_back(val);
+            auto itr = std::prev(L.end());
+            M.insert({val, itr});
+        }
+        else
+        {
+            auto itr = M[val];
+            if (itr != L.end())//means val is the second time added
+            {
+                L.erase(itr);
+                M[val] = L.end();//mark val that occurs for the second time
+            }
+        }
+    }
 };
 #endif
