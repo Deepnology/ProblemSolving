@@ -126,6 +126,44 @@ private:
 		}
 		stk.push(v);
 	}
+
+public:
+    int BFS(const std::vector<std::vector<int>> & DAG)
+    {
+	    int N = DAG.size();
+	    std::vector<int> inDegree(N, 0);
+	    for (auto i = 0; i < N; ++i)
+	        for (auto j = 0; j < N; ++j)
+	            if (DAG[i][j])
+	                ++inDegree[j];
+
+	    std::queue<int> que;
+	    for (auto i = 0; i < N; ++i)
+	        if (inDegree[i] == 0)
+	            que.push(i);
+
+	    int dist = 0;
+	    while (!que.empty())
+        {
+	        int count = que.size();
+	        while (count-- > 0)
+            {
+	            int cur = que.front();
+	            que.pop();
+	            for (auto nxt = 0; nxt < N; ++nxt)
+	                if (DAG[cur][nxt])
+                    {
+	                    --inDegree[nxt];
+	                    if (inDegree[nxt] == 0)
+	                        que.push(nxt);
+                    }
+            }
+	        ++dist;
+        }
+        Debug::Print2D<int>()(DAG, false);
+        std::cout << "LongestPathInDAG BFS: " << dist << std::endl;
+	    return dist;
+    }
 };
 /*
 		   4    5    2
@@ -218,5 +256,15 @@ Row#4	=  ,  ,  ,
 Row#5	= 0, 1, 2, 3
 
 LongestPathInDAG DFS for topologicalSort="5, 3, 2, 1, 0, 4", dist From InDegree=0 Nodes: 0, 1, 2, 3, 0, 4
+
+[rY][cX]
+Row#0	= 0, 1, 0, 0, 0, 0
+Row#1	= 0, 0, 1, 0, 0, 0
+Row#2	= 0, 0, 0, 1, 0, 0
+Row#3	= 0, 0, 0, 0, 0, 1
+Row#4	= 0, 0, 0, 0, 0, 1
+Row#5	= 0, 0, 0, 0, 0, 0
+
+LongestPathInDAG BFS: 5
 */
 #endif
