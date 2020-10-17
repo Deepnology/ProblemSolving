@@ -1,5 +1,6 @@
-#ifndef FLATTEN_BINARY_TREE_TO_LINKED_LIST_H
-#define FLATTEN_BINARY_TREE_TO_LINKED_LIST_H
+#ifndef FLATTEN_BINARY_TREE_IN_PREORDER_H
+#define FLATTEN_BINARY_TREE_IN_PREORDER_H
+#include "Debug.h"
 /*
 Leetcode: Tree To Linked List
 // Flatten Binary Tree to Linked List
@@ -61,11 +62,11 @@ Leetcode: Tree To Linked List
 //                   6
 */
 
-class FlattenBinaryTreeToLinkedList
+class FlattenBinaryTreeInPreorder
 {
 public:
-	FlattenBinaryTreeToLinkedList(){}
-	~FlattenBinaryTreeToLinkedList(){}
+	FlattenBinaryTreeInPreorder(){}
+	~FlattenBinaryTreeInPreorder(){}
 
 	struct TreeNode
 	{
@@ -104,7 +105,7 @@ public:
 		}
 	}
 
-	void GO(TreeNode * root)
+	void Inplace(TreeNode * root)
 	{
 		while (root != NULL)
 		{
@@ -142,7 +143,7 @@ public:
 	}
 };
 /*
-FlattenBinaryTreeToLinkedList:
+FlattenBinaryTreeInPreorder:
       
        1
     __ 1__
