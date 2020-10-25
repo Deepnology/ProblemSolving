@@ -19,6 +19,8 @@ Explanation: We can't form any team given the conditions.
 Example 3:
 Input: rating = [1,2,3,4]
 Output: 4
+
+see also MinNumBySwapKAdjDigits.h, LoginCountFromUnorderedStream.h
  */
 class CountIncrOrDecrSubseqOfLen3
 {
