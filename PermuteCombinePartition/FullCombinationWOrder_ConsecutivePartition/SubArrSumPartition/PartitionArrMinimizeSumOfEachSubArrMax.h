@@ -2,7 +2,7 @@
 #define _PARTITION_ARR_MINIMIZE_SUM_OF_EACH_SUB_ARR_MAX_H
 #include "Debug.h"
 /*
-AIG hackerrank online coding
+AIG hackerrank online coding, Amazon OA
 Given an integer array, partition the array into k subarrays such that the sum of each subarray's max integer is minimized.
 ex:
  [30, 10, 40, 20, 50], k=2: 80 ([30],[10,40,20,50] where sum=30+50=80)
@@ -115,5 +115,19 @@ public:
 /*
 PartitionArrMinimizeSumOfEachSubArrMax Recur for [30, 10, 40, 20, 50], k=2: 80
 PartitionArrMinimizeSumOfEachSubArrMax Recur for [74303, 20452, 66120, 44483, 5370, 68585], k=5: 234830
+ */
+/*
+Recur2:
+the question is equivalent to partition an array into k subarrays such that the sum of each subarray's max value is minimized
+we can perform a DFS: keep track of current size of v[0:curSize-1] and current group k that should be applied in v[0:curSize-1] and get current sum of left subarray's max value and right subarray's max value
+the corner case: when there is only 1 group left in the range v[0:curSize-1]: just find the max number in the range
+otherwise, we enumerate all possible partitions in v[0:curSize-1] to apply (k-1) groups in the left part and 1 group in the right part, while we also keep track of the max value in the right part
+since the left size must be >= k-1 (need to have at least k-1 groups for left part), so right size must be <= curSize-(k-1)
+then we can get the sum of the two subarray's max from the next level DFS (which is for the left subarray) and the running max value from right subarray
+then we keep track of minimized max sum, and return it
+since the DFS will encounter many duplicated cases, we can memorize the answers that have already been calculated
+Analysis:
+O(N^2*k) time, where N is total number of complexity, k is total number of days
+O(N*k) space, where N is total number of complexity, k is total number of days
  */
 #endif
