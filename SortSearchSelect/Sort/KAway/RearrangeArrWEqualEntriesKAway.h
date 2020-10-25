@@ -58,6 +58,8 @@ Output: [2,1,2,1,2,1]
 Example 2:
 Input: [1,1,1,1,2,2,3,3]
 Output: [1,3,1,3,2,1,2,1]
+
+Leetcode: Longest Happy String, String Without AAA or BBB
 */
 class RearrangeArrWEqualEntriesKAway
 {
@@ -365,7 +367,7 @@ public:
         return res;
     }
 };
-class RearrangeArrWo3ConsecuEqualChars //Amazon OA
+class RearrangeArrWo3ConsecuEqualChars //Amazon OA, Longest Happy String, String Without AAA or BBB
 {
 public:
 	RearrangeArrWo3ConsecuEqualChars(){}
@@ -402,7 +404,8 @@ public:
 					res.push_back(nxt.second);
 					res.push_back(nxt.second);
 					nxt.first -= 2;
-				} else
+				}
+				else
 				{
 					res.push_back(nxt.second);
 					--nxt.first;
@@ -410,14 +413,16 @@ public:
 				if (nxt.first > 0)
 					remains.push_back(nxt);
 				maxHeap.push(cur);
-			} else
+			}
+			else
 			{
 				if (cur.first >= 2)
 				{
 					res.push_back(cur.second);
 					res.push_back(cur.second);
 					cur.first -= 2;
-				} else
+				}
+				else
 				{
 					res.push_back(cur.second);
 					--cur.first;
@@ -429,10 +434,43 @@ public:
 			for (auto & p : remains)
 				maxHeap.push(p);
 		}
-
 		std::cout << "RearrangeArrWo3ConsecuEqualChars UseMaxHeap for " << countA << ", " << countB << ", " << countC << ": " << res << std::endl;
 		return res;
 	}
+    std::string UseMaxHeap2(int a, int b, int c)
+    {
+        std::priority_queue<std::pair<int,char>,std::vector<std::pair<int,char>>,Less> maxHeap;
+        if (a > 0) maxHeap.push({a,'a'});
+        if (b > 0) maxHeap.push({b,'b'});
+        if (c > 0) maxHeap.push({c,'c'});
+        std::string res;
+        char prev2 = '#';
+        char prev1 = '#';
+        while (!maxHeap.empty())
+        {
+            auto [count1, c1] = maxHeap.top();
+            maxHeap.pop();
+            if (c1 == prev1 && c1 == prev2)
+            {
+                if (maxHeap.empty()) return res;
+                auto [count2, c2] = maxHeap.top();
+                maxHeap.pop();
+                res.push_back(c2);
+                maxHeap.push({count1, c1});
+                if (--count2 > 0) maxHeap.push({count2, c2});
+                prev2 = prev1;
+                prev1 = c2;
+            }
+            else
+            {
+                res.push_back(c1);
+                if (--count1 > 0) maxHeap.push({count1, c1});
+                prev2 = prev1;
+                prev1 = c1;
+            }
+        }
+        return res;
+    }
 };
 /*
 RearrangeArrWEqualEntriesKAway MaxHeapGreedyAssign for "2", "aabbcc": abcabc
