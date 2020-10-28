@@ -49,15 +49,15 @@ private:
             auto nxtItr = m_sortedHashRing.upper_bound(curHash); //delete and return all the keys that need to be re-hashed
             if (nxtItr == m_sortedHashRing.end())
                 nxtItr = m_sortedHashRing.begin();
-            std::list<std::pair<K, V>> * bucket = nxtItr->second;
-            for (auto itr = bucket->begin(); itr != bucket->end(); )
+            std::list<std::pair<K, V>> * nxtBucket = nxtItr->second;
+            for (auto itr = nxtBucket->begin(); itr != nxtBucket->end(); )
             {
                 size_t nxtHash = m_keyHash(itr->first);
                 if (m_sortedHashRing.lower_bound(nxtHash) == curItr.first //1. nxtHash hits the current node
                     || m_sortedHashRing.lower_bound(nxtHash) == m_sortedHashRing.end()) //2. curHash is m_sortedHashRing.begin()
                 {
                     res.push_back({itr->first, itr->second});
-                    itr = bucket->erase(itr);
+                    itr = nxtBucket->erase(itr);
                 }
                 else
                     ++itr;
