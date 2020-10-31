@@ -10,7 +10,7 @@
 /*
 Leetcode: Walls and Gates
 Given a 2D N*M matrix with obstacles, find the shortest distance of each non-obstacle to a (nearest) source.
-1. single source: ���i�P���� Shortest path in maze
+1. single source: Shortest path in maze
 2. multi-source:
 Google
 http://www.careercup.com/question?id=4716965625069568
