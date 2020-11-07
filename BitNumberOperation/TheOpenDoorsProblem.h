@@ -48,6 +48,13 @@ Input: n = 3, m = 1.
 Output: 4
 Explanation: Status can be: [off, on, off], [on, off, on], [off, off, off], [off, on, on].
 Note: n and m both fit in range [0, 1000].
+
+Leetcode: Bulb Switcher III
+There is a room with n bulbs, numbered from 1 to n, arranged in a row from left to right.
+Initially, all the bulbs are turned off.
+At moment k (for k from 0 to n - 1), we turn on the light[k] bulb.
+A bulb change color to blue only if it is on and all the previous bulbs (to the left) are turned on too.
+Return the number of moments in which all turned on bulbs are blue.
 */
 class TheOpenDoorsProblem
 {
@@ -55,6 +62,7 @@ public:
 	TheOpenDoorsProblem(){}
 	~TheOpenDoorsProblem(){}
 
+	//index: 1, 2, 3, ..., count
 	std::vector<int> AllOpenDoors(int count)
 	{
 		//find all the perfect square numbers that are smaller than or equal to count
@@ -65,6 +73,7 @@ public:
 		std::cout << "TheOpenDoorsProblem AllOpenDoors for \"" << count << "\" doors: " << Debug::ToStr1D<int>()(res) << std::endl;
 		return res;
 	}
+	//index: 1, 2, 3, ..., count
 	bool IsOpenFinally(int doorIdx)
 	{
 		//check if doorIdx is a perfect square number
@@ -73,6 +82,19 @@ public:
 		std::cout << "TheOpenDoorsProblem IsOpenFinally for \"" << doorIdx << "-th\" door: " << res << std::endl;
 		return res;
 	}
+	//index: 1, 2, 3, ....
+	int NumOfTimesTurningBlue(std::vector<int> & light)//light[i]: the index that (i-1)th bulb is turned on
+    {
+        int res = 0;
+        int right = 0;//rightmost bulb that is turned on
+        for (int i = 0; i < light.size(); ++i)
+        {
+            right = std::max(right, light[i]);
+            if (right == i+1) //now i+1 bulbs have been turned on, and if rightmost bulb is on, all i+1 bulbs will turn blue
+                ++res;
+        }
+        return res;
+    }
 };
 /*
 TheOpenDoorsProblem AllOpenDoors for "100" doors: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100
