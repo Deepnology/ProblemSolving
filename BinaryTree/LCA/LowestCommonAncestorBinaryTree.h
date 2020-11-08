@@ -10,7 +10,7 @@
 #include "Debug.h"
 #include "PrintBinaryTree.h"
 /*
-Leetcode: Lowest Common Ancestor of a Binary Tree
+Leetcode: Lowest Common Ancestor of a Binary Tree, Lowest Common Ancestor of a Binary Tree II
 Elements of programming interview, BinaryTree: Find_Recur, Find_Iterate_WParentPtr O(h) time, O(1) space
 Elements of programming interview, HashTable: Find_IterateHashTable_WParentPtr O(max(depthA, depthB)-depthLCA) time and space
 http://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/
@@ -39,7 +39,25 @@ public:
 		TreeNode * parent;
 	};
 
-	//1.0.a the best
+	//0. if a==NULL or b==NULL, return NULL
+    TreeNode* IsExist_Find(TreeNode* root, TreeNode* a, TreeNode* b)
+    {
+        auto res = existRecur(root, a, b);
+        return res.second ? res.first : NULL;
+    }
+private:
+    std::pair<TreeNode *,bool> existRecur(TreeNode * cur, TreeNode * a, TreeNode * b)//<LCA,found both>
+    {
+        if (cur == NULL) return { NULL, false };
+        auto left = existRecur(cur->left, a, b);
+        auto right = existRecur(cur->right, a, b);
+        if (left.first && right.first) return { cur, true };
+        if (cur == a || cur == b) return { cur, left.first || right.first };
+        return left.first ? left : right;
+    }
+
+public:
+	//1.0.a
 	TreeNode * FindRecur(TreeNode * root, TreeNode * a, TreeNode * b)
 	{
 		TreeNode * res = recur(root, a, b);
