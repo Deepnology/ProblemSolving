@@ -140,9 +140,10 @@ public:
 	    std::queue<int> que;
 	    for (auto i = 0; i < N; ++i)
 	        if (inDegree[i] == 0)
-	            que.push(i);
+                que.push(i);
 
-	    int dist = 0;
+	    int dist = 0;//dist of critical path
+	    std::vector<int> topo;//topological sort order
 	    while (!que.empty())
         {
 	        int count = que.size();
@@ -150,6 +151,7 @@ public:
             {
 	            int cur = que.front();
 	            que.pop();
+	            topo.push_back(cur);
 	            for (auto nxt = 0; nxt < N; ++nxt)
 	                if (DAG[cur][nxt])
                     {
@@ -160,6 +162,10 @@ public:
             }
 	        ++dist;
         }
+	    for (auto & d : inDegree)
+	        if (d > 0) return -1; //has cycle !!
+
+
         Debug::Print2D<int>()(DAG, false);
         std::cout << "LongestPathInDAG BFS: " << dist << std::endl;
 	    return dist;
