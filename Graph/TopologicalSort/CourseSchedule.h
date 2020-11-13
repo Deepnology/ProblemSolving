@@ -92,24 +92,27 @@ public:
             inDegree[e[0]]++;
         }
         std::queue<int> que;
-        std::vector<int> visit(numCourses, 0);
         std::vector<int> res;
         for (int i = 0; i < numCourses; ++i)
             if (inDegree[i] == 0)
                 que.push(i);
+        int dist = 0;//dist of critical path
         while (!que.empty())
         {
-            int cur = que.front();
-            que.pop();
-            if (visit[cur]) continue;
-            visit[cur] = 1;
-            res.push_back(cur);
-            for (int nxt : dgraph[cur])
+            int levelCount = que.size();
+            while (levelCount-- > 0)
             {
-                --inDegree[nxt];
-                if (inDegree[nxt] == 0)
-                    que.push(nxt);
+                int cur = que.front();
+                que.pop();
+                res.push_back(cur);
+                for (int nxt : dgraph[cur])
+                {
+                    --inDegree[nxt];
+                    if (inDegree[nxt] == 0)
+                        que.push(nxt);
+                }
             }
+            ++dist;
         }
         for (auto & d : inDegree)
             if (d > 0) return false;//has cycle!
@@ -169,24 +172,27 @@ public:
             inDegree[e[0]]++;
         }
         std::queue<int> que;
-        std::vector<int> visit(numCourses, 0);
         std::vector<int> res;
         for (int i = 0; i < numCourses; ++i)
             if (inDegree[i] == 0)
                 que.push(i);
+        int dist = 0;//dist of critical path
         while (!que.empty())
         {
-            int cur = que.front();
-            que.pop();
-            if (visit[cur]) continue;
-            visit[cur] = 1;
-            res.push_back(cur);
-            for (int nxt : dgraph[cur])
+            int levelCount = que.size();
+            while (levelCount-- > 0)
             {
-                --inDegree[nxt];
-                if (inDegree[nxt] == 0)
-                    que.push(nxt);
+                int cur = que.front();
+                que.pop();
+                res.push_back(cur);
+                for (int nxt : dgraph[cur])
+                {
+                    --inDegree[nxt];
+                    if (inDegree[nxt] == 0)
+                        que.push(nxt);
+                }
             }
+            ++dist;
         }
         for (auto & d : inDegree)
             if (d > 0) return {};//has cycle!
