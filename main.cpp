@@ -130,7 +130,7 @@
 #include "BitNumberOperation/ConvertBase/RomanToInteger.h"
 #include "BitNumberOperation/SpecialNumSeq/CountAndSay.h"
 #include "BitNumberOperation/SpecialNumSeq/BFS/FirstKAPlusBSqrt2.h"
-#include "BitNumberOperation/CollatzConjecture.h"
+#include "BitNumberOperation/BreakNumConverge/CollatzConjecture.h"
 #include "BitNumberOperation/ConvertBase/ConvertExcelColumnId.h"
 #include "BitNumberOperation/SpecialNumSeq/BFS/ShortestStraightLineProgramXPowN.h"
 #include "BitNumberOperation/SpecialNumSeq/BFS/NthUglyNum.h"
@@ -139,15 +139,15 @@
 #include "BitNumberOperation/EncodeDecode/EliasGammaEncodedString.h"
 #include "BitNumberOperation/EncodeDecode/GrayCode.h"
 #include "BitNumberOperation/SpecialNumSeq/ClimbingStairs.h"
-#include "BitNumberOperation/Digit/HappyNumber.h"
+#include "BitNumberOperation/BreakNumConverge/HappyNumber.h"
 #include "BitNumberOperation/Bit/BitwiseANDofNumRange.h"
 #include "BitNumberOperation/ClockAngle.h"
 #include "BitNumberOperation/Digit/AddDigits.h"
-#include "BitNumberOperation/IntegerBreak.h"
+#include "BitNumberOperation/BreakNumConverge/IntegerBreak.h"
 #include "BitNumberOperation/SumOfAtMost4PerfectSquares.h"
 #include "BitNumberOperation/Digit/StrobogrammaticNumber.h"
 #include "BitNumberOperation/EncodeDecode/EncodeDecodeStrings.h"
-#include "BitNumberOperation/SpecialNumSeq/NimGame.h"
+#include "BitNumberOperation/BreakNumConverge/NimGame.h"
 #include "BitNumberOperation/NextPrevNum/NextPrePalindromeNum.h"
 #include "BitNumberOperation/NextPrevNum/ClosestPalindromeNum.h"
 #include "BitNumberOperation/Digit/PalindromeNumber.h"
@@ -228,6 +228,7 @@
 #include "StackQueue/MaxFreqStack.h"
 #include "StackQueue/ScoreOfParentheses.h"
 #include "StackQueue/RemoveOutermostParenOfEachPrimitive.h"
+#include "StackQueue/ChangeDirectoryCommand.h"
 
 /*1D Array*/
 #include "1DArray/AllUniqueElements.h"
@@ -275,7 +276,7 @@
 #include "1DArray/BuildingsViewSunset.h"
 #include "1DArray/NSum/ThreeSum.h"
 #include "1DArray/NSum/ThreeSumClosest.h"
-#include "1DArray/ThreeSumWithMultiplicity.h"
+#include "1DArray/NSum/ThreeSumWithMultiplicity.h"
 #include "1DArray/NSum/FourSum.h"
 #include "1DArray/NSum/TwoSum.h"
 #include "1DArray/NSum/TwoSumAbsSortedArray.h"
@@ -315,6 +316,7 @@
 #include "1DArray/CountPairWSumDivisibleByK.h"
 #include "1DArray/RepeatReverseSubstrsInParentheses.h"
 #include "1DArray/NumOfEquivalentDominoPairs.h"
+#include "1DArray/ComputeTimestampCustomerPassTurnstile.h"
 
 /*Sort Search Select*/
 #include "SortSearchSelect/Partition/Partition.h"
@@ -347,7 +349,7 @@
 #include "SortSearchSelect/SortedMatrix/KwayMergeSort.h"
 #include "SortSearchSelect/Partition/StablePartition.h"
 #include "SortSearchSelect/Sort/SortHeightsWFrontTallers.h"
-#include "SortSearchSelect/Sort/ShortestUnsortedSubarr.h"
+#include "SortSearchSelect/Sort/ShortestSubarrToSortToMakeArrSorted.h"
 #include "SortSearchSelect/SortedMatrix/KthSmallestPairSum2SortedArrays.h"
 #include "SortSearchSelect/SortedMatrix/BinarySearchInSortedRange/MinPairDiff2SortedArrays.h"
 #include "SortSearchSelect/Sort/KAway/SortNearlySortedArray.h"
@@ -419,6 +421,7 @@
 #include "SortSearchSelect/BinarySearchInSortedRange/KthSmallestNumInMissingRangeOfSortedArr.h"
 #include "SortSearchSelect/Sort/PancakeSort.h"
 #include "SortSearchSelect/MinCostScheduleHalfHalfTo2Cities.h"
+#include "SortSearchSelect/MinAdditionalReviewToExceedRatingThreshold.h"
 
 /*Interval*/
 #include "Interval/MergeIntervals.h"
@@ -635,6 +638,7 @@
 #include "FindSubstrSubseq/FindFirstDayContainKEmptySlots.h"
 #include "FindSubstrSubseq/SubArr/MaxMSubArrSumWSizeK.h"
 #include "FindSubstrSubseq/SubArr/SlidingWindow/AllSubstrSizeKContainDistinctChars.h"
+#include "FindSubstrSubseq/SubArr/SlidingWindow/AllSubstrSizeKContainKminus1DistinctChars.h"
 #include "FindSubstrSubseq/SubArr/SlidingWindow/MaxSubArrSumSizeK.h"
 #include "FindSubstrSubseq/SubArr/SortedStack/SumOfAllSubArrMins.h"
 #include "FindSubstrSubseq/SubArr/SortedStack/CountSubArrWLeftmostNumLessEqualToAll.h"
@@ -653,6 +657,7 @@
 #include "FindSubstrSubseq/SubArr/SlidingWindow/CountSubArrWMaxInRange.h"
 #include "FindSubstrSubseq/SubArr/SlidingWindow/MinConsecuKFlipIn01Arr.h"
 #include "FindSubstrSubseq/SubArr/PrefixSums/ExistSubArrWSumMultipleOfK.h"
+#include "FindSubstrSubseq/SubArr/PrefixSums/CountCharsInClosedCompartmentsWGivenRange.h"
 
 /*Compare String*/
 #include "CompareString/EditDistance.h"
@@ -946,6 +951,7 @@
 /*Graph*/
 #include "Graph/CloneGraph.h"
 #include "Graph/TrianglesInGraph.h"
+#include "Graph/MinTrioOutDegreeInGraph.h"
 #include "Graph/ShortestPath/ShortestPathInGraph.h"
 #include "Graph/GraphSearch.h"
 #include "Graph/Tarjan/StronglyConnectedComponents.h"
@@ -1011,6 +1017,7 @@
 #include "Graph/HamiltonPath/ShortestSuperStringOfAllStrings.h"
 #include "Graph/ShortestPath/ShortestPathWAltColorsInGraph.h"
 #include "Graph/UnionFind/MinLexicographicStrBySwapPairs.h"
+#include "Graph/UnionFind/LargestItemAssociation.h"
 
 /*RMQ LCA*/
 #include "RMQLCA/RangeSumQuerySegmentTree.h"
@@ -2707,6 +2714,8 @@ int main()
 
 		SimplifyPath().Stack(std::string("/../"));
 		NormalizePath().Stack(std::string("/../"));
+
+		ChangeDirectoryCommand().Test();
 	}
 	{
 		LongestAbsFilePath().UseStack(std::string("dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"));
@@ -3531,6 +3540,13 @@ int main()
     {
         NumOfEquivalentDominoPairs().Solve(std::vector<std::vector<int>>({{1,2},{1,2},{1,2}}));
     }
+    {
+        ComputeTimestampCustomerPassTurnstile().Solve({0,0,1,5},{0,1,1,0});
+        ComputeTimestampCustomerPassTurnstile().Solve({0,1,1,3,3},{0,1,0,0,1});
+        ComputeTimestampCustomerPassTurnstile().Solve({0,1,1,4,4},{1,0,1,0,1});
+        ComputeTimestampCustomerPassTurnstile().Solve({0,1,1,4,4},{1,0,1,0,0});
+        ComputeTimestampCustomerPassTurnstile().Solve({0,0,0,0,1,1,1},{0,1,1,0,1,0,1});
+    }
 
 #endif
 #ifdef _SortSearchSelect_
@@ -4000,9 +4016,9 @@ int main()
 		SortHeightsWFrontTallers().Sort_Insert(std::vector<std::pair<int, int>>({ { 4,0 },{ 3,0 },{ 2,1 },{ 1,1 } }));
 	}
 	{
-		ShortestUnsortedSubarr().Find(std::vector<int>({ 0, 1, 15, 25, 6, 7, 30, 40, 50 }));
-		ShortestUnsortedSubarr().Find(std::vector<int>({ 1, 2, 4, 7, 10, 11, 7, 12, 6, 7, 16, 18, 19 }));
-		ShortestUnsortedSubarr().Find(std::vector<int>({ 15, 17, 19, 8, 2, 30, 4, 24, 26, 29 }));
+		ShortestSubarrToSortToMakeArrSorted().Find(std::vector<int>({ 0, 1, 15, 25, 6, 7, 30, 40, 50 }));
+		ShortestSubarrToSortToMakeArrSorted().Find(std::vector<int>({ 1, 2, 4, 7, 10, 11, 7, 12, 6, 7, 16, 18, 19 }));
+		ShortestSubarrToSortToMakeArrSorted().Find(std::vector<int>({ 15, 17, 19, 8, 2, 30, 4, 24, 26, 29 }));
 	}
 	{
 		KthSmallestPairSum2SortedArrays().MinHeap(std::vector<int>({ 2, 3, 5, 8, 13 }), std::vector<int>({ 4, 8, 12, 16 }), 20);
@@ -4633,6 +4649,9 @@ int main()
     {
         MinCostScheduleHalfHalfTo2Cities().SortBySavings(std::vector<std::vector<int>>({{10,20},{30,200},{400,50},{30,20}}));
     }
+    {
+        MinAdditionalReviewToExceedRatingThreshold().UseMaxHeap(std::vector<std::vector<int>>({{4,4},{1,2},{3,6}}),77);
+    }
 
 #endif
 #ifdef _Interval_
@@ -4827,6 +4846,7 @@ int main()
         MinimizeMaxDistBtwGasStationAddKMore().MaxHeapGreedyAssign(std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), 9);
         MinimizeMaxDistBtwGasStationAddKMore().BinarySearch(std::vector<int>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}), 9);
     }
+
 
 #endif
 #ifdef _PermuteCombinePartition_
@@ -6393,6 +6413,10 @@ int main()
 	{
 		IsSubsequence().Validate("abc", "ahbgdc");
 		IsSubsequence().Validate("axc", "ahbgdc");
+		IsSubsequence2().LinearTime(std::vector<std::vector<std::string>>({{"apple", "apple"}, {"banana", "anything", "banana"}}), std::vector<std::string>({"orange", "apple", "apple", "banana", "orange", "banana"}));
+        IsSubsequence2().LinearTime(std::vector<std::vector<std::string>>({{"apple", "apple"}, {"banana", "anything", "banana"}}), std::vector<std::string>({"banana", "orange", "banana", "apple", "apple"}));
+        IsSubsequence2().LinearTime(std::vector<std::vector<std::string>>({{"apple", "apple"}, {"banana", "anything", "banana"}}), std::vector<std::string>({"apple", "banana", "apple", "banana", "orange", "banana"}));
+        IsSubsequence2().LinearTime(std::vector<std::vector<std::string>>({{"apple", "apple"}, {"apple", "apple", "banana"}}), std::vector<std::string>({"apple", "apple", "apple", "banana"}));
 	}
 	{
 		LongestSubStrWLeastKRepeatChars().Recur("aaabb", 3);
@@ -6508,6 +6532,9 @@ int main()
     {
         AllSubstrSizeKContainDistinctChars().SlideWindow1(std::string("awaglknagawunagwkwagl"), 4);
         AllSubstrSizeKContainDistinctChars().SlideWindow2(std::string("awaglknagawunagwkwagl"), 4);
+        AllSubstrSizeKContainKminus1DistinctChars().SlideWindow(std::string("awaglk"), 4);
+        AllSubstrSizeKContainKminus1DistinctChars().SlideWindow(std::string("democracy"), 5);
+        AllSubstrSizeKContainKminus1DistinctChars().SlideWindow(std::string("wawaglknagagwunagkwkwagl"), 4);
     }
     {
         SumOfAllSubArrMins().UseMonotoneIncrStk(std::vector<int>({3,1,2,4}));
@@ -6564,6 +6591,11 @@ int main()
     }
     {
         MinConsecuKFlipIn01Arr().SlideWindow(std::vector<int>({0,0,0,1,0,1,1,0}),3);
+    }
+    {
+        CountCharsInClosedCompartmentsWGivenRange().UsePrefixSumMap("|**|*|*", {1,1}, {5,6});
+        CountCharsInClosedCompartmentsWGivenRange().UsePrefixSumMap("*|*|", {1}, {3});
+        CountCharsInClosedCompartmentsWGivenRange().UsePrefixSumMap("*|*|*|", {1}, {6});
     }
 
 #endif
@@ -11060,7 +11092,7 @@ int main()
 
         PrintBinaryTree<ListOfNodesFormBinaryTree::TreeNode, std::ostringstream>(r1, bstOss);
         std::cout << bstOss.str() << std::endl;
-        ListOfNodesFormBinaryTree().HashSet(std::vector<ListOfNodesFormBinaryTree::TreeNode*>({r1}));
+        ListOfNodesFormBinaryTree().Validate1(std::vector<ListOfNodesFormBinaryTree::TreeNode*>({r1}));
         bstOss.str(std::string());
 
         ListOfNodesFormBinaryTree::TreeNode * r2 = new ListOfNodesFormBinaryTree::TreeNode(1);
@@ -11068,7 +11100,7 @@ int main()
         PrintBinaryTree<ListOfNodesFormBinaryTree::TreeNode, std::ostringstream>(r1, bstOss);
         PrintBinaryTree<ListOfNodesFormBinaryTree::TreeNode, std::ostringstream>(r2, bstOss);
         std::cout << bstOss.str() << std::endl;
-        ListOfNodesFormBinaryTree().HashSet(std::vector<ListOfNodesFormBinaryTree::TreeNode*>({r1, r2}));
+        ListOfNodesFormBinaryTree().Validate1(std::vector<ListOfNodesFormBinaryTree::TreeNode*>({r1, r2}));
         bstOss.str(std::string());
 
         r1->left = new ListOfNodesFormBinaryTree::TreeNode(2);
@@ -11076,14 +11108,14 @@ int main()
 
         PrintBinaryTree<ListOfNodesFormBinaryTree::TreeNode, std::ostringstream>(r1, bstOss);
         std::cout << bstOss.str() << std::endl;
-        ListOfNodesFormBinaryTree().HashSet(std::vector<ListOfNodesFormBinaryTree::TreeNode*>({r1, r1->left, r1->right}));
+        ListOfNodesFormBinaryTree().Validate1(std::vector<ListOfNodesFormBinaryTree::TreeNode*>({r1, r1->left, r1->right}));
         bstOss.str(std::string());
 
         r2->left = r1->right;
         PrintBinaryTree<ListOfNodesFormBinaryTree::TreeNode, std::ostringstream>(r1, bstOss);
         PrintBinaryTree<ListOfNodesFormBinaryTree::TreeNode, std::ostringstream>(r2, bstOss);
         std::cout << bstOss.str() << std::endl;
-        ListOfNodesFormBinaryTree().HashSet(std::vector<ListOfNodesFormBinaryTree::TreeNode*>({r1, r1->left, r1->right, r2}));
+        ListOfNodesFormBinaryTree().Validate1(std::vector<ListOfNodesFormBinaryTree::TreeNode*>({r1, r1->left, r1->right, r2}));
         bstOss.str(std::string());
 
         r2->left = NULL;
@@ -11669,6 +11701,10 @@ int main()
 			{ 1, 0, 0, 0, 1, 1, 0 }//vertex 6
 		}));
 	}
+    {
+        MinTrioOutDegreeInGraph().BFS(6, 6, {1,2,2,3,4,5}, {2,4,5,5,5,6});
+        MinTrioOutDegreeInGraph().BFS(5, 6, {1,1,2,2,3,4}, {2,3,3,4,4,5});
+    }
 
 	{
 		/*
@@ -14086,6 +14122,9 @@ int main()
     }
     {
         MinLexicographicStrBySwapPairs().UnionFind(std::string("dcab"), std::vector<std::vector<int>>({{0,3},{1,2},{0,2}}));
+    }
+    {
+        LargestItemAssociation().UseUnionFind(std::vector<std::vector<std::string>>({{"item1","item2"},{"item3","item4"},{"item4","item5"}}));
     }
 
 #endif
