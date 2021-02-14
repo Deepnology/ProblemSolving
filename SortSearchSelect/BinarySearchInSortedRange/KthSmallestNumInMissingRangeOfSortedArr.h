@@ -19,6 +19,18 @@ Input: A = [1,2,4], K = 3
 Output: 6
 Explanation:
 The missing numbers are [3,5,6,7,...], hence the third missing number is 6.
+
+Leetcode: Kth Missing Positive Number
+Given an array arr of positive integers sorted in a strictly increasing order, and an integer k.
+Find the kth positive integer that is missing from this array.
+Example 1:
+Input: arr = [2,3,4,7,11], k = 5
+Output: 9
+Explanation: The missing positive integers are [1,5,6,8,9,10,12,13,...]. The 5th missing positive integer is 9.
+Example 2:
+Input: arr = [1,2,3,4], k = 2
+Output: 6
+Explanation: The missing positive integers are [5,6,7,...]. The 2nd missing positive integer is 6.
  */
 class KthSmallestNumInMissingRangeOfSortedArr
 {
@@ -49,6 +61,29 @@ public:
 
         std::cout << "KthSmallestNumInMissingRangeOfSortedArr for " << kBefore << "th in [" << Debug::ToStr1D<int>()(nums) << "]: " << res << std::endl;
         return res;
+    }
+};
+class KthSmallestMissingPositiveNumInSortedArr
+{
+public:
+    int BinarySearch(std::vector<int> & nums, int k)
+    {
+        int N = nums.size();
+        int i = 0, j = N-1;
+
+        while (i + 1 < j) //keep 3 entries in between
+        {
+            int mid = (i + j) / 2;
+            int missing = nums[mid] - (mid+1); //count of missing nums before num[mid]
+            if (missing >= k) //too big: go left
+                j = mid;
+            else //too small: go right
+                i = mid;
+        }
+        //now i+1>=j: either i+1==j or i==j
+        if (nums[j]-(j+1) < k) return k - (nums[j]-(j+1)) + nums[j];//kth num is on j's right
+        if (nums[i]-(i+1) < k) return k - (nums[i]-(i+1)) + nums[i];//kth num is in between i and j
+        return k;//kth num is on i's left
     }
 };
 /*
