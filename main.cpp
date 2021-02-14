@@ -1102,7 +1102,7 @@
 
 int main()
 {
-	bool RdCout = true;
+	bool RdCout = false;
 	PrintHeader PrintH;
 #ifdef _HashMap_
 	RdCout ? redirect_cout::to_file("Out_HashMap.txt") : redirect_cout::to_cout();
