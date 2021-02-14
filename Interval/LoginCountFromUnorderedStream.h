@@ -6,7 +6,7 @@
 Uber
 see also IntersectionOfIntervals.h
  */
-class LoginCountFromUnorderedStream_PrefixSum
+class LoginCountFromUnorderedStream_PrefixSum //can be improved with BinaryIndexedTree
 {
     std::vector<std::pair<int,int>> sorted;//<time, prefixSum of Login> sorted by time
 public:
@@ -87,7 +87,7 @@ public:
         TreeNode(int v, int s):val(v), sum(s), leftSum(0), left(NULL), right(NULL){}
     };
 private:
-    int Insert(TreeNode *& root, int timestamp, int loginOrOut)
+    int Insert(TreeNode *& root, int timestamp, int loginOrOut)//O(logN) time
     {
         if (root == NULL)
         {
@@ -160,15 +160,15 @@ std::string PrintBinaryTree<LoginCountFromUnorderedStream_BST::TreeNode, std::os
     return oss.str();
 };
 
-class LoginCountFromUnorderedStream_PrefixSum_Map
+class LoginCountFromUnorderedStream_PrefixSum_Map //can be improved with BinaryIndexedTree
 {
     std::map<int,int> balance;
 public:
-    void Insert(int time, int loginOrOut)
+    void Insert(int time, int loginOrOut)//O(logN) time
     {
         balance[time] += loginOrOut;
     }
-    int QueryLoginCount(int time)
+    int QueryLoginCount(int time)//O(logN + N) time
     {
         int res = 0;
         for(auto itr = balance.begin(); itr != balance.end() && itr->first <= time; ++itr)
@@ -178,6 +178,39 @@ public:
         }
         std::cout << "Query " << time << ": " << res << std::endl;
         return res;
+    }
+};
+class LoginCountFromUnorderedStream_BIT
+{
+    std::vector<int> bit;//bit[0] is dummy
+    void update(int i)
+    {
+        ++i;//convert to bit index
+        while (i < bit.size())
+        {
+            ++bit[i];
+            i += i & -i;
+        }
+    }
+    int prefixSum(int i)
+    {
+        ++i;//convert to bit index
+        int res = 0;
+        while(i)
+        {
+            res += bit[i];
+            i -= i & -i;
+        }
+        return res;
+    }
+public:
+    void Insert(int time, int loginOrOut)
+    {
+
+    }
+    int QueryLoginCount(int time)
+    {
+        return 0;
     }
 };
 /*
