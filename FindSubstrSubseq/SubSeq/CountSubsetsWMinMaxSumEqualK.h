@@ -18,17 +18,25 @@ Output:
 Count of all such subsets of A,
 Such that for any such subset S,
 Min(S) + Max(S) = k
-subset should contain atleast two elements
+subset should contain at least two elements
 
-Backtracking approach to get subsets
-Get min and max of subset
-Add min and max and put them in Hashmap (or update the count)
-repeat this process for all subsets
-search for k in hashmap and return count of k
 input: {1,2,3,4,5}, k = 5
 =>
 count = 5
 {1,4},{2,3},{1,2,4},{1,2,3,4},{1,3,4}
+
+Leetcode: Number of Subsequences That Satisfy the Given Sum Condition
+Given an array of integers nums and an integer target.
+Return the number of non-empty subsequences of nums such that the sum of the minimum and maximum element on it is less or equal to target.
+Since the answer may be too large, return it modulo 10^9 + 7.
+Example 1:
+Input: nums = [3,5,6,7], target = 9
+Output: 4
+Explanation: There are 4 subsequences that satisfy the condition.
+[3] -> Min value + max value <= target (3 + 3 <= 9)
+[3,5] -> (3 + 5 <= 9)
+[3,5,6] -> (3 + 6 <= 9)
+[3,6] -> (3 + 6 <= 9)
 */
 class CountSubsetsWMinMaxSumEqualK
 {
@@ -60,6 +68,33 @@ public:
 
         std::cout << "CountSubsetsWMinMaxSumEqualK TwoPtrsFromSortedArr for k=" << k << " from [" << Debug::ToStr1D<int>()(sorted) << "]: " << count << std::endl;
         return count;
+    }
+};
+class CountSubsetsWMinMaxSumLessEqualK
+{
+public:
+    int TwoPtrs(std::vector<int> & nums, int target)
+    {
+        int MOD = 1000000007;
+        std::sort(nums.begin(), nums.end());
+        int N = nums.size();
+        std::vector<int> pows(N, 1);
+        for (int i = 1; i < N; ++i)
+            pows[i] = pows[i-1]*2%MOD;
+        int i = 0;
+        int j = N-1;
+        int res = 0;
+        while (i <= j)
+        {
+            if (nums[i]+nums[j] > target)
+                --j;
+            else
+            {
+                res = (res+pows[j-i])%MOD; //2^(j-i)
+                ++i;
+            }
+        }
+        return res;
     }
 };
 /*
