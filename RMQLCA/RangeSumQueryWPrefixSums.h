@@ -235,4 +235,47 @@ RangeSumQueryWPrefixSums1DMutable prefixSums for updating "1" with "2":
 1, 3, 8
 RangeSumQueryWPrefixSums1DMutable Query "[0, 2]": 8
 */
+/*
+Leetcode: Matrix Block Sum
+Given a m * n matrix mat and an integer K, return a matrix answer where each answer[i][j]
+ is the sum of all elements mat[r][c] for i - K <= r <= i + K, j - K <= c <= j + K, and (r, c) is a valid position in the matrix.
+Example 1:
+Input: mat = [[1,2,3],[4,5,6],[7,8,9]], K = 1
+Output: [[12,21,16],[27,45,33],[24,39,28]]
+Example 2:
+Input: mat = [[1,2,3],[4,5,6],[7,8,9]], K = 2
+Output: [[45,45,45],[45,45,45],[45,45,45]]
+Constraints:
+m == mat.length
+n == mat[i].length
+1 <= m, n, K <= 100
+1 <= mat[i][j] <= 100
+ */
+class MatrixBlockSum
+{
+public:
+    std::vector<std::vector<int>> UsePrefixSums(std::vector<std::vector<int>>& matrix, int K)
+    {
+        int N = matrix.size();
+        int M = matrix[0].size();
+        std::vector<std::vector<int>> prefixSums(N, std::vector<int>(M, 0));
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < M; ++j)
+            {
+                //prefixSums[i][j] = matrix[i][j] + prefixSums[i-1][j] + prefixSums[i][j-1] - prefixSums[i-1][j-1]
+                prefixSums[i][j] = matrix[i][j] + (i == 0 ? 0 : prefixSums[i - 1][j]) + (j == 0 ? 0 : prefixSums[i][j - 1]) - (i == 0 || j == 0 ? 0 : prefixSums[i - 1][j - 1]);
+            }
+        std::vector<std::vector<int>> res(N, std::vector<int>(M, 0));
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < M; ++j)
+            {
+                int row2 = i+K>=N?N-1:i+K;
+                int col2 = j+K>=M?M-1:j+K;
+                int row1 = i-K<0?0:i-K;
+                int col1 = j-K<0?0:j-K;
+                res[i][j] = prefixSums[row2][col2] - (row1 == 0 ? 0 : prefixSums[row1 - 1][col2]) - (col1 == 0 ? 0 : prefixSums[row2][col1 - 1]) + (row1 == 0 || col1 == 0 ? 0 : prefixSums[row1 - 1][col1 - 1]);
+            }
+        return res;
+    }
+};
 #endif
