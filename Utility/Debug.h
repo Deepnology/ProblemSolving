@@ -17,9 +17,19 @@
 #include <functional>
 #include <numeric>
 #include <type_traits>
+#if defined(QT_VERSION)
+#include <QString>
+#include <QVector>
+#include <QList>
+#include <QPair>
+#include <QStringList>
+#endif
+#define stringify(name)#name
 namespace Debug
 {
-	enum Splitter
+	typedef std::map<int, const char*> EnumNameMap;
+	typedef std::vector<const char*> EnumNameVec;
+	enum class Splitter
 	{
 		Comma = 0,
 		NewLine = 1,
@@ -28,10 +38,10 @@ namespace Debug
 	class Print2D
 	{
 	public:
-		Print2D(){}
-		~Print2D(){}
+		Print2D() {}
+		~Print2D() {}
 
-		void operator()(const std::vector<std::vector<T>> & vv, bool columnXrowY = true, bool tab = false)
+		void operator()(const std::vector<std::vector<T>>& vv, bool columnXrowY = true, bool tab = false)
 		{
 			if (vv.empty())
 				return;
@@ -129,7 +139,7 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
-		void operator()(const std::deque<std::vector<T>> & vv, bool columnXrowY = true, bool tab = false)
+		void operator()(const std::deque<std::vector<T>>& vv, bool columnXrowY = true, bool tab = false)
 		{
 			if (vv.empty())
 				return;
@@ -227,7 +237,7 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
-		void operator()(const std::vector<std::string> & vv, bool columnXrowY = true, bool tab = false)//no template parameter
+		void operator()(const std::vector<std::string>& vv, bool columnXrowY = true, bool tab = false)//no template parameter
 		{
 			if (vv.empty())
 				return;
@@ -325,7 +335,7 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
-		void operator()(const std::vector<std::stack<T>> & vs, bool columnXrowY = true, bool tab = false, bool topToBottom = false)
+		void operator()(const std::vector<std::stack<T>>& vs, bool columnXrowY = true, bool tab = false, bool topToBottom = false)
 		{
 			std::vector<std::vector<int>> copy;
 			int N = vs.size();
@@ -348,7 +358,7 @@ namespace Debug
 			}
 			this->operator()(copy, columnXrowY, tab);
 		}
-		void operator()(const std::unordered_map<T, std::unordered_map<T, U>> & m)
+		void operator()(const std::unordered_map<T, std::unordered_map<T, U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -367,7 +377,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::map<T, U>> & m)
+		void operator()(const std::unordered_map<T, std::map<T, U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -386,7 +396,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::unordered_set<U>> & m)
+		void operator()(const std::unordered_map<T, std::unordered_set<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -405,7 +415,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::multiset<U>> & m)
+		void operator()(const std::unordered_map<T, std::multiset<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -424,7 +434,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::set<U>> & m)
+		void operator()(const std::unordered_map<T, std::set<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -443,7 +453,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::stack<U>> & m, bool topToBottom = false)
+		void operator()(const std::unordered_map<T, std::stack<U>>& m, bool topToBottom = false)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -469,7 +479,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::map<T, std::vector<U>> & m)
+		void operator()(const std::map<T, std::vector<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -488,7 +498,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::map<T, std::unordered_set<U>> & m)
+		void operator()(const std::map<T, std::unordered_set<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -507,7 +517,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::map<T, std::set<U>> & m)
+		void operator()(const std::map<T, std::set<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -526,7 +536,7 @@ namespace Debug
 			}
 			std::cout << oss.str() << std::endl;
 		}
-		void operator()(const std::unordered_map<T, std::vector<U>> & m)
+		void operator()(const std::unordered_map<T, std::vector<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -546,7 +556,7 @@ namespace Debug
 			std::cout << oss.str() << std::endl;
 		}
 
-		void operator()(const std::vector<std::vector<std::pair<T, U>>> & vv, bool columnXrowY = true, bool tab = false)
+		void operator()(const std::vector<std::vector<std::pair<T, U>>>& vv, bool columnXrowY = true, bool tab = false)
 		{
 			if (vv.empty())
 				return;
@@ -646,7 +656,7 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
-		void operator()(const std::vector<std::pair<std::pair<T, T>, std::vector<U>>> & vv)
+		void operator()(const std::vector<std::pair<std::pair<T, T>, std::vector<U>>>& vv)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -672,10 +682,10 @@ namespace Debug
 	class Print3D
 	{
 	public:
-		Print3D(){}
-		~Print3D(){}
+		Print3D() {}
+		~Print3D() {}
 
-		void operator()(const std::vector<std::vector<std::vector<T>>> & vvv, bool colXrowYdepthZ = true)
+		void operator()(const std::vector<std::vector<std::vector<T>>>& vvv, bool colXrowYdepthZ = true)
 		{
 			if (vvv.empty())
 				return;
@@ -803,7 +813,7 @@ namespace Debug
 				std::cout << oss.str() << std::endl;
 			}
 		}
-		void operator()(const std::vector<std::vector<std::vector<std::pair<T, T>>>> & vvv, bool colXrowYdepthZ = true)
+		void operator()(const std::vector<std::vector<std::vector<std::pair<T, T>>>>& vvv, bool colXrowYdepthZ = true)
 		{
 			if (vvv.empty())
 				return;
@@ -937,15 +947,15 @@ namespace Debug
 	class ToStr1D
 	{
 	public:
-		ToStr1D(){}
-		~ToStr1D(){}
-		std::string operator()(const std::pair<T,U> & p)
+		ToStr1D() {}
+		~ToStr1D() {}
+		std::string operator()(const std::pair<T, U>& p)
 		{
 			std::ostringstream oss;
 			oss << p.first << ", " << p.second;
 			return oss.str();
 		}
-		std::string operator()(const std::vector<T> & v, Splitter s = Comma)
+		std::string operator()(const std::vector<T>& v, Splitter s = Splitter::Comma)
 		{
 			std::ostringstream oss;
 			int N = v.size();
@@ -957,7 +967,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<T> & v, int first, int last)
+		std::string operator()(const std::vector<T>& v, int first, int last)
 		{
 			std::ostringstream oss;
 			for (int i = first; i <= last; ++i)
@@ -968,7 +978,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::list<T> & l)
+		std::string operator()(const std::list<T>& l)
 		{
 			std::ostringstream oss;
 			for (typename std::list<T>::const_iterator i = l.cbegin(); i != l.cend(); ++i)
@@ -979,7 +989,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::list<std::pair<T, U>> & l)
+		std::string operator()(const std::list<std::pair<T, U>>& l)
 		{
 			std::ostringstream oss;
 			for (typename std::list<std::pair<T, U>>::const_iterator i = l.cbegin(); i != l.cend(); ++i)
@@ -1012,7 +1022,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::vector<T>> & vv)
+		std::string operator()(const std::vector<std::vector<T>>& vv)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::vector<T>>::const_iterator v = vv.cbegin(); v != vv.cend(); ++v)
@@ -1030,7 +1040,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<T, U>> & v)
+		std::string operator()(const std::vector<std::pair<T, U>>& v)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::pair<T, U>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
@@ -1041,7 +1051,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<T, U>> & v, int first, int last)
+		std::string operator()(const std::vector<std::pair<T, U>>& v, int first, int last)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::pair<T, U>>::const_iterator i = v.cbegin() + first; i != (v.cbegin() + last + 1); ++i)
@@ -1052,7 +1062,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<std::pair<T, T>, U>> & v)
+		std::string operator()(const std::vector<std::pair<std::pair<T, T>, U>>& v)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::pair<std::pair<T, T>, U>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
@@ -1063,7 +1073,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<T, std::pair<U, U>>> & v)
+		std::string operator()(const std::vector<std::pair<T, std::pair<U, U>>>& v)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::pair<T, std::pair<U, U>>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
@@ -1074,7 +1084,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<std::pair<T, U>, std::pair<T, U>>> & v)
+		std::string operator()(const std::vector<std::pair<std::pair<T, U>, std::pair<T, U>>>& v)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::pair<std::pair<T, U>, std::pair<T, U>>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
@@ -1085,7 +1095,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::stack<T> & s, bool topToBottom = false)
+		std::string operator()(const std::stack<T>& s, bool topToBottom = false)
 		{
 			std::stack<T> copy(s);
 			if (!topToBottom)
@@ -1105,7 +1115,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::stack<std::pair<T, U>> & s, bool topToBottom = false)
+		std::string operator()(const std::stack<std::pair<T, U>>& s, bool topToBottom = false)
 		{
 			std::stack<std::pair<T, U>> copy(s);
 			if (!topToBottom)
@@ -1125,7 +1135,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::queue<T> & q)
+		std::string operator()(const std::queue<T>& q)
 		{
 			std::queue<T> copy(q);
 			std::ostringstream oss;
@@ -1138,7 +1148,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::queue<std::pair<T, U>> & q)
+		std::string operator()(const std::queue<std::pair<T, U>>& q)
 		{
 			std::queue<std::pair<T, U>> copy(q);
 			std::ostringstream oss;
@@ -1151,7 +1161,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::deque<T> & q)
+		std::string operator()(const std::deque<T>& q)
 		{
 			std::deque<T> copy(q);
 			std::ostringstream oss;
@@ -1164,7 +1174,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::deque<std::pair<T, U>> & q)
+		std::string operator()(const std::deque<std::pair<T, U>>& q)
 		{
 			std::deque<std::pair<T, U>> copy(q);
 			std::ostringstream oss;
@@ -1177,7 +1187,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::unordered_set<T> & s)
+		std::string operator()(const std::unordered_set<T>& s)
 		{
 			std::ostringstream oss;
 			if (s.empty())
@@ -1190,7 +1200,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::set<T> & s)
+		std::string operator()(const std::set<T>& s)
 		{
 			std::ostringstream oss;
 			if (s.empty())
@@ -1203,7 +1213,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::multiset<T> & s)
+		std::string operator()(const std::multiset<T>& s)
 		{
 			std::ostringstream oss;
 			if (s.empty())
@@ -1216,7 +1226,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::multiset<std::pair<T, U>> & s)
+		std::string operator()(const std::multiset<std::pair<T, U>>& s)
 		{
 			std::ostringstream oss;
 			if (s.empty())
@@ -1229,7 +1239,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::unordered_map<T, U> & m)
+		std::string operator()(const std::unordered_map<T, U>& m)
 		{
 			std::ostringstream oss;
 			if (m.empty())
@@ -1242,7 +1252,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::map<T, U> & m)
+		std::string operator()(const std::map<T, U>& m)
 		{
 			std::ostringstream oss;
 			if (m.empty())
@@ -1255,7 +1265,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::priority_queue<T, std::vector<T>, std::greater<T>> & minHeap)
+		std::string operator()(const std::priority_queue<T, std::vector<T>, std::greater<T>>& minHeap)
 		{
 			std::priority_queue<T, std::vector<T>, std::greater<T>> copy(minHeap);
 			std::ostringstream oss;
@@ -1268,7 +1278,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::priority_queue<T, std::vector<T>, std::less<T>> & maxHeap)
+		std::string operator()(const std::priority_queue<T, std::vector<T>, std::less<T>>& maxHeap)
 		{
 			std::priority_queue<T, std::vector<T>, std::less<T>> copy(maxHeap);
 			std::ostringstream oss;
@@ -1281,7 +1291,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::greater<std::pair<T, std::pair<U, U>>>> & minHeap)
+		std::string operator()(const std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::greater<std::pair<T, std::pair<U, U>>>>& minHeap)
 		{
 			std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::greater<std::pair<T, std::pair<U, U>>>> copy(minHeap);
 			std::ostringstream oss;
@@ -1294,7 +1304,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::less<std::pair<T, std::pair<U, U>>>> & maxHeap)
+		std::string operator()(const std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::less<std::pair<T, std::pair<U, U>>>>& maxHeap)
 		{
 			std::priority_queue<std::pair<T, std::pair<U, U>>, std::vector<std::pair<T, std::pair<U, U>>>, std::less<std::pair<T, std::pair<U, U>>>> copy(maxHeap);
 			std::ostringstream oss;
@@ -1307,14 +1317,171 @@ namespace Debug
 			}
 			return oss.str();
 		}
+		std::string operator()(const std::vector<T>& v, const EnumNameVec& toEnumName, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				if ((int)v[i] >= 0 && (int)v[i] < (int)toEnumName.size())
+					oss << toEnumName[(int)v[i]];
+				else
+					oss << "";
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const std::vector<T>& v, const EnumNameMap& toEnumName, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				if (toEnumName.count((int)v[i]))
+					oss << toEnumName.find((int)v[i])->second;
+				else
+					oss << "";
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+#if defined(QT_VERSION)
+		std::string operator()(const QVector<T>& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				oss << v[i];
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const QVector<T>& v, const EnumNameVec& toEnumName, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				if ((int)v[i] >= 0 && (int)v[i] < (int)toEnumName.size())
+					oss << toEnumName[(int)v[i]];
+				else
+					oss << "";
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const QVector<T>& v, const EnumNameMap& toEnumName, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				if (toEnumName.count((int)v[i]))
+					oss << toEnumName.find((int)v[i])->second;
+				else
+					oss << "";
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const QList<T>& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				oss << v[i];
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const QList<T>& v, const std::function<std::string(const typename T&)> & f, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				oss << f(v[i]);
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+#endif
 	};
+#if defined(QT_VERSION)
+	template<>
+	class ToStr1D<QString>
+	{
+	public:
+		ToStr1D() {}
+		~ToStr1D() {}
+		std::string operator()(const QVector<QString>& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				oss << v[i].toStdString();
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const QVector<QPair<QPair<int, int>, QString>>& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				oss << "[(" << v[i].first.first << "," << v[i].first.second << ")," << v[i].second.toStdString() << "]";
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const QList<QString>& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				oss << v[i].toStdString();
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const QStringList& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			int i = 0;
+			for (const auto& str : v)
+			{
+				oss << str.toStdString();
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+				++i;
+			}
+			return oss.str();
+		}
+	};
+#endif
 	template<class T, class U, class V, class W = V>
 	class ToStr1D_
 	{
 	public:
-		ToStr1D_(){}
-		~ToStr1D_(){}
-		std::string operator()(const std::vector<std::pair<std::pair<T, U>, V>> & v)
+		ToStr1D_() {}
+		~ToStr1D_() {}
+		std::string operator()(const std::vector<std::pair<std::pair<T, U>, V>>& v)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::pair<std::pair<T, U>, V>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
@@ -1325,7 +1492,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<T, std::pair<U, V>>> & v)
+		std::string operator()(const std::vector<std::pair<T, std::pair<U, V>>>& v)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::pair<T, std::pair<U, V>>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
@@ -1336,7 +1503,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::vector<std::pair<std::pair<T, U>, std::pair<V, W>>> & v)
+		std::string operator()(const std::vector<std::pair<std::pair<T, U>, std::pair<V, W>>>& v)
 		{
 			std::ostringstream oss;
 			for (typename std::vector<std::pair<std::pair<T, U>, std::pair<V, W>>>::const_iterator i = v.cbegin(); i != v.cend(); ++i)
