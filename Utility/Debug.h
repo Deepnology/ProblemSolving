@@ -1,5 +1,60 @@
 #ifndef DEBUG_H
 #define DEBUG_H
+
+#pragma warning (disable : 4996) //fopen
+#include <stdio.h>
+#define DEBUG_MDUMP(filename, mode, str) \
+    do { \
+        FILE *file = fopen(filename, mode); \
+        if (file == NULL) { \
+            perror("Error opening file"); \
+        } else { \
+            fprintf(file, "%s\n", str); \
+            fclose(file); \
+        } \
+    } while(0)
+
+#define DEBUG_MDUMPF(filename, mode, ...) \
+    do { \
+        FILE *file = fopen(filename, mode); \
+        if (file == NULL) { \
+            perror("Error opening file"); \
+        } else { \
+            fprintf(file, __VA_ARGS__); \
+            fclose(file); \
+        } \
+    } while(0)
+
+#define DEBUG_ADUMP(filename, str) DEBUG_MDUMP(filename, "a", str)
+#define DEBUG_ADUMPF(filename, ...) DEBUG_MDUMPF(filename, "a", __VA_ARGS__)
+#define DEBUG_WDUMP(filename, str) DEBUG_MDUMP(filename, "w", str)
+#define DEBUG_WDUMPF(filename, ...) DEBUG_MDUMPF(filename, "w", __VA_ARGS__)
+
+#define DEBUG_READ(filename, buf, bufSize) \
+    do{ \
+        FILE *file = fopen(filename, "r"); \
+        if (file == NULL) { \
+            perror("Error opening file"); \
+        } else { \
+            if (fgets(buf, bufSize, file) != NULL) { \
+                size_t readLen = strlen(buf); \
+                if (readLen > 0 && buf[readLen-1] == '\n') {\
+                    buf[readLen-1] = '\0'; \
+                } \
+            } \
+            else { \
+                perror("Error reading from file"); \
+            } \
+            fclose(file); \
+        } \
+    }while(0)
+
+#define DEBUG_READ_BUF_SIZE 1024
+#define DEBUG_READ_BUF(filename) \
+    char DEBUG_READ_BUF_[DEBUG_READ_BUF_SIZE] = ""; \
+    DEBUG_READ(filename, DEBUG_READ_BUF_, DEBUG_READ_BUF_SIZE)
+
+#ifdef __cplusplus
 #include <iostream>
 #include <sstream>
 #include <iterator>
@@ -23,6 +78,7 @@
 #include <QList>
 #include <QPair>
 #include <QStringList>
+#include <QWidget>
 #endif
 #define stringify(name)#name
 namespace Debug
@@ -963,7 +1019,7 @@ namespace Debug
 			{
 				oss << v[i];
 				if (i != N - 1)
-					s == Comma ? (oss << ", ") : (oss << std::endl);
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
 			}
 			return oss.str();
 		}
@@ -1402,7 +1458,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const QList<T>& v, const std::function<std::string(const typename T&)> & f, Splitter s = Splitter::Comma)
+		std::string operator()(const QList<T>& v, const std::function<std::string(const T&)> & f, Splitter s = Splitter::Comma)
 		{
 			std::ostringstream oss;
 			int N = v.size();
@@ -1473,6 +1529,24 @@ namespace Debug
 			}
 			return oss.str();
 		}
+		std::string operator()(const QRect& rec)
+		{
+			std::ostringstream oss;
+			oss << "[left:" << rec.left() << ", right:" << rec.right() << ", top:" << rec.top() << ", bot:" << rec.bottom() << "]";
+			return oss.str();
+		}
+	};
+	class QtUtil
+	{
+	public:
+		static QRect mapToGlobalRect(QWidget* cur)
+		{
+			return QRect(cur->mapToGlobal(QPoint(0, 0)), cur->size());
+		}
+		static QRect mapToParentRect(QWidget* cur, QWidget* parent)
+		{
+			return QRect(cur->mapTo(parent, QPoint(0, 0)), cur->size());
+		}
 	};
 #endif
 	template<class T, class U, class V, class W = V>
@@ -1533,4 +1607,6 @@ namespace std
 
 }
 #endif
+#endif //#ifdef __cplusplus
+
 #endif
