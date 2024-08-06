@@ -5,23 +5,23 @@
 #include <stdio.h>
 #define DEBUG_MDUMP(filename, mode, str) \
     do { \
-        FILE *file = fopen(filename, mode); \
-        if (file == NULL) { \
+        FILE *__file = fopen(filename, mode); \
+        if (__file == NULL) { \
             perror("Error opening file"); \
         } else { \
-            fprintf(file, "%s\n", str); \
-            fclose(file); \
+			fprintf(__file, "%s\n", str); \
+            fclose(__file); \
         } \
     } while(0)
 
 #define DEBUG_MDUMPF(filename, mode, ...) \
     do { \
-        FILE *file = fopen(filename, mode); \
-        if (file == NULL) { \
+        FILE *__file = fopen(filename, mode); \
+        if (__file == NULL) { \
             perror("Error opening file"); \
         } else { \
-            fprintf(file, __VA_ARGS__); \
-            fclose(file); \
+            fprintf(__file, __VA_ARGS__); \
+            fclose(__file); \
         } \
     } while(0)
 
@@ -30,13 +30,23 @@
 #define DEBUG_WDUMP(filename, str) DEBUG_MDUMP(filename, "w", str)
 #define DEBUG_WDUMPF(filename, ...) DEBUG_MDUMPF(filename, "w", __VA_ARGS__)
 
-#define DEBUG_READ(filename, buf, bufSize) \
-    do{ \
-        FILE *file = fopen(filename, "r"); \
-        if (file == NULL) { \
+#define DEBUG_CLRDUMP(filename) \
+    do { \
+        FILE *__file = fopen(filename, "w"); \
+        if (__file == NULL) { \
             perror("Error opening file"); \
         } else { \
-            if (fgets(buf, bufSize, file) != NULL) { \
+            fclose(__file); \
+        } \
+    } while(0)
+
+#define DEBUG_READ(filename, buf, bufSize) \
+    do{ \
+        FILE *__file = fopen(filename, "r"); \
+        if (__file == NULL) { \
+            perror("Error opening file"); \
+        } else { \
+            if (fgets(buf, bufSize, __file) != NULL) { \
                 size_t readLen = strlen(buf); \
                 if (readLen > 0 && buf[readLen-1] == '\n') {\
                     buf[readLen-1] = '\0'; \
@@ -45,7 +55,7 @@
             else { \
                 perror("Error reading from file"); \
             } \
-            fclose(file); \
+            fclose(__file); \
         } \
     }while(0)
 
@@ -53,6 +63,30 @@
 #define DEBUG_READ_BUF(filename) \
     char DEBUG_READ_BUF_[DEBUG_READ_BUF_SIZE] = ""; \
     DEBUG_READ(filename, DEBUG_READ_BUF_, DEBUG_READ_BUF_SIZE)
+
+#define DEBUG_RENAME_APPEND(file, newApn) \
+	do { \
+		const char *__fileName = (file); \
+		FILE *__f = fopen(__fileName, "r"); \
+		if (!__f) { \
+			fprintf(stderr, "Error: File %s not found.\n", __fileName); \
+		} else { \
+			fclose(__f); \
+			char __newFileName[256]; \
+			const char *__dot = strrchr(__fileName, '.'); \
+			if (__dot) { \
+				size_t nameLength = __dot - __fileName; \
+				snprintf(__newFileName, nameLength + 1, "%s", __fileName); \
+				snprintf(__newFileName + nameLength, sizeof(__newFileName) - nameLength, "%s.%s", newApn, __dot + 1); \
+			} else { \
+				snprintf(__newFileName, sizeof(__newFileName), "%s%s", __fileName, newApn); \
+			} \
+			remove(__newFileName); \
+			if (rename(__fileName, __newFileName) != 0) { \
+				perror("Error renaming file"); \
+			} \
+		} \
+	} while (0)
 
 #ifdef __cplusplus
 #include <iostream>
@@ -75,6 +109,7 @@
 #include <typeindex>
 #include <typeinfo>
 #include <format>
+#include <bitset>
 #if defined(QT_VERSION)
 #include <QString>
 #include <QTextStream>
@@ -1733,6 +1768,34 @@ namespace Debug
 			}
 			return oss.str();
 		}
+		std::string operator()(const std::unordered_map<T, typename std::list<U>::iterator>& m, bool sort = false)
+		{
+			std::ostringstream oss;
+			if (m.empty())
+				return oss.str();
+			if (!sort)
+			{
+				for (typename std::unordered_map<T, typename std::list<U>::iterator>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
+				{
+					oss << "[" << i->first << "," << *(i->second) << "]";
+					if (std::next(i) != m.cend())
+						oss << ", ";
+				}
+			}
+			else
+			{
+				std::map<T, typename std::list<U>::iterator> sm;
+				for (typename std::unordered_map<T, typename std::list<U>::iterator>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
+					sm.insert({ i->first,i->second });
+				for (typename std::map<T, typename std::list<U>::iterator>::const_iterator i = sm.cbegin(); i != sm.cend(); ++i)
+				{
+					oss << "[" << i->first << "," << *(i->second) << "]";
+					if (std::next(i) != sm.cend())
+						oss << ", ";
+				}
+			}
+			return oss.str();
+		}
 		std::string operator()(const std::map<T, U>& m)
 		{
 			std::ostringstream oss;
@@ -1918,6 +1981,127 @@ namespace Debug
 			return oss.str();
 		}
 #endif
+
+		template<typename V>
+		std::string toBinaryString(const V& number)
+		{
+			std::bitset<sizeof(V) * 8> bits(number);
+			return bits.to_string();
+		}
+		template<typename V>
+		std::string toHexString(const V& number)
+		{
+			std::ostringstream oss;
+			oss << std::hex << std::showbase << number;
+			return oss.str();
+		}
+		// Overloads for binary representation
+		std::string operator()(const int& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const unsigned int& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const short& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const unsigned short& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const long& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const unsigned long& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const long long& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const unsigned long long& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const char& number)
+		{
+			return toBinaryString(static_cast<unsigned char>(number));
+		}
+		std::string operator()(const unsigned char& number)
+		{
+			return toBinaryString(number);
+		}
+		std::string operator()(const float& number)
+		{
+			uint32_t intRep;
+			std::memcpy(&intRep, &number, sizeof(float));
+			return toBinaryString(intRep);
+		}
+		std::string operator()(const double& number)
+		{
+			uint64_t intRep;
+			std::memcpy(&intRep, &number, sizeof(double));
+			return toBinaryString(intRep);
+		}
+		// Overloads for hexadecimal representation
+		std::string toHex(const int& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const unsigned int& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const short& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const unsigned short& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const long& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const unsigned long& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const long long& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const unsigned long long& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const char& number)
+		{
+			return toHexString(static_cast<unsigned char>(number));
+		}
+		std::string toHex(const unsigned char& number)
+		{
+			return toHexString(number);
+		}
+		std::string toHex(const float& number)
+		{
+			uint32_t intRep;
+			std::memcpy(&intRep, &number, sizeof(float));
+			return toHexString(intRep);
+		}
+		std::string toHex(const double& number)
+		{
+			uint64_t intRep;
+			std::memcpy(&intRep, &number, sizeof(double));
+			return toHexString(intRep);
+		}
+
 	};
 	template<typename U>
 	class ToStr1D<const std::type_info*, U>
