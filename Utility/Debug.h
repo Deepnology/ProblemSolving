@@ -1264,196 +1264,244 @@ namespace Debug
 			//use [colX,rowY] to represent actual matrix indices including row/col headers. so use vv[colX-1][rowY-1][], rowItem[rowY-1], colItem[colX-1]
 
 			std::ostringstream oss;
-			if (columnXrowY)//[columnX][rowY]
+			int maxColumnSize = 0;
+			int maxRowSize = 0;
+			if (columnXrowY)
 			{
-				int maxColumnSize = rowItem.size();//can vary (vertical size)
-				int maxRowSize = std::max(vv.size(), colItem.size()) + 1;//should be fixed (horizontal size)
+				maxColumnSize = rowItem.size();//can vary (vertical size)
+				maxRowSize = std::max(vv.size(), colItem.size()) + 1;//should be fixed (horizontal size)
 				for (int colX = 1; colX < maxRowSize; ++colX)
 					if (colX - 1 < vv.size())
 						maxColumnSize = std::max(maxColumnSize, (int)vv[colX - 1].size());
 				maxColumnSize += 1;
+			}
+			else
+			{
+				maxRowSize = colItem.size();//can vary (horizontal size)
+				maxColumnSize = std::max(vv.size(), rowItem.size()) + 1;//should be fixed (vertical size)
+				for (int rowY = 1; rowY < maxColumnSize; ++rowY)
+					if (rowY - 1 < vv.size())
+						maxRowSize = std::max(maxRowSize, (int)vv[rowY - 1].size());
+				maxRowSize += 1;
+			}
 
-				//calculate emptyColArr
-				std::vector<int> emptyColArr(maxRowSize, 1);
-				if (hideEmptyCol)
-				{
-					//1. check 1st column: rowItem
-					emptyColArr[0] = 0;
-					//2. check the rest columns
-					for (int colX = 1; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
-						for (int rowY = 1; rowY < maxColumnSize; ++rowY)
+			//calculate emptyColArr
+			std::vector<int> emptyColArr(maxRowSize, 1);
+			if (hideEmptyCol)
+			{
+				//1. check 1st column: rowItem
+				emptyColArr[0] = 0;
+				//2. check the rest columns
+				for (int colX = 1; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
+					for (int rowY = 1; rowY < maxColumnSize; ++rowY)
+						if (columnXrowY)
+						{
 							if (colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size())
 								emptyColArr[colX] &= (vv[colX - 1][rowY - 1].empty() ? 1 : 0);
-				}
+						}
+						else
+						{
+							if (rowY - 1 < vv.size() && colX - 1 < vv[rowY - 1].size())
+								emptyColArr[colX] &= (vv[rowY - 1][colX - 1].empty() ? 1 : 0);
+						}
+			}
 
-				//calculate emptyRowArr
-				std::vector<int> emptyRowArr(maxColumnSize, 1);
-				if (hideEmptyRow)
-				{
-					//1. check 1st row: colItem
-					emptyRowArr[0] = 0;
-					//2. check the rest rows
-					for (int rowY = 1; rowY < maxColumnSize; ++rowY)//for each rowY (iterate vertically)
-						for (int colX = 1; colX < maxRowSize; ++colX)
+			//calculate emptyRowArr
+			std::vector<int> emptyRowArr(maxColumnSize, 1);
+			if (hideEmptyRow)
+			{
+				//1. check 1st row: colItem
+				emptyRowArr[0] = 0;
+				//2. check the rest rows
+				for (int rowY = 1; rowY < maxColumnSize; ++rowY)//for each rowY (iterate vertically)
+					for (int colX = 1; colX < maxRowSize; ++colX)
+						if (columnXrowY)
+						{
 							if (colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size())
 								emptyRowArr[rowY] &= (vv[colX - 1][rowY - 1].empty() ? 1 : 0);
-				}
+						}
+						else
+						{
+							if (rowY - 1 < vv.size() && colX - 1 < vv[rowY - 1].size())
+								emptyRowArr[rowY] &= vv[rowY - 1][colX - 1].empty() ? 1 : 0;
+						}
+			}
 
-				//calculate colWidthArr
-				std::vector<int> colWidthArr(maxRowSize, cellWidth);//the width of each column
-				if (cellWidth == 0)//calculate and use non-uniform cell widths
+			//calculate colWidthArr
+			std::vector<int> colWidthArr(maxRowSize, cellWidth);//the width of each column
+			if (cellWidth == 0)//calculate and use non-uniform cell widths
+			{
+				//1. check 1st column: rowItem
+				colWidthArr[0] = std::format("{}", "Row#").size();
+				for (int rowY = 1; rowY < maxColumnSize; ++rowY)//for each rowY (iterate vertically)
 				{
-					//1. check 1st column: rowItem
-					colWidthArr[0] = std::format("{}", "Row#").size();
+					if (hideEmptyRow && emptyRowArr[rowY])
+						continue;
+					if (rowY - 1 < rowItem.size())
+						colWidthArr[0] = std::max(colWidthArr[0], (int)rowItem[rowY - 1].size());
+					else
+						colWidthArr[0] = std::max(colWidthArr[0], (int)std::format("{}", "Row#").size() + (int)std::format("{}", rowY).size());
+				}
+				//2. check the rest columns
+				for (int colX = 1; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
+				{
+					colWidthArr[colX] = 4;//cell minimum width is 4
+					if (hideEmptyCol && emptyColArr[colX])
+						continue;
+					//1. check 1st row: colItem
+					if (colX - 1 < colItem.size())
+						colWidthArr[colX] = std::max(colWidthArr[colX], (int)colItem[colX - 1].size());
+					else
+						colWidthArr[colX] = std::max(colWidthArr[colX], (int)std::format("{}", "Col#").size() + (int)std::format("{}", colX).size());
+					//2. check the rest rows of colX
 					for (int rowY = 1; rowY < maxColumnSize; ++rowY)//for each rowY (iterate vertically)
 					{
 						if (hideEmptyRow && emptyRowArr[rowY])
 							continue;
-						if (rowY - 1 < rowItem.size())
-							colWidthArr[0] = std::max(colWidthArr[0], (int)rowItem[rowY - 1].size());
-						else
-							colWidthArr[0] = std::max(colWidthArr[0], (int)std::format("{}", "Row#").size() + (int)std::format("{}", rowY).size());
-					}
-					//2. check the rest columns
-					for (int colX = 1; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
-					{
-						colWidthArr[colX] = 4;//cell minimum width is 4
-						if (hideEmptyCol && emptyColArr[colX])
-							continue;
-						//1. check 1st row: colItem
-						if (colX - 1 < colItem.size())
-							colWidthArr[colX] = std::max(colWidthArr[colX], (int)colItem[colX - 1].size());
-						else
-							colWidthArr[colX] = std::max(colWidthArr[colX], (int)std::format("{}", "Col#").size() + (int)std::format("{}", colX).size());
-						//2. check the rest rows of colX
-						for (int rowY = 1; rowY < maxColumnSize; ++rowY)//for each rowY (iterate vertically)
+						if (columnXrowY)
 						{
-							if (hideEmptyRow && emptyRowArr[rowY])
-								continue;
 							if (colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size())
 								for (int rowY2 = 0; rowY2 < vv[colX - 1][rowY - 1].size(); ++rowY2)
 									colWidthArr[colX] = std::max(colWidthArr[colX], (int)vv[colX - 1][rowY - 1][rowY2].size());
 						}
-					}
-				}
-
-				//calculate rowHeightArr
-				std::vector<int> rowHeightArr(maxColumnSize, cellHeight);
-				if (cellHeight == 1)//calculate and use non-uniform cell heights
-				{
-					//1. check 1st row: colItem
-					rowHeightArr[0] = 1;
-					//2. check the rest rows
-					for (int rowY = 1; rowY < maxColumnSize; ++rowY)
-					{
-						if (hideEmptyRow && emptyRowArr[rowY])
-							continue;
-						for (int colX = 1; colX < maxRowSize; ++colX)
+						else
 						{
-							if (hideEmptyCol && emptyColArr[colX])
-								continue;
-							if (colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size())
-								rowHeightArr[rowY] = std::max(rowHeightArr[rowY], (int)vv[colX - 1][rowY - 1].size());
+							if (rowY - 1 < vv.size() && colX - 1 < vv[rowY - 1].size())
+								for (int rowY2 = 0; rowY2 < vv[rowY - 1][colX - 1].size(); ++rowY2)
+									colWidthArr[colX] = std::max(colWidthArr[colX], (int)vv[rowY - 1][colX - 1][rowY2].size());
 						}
 					}
 				}
+			}
 
-				//print matrix
-				for (int rowY = 0; rowY < maxColumnSize; ++rowY)//for each rowY (iterate vertically)
+			//calculate rowHeightArr
+			std::vector<int> rowHeightArr(maxColumnSize, cellHeight);
+			if (cellHeight == 1)//calculate and use non-uniform cell heights
+			{
+				//1. check 1st row: colItem
+				rowHeightArr[0] = 1;
+				//2. check the rest rows
+				for (int rowY = 1; rowY < maxColumnSize; ++rowY)
 				{
-					if (rowY == 0)//1. print the 1st row: colItem
+					if (hideEmptyRow && emptyRowArr[rowY])
+						continue;
+					for (int colX = 1; colX < maxRowSize; ++colX)
 					{
-						oss << std::vformat("{:>" + std::format("{}", colWidthArr[0] + std::format("{}", "| ").size()) + "}", std::make_format_args("| "));
+						if (hideEmptyCol && emptyColArr[colX])
+							continue;
+						if (columnXrowY)
+						{
+							if (colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size())
+								rowHeightArr[rowY] = std::max(rowHeightArr[rowY], (int)vv[colX - 1][rowY - 1].size());
+						}
+						else
+						{
+							if (rowY - 1 < vv.size() && colX - 1 < vv[rowY - 1].size())
+								rowHeightArr[rowY] = std::max(rowHeightArr[rowY], (int)vv[rowY - 1][colX - 1].size());
+						}
+					}
+				}
+			}
+
+			//print matrix
+			for (int rowY = 0; rowY < maxColumnSize; ++rowY)//for each rowY (iterate vertically)
+			{
+				if (rowY == 0)//1. print the 1st row: colItem
+				{
+					oss << std::vformat("{:>" + std::format("{}", colWidthArr[0] + std::format("{}", "| ").size()) + "}", std::make_format_args("| "));
+					for (int colX = 1; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
+					{
+						if (hideEmptyCol && emptyColArr[colX])
+							continue;
+						if (colX - 1 < colItem.size())
+							oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}",
+								std::make_format_args(colItem[colX - 1].substr(0, std::min((int)colItem[colX - 1].size(), colWidthArr[colX]))));
+						else if (colWidthArr[colX] - std::format("{}", "Col#").size() >= std::format("{}", colX).size())
+							oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX] - std::format("{}", colX).size()) + "}{}",
+								std::make_format_args("Col#", colX));
+						else
+							oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args("Col#"));
+						if (colX != maxRowSize - 1 &&
+							(!hideEmptyCol || !std::accumulate(emptyColArr.cbegin() + colX + 1, emptyColArr.cend(), 1, std::bit_and<int>())))
+							oss << "| ";
+					}
+				}
+				else if (hideEmptyRow && emptyRowArr[rowY])
+					continue;
+				else//2. print the rest rows
+				{
+					for (int rowY2 = 0; rowY2 < rowHeightArr[rowY]; ++rowY2)
+					{
+						//1. print the 1st column: rowItem
+						if (rowY2 != rowHeightArr[rowY] - 1)
+						{
+							oss << std::vformat("{:>" + std::format("{}", colWidthArr[0]) + "}| ", std::make_format_args(" "));
+						}
+						else
+						{
+							if (rowY - 1 < rowItem.size())
+								oss << std::vformat("{:>" + std::format("{}", colWidthArr[0]) + "}| ",
+									std::make_format_args(rowItem[rowY - 1].substr(0, std::min((int)rowItem[rowY - 1].size(), colWidthArr[0]))));
+							else if (colWidthArr[0] - std::format("{}", "Row#").size() >= std::format("{}", rowY).size())
+								oss << std::vformat("{:>" + std::format("{}", colWidthArr[0] - std::format("{}", rowY).size()) + "}{}| ",
+									std::make_format_args("Row#", rowY));
+							else
+								oss << std::vformat("{:>" + std::format("{}", colWidthArr[0]) + "}| ", std::make_format_args("Row#"));
+						}
+						//2. print the rest columns of rowY
 						for (int colX = 1; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
 						{
 							if (hideEmptyCol && emptyColArr[colX])
 								continue;
-							if (colX - 1 < colItem.size())
+							int revIdx = rowHeightArr[rowY] - 1 - rowY2;
+							if (columnXrowY && colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size() && revIdx < vv[colX - 1][rowY - 1].size())
+							{
+								int idx = vv[colX - 1][rowY - 1].size() - 1 - revIdx;
 								oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}",
-									std::make_format_args(colItem[colX - 1].substr(0, std::min((int)colItem[colX - 1].size(), colWidthArr[colX]))));
-							else if (colWidthArr[colX] - std::format("{}", "Col#").size() >= std::format("{}", colX).size())
-								oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX] - std::format("{}", colX).size()) + "}{}",
-									std::make_format_args("Col#", colX));
+									std::make_format_args(vv[colX - 1][rowY - 1][idx].substr(0, std::min((int)vv[colX - 1][rowY - 1][idx].size(), colWidthArr[colX]))));
+							}
+							else if (!columnXrowY && rowY - 1 < vv.size() && colX - 1 < vv[rowY - 1].size() && revIdx < vv[rowY - 1][colX - 1].size())
+							{
+								int idx = vv[rowY - 1][colX - 1].size() - 1 - revIdx;
+								oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}",
+									std::make_format_args(vv[rowY - 1][colX - 1][idx].substr(0, std::min((int)vv[rowY - 1][colX - 1][idx].size(), colWidthArr[colX]))));
+							}
+							else if (columnXrowY && colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size())
+								oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args((useNilForEmpty ? "nil" : " ")));
+							else if (!columnXrowY && rowY - 1 < vv.size() && colX - 1 < vv[rowY - 1].size())
+								oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args((useNilForEmpty ? "nil" : " ")));
+							else if (rowY2 != rowHeightArr[rowY] - 1)
+								oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args(" "));
 							else
-								oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args("Col#"));
+								oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args("NA"));
 							if (colX != maxRowSize - 1 &&
 								(!hideEmptyCol || !std::accumulate(emptyColArr.cbegin() + colX + 1, emptyColArr.cend(), 1, std::bit_and<int>())))
 								oss << "| ";
 						}
+						if (rowY2 != rowHeightArr[rowY] - 1)
+							oss << std::endl;
 					}
-					else if (hideEmptyRow && emptyRowArr[rowY])
-						continue;
-					else//2. print the rest rows
-					{
-						for (int rowY2 = 0; rowY2 < rowHeightArr[rowY]; ++rowY2)
-						{
-							//1. print the 1st column: rowItem
-							if (rowY2 != rowHeightArr[rowY] - 1)
-							{
-								oss << std::vformat("{:>" + std::format("{}", colWidthArr[0]) + "}| ", std::make_format_args(" "));
-							}
-							else
-							{
-								if (rowY - 1 < rowItem.size())
-									oss << std::vformat("{:>" + std::format("{}", colWidthArr[0]) + "}| ",
-										std::make_format_args(rowItem[rowY - 1].substr(0, std::min((int)rowItem[rowY - 1].size(), colWidthArr[0]))));
-								else if (colWidthArr[0] - std::format("{}", "Row#").size() >= std::format("{}", rowY).size())
-									oss << std::vformat("{:>" + std::format("{}", colWidthArr[0] - std::format("{}", rowY).size()) + "}{}| ",
-										std::make_format_args("Row#", rowY));
-								else
-									oss << std::vformat("{:>" + std::format("{}", colWidthArr[0]) + "}| ", std::make_format_args("Row#"));
-							}
-							//2. print the rest columns of rowY
-							for (int colX = 1; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
-							{
-								if (hideEmptyCol && emptyColArr[colX])
-									continue;
-								int revIdx = rowHeightArr[rowY] - 1 - rowY2;
-								if (colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size() && revIdx < vv[colX - 1][rowY - 1].size())
-								{
-									int idx = vv[colX - 1][rowY - 1].size() - 1 - revIdx;
-									oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}",
-										std::make_format_args(vv[colX - 1][rowY - 1][idx].substr(0, std::min((int)vv[colX - 1][rowY - 1][idx].size(), colWidthArr[colX]))));
-								}
-								else if (colX - 1 < vv.size() && rowY - 1 < vv[colX - 1].size())
-									oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args((useNilForEmpty ? "nil" : " ")));
-								else if (rowY2 != rowHeightArr[rowY] - 1)
-									oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args(" "));
-								else
-									oss << std::vformat("{:>" + std::format("{}", colWidthArr[colX]) + "}", std::make_format_args("NA"));
-								if (colX != maxRowSize - 1 &&
-									(!hideEmptyCol || !std::accumulate(emptyColArr.cbegin() + colX + 1, emptyColArr.cend(), 1, std::bit_and<int>())))
-									oss << "| ";
-							}
-							if (rowY2 != rowHeightArr[rowY] - 1)
-								oss << std::endl;
-						}
-					}
-					if (rowY == 0 ||
-						rowY != maxColumnSize - 1 && (!hideEmptyRow || !std::accumulate(emptyRowArr.cbegin() + rowY + 1, emptyRowArr.cend(), 1, std::bit_and<int>())))
-					{
-						//print horizontal line
-						oss << std::endl;
-						for (int colX = 0; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
-						{
-							if (hideEmptyCol && emptyColArr[colX])
-								continue;
-							if (colX == 0)
-								oss << std::vformat("{:->" + std::format("{}", colWidthArr[colX] + 1) + "}", std::make_format_args("+"));
-							else if (colX != maxRowSize - 1 &&
-								(!hideEmptyCol || !std::accumulate(emptyColArr.cbegin() + colX + 1, emptyColArr.cend(), 1, std::bit_and<int>())))
-								oss << std::vformat("{:->" + std::format("{}", colWidthArr[colX] + 2) + "}", std::make_format_args("+"));
-							else
-								oss << std::vformat("{:->" + std::format("{}", colWidthArr[colX] + 1) + "}", std::make_format_args("-"));
-						}
-					}
-
-					oss << std::endl;
 				}
-			}
-			else//[rowY][columnX]
-			{
+				if (rowY == 0 ||
+					rowY != maxColumnSize - 1 && (!hideEmptyRow || !std::accumulate(emptyRowArr.cbegin() + rowY + 1, emptyRowArr.cend(), 1, std::bit_and<int>())))
+				{
+					//print horizontal line
+					oss << std::endl;
+					for (int colX = 0; colX < maxRowSize; ++colX)//for each colX (iterate horizontally)
+					{
+						if (hideEmptyCol && emptyColArr[colX])
+							continue;
+						if (colX == 0)
+							oss << std::vformat("{:->" + std::format("{}", colWidthArr[colX] + 1) + "}", std::make_format_args("+"));
+						else if (colX != maxRowSize - 1 &&
+							(!hideEmptyCol || !std::accumulate(emptyColArr.cbegin() + colX + 1, emptyColArr.cend(), 1, std::bit_and<int>())))
+							oss << std::vformat("{:->" + std::format("{}", colWidthArr[colX] + 2) + "}", std::make_format_args("+"));
+						else
+							oss << std::vformat("{:->" + std::format("{}", colWidthArr[colX] + 1) + "}", std::make_format_args("-"));
+					}
+				}
 
+				oss << std::endl;
 			}
 			return oss.str();
 		}
