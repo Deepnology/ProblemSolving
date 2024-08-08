@@ -3,6 +3,7 @@
 
 #pragma warning (disable : 4996) //fopen
 #include <stdio.h>
+#include <string.h>
 #define DEBUG_MDUMP(filename, mode, str) \
     do { \
         FILE *__file = fopen(filename, mode); \
