@@ -65,28 +65,26 @@
     DEBUG_READ(filename, DEBUG_READ_BUF_, DEBUG_READ_BUF_SIZE)
 
 #define DEBUG_RENAME_APPEND(file, newApn) \
-	do { \
-		const char *__fileName = (file); \
-		FILE *__f = fopen(__fileName, "r"); \
-		if (!__f) { \
-			fprintf(stderr, "Error: File %s not found.\n", __fileName); \
-		} else { \
-			fclose(__f); \
-			char __newFileName[256]; \
-			const char *__dot = strrchr(__fileName, '.'); \
-			if (__dot) { \
-				size_t nameLength = __dot - __fileName; \
-				snprintf(__newFileName, nameLength + 1, "%s", __fileName); \
-				snprintf(__newFileName + nameLength, sizeof(__newFileName) - nameLength, "%s.%s", newApn, __dot + 1); \
-			} else { \
-				snprintf(__newFileName, sizeof(__newFileName), "%s%s", __fileName, newApn); \
-			} \
-			remove(__newFileName); \
-			if (rename(__fileName, __newFileName) != 0) { \
-				perror("Error renaming file"); \
-			} \
-		} \
-	} while (0)
+    do { \
+        const char *__fileName = (file); \
+        FILE *__f = fopen(__fileName, "r"); \
+        if (__f) { \
+            fclose(__f); \
+            char __newFileName[256]; \
+            const char *__dot = strrchr(__fileName, '.'); \
+            if (__dot) { \
+                size_t __nameLen = __dot - __fileName; \
+                snprintf(__newFileName, __nameLen + 1, "%s", __fileName); \
+                snprintf(__newFileName + __nameLen, sizeof(__newFileName) - __nameLen, "%s.%s", newApn, __dot + 1); \
+            } else { \
+                snprintf(__newFileName, sizeof(__newFileName), "%s%s", __fileName, newApn); \
+            } \
+            remove(__newFileName); \
+            if (rename(__fileName, __newFileName) != 0) { \
+                perror("Error renaming file"); \
+            } \
+        } \
+    } while (0)
 
 #ifdef __cplusplus
 #include <iostream>
