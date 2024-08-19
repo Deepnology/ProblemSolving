@@ -8,9 +8,11 @@
     do { \
         FILE *__file = fopen(filename, mode); \
         if (__file == NULL) { \
-            perror("Error opening file"); \
+	    char __err[256]; \
+	    snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_MDUMP", filename); \
+            perror(__err); \
         } else { \
-			fprintf(__file, "%s\n", str); \
+	    fprintf(__file, "%s\n", str); \
             fclose(__file); \
         } \
     } while(0)
@@ -19,7 +21,9 @@
     do { \
         FILE *__file = fopen(filename, mode); \
         if (__file == NULL) { \
-            perror("Error opening file"); \
+	    char __err[256]; \
+	    snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_MDUMPF", filename); \
+            perror(__err); \
         } else { \
             fprintf(__file, __VA_ARGS__); \
             fclose(__file); \
@@ -35,7 +39,9 @@
     do { \
         FILE *__file = fopen(filename, "w"); \
         if (__file == NULL) { \
-            perror("Error opening file"); \
+	    char __err[256]; \
+	    snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_CLRDUMP", filename); \
+            perror(__err); \
         } else { \
             fclose(__file); \
         } \
@@ -45,7 +51,9 @@
     do{ \
         FILE *__file = fopen(filename, "r"); \
         if (__file == NULL) { \
-            perror("Error opening file"); \
+            char __err[256]; \
+            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_READ", filename); \
+            perror(__err); \
         } else { \
             if (fgets(buf, bufSize, __file) != NULL) { \
                 size_t readLen = strlen(buf); \
@@ -54,11 +62,13 @@
                 } \
             } \
             else { \
-                perror("Error reading from file"); \
+                char __err[256]; \
+                snprintf(__err, sizeof(__err), "Error reading %s in DEBUG_READ", filename); \
+                perror(__err); \
             } \
             fclose(__file); \
         } \
-    }while(0)
+    } while(0)
 
 #define DEBUG_READ_BUF_SIZE 1024
 #define DEBUG_READ_BUF(filename) \
@@ -82,10 +92,12 @@
             } \
             remove(__newFileName); \
             if (rename(__fileName, __newFileName) != 0) { \
-                perror("Error renaming file"); \
+                char __err[256]; \
+                snprintf(__err, sizeof(__err), "Error renaming %s in DEBUG_RENAME_APPEND", __newFileName); \
+                perror(__err); \
             } \
         } \
-    } while (0)
+    } while(0)
 
 #ifdef __cplusplus
 #include <iostream>
