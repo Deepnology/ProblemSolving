@@ -12,7 +12,7 @@
             snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_MDUMP", filename); \
             perror(__err); \
         } else { \
-	    fprintf(__file, "%s\n", str); \
+            fprintf(__file, "%s\n", str); \
             fclose(__file); \
         } \
     } while(0)
