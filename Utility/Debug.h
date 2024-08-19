@@ -8,8 +8,8 @@
     do { \
         FILE *__file = fopen(filename, mode); \
         if (__file == NULL) { \
-	    char __err[256]; \
-	    snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_MDUMP", filename); \
+            char __err[256]; \
+            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_MDUMP", filename); \
             perror(__err); \
         } else { \
 	    fprintf(__file, "%s\n", str); \
@@ -21,8 +21,8 @@
     do { \
         FILE *__file = fopen(filename, mode); \
         if (__file == NULL) { \
-	    char __err[256]; \
-	    snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_MDUMPF", filename); \
+            char __err[256]; \
+            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_MDUMPF", filename); \
             perror(__err); \
         } else { \
             fprintf(__file, __VA_ARGS__); \
@@ -39,8 +39,8 @@
     do { \
         FILE *__file = fopen(filename, "w"); \
         if (__file == NULL) { \
-	    char __err[256]; \
-	    snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_CLRDUMP", filename); \
+            char __err[256]; \
+            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_CLRDUMP", filename); \
             perror(__err); \
         } else { \
             fclose(__file); \
