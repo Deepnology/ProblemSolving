@@ -121,6 +121,8 @@
 #include <typeinfo>
 #include <format>
 #include <bitset>
+#include <cstdint>
+#include <cstring>
 #if defined(QT_VERSION)
 #include <QString>
 #include <QTextStream>
@@ -871,6 +873,44 @@ namespace Debug
 				int M = i->second.size();
 				int cnt = 0;
 				for (typename std::unordered_map<T, U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
+				{
+					oss << "[" << j->first << "," << j->second << "]";
+					if (++cnt != M)
+						oss << ", ";
+				}
+				oss << std::endl;
+			}
+			std::cout << oss.str() << std::endl;
+		}
+		void operator()(const std::vector<std::pair<T, std::set<U>>>& vv)
+		{
+			std::ostringstream oss;
+			int count = 0;
+			for (typename std::vector<std::pair<T, std::set<U>>>::const_iterator i = vv.cbegin(); i != vv.cend(); ++i)
+			{
+				oss << "Row#" << count++ << "	= " << i->first << ": ";
+				int M = i->second.size();
+				int cnt = 0;
+				for (typename std::set<U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
+				{
+					oss << *j;
+					if (++cnt != M)
+						oss << ", ";
+				}
+				oss << std::endl;
+			}
+			std::cout << oss.str() << std::endl;
+		}
+		void operator()(const std::vector<std::pair<T, std::map<T, U>>>& vv)
+		{
+			std::ostringstream oss;
+			int count = 0;
+			for (typename std::vector<std::pair<T, std::map<T, U>>>::const_iterator i = vv.cbegin(); i != vv.cend(); ++i)
+			{
+				oss << "Row#" << count++ << "	= " << i->first << ": ";
+				int M = i->second.size();
+				int cnt = 0;
+				for (typename std::map<T, U>::const_iterator j = i->second.cbegin(); j != i->second.cend(); ++j)
 				{
 					oss << "[" << j->first << "," << j->second << "]";
 					if (++cnt != M)
