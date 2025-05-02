@@ -11,53 +11,48 @@
 #include <stack>
 #include <queue>
 #include <algorithm>
+#include <type_traits>
 
 class DebugLinkedList
 {
-    template<typename ValueType>
+    template<typename ValueType, TraversalOrder Order = TraversalOrder::DFS>
     class TraverseOrderContainer
     {
-        std::stack<ValueType> m_stk;
-        std::queue<ValueType> m_que;
-        const int m_order = 0;//0: DFS, 1: BFS
+    private:
+        using container_type = std::conditional_t<
+            Order == TraversalOrder::DFS,
+            std::stack<ValueType>,
+            std::queue<ValueType>
+        >;
+        container_type m_container;
     public:
-        TraverseOrderContainer(int order = 0) : m_order(order)
-        { }
-        bool empty() const
-        {
-            return m_order ? m_que.empty() : m_stk.empty();
-        }
-        void push(const ValueType& n)
-        {
-            m_order ? m_que.push(n) : m_stk.push(n);
-        }
-        void push(ValueType&& n)
-        {
-            m_order ? m_que.push(n) : m_stk.push(n);
-        }
+        TraverseOrderContainer() = default;
+        bool empty() const { return m_container.empty(); }
+        void push(const ValueType& val) { m_container.push(val); }
+        void push(ValueType&& val) { m_container.push(std::move(val)); }
         ValueType& cur()
         {
-            return m_order ? m_que.front() : m_stk.top();
+            if constexpr (Order == TraversalOrder::DFS)
+                return m_container.top();
+            else
+                return m_container.front();
         }
         const ValueType& cur() const
         {
-            return m_order ? m_que.front() : m_stk.top();
+            if constexpr (Order == TraversalOrder::DFS)
+                return m_container.top();
+            else
+                return m_container.front();
         }
-        void pop()
-        {
-            m_order ? m_que.pop() : m_stk.pop();
-        }
-        size_t size() const
-        {
-            return m_order ? m_que.size() : m_stk.size();
-        }
-        int order() const
-        {
-            return m_order;
-        }
+        void pop() { m_container.pop(); }
+        size_t size() const { return m_container.size(); }
+        constexpr TraversalOrder getOrder() const noexcept { return Order; }
     };
+
+
 public:
-    template <typename NodeType, typename ReturnType>
+    struct NoComparator {};
+    template <typename NodeType, typename ReturnType, typename Comparator = NoComparator>
     static ReturnType TraverseT(
         NodeType* node,
         const std::vector<std::function<NodeType* (NodeType*)>>& getNextArr,
@@ -70,38 +65,52 @@ public:
     {
         ReturnType res;
         if (!node) return res;
+        std::priority_queue<NodeType*, std::vector<NodeType*>, Comparator> heap;//used only when Comparator != NoComparator
         TraverseOrderContainer<NodeType*> container;//DFS by default
         std::unordered_set<NodeType*> visit;
         NodeType* cur = node;
         container.push(cur);
         visit.insert(cur);
+
+        auto visitCurFunc = [&]() 
+            {
+                visitCur(invokeNode(cur, level), res);
+                std::vector<void*> chdListArr = getChdListArr(cur);
+                for (int i = 0; i < chdListArr.size(); ++i)
+                {
+                    if (void* chdList = chdListArr[i])
+                    {
+                        if (i < invokeChdListArr.size() && invokeChdListArr[i])
+                        {
+                            if (std::function<ReturnType(void*, int)> selInvokeF = invokeChdListArr[i](cur))
+                                visitCurChd(selInvokeF(chdList, level + 1), res);
+                        }
+                    }
+                }
+            };
+        
         while (!container.empty())
         {
             cur = container.cur();
             container.pop();
 
             //visit cur
-            visitCur(invokeNode(cur, level), res);
-            auto chdListArr = getChdListArr(cur);
-            for (int i = 0; i < chdListArr.size(); ++i)
+            if constexpr (std::is_same_v<Comparator, NoComparator>)
             {
-                if (void* chdList = chdListArr[i])
-                {
-                    if (i < invokeChdListArr.size() && invokeChdListArr[i])
-                    {
-                        if (auto selInvokeF = invokeChdListArr[i](cur))
-                            visitCurChd(selInvokeF(chdList, level + 1), res);
-                    }
-                }
+                visitCurFunc();
+            }
+            else
+            {
+                heap.push(cur);
             }
 
             //push nxt
-            auto getNextArrCopy = getNextArr;
-            if (container.order() == 0)//DFS
+            std::vector<std::function<NodeType* (NodeType*)>> getNextArrCopy = getNextArr;
+            if (container.getOrder() == TraversalOrder::DFS)//DFS
                 std::reverse(getNextArrCopy.begin(), getNextArrCopy.end());
             for (int i = 0; i < getNextArrCopy.size(); ++i)
             {
-                if (auto getNextF = getNextArrCopy[i])
+                if (std::function<NodeType* (NodeType*)> getNextF = getNextArrCopy[i])
                 {
                     if (NodeType* nxt = getNextF(cur); nxt && !visit.count(nxt))
                     {
@@ -111,6 +120,19 @@ public:
                 }
             }
         }
+
+        if constexpr (!std::is_same_v<Comparator, NoComparator>)
+        {
+            while (!heap.empty())
+            {
+                cur = heap.top();
+                heap.pop();
+
+                //visit cur
+                visitCurFunc();
+            }
+        }
+        
         return res;
     }
 
