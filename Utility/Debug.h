@@ -99,9 +99,75 @@
         } \
     } while(0)
 
+#define DEBUG_PUSH_BUF_INIT(size) \
+    char DEBUG_PUSH_BUF_[size] = ""; \
+	size_t DEBUG_PUSH_BUF_POS_ = 0; \
+	const size_t DEBUG_PUSH_BUF_CAP_ = size;
+
+#define DEBUG_PUSH_BUF_STR(str) \
+    do { \
+        size_t __len = strlen(str); \
+        if (DEBUG_PUSH_BUF_POS_ + __len < DEBUG_PUSH_BUF_CAP_) { \
+	        memcpy(DEBUG_PUSH_BUF_ + DEBUG_PUSH_BUF_POS_, str, __len); \
+		    DEBUG_PUSH_BUF_POS_ += __len; \
+		    DEBUG_PUSH_BUF_[DEBUG_PUSH_BUF_POS_] = '\0'; \
+	    } else { \
+		    fprintf(stderr, "DEBUG_PUSH_BUF_STR: Buffer overflow prevented\n"); \
+	    } \
+	} while(0)
+
+#define DEBUG_PUSH_BUF_INT(num) \
+    do { \
+        char __intStr[32]; \
+        int __intLen = snprintf(__intStr, sizeof(__intStr), "%d", (num)); \
+        if (__intLen < 0 || (size_t)__intLen >= sizeof(__intStr)) { \
+            fprintf(stderr, "DEBUG_PUSH_BUF_INT: Integer formatting failed or truncated\n"); \
+        } \
+        if (DEBUG_PUSH_BUF_POS_ + (size_t)__intLen < DEBUG_PUSH_BUF_CAP_) { \
+            memcpy(DEBUG_PUSH_BUF_ + DEBUG_PUSH_BUF_POS_, __intStr, __intLen); \
+            DEBUG_PUSH_BUF_POS_ += (size_t)__intLen; \
+            DEBUG_PUSH_BUF_[DEBUG_PUSH_BUF_POS_] = '\0'; \
+        } else { \
+            fprintf(stderr, "DEBUG_PUSH_BUF_INT: Buffer overflow prevented\n"); \
+        } \
+    } while(0)
+
+#ifdef __cplusplus
+#include <mutex>
+#define DEBUG_LOCK_MUTEX(mtx, ...) \
+    do { \
+        mtx.lock(); \
+        __VA_ARGS__; \
+        mtx.unlock(); \
+	} while (0)
+
+#define DEBUG_MUTEX_DECLARE() \
+    extern std::mutex DEBUG_MUTEX_
+
+#define DEBUG_MUTEX_INIT() \
+    inline std::mutex DEBUG_MUTEX_ = std::mutex()
+
+#define DEBUG_LOCK(...) DEBUG_LOCK_MUTEX(DEBUG_MUTEX_, __VA_ARGS__)
+#elif defined(_POSIX_THREADS) && (_POSIX_THREADS > 0)
+#define DEBUG_LOCK_MUTEX(mtx, ...) \
+    do { \
+        pthread_mutex_lock(&(mtx)); \
+        __VA_ARGS__; \
+        pthread_mutex_unlock(&(mtx)); \
+	} while (0)
+	
+#define DEBUG_MUTEX_INIT() \
+    static pthread_mutex_t DEBUG_MUTEX_ = PTHREAD_MUTEX_INITIALIZER
+
+#define DEBUG_LOCK(...) DEBUG_LOCK_MUTEX(DEBUG_MUTEX_, __VA_ARGS__)
+#else
+
+#endif
+
 #ifdef __cplusplus
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <iterator>
 #include <string>
 #include <vector>
@@ -135,6 +201,11 @@
 #include <QPair>
 #include <QStringList>
 #include <QWidget>
+#include <QDockWidget>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QDateTime>
 #endif
 #define stringify(name)#name
 namespace Debug
@@ -1659,6 +1730,17 @@ namespace Debug
 	public:
 		ToStr1D() {}
 		~ToStr1D() {}
+		std::string operator()(int argc, T* argv, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			for (int i = 0; i < argc; ++i)
+			{
+				oss << argv[i];
+				if (i != argc - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
 		std::string operator()(const std::pair<T, U>& p)
 		{
 			std::ostringstream oss;
@@ -1871,9 +1953,11 @@ namespace Debug
 			}
 			return oss.str();
 		}
-		std::string operator()(const std::deque<T>& q)
+		std::string operator()(const std::deque<T>& q, bool sort = false)
 		{
 			std::deque<T> copy(q);
+			if (sort)
+				std::stable_sort(copy.begin(), copy.end());
 			std::ostringstream oss;
 			while (!copy.empty())
 			{
@@ -2098,6 +2182,18 @@ namespace Debug
 			}
 			return oss.str();
 		}
+		std::string operator()(const QVector<std::pair<T,T>>& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				oss << "[" << v[i].first << "," << v[i].second << "]";
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
 		std::string operator()(const QVector<T>& v, const EnumNameVec& toEnumName, Splitter s = Splitter::Comma)
 		{
 			std::ostringstream oss;
@@ -2296,6 +2392,57 @@ namespace Debug
 			return toHexString(intRep);
 		}
 
+		template<typename V>
+		std::string toSetBitStringConcat(const V& number, const std::function<std::string(const V&)>& getSetBitString)
+		{
+			std::vector<std::string> res;
+			unsigned int digit = 0;
+			V cur = number;
+			while (cur)
+			{
+				if (cur & 1u)
+				{
+					V num = (1 << digit);
+					res.push_back(getSetBitString(num));
+				}
+				cur >>= 1;
+				++digit;
+			}
+			std::ostringstream oss;
+			for (int i = res.size() - 1; i >= 0; --i)
+			{
+				oss << res[i];
+				if (i != 0)
+					oss << "|";
+			}
+			return oss.str();
+		}
+		// Overloads for toSetBitStringConcat
+		std::string operator()(const unsigned int& number, const std::function<std::string(const unsigned int&)>& getSetBitString)
+		{
+			return toSetBitStringConcat(number, getSetBitString);
+		}
+		std::string operator()(const int& number, const std::function<std::string(const int&)>& getSetBitString)
+		{
+			return toSetBitStringConcat(number, getSetBitString);
+		}
+		std::string operator()(const unsigned long& number, const std::function<std::string(const unsigned long&)>& getSetBitString)
+		{
+			return toSetBitStringConcat(number, getSetBitString);
+		}
+		std::string operator()(const long& number, const std::function<std::string(const long&)>& getSetBitString)
+		{
+			return toSetBitStringConcat(number, getSetBitString);
+		}
+		std::string operator()(const unsigned long long& number, const std::function<std::string(const unsigned long long&)>& getSetBitString)
+		{
+			return toSetBitStringConcat(number, getSetBitString);
+		}
+		std::string operator()(const long long& number, const std::function<std::string(const long long&)>& getSetBitString)
+		{
+			return toSetBitStringConcat(number, getSetBitString);
+		}
+
 	};
 	template<typename U>
 	class ToStr1D<const std::type_info*, U>
@@ -2406,6 +2553,57 @@ namespace Debug
 			return oss.str();
 		}
 	};
+	template<>
+	class ToStr1D<QMenuBar*>
+	{
+		static std::string toStr(QAction* act, int level)
+		{
+			const std::string indent(level * 2, ' ');
+			std::ostringstream oss;
+			if (act->isSeparator())
+				oss << indent << "----";
+			else
+			{
+				oss << indent << act->text().toStdString();
+				if (!act->shortcut().isEmpty())
+					oss << ", " << act->shortcut().toString(QKeySequence::NativeText).toStdString();
+				for (auto& i : act->shortcuts())
+				{
+					if (!i.isEmpty())
+						oss << ", " << i.toString(QKeySequence::NativeText).toStdString();
+				}
+			}
+			return oss.str();
+		}
+		static void visitMenuRecur(QMenu* menu, int level, std::ostringstream& oss)
+		{
+			for (QAction* act : menu->actions())
+			{
+				oss << toStr(act, level + 1) << std::endl;
+				if (!act->isSeparator())
+				{
+					if (QMenu* subMenu = act->menu())
+						visitMenuRecur(subMenu, level + 1, oss);
+				}
+			}
+		}
+	public:
+		std::string operator()(QMenuBar* mbar)
+		{
+			std::ostringstream oss;
+			int level = 0;
+			for (QAction* act : mbar->actions())
+			{
+				oss << toStr(act, level) << std::endl;
+				if (!act->isSeparator())
+				{
+					if (QMenu* subMenu = act->menu())
+						visitMenuRecur(subMenu, level + 1, oss);
+				}
+			}
+			return oss.str();
+		}
+	};
 	class QtUtil
 	{
 	public:
@@ -2416,6 +2614,54 @@ namespace Debug
 		static QRect mapToParentRect(QWidget* cur, QWidget* parent)
 		{
 			return QRect(cur->mapTo(parent, QPoint(0, 0)), cur->size());
+		}
+	private:
+		inline static QString s_logFileName = QString();
+		static void messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+		{
+			QFile out(s_logFileName);
+			if (out.open(QIODevice::Append | QIODevice::Text))
+			{
+				QTextStream ts(&out);
+				ts.setCodec(QTextCodec::codecForName("UTF-8"));
+
+				// simple timestamp + type header
+				const char* typeStr = nullptr;
+				switch (type) {
+				case QtDebugMsg:    typeStr = "DEBUG";    break;
+				case QtInfoMsg:     typeStr = "INFO";     break;
+				case QtWarningMsg:  typeStr = "WARNING";  break;
+				case QtCriticalMsg: typeStr = "CRITICAL"; break;
+				case QtFatalMsg:    typeStr = "FATAL";    break;
+				}
+
+				ts << QDateTime::currentDateTime().toString(Qt::ISODate)
+					<< " [" << typeStr << "] "
+					<< msg
+					<< "\n";
+				ts.flush();
+			}
+
+			// keep Qt’s default behavior on fatal messages
+			if (type == QtFatalMsg)
+				abort();
+		}
+	public:
+		static void redirectQDebug_(const QString& fileName)
+		{
+			if (fileName.isEmpty())
+			{
+				qInstallMessageHandler(nullptr);
+			}
+			else if (fileName != s_logFileName)
+			{
+				s_logFileName = fileName;
+				qInstallMessageHandler(messageHandler);
+			}
+		}
+		static void redirectQDebug(const std::string& fileName)
+		{
+			redirectQDebug_(QString::fromStdString(fileName));
 		}
 	};
 #endif
