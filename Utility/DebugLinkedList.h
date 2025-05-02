@@ -15,6 +15,8 @@
 
 class DebugLinkedList
 {
+
+    enum class TraversalOrder { DFS, BFS };
     template<typename ValueType, TraversalOrder Order = TraversalOrder::DFS>
     class TraverseOrderContainer
     {
@@ -88,7 +90,6 @@ public:
                     }
                 }
             };
-        
         while (!container.empty())
         {
             cur = container.cur();
@@ -132,7 +133,6 @@ public:
                 visitCurFunc();
             }
         }
-        
         return res;
     }
 
