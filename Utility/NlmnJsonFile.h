@@ -3,7 +3,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <iomanip>
 #include "nlohmann/json.hpp"
 
 class NlmnJsonFile
@@ -57,6 +56,20 @@ public:
         return os;
     }
 
+    template<typename KeyIterable>
+    nlohmann::json& operator()(const KeyIterable& keys)
+    {
+        if (auto p = getPtr(keys)) return *p;
+        throw std::out_of_range("JSON path not found");
+    }
+
+    template<typename KeyIterable>
+    const nlohmann::json& operator()(const KeyIterable& keys) const
+    {
+        if (auto p = getPtr(keys)) return *p;
+        throw std::out_of_range("JSON path not found");
+    }
+
     nlohmann::json& operator()()
     {
         return json_;
@@ -65,6 +78,50 @@ public:
     const nlohmann::json& operator()() const
     {
         return json_;
+    }
+
+    template<typename KeyIterable>
+    nlohmann::json* getPtr(const KeyIterable& keys)
+    {
+        return const_cast<nlohmann::json*>(
+            static_cast<const NlmnJsonFile*>(this)->getPtr(keys)
+            );
+    }
+
+    //works for std::vector<std::string>, std::list<std::string>, std::set<std::string>
+    template<typename KeyIterable,
+        typename = std::enable_if_t<
+        !std::is_same_v<NlmnJsonFile, std::decay_t<KeyIterable>>
+        >>
+    const nlohmann::json* getPtr(const KeyIterable& keys) const
+    {
+        const nlohmann::json* cur = &json_;
+        for (const auto& key : keys)
+        {
+            if (!cur->is_object())
+                return nullptr;
+            auto itr = cur->find(key);
+            if (itr == cur->end())
+                return nullptr;
+            cur = &*itr;
+        }
+        return cur;
+    }
+
+    nlohmann::json* getPtr()
+    {
+        return &json_;
+    }
+
+    const nlohmann::json* getPtr() const
+    {
+        return &json_;
+    }
+
+    template<typename KeyIterable>
+    bool contains(const KeyIterable& keys) const
+    {
+        return getPtr(keys) != nullptr;
     }
 
     void sort()
@@ -141,6 +198,17 @@ inline void NlmnJsonFile_Test()
     m().push_back({"b",{""}});
     m().push_back({"a",nullptr});
     m().push_back({"1",{}});
+
+    std::cout << "contains key4,key1: " << m.contains(std::vector<std::string>{ "key4","key1" }) << ":[" 
+        << m(std::vector<std::string>{ "key4", "key1" })[0] << ","
+        << m(std::vector<std::string>{ "key4", "key1" })[1] << ","
+        << m(std::vector<std::string>{ "key4", "key1" })[2] << "]"
+        << std::endl;
+
+    std::cout << "contains key3,key33: " << m.contains(std::vector<std::string>{ "key3", "key33" }) << ":"
+        << m(std::vector<std::string>{ "key3", "key33" })
+        << std::endl;
+    
     m.sort();
     std::cout << m << std::endl;
     std::cout << m()["key3"]["key31"][2] << std::endl;
