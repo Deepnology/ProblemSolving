@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
-#include "C:/_soft/nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 
 class NlmnJsonFile
 {
