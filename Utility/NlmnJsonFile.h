@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <type_traits>
 #include "nlohmann/json.hpp"
 
 class NlmnJsonFile
