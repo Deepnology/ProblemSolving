@@ -57,14 +57,14 @@ public:
         return os;
     }
 
-    template<typename KeyIterable>
+    template<std::ranges::range KeyIterable>
     nlohmann::json& operator()(const KeyIterable& keys)
     {
         if (auto p = getPtr(keys)) return *p;
         throw std::out_of_range("JSON path not found");
     }
 
-    template<typename KeyIterable>
+    template<std::ranges::range KeyIterable>
     const nlohmann::json& operator()(const KeyIterable& keys) const
     {
         if (auto p = getPtr(keys)) return *p;
@@ -81,7 +81,7 @@ public:
         return json_;
     }
 
-    template<typename KeyIterable>
+    template<std::ranges::range KeyIterable>
     nlohmann::json* getPtr(const KeyIterable& keys)
     {
         return const_cast<nlohmann::json*>(
@@ -89,22 +89,14 @@ public:
             );
     }
 
-    //works for std::vector<std::string>, std::list<std::string>, std::set<std::string>
-    template<typename KeyIterable,
-        typename = std::enable_if_t<
-        !std::is_same_v<NlmnJsonFile, std::decay_t<KeyIterable>>
-        >>
+    template<std::ranges::range KeyIterable>
     const nlohmann::json* getPtr(const KeyIterable& keys) const
     {
         const nlohmann::json* cur = &json_;
-        for (const auto& key : keys)
+        for (auto const& key : keys)
         {
-            if (!cur->is_object())
-                return nullptr;
-            auto itr = cur->find(key);
-            if (itr == cur->end())
-                return nullptr;
-            cur = &*itr;
+            cur = dispatch_key(cur, key);
+            if (!cur) return nullptr;
         }
         return cur;
     }
@@ -119,7 +111,7 @@ public:
         return &json_;
     }
 
-    template<typename KeyIterable>
+    template<std::ranges::range KeyIterable>
     bool contains(const KeyIterable& keys) const
     {
         return getPtr(keys) != nullptr;
@@ -162,6 +154,43 @@ private:
         }
     }
 
+    // helper: pick the right lookup based on the static type of `Key`
+    template<typename Key>
+    static const nlohmann::json* dispatch_key(const nlohmann::json* cur,
+                                              const Key& key)
+    {
+        if constexpr (is_variant<std::remove_cvref_t<Key>>::value) {
+            // unfold the variant, recurse on the held alternative
+            return std::visit([cur](auto&& actual) {
+                return dispatch_key(cur, actual);
+            }, key);
+        }
+        else if constexpr (std::integral<std::remove_cvref_t<Key>>) {
+            // array-index case
+            if (!cur->is_array()) return nullptr;
+            auto idx = static_cast<std::size_t>(key);
+            return idx < cur->size() ? &(*cur)[idx] : nullptr;
+        }
+        else if constexpr (std::convertible_to<Key, std::string_view>) {
+            // object-lookup case
+            if (!cur->is_object()) return nullptr;
+            std::string_view sv{key};
+            auto it = cur->find(sv);
+            return it != cur->end() ? &*it : nullptr;
+        }
+        else {
+            static_assert(dependent_false<Key>,
+                          "Key type must be integral, string-convertible, or std::variant thereof");
+        }
+    }
+
+    // trait to detect std::variant<...>
+    template<typename T> struct is_variant : std::false_type {};
+    template<typename... Ts>
+    struct is_variant<std::variant<Ts...>> : std::true_type {};
+
+    template<typename> static constexpr bool dependent_false = false;
+
 private:
     std::string filePath_;
     nlohmann::json json_;
@@ -173,12 +202,20 @@ inline void NlmnJsonFile_Test()
     //std::cout << m << std::endl;
     m().clear();
     m()["key1"] = "val1";
+    m()["key1"] = "val2";
     m()["key2"] = 2;
     m()["key3"] = {{"key32","val"},{"key31",{3,2,1,2,3}}};
     m()["key0"] = {"d","c",{"a",{"2",nullptr,"1"}},{"b","c"}};
     m()["key0"][2].push_back("b");
     m()["key01"] = {{"d",{}},{"c",nullptr},{"a",{"2",nullptr,"1"}},{"b","c"}};
     m()["key3"]["key32"] = 5;//update existing value from array to single value
+    m()["key3"]["key1"]["key2"] = {{"a","1"},{"b",{"x","y","z"}},{"c","3"}};
+    m()["key3"]["key1"]["key2"]["d"] = nlohmann::json::array();
+    m()["key3"]["key1"]["key2"]["d"].push_back({"x",nlohmann::json::array()});
+    m()["key3"]["key1"]["key2"]["d"].push_back({"y","2"});
+    m()["key3"]["key1"]["key2"]["d"].push_back({"z","3"});
+    m()["key3"]["key1"]["key2"]["d"].push_back({{"p","4"},{"",""}});
+    m()["key3"]["key1"]["key2"]["d"].push_back({{"q","5"},{"r",8}, nlohmann::json::array(), nlohmann::json::array()});
     m()["key3"]["key1"]["key2"] = {"a","b"};
     m()["key3"]["key33"] = 33;
     m()["key4"]["key1"] = {0,1};
@@ -200,6 +237,8 @@ inline void NlmnJsonFile_Test()
     m().push_back({"a",nullptr});
     m().push_back({"1",{}});
 
+    std::cout << m << std::endl;
+
     std::cout << "contains key4,key1: " << m.contains(std::vector<std::string>{ "key4","key1" }) << ":[" 
         << m(std::vector<std::string>{ "key4", "key1" })[0] << ","
         << m(std::vector<std::string>{ "key4", "key1" })[1] << ","
@@ -210,9 +249,19 @@ inline void NlmnJsonFile_Test()
         << m(std::vector<std::string>{ "key3", "key33" })
         << std::endl;
     
-    m.sort();
-    std::cout << m << std::endl;
-    std::cout << m()["key3"]["key31"][2] << std::endl;
+    std::cout << "contains key3,key1,Key2,d,1,0: " << m.contains(std::vector<std::variant<std::string,int>>{ "key3", "key1", "key2", "d", 1, 0 }) << ":"
+        << m(std::vector<std::variant<std::string,int>>{ "key3", "key1", "key2", "d", 1, 0 })
+        << std::endl;
+
+    std::cout << "contains key3,key1,Key2,d,3,p: " << m.contains(std::vector<std::variant<std::string,int>>{ "key3", "key1", "key2", "d", 3, "p" }) << ":"
+        << m(std::vector<std::variant<std::string,int>>{ "key3", "key1", "key2", "d", 3, "p" })
+        << std::endl;
+
+    std::cout << "contains key3,key1,Key2,d,0,1: " << m.contains(std::vector<std::variant<std::string,int>>{ "key3", "key1", "key2", "d", 0, 1 }) << std::endl;
+
+    //std::cout << "sort: " << std::endl;
+    //m.sort();
+    //std::cout << m << std::endl;
 }
 
 #endif
