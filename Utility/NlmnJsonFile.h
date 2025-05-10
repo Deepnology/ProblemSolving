@@ -233,8 +233,9 @@ inline void NlmnJsonFile_Test()
     m().push_back({"d",{{"?",""}}});
     m().push_back({"c",{{"",""}}});
     m().push_back({"b",{""}});
-    m().push_back({"a",nullptr});
-    m().push_back({"1",{}});
+    m(std::vector<std::string>{}).push_back({"a",nullptr});
+    m(std::vector<std::variant<std::string,int>>{}).push_back({"1",{}});
+    m(std::vector<std::variant<std::string,int>>{"e",1}) = nlohmann::json::array();
 
     std::cout << m << std::endl;
 
