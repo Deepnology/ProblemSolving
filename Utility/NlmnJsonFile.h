@@ -216,7 +216,6 @@ inline void NlmnJsonFile_Test()
     m()["key3"]["key1"]["key2"]["d"].push_back({"z","3"});
     m()["key3"]["key1"]["key2"]["d"].push_back({{"p","4"},{"",""}});
     m()["key3"]["key1"]["key2"]["d"].push_back({{"q","5"},{"r",8}, nlohmann::json::array(), nlohmann::json::array()});
-    m()["key3"]["key1"]["key2"] = {"a","b"};
     m()["key3"]["key33"] = 33;
     m()["key4"]["key1"] = {0,1};
     m()["key4"]["key2"] = {0,0,0};
