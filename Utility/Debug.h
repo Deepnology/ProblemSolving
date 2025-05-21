@@ -142,10 +142,7 @@
 	} while (0)
 
 #define DEBUG_MUTEX_DECLARE() \
-    extern std::mutex DEBUG_MUTEX_
-
-#define DEBUG_MUTEX_INIT() \
-    inline std::mutex DEBUG_MUTEX_ = std::mutex()
+    inline std::mutex DEBUG_MUTEX_
 
 #define DEBUG_LOCK(...) DEBUG_LOCK_MUTEX(DEBUG_MUTEX_, __VA_ARGS__)
 #elif defined(_POSIX_THREADS) && (_POSIX_THREADS > 0)
@@ -156,12 +153,26 @@
         pthread_mutex_unlock(&(mtx)); \
 	} while (0)
 	
-#define DEBUG_MUTEX_INIT() \
-    static pthread_mutex_t DEBUG_MUTEX_ = PTHREAD_MUTEX_INITIALIZER
+#define DEBUG_MUTEX_DECLARE() \
+    extern pthread_mutex_t DEBUG_MUTEX_
+
+#define DEBUG_MUTEX_DEFINE() \
+    pthread_mutex_t DEBUG_MUTEX_ = PTHREAD_MUTEX_INITIALIZER
 
 #define DEBUG_LOCK(...) DEBUG_LOCK_MUTEX(DEBUG_MUTEX_, __VA_ARGS__)
 #else
+#define DEBUG_LOCK_MUTEX(mtx, ...) \
+    do { \
+        __VA_ARGS__; \
+	} while (0)
 
+#define DEBUG_MUTEX_DECLARE() \
+    extern int DEBUG_MUTEX_
+
+#define DEBUG_MUTEX_DEFINE() \
+    int DEBUG_MUTEX_ = 0
+
+#define DEBUG_LOCK(...) DEBUG_LOCK_MUTEX(DEBUG_MUTEX_, __VA_ARGS__)
 #endif
 
 #ifdef __cplusplus
@@ -210,6 +221,37 @@
 #define stringify(name)#name
 namespace Debug
 {
+	class RedirectCout
+	{
+		inline static std::once_flag m_onceFlag;
+		inline static std::streambuf* m_coutBuf = nullptr;
+		inline static const std::ofstream m_nullStream = std::ofstream("/dev/null");
+		inline static std::ofstream m_ofstream;
+		static void backup()
+		{
+			if (!m_coutBuf)
+				m_coutBuf = std::cout.rdbuf();
+		}
+	public:
+		static void toCout()
+		{
+			if (m_coutBuf && m_coutBuf != std::cout.rdbuf())
+				std::cout.rdbuf(m_coutBuf);
+		}
+		static void toFile(const std::string& file)
+		{
+			std::call_once(m_onceFlag, backup);
+			m_ofstream.clear();
+			m_ofstream.close();
+			m_ofstream.open(file);
+			std::cout.rdbuf(m_ofstream.rdbuf());
+		}
+		static void toNullSink()
+		{
+			std::call_once(m_onceFlag, backup);
+			std::cout.rdbuf(m_nullStream.rdbuf());
+		}
+	};
 	typedef std::map<int, const char*> EnumNameMap;
 	typedef std::vector<const char*> EnumNameVec;
 	enum class Splitter
@@ -217,6 +259,48 @@ namespace Debug
 		Comma = 0,
 		NewLine = 1,
 	};
+
+	template<typename V>
+	inline std::string toStrT(const V& v)
+	{
+		using D = std::decay_t<V>;
+		if constexpr (std::is_same_v<D, std::string>)
+			return v;
+		else if constexpr (std::is_convertible_v<V, std::string_view>)
+			return std::string(std::string_view(v));
+		else if constexpr (std::is_arithmetic_v<V>)
+			return std::to_string(v);
+#if defined(QT_VERSION)
+		else if constexpr (std::is_same_v<D, QByteArray>)
+			return std::string(v.constData(), v.size());
+		else if constexpr (std::is_same_v<D, QString>)
+			return v.toStdString();
+		else
+		{
+			QString s;
+			QDebug dbg(&s);
+			dbg.noquote();
+			dbg << v;
+			return s.toStdString();
+		}
+#else
+		else if constexpr (std::is_pointer_v<D> && std::is_same_v<std::remove_pointer_t<D>, std::type_info>)
+		{
+			const std::type_info* ti = v;
+			if (!ti) return "nullptr";
+			std::ostringstream oss;
+			oss << ti->name();
+			return oss.str();
+		}
+		else
+		{
+			std::ostringstream oss;
+			oss << v;
+			return v.str();
+		}
+#endif
+	}
+
 	template<class T, class U = T>
 	class Print2D
 	{
@@ -2081,7 +2165,7 @@ namespace Debug
 				return oss.str();
 			for (typename std::map<T, U>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
 			{
-				oss << "[" << i->first << "," << i->second << "]";
+				oss << "[" << toStrT(i->first) << "," << toStrT(i->second) << "]";
 				if (std::next(i) != m.cend())
 					oss << ", ";
 			}
@@ -2176,7 +2260,19 @@ namespace Debug
 			int N = v.size();
 			for (int i = 0; i < N; ++i)
 			{
-				oss << v[i];
+				oss << toStrT(v[i]);
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+			}
+			return oss.str();
+		}
+		std::string operator()(const QVector<QPair<QPair<T, T>, U>>& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			for (int i = 0; i < N; ++i)
+			{
+				oss << "[(" << toStrT(v[i].first.first) << "," << toStrT(v[i].first.second) << ")," << toStrT(v[i].second) << "]";
 				if (i != N - 1)
 					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
 			}
@@ -2188,7 +2284,7 @@ namespace Debug
 			int N = v.size();
 			for (int i = 0; i < N; ++i)
 			{
-				oss << "[" << v[i].first << "," << v[i].second << "]";
+				oss << "[" << toStrT(v[i].first) << "," << toStrT(v[i].second) << "]";
 				if (i != N - 1)
 					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
 			}
@@ -2230,7 +2326,7 @@ namespace Debug
 			int N = v.size();
 			for (int i = 0; i < N; ++i)
 			{
-				oss << v[i];
+				oss << toStrT(v[i]);
 				if (i != N - 1)
 					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
 			}
@@ -2253,25 +2349,54 @@ namespace Debug
 			std::ostringstream oss;
 			for (auto itr = v.constBegin(); itr != v.constEnd(); ++itr)
 			{
-				oss << *itr;
+				oss << toStrT(*itr);
 				if (std::next(itr) != v.constEnd())
 					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
 			}
 			return oss.str();
 		}
+		//usage: Debug::ToStr1D<int>().template operator()<1>(QMap<int,int>());
+		template<int WhichBits = 3>
 		std::string operator()(const QMap<T, U>& v, Splitter s = Splitter::Comma)
 		{
 			std::ostringstream oss;
 			for (auto itr = v.constBegin(); itr != v.constEnd(); ++itr)
 			{
-				oss << "[" << itr.key() << "," << itr.value() << "]";
+				oss << "[";
+				if constexpr (WhichBits & 1) oss << toStrT(itr.key());
+				oss << ",";
+				if constexpr ((WhichBits >> 1) & 1) oss << toStrT(itr.value());
+				oss << "]";
 				if (std::next(itr) != v.constEnd())
 					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
 			}
 			return oss.str();
 		}
-#endif
 
+		//no dependencies to T and U ...
+		std::string operator()(const QStringList& v, Splitter s = Splitter::Comma)
+		{
+			std::ostringstream oss;
+			int N = v.size();
+			int i = 0;
+			for (const auto& str : v)
+			{
+				oss << str.toStdString();
+				if (i != N - 1)
+					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
+				++i;
+			}
+			return oss.str();
+		}
+		std::string operator()(const QRect& rec)
+		{
+			std::ostringstream oss;
+			oss << "[left:" << rec.left() << ", right:" << rec.right() << ", top:" << rec.top() << ", bot:" << rec.bottom() << "]";
+			return oss.str();
+		}
+#endif //QT_VERSION
+
+	private:
 		template<typename V>
 		std::string toBinaryString(const V& number)
 		{
@@ -2285,6 +2410,7 @@ namespace Debug
 			oss << std::hex << std::showbase << number;
 			return oss.str();
 		}
+	public:
 		// Overloads for binary representation
 		std::string operator()(const int& number)
 		{
@@ -2392,6 +2518,7 @@ namespace Debug
 			return toHexString(intRep);
 		}
 
+	private:
 		template<typename V>
 		std::string toSetBitStringConcat(const V& number, const std::function<std::string(const V&)>& getSetBitString)
 		{
@@ -2417,6 +2544,7 @@ namespace Debug
 			}
 			return oss.str();
 		}
+	public:
 		// Overloads for toSetBitStringConcat
 		std::string operator()(const unsigned int& number, const std::function<std::string(const unsigned int&)>& getSetBitString)
 		{
@@ -2444,115 +2572,7 @@ namespace Debug
 		}
 
 	};
-	template<typename U>
-	class ToStr1D<const std::type_info*, U>
-	{
-	public:
-		std::string operator()(const std::map<const std::type_info*, U>& m)
-		{
-			std::ostringstream oss;
-			if (m.empty())
-				return oss.str();
-			for (typename std::map<const std::type_info*, U>::const_iterator i = m.cbegin(); i != m.cend(); ++i)
-			{
-				oss << "[" << i->first->name() << "," << i->second << "]";
-				if (std::next(i) != m.cend())
-					oss << ", ";
-			}
-			return oss.str();
-		}
-	};
 #if defined(QT_VERSION)
-	template<>
-	class ToStr1D<QString>
-	{
-	public:
-		ToStr1D() {}
-		~ToStr1D() {}
-		std::string operator()(const QVector<QString>& v, Splitter s = Splitter::Comma)
-		{
-			std::ostringstream oss;
-			int N = v.size();
-			for (int i = 0; i < N; ++i)
-			{
-				oss << v[i].toStdString();
-				if (i != N - 1)
-					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
-			}
-			return oss.str();
-		}
-		std::string operator()(const QVector<QPair<QPair<int, int>, QString>>& v, Splitter s = Splitter::Comma)
-		{
-			std::ostringstream oss;
-			int N = v.size();
-			for (int i = 0; i < N; ++i)
-			{
-				oss << "[(" << v[i].first.first << "," << v[i].first.second << ")," << v[i].second.toStdString() << "]";
-				if (i != N - 1)
-					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
-			}
-			return oss.str();
-		}
-		std::string operator()(const QList<QString>& v, Splitter s = Splitter::Comma)
-		{
-			std::ostringstream oss;
-			int N = v.size();
-			for (int i = 0; i < N; ++i)
-			{
-				oss << v[i].toStdString();
-				if (i != N - 1)
-					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
-			}
-			return oss.str();
-		}
-		std::string operator()(const QStringList& v, Splitter s = Splitter::Comma)
-		{
-			std::ostringstream oss;
-			int N = v.size();
-			int i = 0;
-			for (const auto& str : v)
-			{
-				oss << str.toStdString();
-				if (i != N - 1)
-					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
-				++i;
-			}
-			return oss.str();
-		}
-		std::string operator()(const QRect& rec)
-		{
-			std::ostringstream oss;
-			oss << "[left:" << rec.left() << ", right:" << rec.right() << ", top:" << rec.top() << ", bot:" << rec.bottom() << "]";
-			return oss.str();
-		}
-	};
-	template<typename U>
-	class ToStr1D<QString, U>
-	{
-	public:
-		std::string operator()(const QMap<QString, U>& m, Splitter s = Splitter::Comma)
-		{
-			std::ostringstream oss;
-			for (auto itr = m.constBegin(); itr != m.constEnd(); ++itr)
-			{
-				oss << "[" << itr.key().toStdString() << "," << itr.value() << "]";
-				if (std::next(itr) != m.constEnd())
-					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
-			}
-			return oss.str();
-		}
-		std::string operator()(const std::map<QString, U>& m, Splitter s = Splitter::Comma)
-		{
-			std::ostringstream oss;
-			for (auto itr = m.cbegin(); itr != m.cend(); ++itr)
-			{
-				oss << "[" << itr->first.toStdString() << "," << itr->second << "]";
-				if (std::next(itr) != m.cend())
-					s == Splitter::Comma ? (oss << ", ") : (oss << std::endl);
-			}
-			return oss.str();
-		}
-	};
 	template<>
 	class ToStr1D<QMenuBar*>
 	{
@@ -2616,6 +2636,12 @@ namespace Debug
 			return QRect(cur->mapTo(parent, QPoint(0, 0)), cur->size());
 		}
 	private:
+		// Since C++17, both "namespace-scope class inline static data member" and "namespace-scope inline variable" declared in header included by multiple TUs
+		// have external linkage, i.e., every source file that includes this header will see its own definition, but ODR guarantees they all refer to the same object.
+		// However, "namespace-scope inline static variable" declared in header included by multiple TUs have internal linkage.
+		// Pre-C++17 work-around for external linkage:
+		// 1. declare "extern variable" in header and define variable in source file.
+		// 2. declare "inline function returning reference to local static variable" in header.
 		inline static QString s_logFileName = QString();
 		static void messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 		{
