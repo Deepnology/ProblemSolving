@@ -144,6 +144,34 @@ public:
         return *leaf;
     }
 
+    /// Remove the node at `keys`.
+    /// Returns true if something was erased, false otherwise.
+    template<std::ranges::range KeyIterable>
+    bool remove(const KeyIterable& keys) {
+        // buffer all the keys so we can peel off the last one
+        std::vector<std::ranges::range_value_t<KeyIterable>> buf(
+            keys.begin(), keys.end()
+        );
+        if (buf.empty()) {
+            json_.clear();
+            return true;
+        }
+
+        // pop off the last key
+        auto last = std::move(buf.back());
+        buf.pop_back();
+
+        // find the parent of the thing to delete
+        const nlohmann::json* parent_c = getPtr(buf);
+        if (!parent_c) return false;            // prefix not present
+
+        // cast away const to mutate
+        nlohmann::json* parent = const_cast<nlohmann::json*>(parent_c);
+
+        // dispatch deletion on the final key
+        return remove_key(parent, last);
+    }
+
     //to support non-leaf nodes with value or array of values
     static constexpr std::string_view HIDDEN = "__value__";
 
@@ -167,6 +195,20 @@ public:
         // 3) insert (or overwrite) the hidden value
         (*node)[HIDDEN] = std::move(value);
         return &(*node)[HIDDEN];
+    }
+
+    /// Remove the hidden "__value__" at `keys`.
+    /// Returns true if it was present and removed, false otherwise.
+    template<std::ranges::range KeyIterable>
+    bool removeSpecial(const KeyIterable& keys) {
+        // 1) locate the node
+        const auto* node_c = getPtr(keys);
+        if (!node_c || !node_c->is_object())
+            return false;
+
+        // 2) erase __value__ and return success
+        auto* node = const_cast<nlohmann::json*>(node_c);
+        return node->erase(HIDDEN) > 0;
     }
 
     /// Look up the hidden value at `keys`; returns nullptr if the path or hidden
@@ -306,6 +348,38 @@ private:
         }
     }
 
+    // dispatch-based remover for one key/index
+    template<typename Key>
+    static bool remove_key(nlohmann::json* parent, const Key& key) {
+        if constexpr (is_variant<std::remove_cvref_t<Key>>::value) {
+            // unwrap and re-dispatch
+            return std::visit(
+                [parent](auto&& actual){
+                    return remove_key(parent, actual);
+                },
+                key
+            );
+        }
+        else if constexpr (std::integral<std::remove_cvref_t<Key>>) {
+            // array-index case
+            if (!parent->is_array()) return false;
+            size_t idx = static_cast<size_t>(key);
+            if (idx >= parent->size()) return false;
+            parent->erase(parent->begin() + idx);
+            return true;
+        }
+        else if constexpr (std::convertible_to<Key, std::string_view>) {
+            // object-key case
+            if (!parent->is_object()) return false;
+            auto sv = std::string_view{key};
+            return parent->erase(sv) > 0;
+        }
+        else {
+            static_assert(dependent_false<Key>,
+                          "Key must be int, string-like, or variant thereof");
+        }
+    }
+
     // trait to detect std::variant<...>
     template<typename T> struct is_variant : std::false_type {};
     template<typename... Ts>
@@ -372,12 +446,17 @@ inline void NlmnJsonFile_Test()
     m.set(std::vector<std::variant<std::string,int>>{"key0",5,1}, {{"c","c"}});
     m.set(std::vector<std::variant<std::string,int>>{"key3", "x", "y", "z"}, 3);
     m.set(std::vector<std::variant<std::string,int>>{"key3", "x", "y"}, 2);//removes "z"
+    m.remove(std::vector<std::variant<std::string,int>>{"key0", 3, 3, "1"});
+    m.remove(std::vector<std::variant<std::string,int>>{"key0", 2, 1, 0});
 
     m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special"}, 1);
     m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special"}, 2);
     m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "a", "b", "c"}, 3);
     m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "a", "b"}, 2);
     m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "a"}, 1);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "a", "b", "d"}, 4);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "a", "b", "e"}, 5);
+    m.remove(std::vector<std::variant<std::string,int>>{"Special", "a", "b", "d"});
     m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "x", "y", "z"}, 9);
     m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "x", "y"}, {7,8});
     m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "x"}, {{"k","v"}});
@@ -391,7 +470,15 @@ inline void NlmnJsonFile_Test()
     //m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array"}, "array val");//changes "array" to object
     *m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "a", "b", "c"}) = "333";
     *m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "a"}) = "111";
-    *m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 2}) = "222";
+    *m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 2})= {"222"};
+    m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 2})->push_back("22");
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 1}, {{"k","v"}});
+    m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 1})->push_back({"j","k"});
+    (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 1}))["j"] = "m";
+    m.removeSpecial(std::vector<std::variant<std::string,int>>{});
+    m.removeSpecial(std::vector<std::variant<std::string,int>>{"d"});
+    m.removeSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 5, "a", "b"});
+    m.remove(std::vector<std::variant<std::string,int>>{"Special", "array", 3});
 
     std::cout << m << std::endl;
 
