@@ -117,6 +117,87 @@ public:
         return getPtr(keys) != nullptr;
     }
 
+    template<std::ranges::range KeyIterable>
+    nlohmann::json& set(const KeyIterable& keys,
+                        nlohmann::json value)
+    {
+        // copy keys into a small buffer so we can pop the last element
+        std::vector<std::ranges::range_value_t<KeyIterable>> buf{
+            keys.begin(), keys.end()
+        };
+
+        // if empty: replace the entire document
+        if (buf.empty()) {
+            json_ = std::move(value);
+            return json_;
+        }
+
+        // walk (and create) all but the last key
+        nlohmann::json* cur = &json_;
+        for (size_t i = 0; i + 1 < buf.size(); ++i) {
+            cur = navigate_or_create(cur, buf[i]);
+        }
+
+        // now assign at the final key
+        auto* leaf = navigate_or_create(cur, buf.back());
+        *leaf = std::move(value);
+        return *leaf;
+    }
+
+    //to support non-leaf nodes with value or array of values
+    static constexpr std::string_view HIDDEN = "__value__";
+
+    /// Insert a value at the node given by `keys` (creating all ancestors) under the
+    /// hidden key; returns a pointer to the stored value.
+    template<std::ranges::range KeyIterable>
+    nlohmann::json* insertSpecial(const KeyIterable& keys,
+                                  nlohmann::json value)
+    {
+        // 1) build the node path
+        nlohmann::json* node = &json_;
+        for (auto const& k : keys) {
+            node = navigate_or_create(node, k);
+        }
+
+        // 2) ensure it’s an object so we can stick __value__ inside
+        if (!node->is_object()) {
+            *node = nlohmann::json::object();
+        }
+
+        // 3) insert (or overwrite) the hidden value
+        (*node)[HIDDEN] = std::move(value);
+        return &(*node)[HIDDEN];
+    }
+
+    /// Look up the hidden value at `keys`; returns nullptr if the path or hidden
+    /// key doesn’t exist.
+    template<std::ranges::range KeyIterable>
+    const nlohmann::json* getSpecial(const KeyIterable& keys) const
+    {
+        if (auto node = getPtr(keys)) {
+            if (!node->is_object()) return nullptr;
+            auto it = node->find(HIDDEN);
+            if (it != node->end())
+                return &*it;
+        }
+        return nullptr;
+    }
+
+    /// mutable‐pointer overload for getSpecial
+    template<std::ranges::range KeyIterable>
+    nlohmann::json* getSpecial(const KeyIterable& keys)
+    {
+        return const_cast<nlohmann::json*>(
+          static_cast<const NlmnJsonFile*>(this)->getSpecial(keys)
+        );
+    }
+
+    template<std::ranges::range KeyIterable>
+    bool containsSpecial(const KeyIterable& keys) const
+    {
+        return getSpecial(keys) != nullptr;
+    }
+
     void sort()
     {
         sortRecur(json_);
@@ -184,6 +265,47 @@ private:
         }
     }
 
+    // dispatch helper for get/set: returns nullptr on get, or &child on create
+    template<typename Key>
+    static nlohmann::json* navigate_or_create(nlohmann::json* cur,
+                                               const Key& key)
+    {
+        if constexpr (is_variant<std::remove_cvref_t<Key>>::value) {
+            // unwrap variant
+            return std::visit(
+                [cur](auto&& actual){
+                    return navigate_or_create(cur, actual);
+                },
+                key
+            );
+        }
+        else if constexpr (std::integral<std::remove_cvref_t<Key>>) {
+            // array‐index case
+            if (!cur->is_array())
+                *cur = nlohmann::json::array();
+            auto idx = static_cast<size_t>(key);
+            if (idx >= cur->size())
+            {
+                // insert (idx+1 - old_size) nulls at the end
+                cur->insert(cur->end(),
+                            idx + 1 - cur->size(),
+                            nullptr);
+            }
+            return &(*cur)[idx];
+        }
+        else if constexpr (std::convertible_to<Key, std::string_view>) {
+            // object‐lookup case
+            if (!cur->is_object())
+                *cur = nlohmann::json::object();
+            auto sv = std::string_view{key};
+            return &(*cur)[sv];           // operator[] will create the key if missing
+        }
+        else {
+            static_assert(dependent_false<Key>,
+                          "Key must be integral, string‐convertible, or variant thereof");
+        }
+    }
+
     // trait to detect std::variant<...>
     template<typename T> struct is_variant : std::false_type {};
     template<typename... Ts>
@@ -207,6 +329,8 @@ inline void NlmnJsonFile_Test()
     m()["key3"] = {{"key32","val"},{"key31",{3,2,1,2,3}}};
     m()["key0"] = {"d","c",{"a",{"2",nullptr,"1"}},{"b","c"}};
     m()["key0"][2].push_back("b");
+    m()["key0"][3].push_back("d");
+    m()["key0"][3].push_back({{"1","1"},{"2","2"}});
     m()["key01"] = {{"d",{}},{"c",nullptr},{"a",{"2",nullptr,"1"}},{"b","c"}};
     m()["key3"]["key32"] = 5;//update existing value from array to single value
     m()["key3"]["key1"]["key2"] = {{"a","1"},{"b",{"x","y","z"}},{"c","3"}};
@@ -229,6 +353,8 @@ inline void NlmnJsonFile_Test()
     //m()["key3"]["key32"].push_back(6);
     //error: the existing value is single value, not an array
 
+    m(std::vector<std::variant<std::string,int>>{})["__value__"] = {{"v1","1"},{"v2","2"}};
+
     m().push_back({"e",{"f",""}});
     m().push_back({"d",{{"?",""}}});
     m().push_back({"c",{{"",""}}});
@@ -236,6 +362,36 @@ inline void NlmnJsonFile_Test()
     m(std::vector<std::string>{}).push_back({"a",nullptr});
     m(std::vector<std::variant<std::string,int>>{}).push_back({"1",{}});
     m(std::vector<std::variant<std::string,int>>{"e",1}) = nlohmann::json::array();
+
+    m(std::vector<std::variant<std::string,int>>{"d"})["__value__"] = {{"v1","1"},{"v2","2"}};
+
+    m.set(std::vector<std::variant<std::string,int>>{"key0",0}, {"d","d"});
+    m.set(std::vector<std::variant<std::string,int>>{"key0",1}, {{"c","c"}});
+    m.set(std::vector<std::variant<std::string,int>>{"key0",3,0}, {"b"});
+    m.set(std::vector<std::variant<std::string,int>>{"key0",3,1}, {{"c","c"}});
+    m.set(std::vector<std::variant<std::string,int>>{"key0",5,1}, {{"c","c"}});
+    m.set(std::vector<std::variant<std::string,int>>{"key3", "x", "y", "z"}, 3);
+    m.set(std::vector<std::variant<std::string,int>>{"key3", "x", "y"}, 2);//removes "z"
+
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special"}, 1);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special"}, 2);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "a", "b", "c"}, 3);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "a", "b"}, 2);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "a"}, 1);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "x", "y", "z"}, 9);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "x", "y"}, {7,8});
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "x"}, {{"k","v"}});
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 5, "a", "b", "c"}, "5");
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 5, "a", "b"}, {3,4});
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 5, "a"}, {2});
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 5, "b"}, 3);
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 2}, "2");
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 7}, "7");
+    m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 6, "x", "y", "z"}, "");
+    //m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "array"}, "array val");//changes "array" to object
+    *m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "a", "b", "c"}) = "333";
+    *m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "a"}) = "111";
+    *m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 2}) = "222";
 
     std::cout << m << std::endl;
 
