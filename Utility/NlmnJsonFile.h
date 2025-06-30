@@ -240,6 +240,17 @@ public:
         return getSpecial(keys) != nullptr;
     }
 
+    template<std::ranges::range KeyIterable, typename F>
+    bool updateSpecial(const KeyIterable& keys, F&& fn)
+    {
+        if (auto* p = getSpecial(keys))
+        {
+            fn(*p);
+            return true;
+        }
+        return false;
+    }
+
     void sort()
     {
         sortRecur(json_);
@@ -480,6 +491,45 @@ inline void NlmnJsonFile_Test()
     m.removeSpecial(std::vector<std::variant<std::string,int>>{"Special", "array", 5, "a", "b"});
     m.remove(std::vector<std::variant<std::string,int>>{"Special", "array", 3});
 
+    if (!m.containsSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}))
+        m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}, {1, "2"});
+    if (!m.containsSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}))
+        m.insertSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}, {{"key1", 1},{"key2", "val2"}});
+    if (m.containsSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}) &&
+        m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"})->is_array() &&
+        m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"})->size() == 2)
+    {
+        (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}))[0] = (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}))[0].get<int>() + 1;
+        (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}))[1] = (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}))[1].get<std::string>() + "__2";
+    }
+    if (m.containsSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}) &&
+        m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"})->is_object() &&
+        m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"})->size() == 2)
+    {
+        (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}))["key1"] = (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}))["key1"].get<int>() + 1;
+        (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}))["key2"] = (*m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}))["key2"].get<std::string>() + "__2";
+    }
+    if (m.containsSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}) &&
+    m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"})->is_array() &&
+    m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"})->size() == 2)
+    {
+        m.updateSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k1"}, [](nlohmann::json & val)
+        {
+            val[0]= val[0].get<int>() + 5;
+            val[1] = val[1].get<std::string>() + "__5";
+        });
+    }
+    if (m.containsSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}) &&
+    m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"})->is_object() &&
+    m.getSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"})->size() == 2)
+    {
+        m.updateSpecial(std::vector<std::variant<std::string,int>>{"Special", "i", "j", "k2"}, [](nlohmann::json & val)
+        {
+            val["key1"]= val["key1"].get<int>() + 5;
+            val["key2"] = val["key2"].get<std::string>() + "__5";
+        });
+    }
+    
     std::cout << m << std::endl;
 
     std::cout << "contains key4,key1: " << m.contains(std::vector<std::string>{ "key4","key1" }) << ":[" 
