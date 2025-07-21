@@ -27,6 +27,74 @@ namespace FileSysUtl
             }
         }
     }
+    inline std::vector<std::string> listFiles(
+        const std::filesystem::path& directory, bool fullPath,
+        const std::vector<std::string>& extFilters, bool sortResults, int maxDepth = -1)
+    {
+        if (!std::filesystem::exists(directory) || !std::filesystem::is_directory(directory)) {
+            throw std::runtime_error(directory.string() + " is not a valid directory");
+        }
+
+        std::vector<std::string> results;
+        std::filesystem::recursive_directory_iterator it{ directory }, end;
+
+        for (; it != end; ++it)
+        {
+            // prevent descending too deep
+            if (maxDepth >= 0)
+            {
+                if (it.depth() >= maxDepth && it->is_directory())
+                {
+                    it.disable_recursion_pending();
+                }
+                if (it.depth() > maxDepth)
+                {
+                    continue;
+                }
+            }
+
+            if (!it->is_regular_file())
+                continue;
+
+            // extension without the leading dot
+            std::string ext = it->path().extension().string();
+
+            // filter by extension if filters provided
+            if (!extFilters.empty() &&
+                std::find(extFilters.begin(), extFilters.end(), ext) == extFilters.end())
+            {
+                continue;
+            }
+
+            if (fullPath) {
+                results.push_back(it->path().string());
+            }
+            else {
+                results.push_back(it->path().filename().string());
+            }
+        }
+
+        if (sortResults) {
+            std::sort(results.begin(), results.end());
+        }
+        return results;
+    }
+    inline void listFilesDump(
+        const std::filesystem::path& directory, bool fullPath,
+        const std::vector<std::string>& extFilters, bool sortResults, int maxDepth,
+        const std::filesystem::path& dump)
+    {
+        auto results = listFiles(directory, fullPath, extFilters, sortResults, maxDepth);
+        if (!dump.empty())
+        {
+            std::ofstream logfs;
+            logfs.open(dump, std::ios::out | std::ios::trunc);
+            if (!logfs)
+                std::cerr << "Warning: failed to open dump file: " << dump << "\n";
+            for (const auto& s : results)
+                logfs << s << "\n";
+        }
+    }
     namespace detail
     {
         namespace fs = std::filesystem;
@@ -132,8 +200,7 @@ namespace FileSysUtl
             }
         }
         /// Read a rename log where each line is "oldPath|newPath"
-        inline std::vector<std::pair<fs::path,fs::path>>
-        readRenameLog(const fs::path& logFile)
+        inline std::vector<std::pair<fs::path,fs::path>> readRenameLog(const fs::path& logFile)
         {
             std::ifstream ifs{logFile};
             if (!ifs) {
@@ -155,19 +222,15 @@ namespace FileSysUtl
             }
             return mappings;
         }
-    }
+    }//detail
 
-    inline bool copyFromListFile(const std::filesystem::path& listFile, const std::filesystem::path& sourceDir, const std::filesystem::path& destDir,
+    inline bool copyFromList(const std::vector<std::string>& sourcePaths, const std::filesystem::path& sourceDir, const std::filesystem::path& destDir,
         bool preserveDirStructure, const std::filesystem::path& diffSrcDirPrefix = {}, bool exclude = false)
     {
         try
         {
-            auto raw = detail::readListFile(listFile);
-
-            auto matchedPaths = detail::removeDiffSrcDirPrefix(raw, diffSrcDirPrefix);
-
+            auto matchedPaths = detail::removeDiffSrcDirPrefix(sourcePaths, diffSrcDirPrefix);
             deleteDirectory(destDir);
-
             if (!exclude)
                 detail::copyFromList(matchedPaths, sourceDir, destDir, preserveDirStructure);
             else
@@ -183,15 +246,20 @@ namespace FileSysUtl
             return false;
         }
     }
+    inline bool copyFromListFile(const std::filesystem::path& listFile, const std::filesystem::path& sourceDir, const std::filesystem::path& destDir,
+        bool preserveDirStructure, const std::filesystem::path& diffSrcDirPrefix = {}, bool exclude = false)
+    {
+        auto raw = detail::readListFile(listFile);
+        return copyFromList(raw, sourceDir, destDir, preserveDirStructure, diffSrcDirPrefix, exclude);
+    }
 
-    inline bool renameFromListFile(const std::filesystem::path& listFile, const std::filesystem::path& sourceDir,
+    inline bool renameFromList(const std::vector<std::string>& sourcePaths, const std::filesystem::path& sourceDir,
         std::function<std::filesystem::path(const std::filesystem::path&)> renameFileLambda,
         const std::filesystem::path& diffSrcDirPrefix = {}, bool exclude = false, const std::filesystem::path& renameLog = {})
     {
         try
         {
-            auto raw= detail::readListFile(listFile);
-            auto matchedPaths = detail::removeDiffSrcDirPrefix(raw, diffSrcDirPrefix);
+            auto matchedPaths = detail::removeDiffSrcDirPrefix(sourcePaths, diffSrcDirPrefix);
             std::unordered_set<std::filesystem::path> listSet(matchedPaths.begin(), matchedPaths.end());
 
             // Open log file if requested
@@ -227,6 +295,13 @@ namespace FileSysUtl
             std::cerr << "ERROR: " << e.what() << "\n";
             return false;
         }
+    }
+    inline bool renameFromListFile(const std::filesystem::path& listFile, const std::filesystem::path& sourceDir,
+        std::function<std::filesystem::path(const std::filesystem::path&)> renameFileLambda,
+        const std::filesystem::path& diffSrcDirPrefix = {}, bool exclude = false, const std::filesystem::path& renameLog = {})
+    {
+        auto raw = detail::readListFile(listFile);
+        return renameFromList(raw, sourceDir, renameFileLambda, diffSrcDirPrefix, exclude, renameLog);
     }
 
     inline bool restoreFromRenameLog(const std::filesystem::path& logFile)
