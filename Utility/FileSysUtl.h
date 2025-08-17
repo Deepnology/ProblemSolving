@@ -27,9 +27,44 @@ namespace FileSysUtl
             }
         }
     }
+    inline constexpr unsigned int FileSizeBit = 1;
+    inline constexpr unsigned int FileModifiedDateBit = 2;
+    inline std::string getFileMetaDataSuffix(const std::filesystem::path& p, unsigned int metaOptions)
+    {
+        std::ostringstream oss;
+        if (metaOptions & FileSizeBit)
+        {
+            try
+            {
+                auto sz = std::filesystem::file_size(p);
+                oss << "|" << sz;
+            }
+            catch (const std::exception& ex)
+            {
+                std::cerr << "Error get file size: " << ex.what() << '\n';
+            }
+        }
+        if (metaOptions & FileModifiedDateBit)
+        {
+            try
+            {
+                // last write time -> system_clock
+                auto ftime = std::filesystem::last_write_time(p);
+                auto sctp = std::chrono::clock_cast<std::chrono::system_clock>(ftime);
+                std::time_t cftime = std::chrono::system_clock::to_time_t(sctp);
+                oss << "|" << std::put_time(std::localtime(&cftime), "%Y-%m-%d %H:%M:%S");
+            }
+            catch (const std::exception& ex)
+            {
+                std::cerr << "Error get file modified date: " << ex.what() << '\n';
+            }
+        }
+        return oss.str();
+    }
     inline std::vector<std::string> listFiles(
-        const std::filesystem::path& directory, bool fullPath,
-        const std::vector<std::string>& extFilters, bool sortResults, int maxDepth = -1)
+        const std::filesystem::path& directory, int fullPath,
+        const std::vector<std::string>& extFilters, bool sortResults,
+        int maxDepth = -1, int metaOptions = 0)
     {
         if (!std::filesystem::exists(directory) || !std::filesystem::is_directory(directory)) {
             throw std::runtime_error(directory.string() + " is not a valid directory");
@@ -40,23 +75,18 @@ namespace FileSysUtl
 
         for (; it != end; ++it)
         {
-            // prevent descending too deep
-            if (maxDepth >= 0)
+            // depth guard
+            if (maxDepth >= 0 && it.depth() > maxDepth)
             {
-                if (it.depth() >= maxDepth && it->is_directory())
-                {
-                    it.disable_recursion_pending();
-                }
+                it.disable_recursion_pending();
                 if (it.depth() > maxDepth)
-                {
                     continue;
-                }
             }
 
             if (!it->is_regular_file())
                 continue;
 
-            // extension without the leading dot
+            // extension filter
             std::string ext = it->path().extension().string();
 
             // filter by extension if filters provided
@@ -66,12 +96,12 @@ namespace FileSysUtl
                 continue;
             }
 
-            if (fullPath) {
-                results.push_back(it->path().string());
-            }
-            else {
-                results.push_back(it->path().filename().string());
-            }
+            // base entry
+            std::string entry = (fullPath == 1) ? it->path().string() 
+                : (fullPath == 0) ? std::filesystem::relative(it->path(), directory).string() 
+                : it->path().filename().string();
+            std::string metaSuffix = getFileMetaDataSuffix(it->path(), metaOptions);
+            results.push_back(entry + metaSuffix);
         }
 
         if (sortResults) {
@@ -80,11 +110,12 @@ namespace FileSysUtl
         return results;
     }
     inline void listFilesDump(
-        const std::filesystem::path& directory, bool fullPath,
-        const std::vector<std::string>& extFilters, bool sortResults, int maxDepth,
+        const std::filesystem::path& directory, int fullPath,
+        const std::vector<std::string>& extFilters, bool sortResults, 
+        int maxDepth, int metaOptions, 
         const std::filesystem::path& dump)
     {
-        auto results = listFiles(directory, fullPath, extFilters, sortResults, maxDepth);
+        auto results = listFiles(directory, fullPath, extFilters, sortResults, maxDepth, metaOptions);
         if (!dump.empty())
         {
             std::ofstream logfs;
@@ -98,20 +129,29 @@ namespace FileSysUtl
     namespace detail
     {
         namespace fs = std::filesystem;
-        inline std::vector<std::string> readListFile(const fs::path& listFile)
+        inline std::vector<std::string> readListFile(const fs::path& listFile, bool stripMeta = true)
         {
-            std::ifstream ifs{listFile};
-            if (!ifs.is_open())
+            std::ifstream ifs{ listFile };
+            if (!ifs)
                 throw std::runtime_error("Cannot open list file: " + listFile.string());
 
             std::vector<std::string> entries;
             std::string line;
             while (std::getline(ifs, line))
             {
-                auto start = line.find_first_not_of(" \t\r\n");
-                if (start == std::string::npos) continue;
-                auto end = line.find_last_not_of(" \t\r\n");
-                entries.push_back(line.substr(start, end - start + 1));
+                // trim
+                auto a = line.find_first_not_of(" \t\r\n");
+                if (a == std::string::npos) continue;
+                auto b = line.find_last_not_of(" \t\r\n");
+                std::string tmp = line.substr(a, b - a + 1);
+
+                if (stripMeta)
+                {
+                    auto pos = tmp.find('|');
+                    if (pos != std::string::npos)
+                        tmp = tmp.substr(0, pos);
+                }
+                entries.push_back(tmp);
             }
             return entries;
         }
@@ -341,3 +381,4 @@ namespace FileSysUtl
 
 #endif
 #endif
+
