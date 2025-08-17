@@ -138,7 +138,7 @@ protected:
 private:
     void put_one(wchar_t w) {
 #if WCHAR_MAX == 0xFFFF
-        // Windows (UTF-16 wchar_t) — handle surrogates
+        // Windows (UTF-16 wchar_t) - handle surrogates
         auto is_high = [](char16_t x){ return x >= 0xD800 && x <= 0xDBFF; };
         auto is_low  = [](char16_t x){ return x >= 0xDC00 && x <= 0xDFFF; };
 
