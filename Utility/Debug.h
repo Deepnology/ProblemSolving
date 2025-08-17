@@ -1922,7 +1922,7 @@ namespace Debug
 				if constexpr (std::is_pointer_v<T> && std::is_same_v<std::remove_cv_t<std::remove_pointer_t<T>>, char>)
 					oss << (A[i] ? A[i] : "");//T is char* or const char* or volatile char*, etc.
 				else
-				    oss << A[i];
+					oss << A[i];
 				if (i != n - 1)
 					oss << ", ";
 			}
@@ -1936,7 +1936,7 @@ namespace Debug
 				if constexpr (std::is_pointer_v<T> && std::is_same_v<std::remove_cv_t<std::remove_pointer_t<T>>, char>)
 					oss << (A[i] ? A[i] : "");//T is char* or const char* or volatile char*, etc.
 				else
-				    oss << A[i];
+					oss << A[i];
 				if (i != last)
 					oss << ", ";
 			}
@@ -2796,4 +2796,5 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
