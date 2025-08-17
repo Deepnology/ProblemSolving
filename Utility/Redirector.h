@@ -251,7 +251,7 @@ public:
 
     void restore_all() { restore(AllBits); }
 
-#ifdef QT_CORE_LIB
+#ifdef QT_VERSION
     // ---------------- Qt logging: level mask + formatting toggles ----------------
     using QtMask = unsigned;
     static constexpr QtMask QtDebugBit   = 1u << 0;
@@ -328,11 +328,11 @@ public:
     }
 
     void restoreQt() { std::lock_guard<std::mutex> cfg_lock(reconfig_mu_); restoreQt_(); }
-#endif // QT_CORE_LIB
+#endif // QT_VERSION
 
     ~StdRedirector() {
         restore_all();
-#ifdef QT_CORE_LIB
+#ifdef QT_VERSION
         restoreQt_();
 #endif
     }
@@ -371,7 +371,7 @@ private:
     // configuration lock
     std::mutex reconfig_mu_;
 
-#ifdef QT_CORE_LIB
+#ifdef QT_VERSION
     // ---- Qt handler state ----
     struct QtCtx {
         std::shared_ptr<SharedSink> sink;
@@ -470,7 +470,7 @@ private:
             qt_ctx_->sink.reset();
         }
     }
-#endif // QT_CORE_LIB
+#endif // QT_VERSION
 };
 
 #endif
