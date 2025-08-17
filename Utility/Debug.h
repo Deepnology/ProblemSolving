@@ -72,7 +72,7 @@
 
 #define DEBUG_READ_BUF_SIZE 1024
 #define DEBUG_READ_BUF(filename) \
-    char DEBUG_READ_BUF_[DEBUG_READ_BUF_SIZE] = ""; \
+    char DEBUG_READ_BUF_[DEBUG_READ_BUF_SIZE] = {0}; \
     DEBUG_READ(filename, DEBUG_READ_BUF_, DEBUG_READ_BUF_SIZE)
 
 #define DEBUG_RENAME_APPEND(file, newApn) \
@@ -100,7 +100,7 @@
     } while(0)
 
 #define DEBUG_PUSH_BUF_INIT(size) \
-    char DEBUG_PUSH_BUF_[size] = ""; \
+    char DEBUG_PUSH_BUF_[size] = {0}; \
 	size_t DEBUG_PUSH_BUF_POS_ = 0; \
 	const size_t DEBUG_PUSH_BUF_CAP_ = size;
 
@@ -131,6 +131,44 @@
             fprintf(stderr, "DEBUG_PUSH_BUF_INT: Buffer overflow prevented\n"); \
         } \
     } while(0)
+
+#define DEBUG_PUSH_BUF_FMT(fmt, ...) \
+    do { \
+        if ((DEBUG_PUSH_BUF_POS_) < (DEBUG_PUSH_BUF_CAP_) - 1) { \
+            size_t __avail = (DEBUG_PUSH_BUF_CAP_) - (DEBUG_PUSH_BUF_POS_); \
+            int __n = snprintf((DEBUG_PUSH_BUF_) + (DEBUG_PUSH_BUF_POS_), __avail, (fmt), ##__VA_ARGS__); \
+            if (__n > 0) { \
+                size_t __written = (__n < (int)__avail ? (size_t)__n : __avail - 1); \
+                (DEBUG_PUSH_BUF_POS_) += __written; \
+            } \
+        } \
+        if ((DEBUG_PUSH_BUF_CAP_) > 0) \
+            (DEBUG_PUSH_BUF_)[(DEBUG_PUSH_BUF_POS_)] = '\0'; \
+    } while (0)
+
+#define DEBUG_PUSH_BUF_ARGV(argc, argv) \
+    do { \
+        for (int __i = 0; __i < (argc); ++__i) { \
+            const char *__arg = (argv)[__i]; \
+            size_t __len = strlen(__arg); \
+            if (DEBUG_PUSH_BUF_POS_ + __len + 1 >= (DEBUG_PUSH_BUF_CAP_)) \
+                __len = (DEBUG_PUSH_BUF_CAP_) - DEBUG_PUSH_BUF_POS_ - 1; \
+            memcpy((DEBUG_PUSH_BUF_) + DEBUG_PUSH_BUF_POS_, __arg, __len); \
+            DEBUG_PUSH_BUF_POS_ += __len; \
+            if (__i < (argc) - 1 && DEBUG_PUSH_BUF_POS_ < (DEBUG_PUSH_BUF_CAP_) - 1) \
+                (DEBUG_PUSH_BUF_)[DEBUG_PUSH_BUF_POS_++] = ' '; \
+            if (DEBUG_PUSH_BUF_POS_ >= (DEBUG_PUSH_BUF_CAP_) - 1) \
+                break; \
+        } \
+        if (DEBUG_PUSH_BUF_CAP_ > 0) \
+            (DEBUG_PUSH_BUF_)[DEBUG_PUSH_BUF_POS_] = '\0'; \
+    } while (0)
+
+#define DEBUG_PUSH_BUF_CLR() \
+    do { \
+        memset(DEBUG_PUSH_BUF_, 0, sizeof(DEBUG_PUSH_BUF_CAP_)); \
+        DEBUG_PUSH_BUF_POS_ = 0; \
+	} while (0)
 
 #ifdef __cplusplus
 #include <mutex>
@@ -1881,7 +1919,10 @@ namespace Debug
 			std::ostringstream oss;
 			for (int i = 0; i < n; ++i)
 			{
-				oss << A[i];
+				if constexpr (std::is_pointer_v<T> && std::is_same_v<std::remove_cv_t<std::remove_pointer_t<T>>, char>)
+					oss << (A[i] ? A[i] : "");//T is char* or const char* or volatile char*, etc.
+				else
+				    oss << A[i];
 				if (i != n - 1)
 					oss << ", ";
 			}
@@ -1892,7 +1933,10 @@ namespace Debug
 			std::ostringstream oss;
 			for (int i = first; i <= last; ++i)
 			{
-				oss << A[i];
+				if constexpr (std::is_pointer_v<T> && std::is_same_v<std::remove_cv_t<std::remove_pointer_t<T>>, char>)
+					oss << (A[i] ? A[i] : "");//T is char* or const char* or volatile char*, etc.
+				else
+				    oss << A[i];
 				if (i != last)
 					oss << ", ";
 			}
@@ -2752,3 +2796,4 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
