@@ -89,7 +89,6 @@ namespace FileSysUtl
             // extension filter
             std::string ext = it->path().extension().string();
 
-            // filter by extension if filters provided
             if (!extFilters.empty() &&
                 std::find(extFilters.begin(), extFilters.end(), ext) == extFilters.end())
             {
@@ -100,6 +99,7 @@ namespace FileSysUtl
             std::string entry = (fullPath == 1) ? it->path().string() 
                 : (fullPath == 0) ? std::filesystem::relative(it->path(), directory).string() 
                 : it->path().filename().string();
+            
             std::string metaSuffix = getFileMetaDataSuffix(it->path(), metaOptions);
             results.push_back(entry + metaSuffix);
         }
@@ -112,7 +112,7 @@ namespace FileSysUtl
     inline void listFilesDump(
         const std::filesystem::path& directory, int fullPath,
         const std::vector<std::string>& extFilters, bool sortResults, 
-        int maxDepth, int metaOptions, 
+        int maxDepth, int metaOptions,
         const std::filesystem::path& dump)
     {
         auto results = listFiles(directory, fullPath, extFilters, sortResults, maxDepth, metaOptions);
@@ -381,4 +381,5 @@ namespace FileSysUtl
 
 #endif
 #endif
+
 
