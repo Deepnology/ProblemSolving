@@ -93,10 +93,10 @@ private:
 
 // ---------- Tiny UTF-8 encoder ----------
 static inline void encode_utf8(char32_t cp, char out[4], int& len) {
-    if (cp <= 0x7F)       { out[0]=char(cp); len=1; }
-    else if (cp <= 0x7FF) { out[0]=char(0xC0|(cp>>6)); out[1]=char(0x80|(cp&0x3F)); len=2; }
-    else if (cp <= 0xFFFF){ out[0]=char(0xE0|(cp>>12)); out[1]=char(0x80|((cp>>6)&0x3F)); out[2]=char(0x80|(cp&0x3F)); len=3; }
-    else                  { out[0]=char(0xF0|(cp>>18)); out[1]=char(0x80|((cp>>12)&0x3F)); out[2]=char(0x80|((cp>>6)&0x3F)); out[3]=char(0x80|((cp&0x3F)); len=4; }
+    if (cp <= 0x7F) { out[0] = char(cp); len = 1; }
+    else if (cp <= 0x7FF) { out[0] = char(0xC0 | (cp >> 6)); out[1] = char(0x80 | (cp & 0x3F)); len = 2; }
+    else if (cp <= 0xFFFF) { out[0] = char(0xE0 | (cp >> 12)); out[1] = char(0x80 | ((cp >> 6) & 0x3F)); out[2] = char(0x80 | (cp & 0x3F)); len = 3; }
+    else { out[0] = char(0xF0 | (cp >> 18)); out[1] = char(0x80 | ((cp >> 12) & 0x3F)); out[2] = char(0x80 | ((cp >> 6) & 0x3F)); out[3] = char(0x80 | (cp & 0x3F)); len = 4; }
 }
 
 // ---------- Multi-sink streambufs (fan-out) ----------
@@ -214,7 +214,7 @@ public:
         return replaceStdRoute(mask, mode, filename, truncate);
     }
 
-    // Safe rotation: replace selected streams’ routes with a single file; optionally truncate
+    // Safe rotation: replace selected streams' routes with a single file; optionally truncate
     bool swap_to_file(StreamMask mask, const std::filesystem::path& filename, bool truncate_first) {
         if (filename.empty()) return false;
         std::lock_guard<std::mutex> cfg_lock(reconfig_mu_);
@@ -285,7 +285,7 @@ public:
         bool include_time      = false;
         bool include_category  = false;
         bool include_file_line = false;
-        bool flush_each_msg    = false;
+        bool flush_each_msg    = true;
     };
 
     // Add a Qt route (does NOT auto-include original stderr). Use setQtForwardToStderr(true) separately.
@@ -347,7 +347,7 @@ public:
 
     ~StdRedirector() {
         restore_all();
-#ifdef QT_CORE_LIB
+#ifdef QT_VERSION
         restoreQt_();
 #endif
     }
