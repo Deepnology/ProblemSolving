@@ -463,7 +463,6 @@ private:
 
 #ifdef QT_VERSION
     // ---------- Qt internals ----------
-    struct QtFormat; // declared above
     struct QtRoute {
         std::shared_ptr<SharedSink> sink;
         unsigned                    mask = 0;
