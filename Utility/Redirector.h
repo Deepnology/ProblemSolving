@@ -54,28 +54,53 @@ static inline std::wstring norm_key(const std::filesystem::path& p) {
 // ---------- SharedSink (FILE* with mutex) ----------
 class SharedSink {
 public:
-    explicit SharedSink(const std::filesystem::path& path, bool truncate) : path_(path) {
+    explicit SharedSink(const std::filesystem::path& path,
+                        bool truncate,
+                        std::shared_ptr<std::mutex> path_mu = {})
+        : path_(path), path_mu_(std::move(path_mu))
+    {
         open_(truncate);
         if (!file_) throw std::runtime_error("Failed to open sink");
     }
+
     void write(const char* data, size_t n) {
-        std::scoped_lock lk(mu_);
-        if (!file_) return;
-        (void)std::fwrite(data, 1, n, file_.get());
+        if (path_mu_) {
+            std::scoped_lock lk(*path_mu_, mu_);
+            if (!file_) return;
+            (void)std::fwrite(data, 1, n, file_.get());
+        } else {
+            std::scoped_lock lk(mu_);
+            if (!file_) return;
+            (void)std::fwrite(data, 1, n, file_.get());
+        }
     }
     void flush() {
-        std::scoped_lock lk(mu_);
-        if (file_) std::fflush(file_.get());
+        if (path_mu_) {
+            std::scoped_lock lk(*path_mu_, mu_);
+            if (file_) std::fflush(file_.get());
+        } else {
+            std::scoped_lock lk(mu_);
+            if (file_) std::fflush(file_.get());
+        }
     }
     void reopen(bool truncate) {
-        std::scoped_lock lk(mu_);
-        file_.reset();
-        open_(truncate);
-        if (!file_) throw std::runtime_error("SharedSink::reopen failed");
+        if (path_mu_) {
+            std::scoped_lock lk(*path_mu_, mu_);
+            file_.reset();
+            open_(truncate);
+            if (!file_) throw std::runtime_error("SharedSink::reopen failed");
+        } else {
+            std::scoped_lock lk(mu_);
+            file_.reset();
+            open_(truncate);
+            if (!file_) throw std::runtime_error("SharedSink::reopen failed");
+        }
     }
     const std::filesystem::path& path() const noexcept { return path_; }
+
 private:
     struct Closer { void operator()(FILE* f) const { if (f) std::fclose(f); } };
+
     void open_(bool truncate) {
 #if defined(_WIN32) || defined(_WIN64)
         const wchar_t* mode = truncate ? L"wb" : L"ab";
@@ -86,9 +111,11 @@ private:
         file_.reset(std::fopen(p.c_str(), mode));
 #endif
     }
+
     std::mutex mu_;
     std::unique_ptr<FILE, Closer> file_{nullptr};
     std::filesystem::path path_;
+    std::shared_ptr<std::mutex> path_mu_; // shared per-file mutex (intra-process)
 };
 
 // ---------- Tiny UTF-8 encoder ----------
@@ -151,6 +178,7 @@ private:
     void broadcast_utf8(const char* data, int len) { for (auto& s : sinks_) s->write(data, (size_t)len); }
     void put_one(wchar_t w) {
 #if WCHAR_MAX == 0xFFFF
+        // Windows UTF-16 wchar_t: handle surrogates
         auto is_high = [](char16_t x){ return x >= 0xD800 && x <= 0xDBFF; };
         auto is_low  = [](char16_t x){ return x >= 0xDC00 && x <= 0xDFFF; };
         static thread_local char16_t pending_high = 0;
@@ -166,6 +194,7 @@ private:
         if (is_low(u))  { encode_utf8(0xFFFD, out, len); broadcast_utf8(out, len); return; }
         encode_utf8(static_cast<char32_t>(u), out, len); broadcast_utf8(out, len);
 #else
+        // POSIX UTF-32 wchar_t
         char out[4]; int len = 0; encode_utf8(static_cast<char32_t>(w), out, len); broadcast_utf8(out, len);
 #endif
     }
@@ -180,6 +209,19 @@ public:
           old_cerr_(std::cerr.rdbuf()),
           old_wcout_(std::wcout.rdbuf()),
           old_wcerr_(std::wcerr.rdbuf()) {}
+
+    // Get a process-local mutex for a filename so *your own threads* can coordinate fopen/fwrite/fclose.
+    std::shared_ptr<std::mutex> fileMutex(const std::filesystem::path& filename) {
+        const auto key = norm_key(filename);
+        std::lock_guard<std::mutex> lock(reconfig_mu_);
+        auto it = path_mutexes_.find(key);
+        if (it != path_mutexes_.end()) {
+            if (auto sp = it->second.lock()) return sp;
+        }
+        auto fresh = std::make_shared<std::mutex>();
+        path_mutexes_[key] = fresh;
+        return fresh;
+    }
 
     // --- Add routes (does NOT include the original console automatically) ---
     bool addStdRoute(StreamMask mask, RedirectMode mode,
@@ -224,8 +266,9 @@ public:
         std::shared_ptr<SharedSink> sink;
         auto it = file_sinks_.find(key);
         if (it == file_sinks_.end()) {
+            auto pmu = fileMutex(filename);
             try {
-                sink = std::make_shared<SharedSink>(filename, /*truncate*/truncate_first);
+                sink = std::make_shared<SharedSink>(filename, /*truncate*/truncate_first, pmu);
                 file_sinks_.emplace(key, sink);
             } catch (...) { return false; }
         } else {
@@ -369,8 +412,9 @@ private:
             const auto key = norm_key(filename);
             auto it = file_sinks_.find(key);
             if (it == file_sinks_.end()) {
+                auto pmu = fileMutex(filename);
                 try {
-                    auto s = std::make_shared<SharedSink>(filename, truncate);
+                    auto s = std::make_shared<SharedSink>(filename, truncate, pmu);
                     it = file_sinks_.emplace(key, std::move(s)).first;
                 } catch (...) { return nullptr; }
             }
@@ -545,6 +589,7 @@ private:
     // Sink registry
     std::shared_ptr<SharedSink> null_sink_;
     std::unordered_map<std::wstring, std::shared_ptr<SharedSink>> file_sinks_;
+    std::unordered_map<std::wstring, std::weak_ptr<std::mutex>>   path_mutexes_; // per-file intra-process mutexes
 
     // Config lock
     std::mutex reconfig_mu_;
