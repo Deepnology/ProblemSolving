@@ -159,9 +159,11 @@ public:
     using traits_type = std::wstreambuf::traits_type;
     using int_type    = traits_type::int_type;
     using char_type   = wchar_t;
+
     explicit MultiWideBuf(std::vector<std::shared_ptr<SharedSink>> sinks)
         : sinks_(std::move(sinks)) {}
     void set_sinks(std::vector<std::shared_ptr<SharedSink>> sinks) { sinks_ = std::move(sinks); }
+
 protected:
     int_type overflow(int_type ch = traits_type::eof()) override {
         if (traits_type::eq_int_type(ch, traits_type::eof()))
@@ -174,30 +176,49 @@ protected:
         return n;
     }
     int sync() override { for (auto& s : sinks_) s->flush(); return 0; }
+
 private:
-    void broadcast_utf8(const char* data, int len) { for (auto& s : sinks_) s->write(data, (size_t)len); }
+    void broadcast_utf8(const char* data, int len) {
+        for (auto& s : sinks_) s->write(data, (size_t)len);
+    }
     void put_one(wchar_t w) {
 #if WCHAR_MAX == 0xFFFF
         // Windows UTF-16 wchar_t: handle surrogates
         auto is_high = [](char16_t x){ return x >= 0xD800 && x <= 0xDBFF; };
         auto is_low  = [](char16_t x){ return x >= 0xDC00 && x <= 0xDFFF; };
-        static thread_local char16_t pending_high = 0;
+
         char16_t u = static_cast<char16_t>(w);
         char out[4]; int len = 0;
-        if (pending_high) {
+
+        if (pending_high_) {
             if (is_low(u)) {
-                char32_t cp = 0x10000 + (((pending_high - 0xD800) << 10) | (u - 0xDC00));
-                pending_high = 0; encode_utf8(cp, out, len); broadcast_utf8(out, len); return;
-            } else { encode_utf8(0xFFFD, out, len); broadcast_utf8(out, len); pending_high = 0; }
+                char32_t cp = 0x10000 + (((pending_high_ - 0xD800) << 10) | (u - 0xDC00));
+                pending_high_ = 0;
+                encode_utf8(cp, out, len);
+                broadcast_utf8(out, len);
+                return;
+            } else {
+                encode_utf8(0xFFFD, out, len);
+                broadcast_utf8(out, len);
+                pending_high_ = 0;
+            }
         }
-        if (is_high(u)) { pending_high = u; return; }
+        if (is_high(u)) { pending_high_ = u; return; }
         if (is_low(u))  { encode_utf8(0xFFFD, out, len); broadcast_utf8(out, len); return; }
-        encode_utf8(static_cast<char32_t>(u), out, len); broadcast_utf8(out, len);
+
+        encode_utf8(static_cast<char32_t>(u), out, len);
+        broadcast_utf8(out, len);
 #else
         // POSIX UTF-32 wchar_t
-        char out[4]; int len = 0; encode_utf8(static_cast<char32_t>(w), out, len); broadcast_utf8(out, len);
+        char out[4]; int len = 0;
+        encode_utf8(static_cast<char32_t>(w), out, len);
+        broadcast_utf8(out, len);
 #endif
     }
+
+#if WCHAR_MAX == 0xFFFF
+    char16_t pending_high_ = 0; // per-buffer pending high surrogate
+#endif
     std::vector<std::shared_ptr<SharedSink>> sinks_;
 };
 
@@ -214,13 +235,7 @@ public:
     std::shared_ptr<std::mutex> fileMutex(const std::filesystem::path& filename) {
         const auto key = norm_key(filename);
         std::lock_guard<std::mutex> lock(reconfig_mu_);
-        auto it = path_mutexes_.find(key);
-        if (it != path_mutexes_.end()) {
-            if (auto sp = it->second.lock()) return sp;
-        }
-        auto fresh = std::make_shared<std::mutex>();
-        path_mutexes_[key] = fresh;
-        return fresh;
+        return get_or_create_path_mutex_nolock_(key, filename);
     }
 
     // --- Add routes (does NOT include the original console automatically) ---
@@ -228,7 +243,7 @@ public:
                      const std::filesystem::path& filename = {}, bool truncate = false) {
         std::lock_guard<std::mutex> cfg_lock(reconfig_mu_);
         if (mode == RedirectMode::Original) return false; // Original isn't a sink
-        auto sink = get_or_make_sink_(mode, filename, truncate);
+        auto sink = get_or_make_sink_nolock_(mode, filename, truncate);
         if (!sink) return false;
         std::cout.flush(); std::cerr.flush(); std::wcout.flush(); std::wcerr.flush();
         if (mask & CoutBit)  add_unique_sink_(cout_sinks_,  sink);
@@ -266,7 +281,7 @@ public:
         std::shared_ptr<SharedSink> sink;
         auto it = file_sinks_.find(key);
         if (it == file_sinks_.end()) {
-            auto pmu = fileMutex(filename);
+            auto pmu = get_or_create_path_mutex_nolock_(key, filename);
             try {
                 sink = std::make_shared<SharedSink>(filename, /*truncate*/truncate_first, pmu);
                 file_sinks_.emplace(key, sink);
@@ -339,7 +354,7 @@ public:
                     QtFormat fmt = {}) {
         std::lock_guard<std::mutex> cfg_lock(reconfig_mu_);
         ensure_qt_installed_();
-        auto sink = get_or_make_sink_(mode, filename, truncate);
+        auto sink = get_or_make_sink_nolock_(mode, filename, truncate);
         if (!sink) return false;
         qt_routes_.push_back(QtRoute{sink, level_mask, fmt});
         return true;
@@ -396,10 +411,23 @@ public:
     }
 
 private:
-    // --- sink registry / helpers ---
-    std::shared_ptr<SharedSink> get_or_make_sink_(RedirectMode mode,
-                                                  const std::filesystem::path& filename,
-                                                  bool truncate) {
+    // ========== DEADLOCK-SAFE HELPERS (NO LOCKING HERE) ==========
+    std::shared_ptr<std::mutex>
+    get_or_create_path_mutex_nolock_(const std::wstring& key, const std::filesystem::path& filename) {
+        auto it = path_mutexes_.find(key);
+        if (it != path_mutexes_.end()) {
+            if (auto sp = it->second.lock()) return sp;
+        }
+        auto fresh = std::make_shared<std::mutex>();
+        path_mutexes_[key] = fresh;
+        (void)filename; // only for clarity
+        return fresh;
+    }
+
+    std::shared_ptr<SharedSink>
+    get_or_make_sink_nolock_(RedirectMode mode,
+                             const std::filesystem::path& filename,
+                             bool truncate) {
         if (mode == RedirectMode::Null) {
             if (!null_sink_) {
                 try { null_sink_ = std::make_shared<SharedSink>(kNullDevice, false); }
@@ -412,7 +440,7 @@ private:
             const auto key = norm_key(filename);
             auto it = file_sinks_.find(key);
             if (it == file_sinks_.end()) {
-                auto pmu = fileMutex(filename);
+                auto pmu = get_or_create_path_mutex_nolock_(key, filename);
                 try {
                     auto s = std::make_shared<SharedSink>(filename, truncate, pmu);
                     it = file_sinks_.emplace(key, std::move(s)).first;
