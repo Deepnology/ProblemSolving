@@ -35,20 +35,6 @@
 #define DEBUG_WDUMP(filename, str)   DEBUG_MDUMP((filename), "w", (str))
 #define DEBUG_WDUMPF(filename, ...)  DEBUG_MDUMPF((filename), "w", __VA_ARGS__)
 
-#define DEBUG_VMDUMP(filename, mode, fmt, ap) \
-    do { \
-        FILE *__file = fopen((filename), (mode)); \
-        if (__file == NULL) { \
-            char __err[256]; \
-            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_VDUMP", (filename)); \
-            perror(__err); \
-        } else { \
-            vfprintf(__file, (fmt), (ap)); \
-            fputc('\n', __file); \
-            fclose(__file); \
-        } \
-    } while(0)
-
 #define DEBUG_VMDUMPF(filename, mode, fmt, ap) \
     do { \
         FILE *__file = fopen((filename), (mode)); \
@@ -62,8 +48,6 @@
         } \
     } while(0)
 
-#define DEBUG_VADUMP(filename, fmt, ap)   DEBUG_VMDUMP((filename),  "a", (fmt), (ap))
-#define DEBUG_VWDUMP(filename, fmt, ap)   DEBUG_VMDUMP((filename),  "w", (fmt), (ap))
 #define DEBUG_VADUMPF(filename, fmt, ap)  DEBUG_VMDUMPF((filename), "a", (fmt), (ap))
 #define DEBUG_VWDUMPF(filename, fmt, ap)  DEBUG_VMDUMPF((filename), "w", (fmt), (ap))
 
@@ -2828,6 +2812,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
