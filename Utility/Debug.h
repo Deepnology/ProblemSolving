@@ -42,7 +42,7 @@
         FILE *__file = fopen((filename), (mode)); \
         if (__file == NULL) { \
             char __err[256]; \
-            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_VDUMPF", (filename)); \
+            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_VMDUMPF", (filename)); \
             perror(__err); \
         } else { \
             vfprintf(__file, (fmt), (ap)); \
@@ -76,7 +76,7 @@
         } else { \
             if (fgets(buf, bufSize, __file) != NULL) { \
                 size_t readLen = strlen(buf); \
-                if (readLen > 0 && buf[readLen-1] == '\n') {\
+                if (readLen > 0 && buf[readLen-1] == '\n') { \
                     buf[readLen-1] = '\0'; \
                 } \
             } \
@@ -2815,6 +2815,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
