@@ -4,7 +4,7 @@
 #pragma warning (disable : 4996) //fopen
 #include <stdio.h>
 #include <string.h>
-#define DEBUG_MDUMP(filename, mode, str) \
+#define DEBUG_MDUMP(filename, mode, addnl, str) \
     do { \
         FILE *__file = fopen((filename), (mode)); \
         if (__file == NULL) { \
@@ -12,12 +12,13 @@
             snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_MDUMP", (filename)); \
             perror(__err); \
         } else { \
-            fprintf(__file, "%s\n", (str)); \
+            fprintf(__file, "%s", (str)); \
+            if ((addnl)) fputc('\n', __file); \
             fclose(__file); \
         } \
     } while(0)
 
-#define DEBUG_MDUMPF(filename, mode, ...) \
+#define DEBUG_MDUMPF(filename, mode, addnl, ...) \
     do { \
         FILE *__file = fopen((filename), (mode)); \
         if (__file == NULL) { \
@@ -26,16 +27,17 @@
             perror(__err); \
         } else { \
             fprintf(__file, __VA_ARGS__); \
+            if ((addnl)) fputc('\n', __file); \
             fclose(__file); \
         } \
     } while(0)
 
-#define DEBUG_ADUMP(filename, str)   DEBUG_MDUMP((filename), "a", (str))
-#define DEBUG_ADUMPF(filename, ...)  DEBUG_MDUMPF((filename), "a", __VA_ARGS__)
-#define DEBUG_WDUMP(filename, str)   DEBUG_MDUMP((filename), "w", (str))
-#define DEBUG_WDUMPF(filename, ...)  DEBUG_MDUMPF((filename), "w", __VA_ARGS__)
+#define DEBUG_ADUMP(filename, str)   DEBUG_MDUMP((filename), "a", 1, (str))
+#define DEBUG_ADUMPF(filename, ...)  DEBUG_MDUMPF((filename), "a", 1, __VA_ARGS__)
+#define DEBUG_WDUMP(filename, str)   DEBUG_MDUMP((filename), "w", 1, (str))
+#define DEBUG_WDUMPF(filename, ...)  DEBUG_MDUMPF((filename), "w", 1, __VA_ARGS__)
 
-#define DEBUG_VMDUMPF(filename, mode, fmt, ap) \
+#define DEBUG_VMDUMPF(filename, mode, addnl, fmt, ap) \
     do { \
         FILE *__file = fopen((filename), (mode)); \
         if (__file == NULL) { \
@@ -44,12 +46,13 @@
             perror(__err); \
         } else { \
             vfprintf(__file, (fmt), (ap)); \
+            if ((addnl)) fputc('\n', __file); \
             fclose(__file); \
         } \
     } while(0)
 
-#define DEBUG_VADUMPF(filename, fmt, ap)  DEBUG_VMDUMPF((filename), "a", (fmt), (ap))
-#define DEBUG_VWDUMPF(filename, fmt, ap)  DEBUG_VMDUMPF((filename), "w", (fmt), (ap))
+#define DEBUG_VADUMPF(filename, fmt, ap)  DEBUG_VMDUMPF((filename), "a", 1, (fmt), (ap))
+#define DEBUG_VWDUMPF(filename, fmt, ap)  DEBUG_VMDUMPF((filename), "w", 1, (fmt), (ap))
 
 #define DEBUG_CLRDUMP(filename) \
     do { \
@@ -2812,6 +2815,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
