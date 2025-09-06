@@ -441,11 +441,17 @@ public:
         if (!sink) return false;
 
         if (mask & CStdoutBit) {
-            add_unique_sink_(cstdout_.sinks, sink);
+            {
+                std::lock_guard<std::mutex> rl(cstdout_.routes_mu);
+                add_unique_sink_(cstdout_.sinks, sink);
+            }
             c_install_if_needed_nolock_(cstdout_, stdout_fd_());
         }
         if (mask & CStderrBit) {
-            add_unique_sink_(cstderr_.sinks, sink);
+            {
+                std::lock_guard<std::mutex> rl(cstdout_.routes_mu);
+                add_unique_sink_(cstderr_.sinks, sink);
+            }
             c_install_if_needed_nolock_(cstderr_, stderr_fd_());
         }
         return true;
@@ -454,14 +460,22 @@ public:
     void removeCRoutes(CStreamMask mask) {
         std::lock_guard<std::mutex> lk(reconfig_mu_);
         if (mask & CStdoutBit) {
-            std::lock_guard<std::mutex> rl(cstdout_.routes_mu);
-            cstdout_.sinks.clear();
-            c_maybe_uninstall_nolock_(cstdout_, stdout_fd_());
+            bool do_uninstall = false;
+            {
+                std::lock_guard<std::mutex> rl(cstdout_.routes_mu);
+                cstdout_.sinks.clear();
+                do_uninstall = cstdout_.sinks.empty() && !cstdout_.forward_original;
+            }
+            if (do_uninstall) c_uninstall_nolock_(cstdout_, stdout_fd_());
         }
         if (mask & CStderrBit) {
-            std::lock_guard<std::mutex> rl(cstderr_.routes_mu);
-            cstderr_.sinks.clear();
-            c_maybe_uninstall_nolock_(cstderr_, stderr_fd_());
+            bool do_uninstall = false;
+            {
+                std::lock_guard<std::mutex> rl(cstderr_.routes_mu);
+                cstderr_.sinks.clear();
+                do_uninstall = cstderr_.sinks.empty() && !cstderr_.forward_original;
+            }
+            if (do_uninstall) c_uninstall_nolock_(cstderr_, stderr_fd_());
         }
     }
 
@@ -476,14 +490,26 @@ public:
     void setCForwardToOriginal(CStreamMask mask, bool on) {
         std::lock_guard<std::mutex> lk(reconfig_mu_);
         if (mask & CStdoutBit) {
-            cstdout_.forward_original = on;
-            if (on) c_install_if_needed_nolock_(cstdout_, stdout_fd_());
-            else    c_maybe_uninstall_nolock_(cstdout_, stdout_fd_());
+            bool do_install = false, do_uninstall = false;
+            {
+                std::lock_guard<std::mutex> rl(cstdout_.routes_mu);
+                cstdout_.forward_original = on;
+                do_install   = on;
+                do_uninstall = !on && cstdout_.sinks.empty();
+            }
+            if (do_install)   c_install_if_needed_nolock_(cstdout_, stdout_fd_());
+            else if (do_uninstall) c_uninstall_nolock_(cstdout_, stdout_fd_());
         }
         if (mask & CStderrBit) {
-            cstderr_.forward_original = on;
-            if (on) c_install_if_needed_nolock_(cstderr_, stderr_fd_());
-            else    c_maybe_uninstall_nolock_(cstderr_, stderr_fd_());
+            bool do_install = false, do_uninstall = false;
+            {
+                std::lock_guard<std::mutex> rl(cstderr_.routes_mu);
+                cstderr_.forward_original = on;
+                do_install   = on;
+                do_uninstall = !on && cstderr_.sinks.empty();
+            }
+            if (do_install)   c_install_if_needed_nolock_(cstderr_, stderr_fd_());
+            else if (do_uninstall) c_uninstall_nolock_(cstderr_, stderr_fd_());
         }
     }
 
@@ -825,17 +851,6 @@ private:
         R.stop.store(false, std::memory_order_relaxed);
         R.installed = true;
         R.thr = std::thread([this, &R]{ c_reader_loop_(&R); });
-    }
-
-    void c_maybe_uninstall_nolock_(CRouter& R, int stdfd) {
-        bool should_uninstall = false;
-        {
-            std::lock_guard<std::mutex> rl(R.routes_mu);
-            should_uninstall = R.sinks.empty() && !R.forward_original;
-        }
-        if (should_uninstall && R.installed) {
-            c_uninstall_nolock_(R, stdfd);
-        }
     }
 
     void c_uninstall_nolock_(CRouter& R, int stdfd) {
