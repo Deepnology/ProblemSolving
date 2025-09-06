@@ -4,6 +4,7 @@
 #pragma warning (disable : 4996) //fopen
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 #define DEBUG_MDUMP(filename, mode, addnl, str) \
     do { \
         FILE *__file = fopen((filename), (mode)); \
@@ -65,6 +66,56 @@
             fclose(__file); \
         } \
     } while(0)
+
+#define DEBUG_FILE_CONCAT(out_path, ...) \
+    do { \
+        const char* const __dfc_files[] = { __VA_ARGS__ }; \
+        const size_t __dfc_count = sizeof(__dfc_files) / sizeof(__dfc_files[0]); \
+        FILE* __dfc_out = fopen((out_path), "wb"); \
+        if (!__dfc_out) { \
+            char __err[256]; \
+            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_FILE_CONCAT", (out_path)); \
+            perror(__err); \
+        } else { \
+            unsigned char __dfc_buf[64 * 1024]; \
+            for (size_t __i = 0; __i < __dfc_count; ++__i) { \
+                const char* __src = __dfc_files[__i]; \
+                if (!__src || !*__src || strcmp(__src, (out_path)) == 0) continue; \
+                FILE* __in = fopen(__src, "rb"); \
+                if (!__in) { \
+                    char __err2[256]; \
+                    snprintf(__err2, sizeof(__err2), "Error opening %s in DEBUG_FILE_CONCAT", __src); \
+                    perror(__err2); \
+                    continue; \
+                } \
+                for (;;) { \
+                    size_t __n = fread(__dfc_buf, 1, sizeof(__dfc_buf), __in); \
+                    if (__n > 0) { \
+                        size_t __off = 0; \
+                        while (__off < __n) { \
+                            size_t __m = fwrite(__dfc_buf + __off, 1, __n - __off, __dfc_out); \
+                            if (__m == 0) { \
+                                perror("DEBUG_FILE_CONCAT: write error"); \
+                                break; \
+                            } \
+                            __off += __m; \
+                        } \
+                    } \
+                    if (feof(__in)) break; \
+                    if (ferror(__in)) { \
+                        char __err3[256]; \
+                        snprintf(__err3, sizeof(__err3), "DEBUG_FILE_CONCAT: read error on %s", __src); \
+                        perror(__err3); \
+                        break; \
+                    } \
+                } \
+                fclose(__in); \
+            } \
+            if (fclose(__dfc_out) != 0) { \
+                perror("DEBUG_FILE_CONCAT: error closing destination"); \
+            } \
+        } \
+    } while (0)
 
 #define DEBUG_READ(filename, buf, bufSize) \
     do{ \
@@ -2815,6 +2866,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
