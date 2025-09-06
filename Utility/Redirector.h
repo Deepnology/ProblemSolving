@@ -1,13 +1,15 @@
 #ifndef _REDIRECTOR_H_
 #define _REDIRECTOR_H_
 
-// std_redirector.hpp
-// C++17 header-only utility for redirecting std streams and Qt logging.
+// C++17 header-only utility for redirecting std streams, Qt logs, and C stdio.
 // - std::cout/cerr/wcout/wcerr: multi-destination fan-out (file/null), remove/replace
 // - Qt qDebug/qInfo/qWarning/qCritical/qFatal: per-level multi-routes, remove/replace
+// - C stdio stdout/stderr redirection (captures printf, fprintf, perror, etc.)
 // - Safe log rotation via swap_to_file() for std
 // - UTF-8 encoding for wide text
 // - Path normalization so different spellings of the same file share one sink
+// - Per-file (intra-process) mutex you can share with your own fopen/fwrite/fclose
+// - DEADLOCK SAFE: internal helpers avoid re-locking reconfig_mu_
 
 #include <iostream>
 #include <streambuf>
@@ -23,6 +25,15 @@
 #include <cwctype>
 
 #if defined(_WIN32) || defined(_WIN64)
+  #include <io.h>
+  #include <fcntl.h>
+#else
+  #include <unistd.h>
+  #include <fcntl.h>
+  #include <sys/stat.h>
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
 static const std::filesystem::path kNullDevice = L"NUL";
 #else
 static const std::filesystem::path kNullDevice = "/dev/null";
@@ -36,7 +47,7 @@ constexpr StreamMask WcoutBit = 1u << 2;
 constexpr StreamMask WcerrBit = 1u << 3;
 constexpr StreamMask AllBits  = CoutBit | CerrBit | WcoutBit | WcerrBit;
 
-enum class RedirectMode { Original, File, Null }; // Original is for removal/restore; not a route
+enum class RedirectMode { Original, File, Null }; // Original is for removal/restore; not a sink
 
 // ---------- Path normalization (shared sink for different spellings) ----------
 static inline std::wstring norm_key(const std::filesystem::path& p) {
@@ -97,6 +108,15 @@ public:
         }
     }
     const std::filesystem::path& path() const noexcept { return path_; }
+
+    // Expose native fd for C stdio dup2 redirection
+    int native_fd() const noexcept {
+#if defined(_WIN32) || defined(_WIN64)
+        return file_ ? _fileno(file_.get()) : -1;
+#else
+        return file_ ? ::fileno(file_.get()) : -1;
+#endif
+    }
 
 private:
     struct Closer { void operator()(FILE* f) const { if (f) std::fclose(f); } };
@@ -403,11 +423,136 @@ public:
     }
 #endif // QT_CORE_LIB
 
+    // ---------- C stdio redirection (stdout/stderr) ----------
+    bool redirectCStderr(RedirectMode mode,
+                         const std::filesystem::path& filename = {},
+                         bool truncate = false) {
+        std::lock_guard<std::mutex> lk(reconfig_mu_);
+
+        if (mode == RedirectMode::Original) {
+            if (c_stderr_redirected_ && saved_stderr_fd_ != -1) {
+#if defined(_WIN32) || defined(_WIN64)
+                dup2_fd_(saved_stderr_fd_, _fileno(stderr));
+#else
+                dup2_fd_(saved_stderr_fd_, STDERR_FILENO);
+#endif
+                close_fd_(saved_stderr_fd_);
+                saved_stderr_fd_ = -1;
+            }
+            c_stderr_redirected_ = false;
+            return true;
+        }
+
+        if (saved_stderr_fd_ == -1) {
+#if defined(_WIN32) || defined(_WIN64)
+            saved_stderr_fd_ = dup_fd_(_fileno(stderr));
+#else
+            saved_stderr_fd_ = dup_fd_(STDERR_FILENO);
+#endif
+            if (saved_stderr_fd_ == -1) return false;
+        }
+
+        int target_fd = -1;
+        if (mode == RedirectMode::Null) {
+            if (!null_sink_) {
+                null_sink_ = std::make_shared<SharedSink>(kNullDevice, false);
+            }
+            target_fd = null_sink_->native_fd();
+        } else { // File
+            auto sink = get_or_make_sink_nolock_(RedirectMode::File, filename, truncate);
+            if (!sink) return false;
+            target_fd = sink->native_fd();
+        }
+        if (target_fd < 0) return false;
+
+#if defined(_WIN32) || defined(_WIN64)
+        if (dup2_fd_(target_fd, _fileno(stderr)) != 0) return false;
+#else
+        if (dup2_fd_(target_fd, STDERR_FILENO) != 0) return false;
+#endif
+
+        c_stderr_redirected_ = true;
+        return true;
+    }
+
+    bool redirectCStdout(RedirectMode mode,
+                         const std::filesystem::path& filename = {},
+                         bool truncate = false) {
+        std::lock_guard<std::mutex> lk(reconfig_mu_);
+
+        if (mode == RedirectMode::Original) {
+            if (c_stdout_redirected_ && saved_stdout_fd_ != -1) {
+#if defined(_WIN32) || defined(_WIN64)
+                dup2_fd_(saved_stdout_fd_, _fileno(stdout));
+#else
+                dup2_fd_(saved_stdout_fd_, STDOUT_FILENO);
+#endif
+                close_fd_(saved_stdout_fd_);
+                saved_stdout_fd_ = -1;
+            }
+            c_stdout_redirected_ = false;
+            return true;
+        }
+
+        if (saved_stdout_fd_ == -1) {
+#if defined(_WIN32) || defined(_WIN64)
+            saved_stdout_fd_ = dup_fd_(_fileno(stdout));
+#else
+            saved_stdout_fd_ = dup_fd_(STDOUT_FILENO);
+#endif
+            if (saved_stdout_fd_ == -1) return false;
+        }
+
+        int target_fd = -1;
+        if (mode == RedirectMode::Null) {
+            if (!null_sink_) {
+                null_sink_ = std::make_shared<SharedSink>(kNullDevice, false);
+            }
+            target_fd = null_sink_->native_fd();
+        } else { // File
+            auto sink = get_or_make_sink_nolock_(RedirectMode::File, filename, truncate);
+            if (!sink) return false;
+            target_fd = sink->native_fd();
+        }
+        if (target_fd < 0) return false;
+
+#if defined(_WIN32) || defined(_WIN64)
+        if (dup2_fd_(target_fd, _fileno(stdout)) != 0) return false;
+#else
+        if (dup2_fd_(target_fd, STDOUT_FILENO) != 0) return false;
+#endif
+
+        c_stdout_redirected_ = true;
+        return true;
+    }
+
     ~StdRedirector() {
         restore_all();
 #ifdef QT_VERSION
         restoreQt_();
 #endif
+
+        // Restore C stdio to original if redirected
+        if (c_stderr_redirected_ && saved_stderr_fd_ != -1) {
+#if defined(_WIN32) || defined(_WIN64)
+            dup2_fd_(saved_stderr_fd_, _fileno(stderr));
+#else
+            dup2_fd_(saved_stderr_fd_, STDERR_FILENO);
+#endif
+            close_fd_(saved_stderr_fd_);
+            saved_stderr_fd_ = -1;
+            c_stderr_redirected_ = false;
+        }
+        if (c_stdout_redirected_ && saved_stdout_fd_ != -1) {
+#if defined(_WIN32) || defined(_WIN64)
+            dup2_fd_(saved_stdout_fd_, _fileno(stdout));
+#else
+            dup2_fd_(saved_stdout_fd_, STDOUT_FILENO);
+#endif
+            close_fd_(saved_stdout_fd_);
+            saved_stdout_fd_ = -1;
+            c_stdout_redirected_ = false;
+        }
     }
 
 private:
@@ -596,6 +741,35 @@ private:
         qt_forward_prev_ = false;
     }
 #endif // QT_CORE_LIB
+
+    // ---- C stdio saved descriptors (for restore) ----
+    int  saved_stderr_fd_ = -1;
+    int  saved_stdout_fd_ = -1;
+    bool c_stderr_redirected_ = false;
+    bool c_stdout_redirected_ = false;
+
+    // ---- fd helpers ----
+    static int dup_fd_(int fd) {
+#if defined(_WIN32) || defined(_WIN64)
+        return _dup(fd);
+#else
+        return ::dup(fd);
+#endif
+    }
+    static int dup2_fd_(int src, int dst) {
+#if defined(_WIN32) || defined(_WIN64)
+        return _dup2(src, dst);
+#else
+        return ::dup2(src, dst);
+#endif
+    }
+    static void close_fd_(int fd) {
+#if defined(_WIN32) || defined(_WIN64)
+        if (fd >= 0) _close(fd);
+#else
+        if (fd >= 0) ::close(fd);
+#endif
+    }
 
     // --- std originals & state ---
     std::streambuf*  old_cout_;
