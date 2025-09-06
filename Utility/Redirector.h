@@ -487,18 +487,16 @@ public:
         }
     }
 
-    // Back-compat single-sink helpers
-    bool redirectCStdout(RedirectMode mode,
-                         const std::filesystem::path& filename = {},
-                         bool truncate = false) {
-        if (mode == RedirectMode::Original) { removeCRoutes(CStdoutBit); setCForwardToOriginal(CStdoutBit,false); return true; }
-        return replaceCRoute(CStdoutBit, mode, filename, truncate);
-    }
-    bool redirectCStderr(RedirectMode mode,
-                         const std::filesystem::path& filename = {},
-                         bool truncate = false) {
-        if (mode == RedirectMode::Original) { removeCRoutes(CStderrBit); setCForwardToOriginal(CStderrBit,false); return true; }
-        return replaceCRoute(CStderrBit, mode, filename, truncate);
+    bool redirectC(CStreamMask mask, RedirectMode mode, 
+                   const std::filesystem::path& filename = {},
+                   bool truncate = false)
+    {
+        if (mode == RedirectMode::Original) {
+            removeCRoutes(mask);
+            setCForwardToOriginal(mask, false);
+            return true;
+        }
+        return replaceCRoute(mask, mode, filename, truncate);
     }
 
     ~StdRedirector() {
