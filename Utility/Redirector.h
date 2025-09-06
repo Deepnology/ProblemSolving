@@ -1,10 +1,10 @@
 #ifndef _REDIRECTOR_H_
 #define _REDIRECTOR_H_
 
-// C++17 header-only utility for redirecting std streams, Qt logs, and C stdio.
+// C++17 header-only utility for redirecting std streams, Qt logs, and C stdio with fan-out.
 // - std::cout/cerr/wcout/wcerr: multi-destination fan-out (file/null), remove/replace
 // - Qt qDebug/qInfo/qWarning/qCritical/qFatal: per-level multi-routes, remove/replace
-// - C stdio stdout/stderr redirection (captures printf, fprintf, perror, etc.)
+// - C stdio stdout/stderr: multi-destination fan-out via pipe + reader thread (+ tee to original)
 // - Safe log rotation via swap_to_file() for std
 // - UTF-8 encoding for wide text
 // - Path normalization so different spellings of the same file share one sink
@@ -23,6 +23,8 @@
 #include <climits>
 #include <filesystem>
 #include <cwctype>
+#include <thread>
+#include <atomic>
 
 #if defined(_WIN32) || defined(_WIN64)
   #include <io.h>
@@ -48,6 +50,12 @@ constexpr StreamMask WcerrBit = 1u << 3;
 constexpr StreamMask AllBits  = CoutBit | CerrBit | WcoutBit | WcerrBit;
 
 enum class RedirectMode { Original, File, Null }; // Original is for removal/restore; not a sink
+
+// ---------- C stdio mask ----------
+using CStreamMask = unsigned;
+constexpr CStreamMask CStdoutBit = 1u << 0;
+constexpr CStreamMask CStderrBit = 1u << 1;
+constexpr CStreamMask CAllBits   = CStdoutBit | CStderrBit;
 
 // ---------- Path normalization (shared sink for different spellings) ----------
 static inline std::wstring norm_key(const std::filesystem::path& p) {
@@ -423,107 +431,74 @@ public:
     }
 #endif // QT_CORE_LIB
 
-    // ---------- C stdio redirection (stdout/stderr) ----------
-    bool redirectCStderr(RedirectMode mode,
-                         const std::filesystem::path& filename = {},
-                         bool truncate = false) {
+    // ======== C stdio fan-out (stdout/stderr) ========
+    // Fan-out API (multi-destination)
+    bool addCRoute(CStreamMask mask, RedirectMode mode,
+                   const std::filesystem::path& filename = {}, bool truncate = false) {
         std::lock_guard<std::mutex> lk(reconfig_mu_);
+        if (mode == RedirectMode::Original) return false;
+        auto sink = get_or_make_sink_nolock_(mode, filename, truncate);
+        if (!sink) return false;
 
-        if (mode == RedirectMode::Original) {
-            if (c_stderr_redirected_ && saved_stderr_fd_ != -1) {
-#if defined(_WIN32) || defined(_WIN64)
-                dup2_fd_(saved_stderr_fd_, _fileno(stderr));
-#else
-                dup2_fd_(saved_stderr_fd_, STDERR_FILENO);
-#endif
-                close_fd_(saved_stderr_fd_);
-                saved_stderr_fd_ = -1;
-            }
-            c_stderr_redirected_ = false;
-            return true;
+        if (mask & CStdoutBit) {
+            add_unique_sink_(cstdout_.sinks, sink);
+            c_install_if_needed_nolock_(cstdout_, stdout_fd_());
         }
-
-        if (saved_stderr_fd_ == -1) {
-#if defined(_WIN32) || defined(_WIN64)
-            saved_stderr_fd_ = dup_fd_(_fileno(stderr));
-#else
-            saved_stderr_fd_ = dup_fd_(STDERR_FILENO);
-#endif
-            if (saved_stderr_fd_ == -1) return false;
+        if (mask & CStderrBit) {
+            add_unique_sink_(cstderr_.sinks, sink);
+            c_install_if_needed_nolock_(cstderr_, stderr_fd_());
         }
-
-        int target_fd = -1;
-        if (mode == RedirectMode::Null) {
-            if (!null_sink_) {
-                null_sink_ = std::make_shared<SharedSink>(kNullDevice, false);
-            }
-            target_fd = null_sink_->native_fd();
-        } else { // File
-            auto sink = get_or_make_sink_nolock_(RedirectMode::File, filename, truncate);
-            if (!sink) return false;
-            target_fd = sink->native_fd();
-        }
-        if (target_fd < 0) return false;
-
-#if defined(_WIN32) || defined(_WIN64)
-        if (dup2_fd_(target_fd, _fileno(stderr)) != 0) return false;
-#else
-        if (dup2_fd_(target_fd, STDERR_FILENO) != 0) return false;
-#endif
-
-        c_stderr_redirected_ = true;
         return true;
     }
 
+    void removeCRoutes(CStreamMask mask) {
+        std::lock_guard<std::mutex> lk(reconfig_mu_);
+        if (mask & CStdoutBit) {
+            std::lock_guard<std::mutex> rl(cstdout_.routes_mu);
+            cstdout_.sinks.clear();
+            c_maybe_uninstall_nolock_(cstdout_, stdout_fd_());
+        }
+        if (mask & CStderrBit) {
+            std::lock_guard<std::mutex> rl(cstderr_.routes_mu);
+            cstderr_.sinks.clear();
+            c_maybe_uninstall_nolock_(cstderr_, stderr_fd_());
+        }
+    }
+
+    bool replaceCRoute(CStreamMask mask, RedirectMode mode,
+                       const std::filesystem::path& filename = {}, bool truncate = false) {
+        removeCRoutes(mask);
+        if (mode == RedirectMode::Original) return true;
+        return addCRoute(mask, mode, filename, truncate);
+    }
+
+    // Tee to original console (fd 1/2). When true and installed, thread writes to saved fd too.
+    void setCForwardToOriginal(CStreamMask mask, bool on) {
+        std::lock_guard<std::mutex> lk(reconfig_mu_);
+        if (mask & CStdoutBit) {
+            cstdout_.forward_original = on;
+            if (on) c_install_if_needed_nolock_(cstdout_, stdout_fd_());
+            else    c_maybe_uninstall_nolock_(cstdout_, stdout_fd_());
+        }
+        if (mask & CStderrBit) {
+            cstderr_.forward_original = on;
+            if (on) c_install_if_needed_nolock_(cstderr_, stderr_fd_());
+            else    c_maybe_uninstall_nolock_(cstderr_, stderr_fd_());
+        }
+    }
+
+    // Back-compat single-sink helpers
     bool redirectCStdout(RedirectMode mode,
                          const std::filesystem::path& filename = {},
                          bool truncate = false) {
-        std::lock_guard<std::mutex> lk(reconfig_mu_);
-
-        if (mode == RedirectMode::Original) {
-            if (c_stdout_redirected_ && saved_stdout_fd_ != -1) {
-#if defined(_WIN32) || defined(_WIN64)
-                dup2_fd_(saved_stdout_fd_, _fileno(stdout));
-#else
-                dup2_fd_(saved_stdout_fd_, STDOUT_FILENO);
-#endif
-                close_fd_(saved_stdout_fd_);
-                saved_stdout_fd_ = -1;
-            }
-            c_stdout_redirected_ = false;
-            return true;
-        }
-
-        if (saved_stdout_fd_ == -1) {
-#if defined(_WIN32) || defined(_WIN64)
-            saved_stdout_fd_ = dup_fd_(_fileno(stdout));
-#else
-            saved_stdout_fd_ = dup_fd_(STDOUT_FILENO);
-#endif
-            if (saved_stdout_fd_ == -1) return false;
-        }
-
-        int target_fd = -1;
-        if (mode == RedirectMode::Null) {
-            if (!null_sink_) {
-                null_sink_ = std::make_shared<SharedSink>(kNullDevice, false);
-            }
-            target_fd = null_sink_->native_fd();
-        } else { // File
-            auto sink = get_or_make_sink_nolock_(RedirectMode::File, filename, truncate);
-            if (!sink) return false;
-            target_fd = sink->native_fd();
-        }
-        if (target_fd < 0) return false;
-
-#if defined(_WIN32) || defined(_WIN64)
-        if (dup2_fd_(target_fd, _fileno(stdout)) != 0) return false;
-#else
-        if (dup2_fd_(target_fd, STDOUT_FILENO) != 0) return false;
-#endif
-
-        c_stdout_redirected_ = true;
-        return true;
+        if (mode == RedirectMode::Original) { removeCRoutes(CStdoutBit); setCForwardToOriginal(CStdoutBit,false); return true; }
+        return replaceCRoute(CStdoutBit, mode, filename, truncate);
+    }
+    bool redirectCStderr(RedirectMode mode,
+                         const std::filesystem::path& filename = {},
+                         bool truncate = false) {
+        if (mode == RedirectMode::Original) { removeCRoutes(CStderrBit); setCForwardToOriginal(CStderrBit,false); return true; }
+        return replaceCRoute(CStderrBit, mode, filename, truncate);
     }
 
     ~StdRedirector() {
@@ -531,27 +506,11 @@ public:
 #ifdef QT_VERSION
         restoreQt_();
 #endif
-
-        // Restore C stdio to original if redirected
-        if (c_stderr_redirected_ && saved_stderr_fd_ != -1) {
-#if defined(_WIN32) || defined(_WIN64)
-            dup2_fd_(saved_stderr_fd_, _fileno(stderr));
-#else
-            dup2_fd_(saved_stderr_fd_, STDERR_FILENO);
-#endif
-            close_fd_(saved_stderr_fd_);
-            saved_stderr_fd_ = -1;
-            c_stderr_redirected_ = false;
-        }
-        if (c_stdout_redirected_ && saved_stdout_fd_ != -1) {
-#if defined(_WIN32) || defined(_WIN64)
-            dup2_fd_(saved_stdout_fd_, _fileno(stdout));
-#else
-            dup2_fd_(saved_stdout_fd_, STDOUT_FILENO);
-#endif
-            close_fd_(saved_stdout_fd_);
-            saved_stdout_fd_ = -1;
-            c_stdout_redirected_ = false;
+        // Uninstall C stream routers
+        {
+            std::lock_guard<std::mutex> lk(reconfig_mu_);
+            c_uninstall_nolock_(cstdout_, stdout_fd_());
+            c_uninstall_nolock_(cstderr_, stderr_fd_());
         }
     }
 
@@ -742,13 +701,42 @@ private:
     }
 #endif // QT_CORE_LIB
 
-    // ---- C stdio saved descriptors (for restore) ----
-    int  saved_stderr_fd_ = -1;
-    int  saved_stdout_fd_ = -1;
-    bool c_stderr_redirected_ = false;
-    bool c_stdout_redirected_ = false;
+    // ======== C stdio router internals ========
+    struct CRouter {
+        // plumbing
+        bool installed = false;
+        int  saved_fd  = -1;
+        int  pipe_rd   = -1;
+        std::atomic<bool> stop{false};
+        std::thread thr;
 
-    // ---- fd helpers ----
+        // routing
+        bool forward_original = false;
+        std::mutex routes_mu;
+        std::vector<std::shared_ptr<SharedSink>> sinks;
+    };
+
+    static int stdout_fd_() {
+#if defined(_WIN32) || defined(_WIN64)
+        return _fileno(stdout);
+#else
+        return STDOUT_FILENO;
+#endif
+    }
+    static int stderr_fd_() {
+#if defined(_WIN32) || defined(_WIN64)
+        return _fileno(stderr);
+#else
+        return STDERR_FILENO;
+#endif
+    }
+    static int pipe_create_(int fds[2]) {
+#if defined(_WIN32) || defined(_WIN64)
+        return _pipe(fds, 4096, _O_BINARY | _O_NOINHERIT);
+#else
+        return ::pipe(fds); // consider O_CLOEXEC if desired
+#endif
+    }
     static int dup_fd_(int fd) {
 #if defined(_WIN32) || defined(_WIN64)
         return _dup(fd);
@@ -769,6 +757,102 @@ private:
 #else
         if (fd >= 0) ::close(fd);
 #endif
+    }
+    static int read_fd_(int fd, char* buf, int n) {
+#if defined(_WIN32) || defined(_WIN64)
+        return _read(fd, buf, n);
+#else
+        return (int)::read(fd, buf, (size_t)n);
+#endif
+    }
+    static int write_fd_(int fd, const char* buf, int n) {
+#if defined(_WIN32) || defined(_WIN64)
+        return _write(fd, buf, n);
+#else
+        return (int)::write(fd, buf, (size_t)n);
+#endif
+    }
+
+    void c_reader_loop_(CRouter* R) {
+        constexpr int BUFSZ = 4096;
+        char buf[BUFSZ];
+        while (!R->stop.load(std::memory_order_relaxed)) {
+            int n = read_fd_(R->pipe_rd, buf, BUFSZ);
+            if (n <= 0) {
+                // Small sleep could be added on transient errors; usually n==0 -> EOF
+                break;
+            }
+            // Snapshot sinks
+            std::vector<std::shared_ptr<SharedSink>> sinks_copy;
+            bool fwd = false;
+            int saved = -1;
+            {
+                std::lock_guard<std::mutex> rl(R->routes_mu);
+                sinks_copy = R->sinks;
+                fwd = R->forward_original;
+                saved = R->saved_fd;
+            }
+            // Fan-out to sinks
+            for (auto& s : sinks_copy) {
+                if (s) s->write(buf, (size_t)n);
+            }
+            // Forward to original console if requested
+            if (fwd && saved >= 0) {
+                (void)write_fd_(saved, buf, n);
+            }
+        }
+    }
+
+    void c_install_if_needed_nolock_(CRouter& R, int stdfd) {
+        if (R.installed) return;
+        // Need either sinks or forward_original to justify installation
+        {
+            std::lock_guard<std::mutex> rl(R.routes_mu);
+            if (R.sinks.empty() && !R.forward_original) return;
+        }
+        int fds[2];
+        if (pipe_create_(fds) != 0) return;
+        // Save original
+        R.saved_fd = dup_fd_(stdfd);
+        if (R.saved_fd < 0) { close_fd_(fds[0]); close_fd_(fds[1]); return; }
+        // Replace stdfd with pipe writer
+        if (dup2_fd_(fds[1], stdfd) != 0) {
+            close_fd_(R.saved_fd); R.saved_fd = -1;
+            close_fd_(fds[0]); close_fd_(fds[1]);
+            return;
+        }
+        // We keep only the read end; stdfd now points to writer; close extra writer fd
+        close_fd_(fds[1]);
+        R.pipe_rd = fds[0];
+        R.stop.store(false, std::memory_order_relaxed);
+        R.installed = true;
+        R.thr = std::thread([this, &R]{ c_reader_loop_(&R); });
+    }
+
+    void c_maybe_uninstall_nolock_(CRouter& R, int stdfd) {
+        bool should_uninstall = false;
+        {
+            std::lock_guard<std::mutex> rl(R.routes_mu);
+            should_uninstall = R.sinks.empty() && !R.forward_original;
+        }
+        if (should_uninstall && R.installed) {
+            c_uninstall_nolock_(R, stdfd);
+        }
+    }
+
+    void c_uninstall_nolock_(CRouter& R, int stdfd) {
+        if (!R.installed) return;
+        // Restore stdfd
+        if (R.saved_fd >= 0) {
+            (void)dup2_fd_(R.saved_fd, stdfd);
+            close_fd_(R.saved_fd);
+            R.saved_fd = -1;
+        }
+        // Stop thread and close read end
+        R.stop.store(true, std::memory_order_relaxed);
+        if (R.pipe_rd >= 0) { close_fd_(R.pipe_rd); R.pipe_rd = -1; }
+        if (R.thr.joinable()) R.thr.join();
+        R.installed = false;
     }
 
     // --- std originals & state ---
@@ -791,6 +875,10 @@ private:
     std::shared_ptr<SharedSink> null_sink_;
     std::unordered_map<std::wstring, std::shared_ptr<SharedSink>> file_sinks_;
     std::unordered_map<std::wstring, std::weak_ptr<std::mutex>>   path_mutexes_; // per-file intra-process mutexes
+
+    // C stdio routers
+    CRouter cstdout_;
+    CRouter cstderr_;
 
     // Config lock
     std::mutex reconfig_mu_;
