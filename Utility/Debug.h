@@ -81,15 +81,15 @@
             for (size_t __i = 0; __i < __dfc_count; ++__i) { \
                 const char* __src = __dfc_files[__i]; \
                 if (!__src || !*__src || strcmp(__src, (out_path)) == 0) continue; \
-                FILE* __in = fopen(__src, "rb"); \
-                if (!__in) { \
+                FILE* __dfc_in = fopen(__src, "rb"); \
+                if (!__dfc_in) { \
                     char __err2[256]; \
                     snprintf(__err2, sizeof(__err2), "Error opening %s in DEBUG_FILE_CONCAT", __src); \
                     perror(__err2); \
                     continue; \
                 } \
                 for (;;) { \
-                    size_t __n = fread(__dfc_buf, 1, sizeof(__dfc_buf), __in); \
+                    size_t __n = fread(__dfc_buf, 1, sizeof(__dfc_buf), __dfc_in); \
                     if (__n > 0) { \
                         size_t __off = 0; \
                         while (__off < __n) { \
@@ -101,15 +101,15 @@
                             __off += __m; \
                         } \
                     } \
-                    if (feof(__in)) break; \
-                    if (ferror(__in)) { \
+                    if (feof(__dfc_in)) break; \
+                    if (ferror(__dfc_in)) { \
                         char __err3[256]; \
                         snprintf(__err3, sizeof(__err3), "DEBUG_FILE_CONCAT: read error on %s", __src); \
                         perror(__err3); \
                         break; \
                     } \
                 } \
-                fclose(__in); \
+                fclose(__dfc_in); \
             } \
             if (fclose(__dfc_out) != 0) { \
                 perror("DEBUG_FILE_CONCAT: error closing destination"); \
@@ -2866,6 +2866,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
