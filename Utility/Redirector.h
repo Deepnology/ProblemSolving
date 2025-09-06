@@ -528,7 +528,7 @@ public:
     ~StdRedirector() {
         restore_all();
 #ifdef QT_VERSION
-        restoreQt_();
+        clearQtRoutes();
 #endif
         // Uninstall C stream routers
         {
