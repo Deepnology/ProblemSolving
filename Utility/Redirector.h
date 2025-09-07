@@ -445,14 +445,14 @@ public:
                 std::lock_guard<std::mutex> rl(cstdout_.routes_mu);
                 add_unique_sink_(cstdout_.sinks, sink);
             }
-            c_install_if_needed_nolock_(cstdout_, stdout_fd_());
+            c_install_if_needed_nolock_(cstdout_, stdout_fd_(), stdout);
         }
         if (mask & CStderrBit) {
             {
                 std::lock_guard<std::mutex> rl(cstdout_.routes_mu);
                 add_unique_sink_(cstderr_.sinks, sink);
             }
-            c_install_if_needed_nolock_(cstderr_, stderr_fd_());
+            c_install_if_needed_nolock_(cstderr_, stderr_fd_(), stderr);
         }
         return true;
     }
@@ -497,7 +497,7 @@ public:
                 do_install   = on;
                 do_uninstall = !on && cstdout_.sinks.empty();
             }
-            if (do_install)   c_install_if_needed_nolock_(cstdout_, stdout_fd_());
+            if (do_install)   c_install_if_needed_nolock_(cstdout_, stdout_fd_(), stdout);
             else if (do_uninstall) c_uninstall_nolock_(cstdout_, stdout_fd_());
         }
         if (mask & CStderrBit) {
@@ -508,7 +508,7 @@ public:
                 do_install   = on;
                 do_uninstall = !on && cstderr_.sinks.empty();
             }
-            if (do_install)   c_install_if_needed_nolock_(cstderr_, stderr_fd_());
+            if (do_install)   c_install_if_needed_nolock_(cstderr_, stderr_fd_(), stderr);
             else if (do_uninstall) c_uninstall_nolock_(cstderr_, stderr_fd_());
         }
     }
@@ -827,25 +827,45 @@ private:
         }
     }
 
-    void c_install_if_needed_nolock_(CRouter& R, int stdfd) {
+    void c_install_if_needed_nolock_(CRouter& R, int stdfd, FILE* stdfp) {
         if (R.installed) return;
-        // Need either sinks or forward_original to justify installation
+
+        // Only install if there is at least one sink or we tee to original
         {
             std::lock_guard<std::mutex> rl(R.routes_mu);
             if (R.sinks.empty() && !R.forward_original) return;
         }
+
+        // If the underlying fd is invalid (e.g., _fileno(stdout) == -2 on Windows GUI apps),
+        // reopen the FILE* to the null device so it becomes a valid descriptor.
+#if defined(_WIN32) || defined(_WIN64)
+        if (stdfd < 0 && stdfp) {
+            (void)_wfreopen(L"NUL", L"wb", stdfp);   // gives stdout/stderr a real fd
+            stdfd = _fileno(stdfp);
+        }
+#else
+        if (stdfd < 0 && stdfp) {
+            (void)freopen("/dev/null", "wb", stdfp); // gives stdout/stderr a real fd
+            stdfd = fileno(stdfp);
+        }
+#endif
+        if (stdfd < 0) return; // still invalid → nothing we can do
+
         int fds[2];
         if (pipe_create_(fds) != 0) return;
-        // Save original
+
+        // Save original (whatever it currently is — possibly NUL if we just healed it)
         R.saved_fd = dup_fd_(stdfd);
         if (R.saved_fd < 0) { close_fd_(fds[0]); close_fd_(fds[1]); return; }
-        // Replace stdfd with pipe writer
+
+        // dup2 writer end onto stdfd
         if (dup2_fd_(fds[1], stdfd) != 0) {
             close_fd_(R.saved_fd); R.saved_fd = -1;
             close_fd_(fds[0]); close_fd_(fds[1]);
             return;
         }
-        // We keep only the read end; stdfd now points to writer; close extra writer fd
+
+        // Keep read end; close extra writer end
         close_fd_(fds[1]);
         R.pipe_rd = fds[0];
         R.stop.store(false, std::memory_order_relaxed);
