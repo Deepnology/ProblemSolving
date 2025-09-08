@@ -820,6 +820,10 @@ private:
             for (auto& s : sinks_copy) {
                 if (s) s->write(buf, (size_t)n);
             }
+            // Always flush
+            for (auto& s : sinks_copy) {
+              if (s) s->flush();
+            }
             // Forward to original console if requested
             if (fwd && saved >= 0) {
                 (void)write_fd_(saved, buf, n);
