@@ -185,7 +185,7 @@ namespace FileSysUtl
             fs::create_directories(destDir);
             for (auto & sourceDir : sourceDirs)
             {
-                if (!fs::is_directory(sourceDir)
+                if (!fs::is_directory(sourceDir))
                     continue;
                 
                 for (auto& entryPath : sourcePaths)
@@ -387,6 +387,7 @@ namespace FileSysUtl
 
 #endif
 #endif
+
 
 
 
