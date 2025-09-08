@@ -166,7 +166,7 @@ namespace FileSysUtl
                 {
                     std::error_code ec;
                     rel = fs::relative(p, diffSrcDirPrefix, ec);
-                    if (ec || rel.empty())
+                    if (ec || rel.empty() || rel.begin()->string().starts_with(".."))
                     {
                         rel = p; // not under sourceDir, use original absolute path
                     }
@@ -180,63 +180,66 @@ namespace FileSysUtl
             }
             return paths;
         }
-        inline void copyFromList(const std::vector<fs::path>& sourcePaths, const fs::path& sourceDir, const fs::path& destDir, bool preserveDirStructure)
+        inline void copyFromList(const std::vector<fs::path>& sourcePaths, const std::vector<fs::path>& sourceDirs, const fs::path& destDir, bool preserveDirStructure)
         {
-            if (!fs::is_directory(sourceDir))
-                throw std::runtime_error(sourceDir.string() + " is not a valid directory");
-
             fs::create_directories(destDir);
-
-            for (auto& entryPath : sourcePaths)
+            for (auto & sourceDir : sourceDirs)
             {
-                fs::path rel;
-                fs::path src;
-                if (entryPath.is_absolute()) // if entryPath is absolute, assume it is inside sourceDir
+                if (!fs::is_directory(sourceDir)
+                    continue;
+                
+                for (auto& entryPath : sourcePaths)
                 {
-                    std::error_code ec;
-                    rel = fs::relative(entryPath, sourceDir, ec);
-                    if (ec || rel.empty())
+                    fs::path rel;
+                    fs::path src;
+                    if (entryPath.is_absolute()) // if entryPath is absolute, assume it is inside sourceDir
                     {
-                        std::cerr << "Warning: \"" << entryPath << "\" not under \"" << sourceDir << "\"\n";
+                        std::error_code ec;
+                        rel = fs::relative(entryPath, sourceDir, ec);
+                        if (ec || rel.empty() || rel.begin()->string().starts_with(".."))
+                        {
+                            //std::cerr << "Warning: \"" << entryPath << "\" not under \"" << sourceDir << "\"\n";
+                            continue;
+                        }
+                        src = entryPath;
+                    }
+                    else // if entryPath is relative, assume it is under sourceDir
+                    {
+                        rel = entryPath;
+                        src = sourceDir / entryPath;
+                    }
+
+                    if (!fs::is_regular_file(src))
+                    {
+                        std::cerr << "Warning: entry not found: " << src << "\n";
                         continue;
                     }
-                    src = entryPath;
-                }
-                else // if entryPath is relative, assume it is under sourceDir
-                {
-                    rel = entryPath;
-                    src = sourceDir / entryPath;
-                }
 
-                if (!fs::is_regular_file(src))
-                {
-                    std::cerr << "Warning: entry not found: " << src << "\n";
-                    continue;
+                    fs::path dst = preserveDirStructure ? destDir / rel : destDir / rel.filename();
+
+                    fs::create_directories(dst.parent_path());
+                    fs::copy_file(src, dst, fs::copy_options::overwrite_existing);
                 }
-
-                fs::path dst = preserveDirStructure ? destDir / rel : destDir / rel.filename();
-
-                fs::create_directories(dst.parent_path());
-                fs::copy_file(src, dst, fs::copy_options::overwrite_existing);
             }
         }
-        inline void copyExceptList(const std::unordered_set<fs::path>& skipPaths, const fs::path& sourceDir, const fs::path& destDir, bool preserveStructure)
+        inline void copyExceptList(const std::unordered_set<fs::path>& skipPaths, const std::vector<fs::path>& sourceDirs, const fs::path& destDir, bool preserveStructure)
         {
-            if (!fs::is_directory(sourceDir)) {
-                throw std::runtime_error{ "Invalid sourceDir: " + sourceDir.string() };
-            }
             fs::create_directories(destDir);
-
-            for (auto const& entry : fs::recursive_directory_iterator(sourceDir))
+            for (auto & sourceDir : sourceDirs)
             {
-                if (!entry.is_regular_file()) continue;
-                if (skipPaths.count(entry.path())) continue;//check absolute path
-                fs::path rel = fs::relative(entry.path(), sourceDir);
-                if (skipPaths.count(rel)) continue;//check relative path
+                if (!fs::is_directory(sourceDir))
+                    continue;
+                for (auto const& entry : fs::recursive_directory_iterator(sourceDir))
+                {
+                    if (!entry.is_regular_file()) continue;
+                    if (skipPaths.count(entry.path())) continue;//check absolute path
+                    fs::path rel = fs::relative(entry.path(), sourceDir);
+                    if (skipPaths.count(rel)) continue;//check relative path
 
-                fs::path dst = preserveStructure ? destDir / rel : destDir / entry.path().filename();
-                fs::create_directories(dst.parent_path());
-                fs::copy_file(entry.path(), dst, fs::copy_options::overwrite_existing);
+                    fs::path dst = preserveStructure ? destDir / rel : destDir / entry.path().filename();
+                    fs::create_directories(dst.parent_path());
+                    fs::copy_file(entry.path(), dst, fs::copy_options::overwrite_existing);
+                }
             }
         }
         /// Read a rename log where each line is "oldPath|newPath"
@@ -264,7 +267,7 @@ namespace FileSysUtl
         }
     }//detail
 
-    inline bool copyFromList(const std::vector<std::string>& sourcePaths, const std::filesystem::path& sourceDir, const std::filesystem::path& destDir,
+    inline bool copyFromList(const std::vector<std::string>& sourcePaths, const std::vector<std::filesystem::path>& sourceDirs, const std::filesystem::path& destDir,
         bool preserveDirStructure, const std::filesystem::path& diffSrcDirPrefix = {}, bool exclude = false)
     {
         try
@@ -272,11 +275,11 @@ namespace FileSysUtl
             auto matchedPaths = detail::removeDiffSrcDirPrefix(sourcePaths, diffSrcDirPrefix);
             deleteDirectory(destDir);
             if (!exclude)
-                detail::copyFromList(matchedPaths, sourceDir, destDir, preserveDirStructure);
+                detail::copyFromList(matchedPaths, sourceDirs, destDir, preserveDirStructure);
             else
             {
                 std::unordered_set<std::filesystem::path> skipSet(matchedPaths.begin(), matchedPaths.end());
-                detail::copyExceptList(skipSet, sourceDir, destDir, preserveDirStructure);
+                detail::copyExceptList(skipSet, sourceDirs, destDir, preserveDirStructure);
             }
             return true;
         }
@@ -286,14 +289,14 @@ namespace FileSysUtl
             return false;
         }
     }
-    inline bool copyFromListFile(const std::filesystem::path& listFile, const std::filesystem::path& sourceDir, const std::filesystem::path& destDir,
+    inline bool copyFromListFile(const std::filesystem::path& listFile, const std::vector<std::filesystem::path>& sourceDirs, const std::filesystem::path& destDir,
         bool preserveDirStructure, const std::filesystem::path& diffSrcDirPrefix = {}, bool exclude = false)
     {
         auto raw = detail::readListFile(listFile);
-        return copyFromList(raw, sourceDir, destDir, preserveDirStructure, diffSrcDirPrefix, exclude);
+        return copyFromList(raw, sourceDirs, destDir, preserveDirStructure, diffSrcDirPrefix, exclude);
     }
 
-    inline bool renameFromList(const std::vector<std::string>& sourcePaths, const std::filesystem::path& sourceDir,
+    inline bool renameFromList(const std::vector<std::string>& sourcePaths, const std::vector<std::filesystem::path>& sourceDirs,
         std::function<std::filesystem::path(const std::filesystem::path&)> renameFileLambda,
         const std::filesystem::path& diffSrcDirPrefix = {}, bool exclude = false, const std::filesystem::path& renameLog = {})
     {
@@ -310,23 +313,26 @@ namespace FileSysUtl
                 if (!logfs)
                     std::cerr << "Warning: failed to open rename log: " << renameLog << "\n";
             }
+            for (auto & sourceDir : sourceDirs)
+            {
+                for (auto const& entry : std::filesystem::recursive_directory_iterator(sourceDir))
+                {
+                    if (!entry.is_regular_file())
+                        continue;
 
-            for (auto const& entry : std::filesystem::recursive_directory_iterator(sourceDir)) {
-                if (!entry.is_regular_file())
-                    continue;
+                    auto rel = std::filesystem::relative(entry.path(), sourceDir);
+                    bool inList = listSet.count(entry.path()) || listSet.count(rel);
+                    if ((!exclude && !inList) || (exclude && inList))
+                        continue;
 
-                auto rel = std::filesystem::relative(entry.path(), sourceDir);
-                bool inList = listSet.count(entry.path()) || listSet.count(rel);
-                if ((!exclude && !inList) || (exclude && inList))
-                    continue;
+                    auto oldPath = entry.path();
+                    auto newPath = renameFileLambda(oldPath);
+                    std::filesystem::create_directories(newPath.parent_path());
+                    std::filesystem::rename(oldPath, newPath);
 
-                auto oldPath = entry.path();
-                auto newPath = renameFileLambda(oldPath);
-                std::filesystem::create_directories(newPath.parent_path());
-                std::filesystem::rename(oldPath, newPath);
-
-                if (logfs)
-                    logfs << oldPath.string() << "|" << newPath.string() << "\n";
+                    if (logfs)
+                        logfs << oldPath.string() << "|" << newPath.string() << "\n";
+                }
             }
             return true;
         }
@@ -336,12 +342,12 @@ namespace FileSysUtl
             return false;
         }
     }
-    inline bool renameFromListFile(const std::filesystem::path& listFile, const std::filesystem::path& sourceDir,
+    inline bool renameFromListFile(const std::filesystem::path& listFile, const std::vector<std::filesystem::path>& sourceDirs,
         std::function<std::filesystem::path(const std::filesystem::path&)> renameFileLambda,
         const std::filesystem::path& diffSrcDirPrefix = {}, bool exclude = false, const std::filesystem::path& renameLog = {})
     {
         auto raw = detail::readListFile(listFile);
-        return renameFromList(raw, sourceDir, renameFileLambda, diffSrcDirPrefix, exclude, renameLog);
+        return renameFromList(raw, sourceDirs, renameFileLambda, diffSrcDirPrefix, exclude, renameLog);
     }
 
     inline bool restoreFromRenameLog(const std::filesystem::path& logFile)
@@ -381,5 +387,6 @@ namespace FileSysUtl
 
 #endif
 #endif
+
 
 
