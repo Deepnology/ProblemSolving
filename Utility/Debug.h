@@ -140,7 +140,7 @@
         } \
     } while(0)
 
-#define DEBUG_READ_BUF_SIZE 1024
+#define DEBUG_READ_BUF_SIZE 4096
 #define DEBUG_READ_BUF(filename) \
     char DEBUG_READ_BUF_[DEBUG_READ_BUF_SIZE] = {0}; \
     DEBUG_READ(filename, DEBUG_READ_BUF_, DEBUG_READ_BUF_SIZE)
@@ -407,6 +407,20 @@ namespace Debug
 			return v.str();
 		}
 #endif
+	}
+	inline std::vector<std::string> split(const std::string& s, const std::string& delimiter)
+	{
+		std::vector<std::string> tokens;
+		std::string::size_type pos_start = 0, pos_end, delim_len = delimiter.length();
+		std::string token;
+		while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos)
+		{
+			token = s.substr(pos_start, pos_end - pos_start);
+			pos_start = pos_end + delim_len;
+			tokens.push_back(token);
+		}
+		tokens.push_back(s.substr(pos_start));
+		return tokens;
 	}
 
 	template<class T, class U = T>
@@ -2866,6 +2880,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
