@@ -426,17 +426,18 @@ namespace Debug
 	template<class T, class U = T>
 	class Print2D
 	{
+        bool mPrintInline = true;
 	public:
-		Print2D() {}
+		explicit Print2D(bool printInline = true): mPrintInline(printInline) {}
 		~Print2D() {}
 
-		void operator()(const std::vector<std::vector<T>>& vv, bool columnXrowY = true, bool tab = false)
+		std::string operator()(const std::vector<std::vector<T>>& vv, bool columnXrowY = true, bool tab = false)
 		{
+            std::ostringstream oss;
 			if (vv.empty())
-				return;
+				return oss.str();
 			if (columnXrowY)//[columnX][rowY]
 			{
-				std::ostringstream oss;
 				oss << "[cX][rY]" << std::endl;
 				int maxColumnSize = vv[0].size();//can vary
 				int maxRowSize = vv.size();//should be fixed
@@ -483,11 +484,11 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
 			else//[rowY][columnX]
 			{
-				std::ostringstream oss;
 				oss << "[rY][cX]" << std::endl;
 				int maxColumnSize = vv.size();//should be fixed
 				int maxRowSize = vv[0].size();//can vary
@@ -525,16 +526,18 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
+			return oss.str();
 		}
-		void operator()(const std::deque<std::vector<T>>& vv, bool columnXrowY = true, bool tab = false)
+		std::string operator()(const std::deque<std::vector<T>>& vv, bool columnXrowY = true, bool tab = false)
 		{
+            std::ostringstream oss;
 			if (vv.empty())
-				return;
+				return oss.str();
 			if (columnXrowY)//[columnX][rowY]
 			{
-				std::ostringstream oss;
 				oss << "[cX][rY]" << std::endl;
 				int maxColumnSize = vv[0].size();//can vary
 				int maxRowSize = vv.size();//should be fixed
@@ -581,11 +584,11 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
 			else//[rowY][columnX]
 			{
-				std::ostringstream oss;
 				oss << "[rY][cX]" << std::endl;
 				int maxColumnSize = vv.size();//should be fixed
 				int maxRowSize = vv[0].size();//can vary
@@ -623,16 +626,18 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
+            return oss.str();
 		}
-		void operator()(const std::vector<std::string>& vv, bool columnXrowY = true, bool tab = false)//no template parameter
+		std::string operator()(const std::vector<std::string>& vv, bool columnXrowY = true, bool tab = false)//no template parameter
 		{
+			std::ostringstream oss;
 			if (vv.empty())
-				return;
+				return oss.str();
 			if (columnXrowY)//[columnX][rowY]
 			{
-				std::ostringstream oss;
 				oss << "[cX][rY]" << std::endl;
 				int maxColumnSize = vv[0].size();//can vary
 				int maxRowSize = vv.size();//should be fixed
@@ -679,11 +684,11 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
 			else//[rowY][columnX]
 			{
-				std::ostringstream oss;
 				oss << "[rY][cX]" << std::endl;
 				int maxColumnSize = vv.size();//should be fixed
 				int maxRowSize = vv[0].size();//can vary
@@ -721,10 +726,12 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
+			return oss.str();
 		}
-		void operator()(const std::vector<std::stack<T>>& vs, bool columnXrowY = true, bool tab = false, bool topToBottom = false)
+		std::string operator()(const std::vector<std::stack<T>>& vs, bool columnXrowY = true, bool tab = false, bool topToBottom = false)
 		{
 			std::vector<std::vector<int>> copy;
 			int N = vs.size();
@@ -745,9 +752,9 @@ namespace Debug
 					s.pop();
 				}
 			}
-			this->operator()(copy, columnXrowY, tab);
+			return this->operator()(copy, columnXrowY, tab);
 		}
-		void operator()(const std::unordered_map<T, std::unordered_map<T, U>>& m)
+		std::string operator()(const std::unordered_map<T, std::unordered_map<T, U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -764,9 +771,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::unordered_map<T, std::map<T, U>>& m)
+		std::string operator()(const std::unordered_map<T, std::map<T, U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -783,9 +792,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::unordered_map<T, std::unordered_set<U>>& m)
+		std::string operator()(const std::unordered_map<T, std::unordered_set<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -802,9 +813,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::unordered_map<T, std::multiset<U>>& m)
+		std::string operator()(const std::unordered_map<T, std::multiset<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -821,9 +834,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::unordered_map<T, std::set<U>>& m)
+		std::string operator()(const std::unordered_map<T, std::set<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -840,9 +855,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::unordered_map<T, std::stack<U>>& m, bool topToBottom = false)
+		std::string operator()(const std::unordered_map<T, std::stack<U>>& m, bool topToBottom = false)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -866,9 +883,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::map<T, std::map<T, U>>& m)
+		std::string operator()(const std::map<T, std::map<T, U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -885,9 +904,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::map<T, std::unordered_map<T, U>>& m)
+		std::string operator()(const std::map<T, std::unordered_map<T, U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -904,9 +925,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::map<T, std::vector<U>>& m)
+		std::string operator()(const std::map<T, std::vector<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -923,9 +946,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::map<T, std::unordered_set<U>>& m)
+		std::string operator()(const std::map<T, std::unordered_set<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -942,9 +967,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::map<T, std::set<U>>& m)
+		std::string operator()(const std::map<T, std::set<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -961,9 +988,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::unordered_map<T, std::vector<U>>& m)
+		std::string operator()(const std::unordered_map<T, std::vector<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -980,16 +1009,18 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
 
-		void operator()(const std::vector<std::vector<std::pair<T, U>>>& vv, bool columnXrowY = true, bool tab = false)
+		std::string operator()(const std::vector<std::vector<std::pair<T, U>>>& vv, bool columnXrowY = true, bool tab = false)
 		{
+            std::ostringstream oss;
 			if (vv.empty())
-				return;
+				return oss.str();
 			if (columnXrowY)//[columnX][rowY]
 			{
-				std::ostringstream oss;
 				oss << "[cX][rY]" << std::endl;
 				int maxColumnSize = vv[0].size();//can vary
 				int maxRowSize = vv.size();//should be fixed
@@ -1036,11 +1067,11 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
 			else//[rowY][columnX]
 			{
-				std::ostringstream oss;
 				oss << "[rY][cX]" << std::endl;
 				int maxColumnSize = vv.size();//should be fixed
 				int maxRowSize = vv[0].size();//can vary
@@ -1080,10 +1111,12 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
+			return oss.str();
 		}
-		void operator()(const std::vector<std::pair<std::pair<T, T>, std::vector<U>>>& vv)
+		std::string operator()(const std::vector<std::pair<std::pair<T, T>, std::vector<U>>>& vv)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -1100,9 +1133,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::vector<std::pair<T, std::vector<U>>>& vv)
+		std::string operator()(const std::vector<std::pair<T, std::vector<U>>>& vv)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -1119,9 +1154,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::vector<std::pair<T, std::unordered_set<U>>>& vv)
+		std::string operator()(const std::vector<std::pair<T, std::unordered_set<U>>>& vv)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -1138,9 +1175,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::vector<std::pair<T, std::unordered_map<T, U>>>& vv)
+		std::string operator()(const std::vector<std::pair<T, std::unordered_map<T, U>>>& vv)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -1157,9 +1196,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::vector<std::pair<T, std::set<U>>>& vv)
+		std::string operator()(const std::vector<std::pair<T, std::set<U>>>& vv)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -1176,9 +1217,11 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
-		void operator()(const std::vector<std::pair<T, std::map<T, U>>>& vv)
+		std::string operator()(const std::vector<std::pair<T, std::map<T, U>>>& vv)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -1195,7 +1238,9 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
 	};
 
@@ -1376,8 +1421,10 @@ namespace Debug
 	template<class U>
 	class Print2D<QString, U>
 	{
+        bool mPrintInline = true;
 	public:
-		void operator()(const std::map<QString, QVector<U>>& m)
+        explicit Print2D(bool printInline = true): mPrintInline(printInline) {}
+		std::string operator()(const std::map<QString, QVector<U>>& m)
 		{
 			std::ostringstream oss;
 			int count = 0;
@@ -1394,7 +1441,9 @@ namespace Debug
 				}
 				oss << std::endl;
 			}
-			std::cout << oss.str() << std::endl;
+			if (mPrintInline)
+			    std::cout << oss.str() << std::endl;
+			return oss.str();
 		}
 	};
 #endif
@@ -1403,17 +1452,18 @@ namespace Debug
 	template<class T>
 	class Print3D
 	{
+        bool mPrintInline = true;
 	public:
-		Print3D() {}
+		explicit Print3D(bool printInline = true): mPrintInline(printInline) {}
 		~Print3D() {}
 
 		void operator()(const std::vector<std::vector<std::vector<T>>>& vvv, bool colXrowYdepthZ = true)
 		{
+			std::ostringstream oss;
 			if (vvv.empty())
-				return;
+				return oss.str();
 			if (colXrowYdepthZ)
 			{
-				std::ostringstream oss;
 				oss << "[cX][rY][dZ]" << std::endl;
 				int maxColumnSize = vvv[0].size();//can vary
 				int maxRowSize = vvv.size();//should be fixed
@@ -1470,11 +1520,11 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
 			else//rowYcolXdepthZ
 			{
-				std::ostringstream oss;
 				oss << "[rY][cX][dZ]" << std::endl;
 				int maxColumnSize = vvv.size();//should be fixed
 				int maxRowSize = vvv[0].size();//can vary
@@ -1532,16 +1582,18 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
+			return oss.str();
 		}
-		void operator()(const std::vector<std::vector<std::vector<std::pair<T, T>>>>& vvv, bool colXrowYdepthZ = true)
+		std::string operator()(const std::vector<std::vector<std::vector<std::pair<T, T>>>>& vvv, bool colXrowYdepthZ = true)
 		{
+			std::ostringstream oss;
 			if (vvv.empty())
-				return;
+				return oss.str();
 			if (colXrowYdepthZ)
 			{
-				std::ostringstream oss;
 				oss << "[cX][rY][dZ]" << std::endl;
 				int maxColumnSize = vvv[0].size();//can vary
 				int maxRowSize = vvv.size();//should be fixed
@@ -1598,11 +1650,11 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
 			else//rowYcolXdepthZ
 			{
-				std::ostringstream oss;
 				oss << "[rY][cX][dZ]" << std::endl;
 				int maxColumnSize = vvv.size();//should be fixed
 				int maxRowSize = vvv[0].size();//can vary
@@ -1660,8 +1712,10 @@ namespace Debug
 					}
 					oss << std::endl;
 				}
-				std::cout << oss.str() << std::endl;
+				if (mPrintInline)
+				    std::cout << oss.str() << std::endl;
 			}
+			return oss.str();
 		}
 	};
 
@@ -2880,6 +2934,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
