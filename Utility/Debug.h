@@ -117,33 +117,177 @@
         } \
     } while (0)
 
-#define DEBUG_READ(filename, buf, bufSize) \
-    do{ \
-        FILE *__file = fopen(filename, "r"); \
-        if (__file == NULL) { \
-            char __err[256]; \
-            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_READ", filename); \
-            perror(__err); \
+#define DEBUG_READ_BUF(filename, buf, bufSize, startLine, lineCount) \
+    do { \
+        const char* __rbr_fn = (filename); \
+        char* __rbr_buf = (buf); \
+        size_t __rbr_cap = (size_t)(bufSize); \
+        long long __rbr_need_lines = (long long)(lineCount) <= 0 ? 0 \
+                                 : (long long)(lineCount); \
+        long long __rbr_start = (long long)(startLine); \
+        if (__rbr_start < 1) __rbr_start = 1; \
+        FILE* __rbr_f = fopen(__rbr_fn, "r"); \
+        if (!__rbr_f) { \
+            perror("READ_BUF: fopen"); \
         } else { \
-            if (fgets(buf, bufSize, __file) != NULL) { \
-                size_t readLen = strlen(buf); \
-                if (readLen > 0 && buf[readLen-1] == '\n') { \
-                    buf[readLen-1] = '\0'; \
+            if (__rbr_cap > 0) __rbr_buf[0] = '\0'; \
+            size_t __rbr_written = 0; \
+            size_t __rbr_rem = (__rbr_cap > 0 ? __rbr_cap - 1 : 0); \
+            int __rbr_overflow = 0; \
+            int __rbr_abort = 0; \
+            char __rbr_tmp[4096]; \
+            /* Skip lines up to startLine-1, handling long lines that span chunks */ \
+            if (__rbr_start > 1) { \
+                long long __rbr_skip_needed = __rbr_start - 1; \
+                long long __rbr_skipped = 0; \
+                while (__rbr_skipped < __rbr_skip_needed) { \
+                    if (!fgets(__rbr_tmp, sizeof(__rbr_tmp), __rbr_f)) { \
+                        /* Reached EOF before startLine */ \
+                        __rbr_abort = 1; \
+                        break; \
+                    } \
+                    size_t __tlen = strlen(__rbr_tmp); \
+                    if (__tlen && __rbr_tmp[__tlen - 1] == '\n') { \
+                        __rbr_skipped++; \
+                    } \
                 } \
             } \
-            else { \
-                char __err[256]; \
-                snprintf(__err, sizeof(__err), "Error reading %s in DEBUG_READ", filename); \
-                perror(__err); \
+            if (!__rbr_abort) { \
+                size_t __rbr_lines_read = 0; \
+                for (;;) { \
+                    if (__rbr_need_lines > 0 && \
+                        __rbr_lines_read >= (size_t)__rbr_need_lines) break; \
+                    if (!fgets(__rbr_tmp, sizeof(__rbr_tmp), __rbr_f)) break; \
+                    size_t __chunk = strlen(__rbr_tmp); \
+                    if (__rbr_rem < __chunk) { \
+                        /* Not enough room: copy what fits, mark overflow, and stop */ \
+                        if (__rbr_rem > 0) { \
+                            memcpy(__rbr_buf + __rbr_written, __rbr_tmp, __rbr_rem); \
+                            __rbr_written += __rbr_rem; \
+                            __rbr_rem = 0; \
+                        } \
+                        __rbr_overflow = 1; \
+                        /* If we split a logical line, consume to newline to count it */ \
+                        if (__chunk && __rbr_tmp[__chunk - 1] != '\n') { \
+                            int __c; \
+                            while ((__c = fgetc(__rbr_f)) != EOF && __c != '\n') {} \
+                            if (__c == '\n') __rbr_lines_read++; \
+                        } else { \
+                            __rbr_lines_read++; \
+                        } \
+                        break; \
+                    } else { \
+                        memcpy(__rbr_buf + __rbr_written, __rbr_tmp, __chunk); \
+                        __rbr_written += __chunk; \
+                        __rbr_rem -= __chunk; \
+                        if (__chunk && __rbr_tmp[__chunk - 1] == '\n') \
+                            __rbr_lines_read++; \
+                        if (__rbr_rem == 0) { \
+                            /* Buffer full: if we still needed more, flag overflow */ \
+                            if ((__rbr_need_lines == 0) || \
+                                (__rbr_need_lines > 0 && \
+                                 __rbr_lines_read < (size_t)__rbr_need_lines)) { \
+                                int __peek = fgetc(__rbr_f); \
+                                if (__peek != EOF) __rbr_overflow = 1; \
+                            } \
+                            break; \
+                        } \
+                    } \
+                } \
             } \
-            fclose(__file); \
+            if (__rbr_cap > 0) \
+                __rbr_buf[(__rbr_written < __rbr_cap) ? __rbr_written : (__rbr_cap - 1)] = '\0'; \
+            if (__rbr_overflow) { \
+                if (__rbr_need_lines == 0) { \
+                    fprintf(stderr, \
+                        "READ_BUF: buffer too small (%zu bytes) to read from line %lld to EOF in \"%s\".\n", \
+                        __rbr_cap, __rbr_start, __rbr_fn); \
+                } else { \
+                    fprintf(stderr, \
+                        "READ_BUF: buffer too small (%zu bytes) to read %lld line(s) starting at line %lld from \"%s\".\n", \
+                        __rbr_cap, (long long)__rbr_need_lines, __rbr_start, __rbr_fn); \
+                } \
+            } \
+            fclose(__rbr_f); \
         } \
-    } while(0)
+    } while (0)
 
-#define DEBUG_READ_BUF_SIZE 4096
-#define DEBUG_READ_BUF(filename) \
-    char DEBUG_READ_BUF_[DEBUG_READ_BUF_SIZE] = {0}; \
-    DEBUG_READ(filename, DEBUG_READ_BUF_, DEBUG_READ_BUF_SIZE)
+#define DEBUG_READ_BUF_1(filename) \
+    char DEBUG_READ_BUF_[4096] = {0}; \
+    DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), 1, 1)
+
+#define DEBUG_READ_BUF_RANGE(filename, startLine, lineCount) \
+    char DEBUG_READ_BUF_[4096] = {0}; \
+    DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), startLine, lineCount)
+
+#define DEBUG_READ_BUF_EOF(filename, bufSize) \
+    char DEBUG_READ_BUF_[bufSize] = {0}; \
+    DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), 1, 0)
+
+#define DEBUG_READ_BUF_ALLOC(filename, outPtr, outLen, startLine, lineCount) \
+    do { \
+        const char* __rba_fn = (filename); \
+        long long __rba_need_lines = (long long)(lineCount) <= 0 ? 0 \
+                                 : (long long)(lineCount); \
+        long long __rba_start = (long long)(startLine); \
+        if (__rba_start < 1) __rba_start = 1; \
+        char* __rba_data = NULL; \
+        size_t __rba_len = 0, __rba_cap = 0; \
+        FILE* __rba_f = fopen(__rba_fn, "r"); \
+        if (!__rba_f) { \
+            perror("READ_BUF_ALLOC: fopen"); \
+            (outPtr) = NULL; \
+            (outLen) = 0; \
+        } else { \
+            char __rba_tmp[4096]; \
+            int __rba_abort = 0; \
+            /* Skip to startLine */ \
+            if (__rba_start > 1) { \
+                long long __rba_skip_needed = __rba_start - 1; \
+                long long __rba_skipped = 0; \
+                while (__rba_skipped < __rba_skip_needed) { \
+                    if (!fgets(__rba_tmp, sizeof(__rba_tmp), __rba_f)) { \
+                        __rba_abort = 1; \
+                        break; \
+                    } \
+                    size_t __tlen = strlen(__rba_tmp); \
+                    if (__tlen && __rba_tmp[__tlen - 1] == '\n') __rba_skipped++; \
+                } \
+            } \
+            if (!__rba_abort) { \
+                size_t __rba_lines = 0; \
+                for (;;) { \
+                    if (__rba_need_lines > 0 && \
+                        __rba_lines >= (size_t)__rba_need_lines) break; \
+                    if (!fgets(__rba_tmp, sizeof(__rba_tmp), __rba_f)) break; \
+                    size_t __chunk = strlen(__rba_tmp); \
+                    /* ensure capacity for new data + NUL */ \
+                    if (__rba_len + __chunk + 1 > __rba_cap) { \
+                        size_t __newcap = __rba_cap ? __rba_cap : 4096; \
+                        while (__newcap < __rba_len + __chunk + 1) __newcap <<= 1; \
+                        char* __newptr = (char*)realloc(__rba_data, __newcap); \
+                        if (!__newptr) { \
+                            perror("READ_BUF_ALLOC: realloc"); \
+                            free(__rba_data); \
+                            __rba_data = NULL; \
+                            __rba_len = 0; \
+                            __rba_cap = 0; \
+                            break; \
+                        } \
+                        __rba_data = __newptr; \
+                        __rba_cap = __newcap; \
+                    } \
+                    memcpy(__rba_data + __rba_len, __rba_tmp, __chunk); \
+                    __rba_len += __chunk; \
+                    if (__chunk && __rba_tmp[__chunk - 1] == '\n') __rba_lines++; \
+                } \
+                if (__rba_data) __rba_data[__rba_len] = '\0'; \
+            } \
+            (outPtr) = __rba_data; \
+            (outLen) = __rba_len; \
+            fclose(__rba_f); \
+        } \
+    } while (0)
 
 #define DEBUG_RENAME_APPEND(file, newApn) \
     do { \
@@ -2934,6 +3078,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
