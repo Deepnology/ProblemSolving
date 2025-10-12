@@ -67,55 +67,105 @@
         } \
     } while(0)
 
-#define DEBUG_FILE_CONCAT(out_path, ...) \
-    do { \
-        const char* const __dfc_files[] = { __VA_ARGS__ }; \
-        const size_t __dfc_count = sizeof(__dfc_files) / sizeof(__dfc_files[0]); \
-        FILE* __dfc_out = fopen((out_path), "wb"); \
-        if (!__dfc_out) { \
-            char __err[256]; \
-            snprintf(__err, sizeof(__err), "Error opening %s in DEBUG_FILE_CONCAT", (out_path)); \
-            perror(__err); \
-        } else { \
-            unsigned char __dfc_buf[64 * 1024]; \
-            for (size_t __i = 0; __i < __dfc_count; ++__i) { \
-                const char* __src = __dfc_files[__i]; \
-                if (!__src || !*__src || strcmp(__src, (out_path)) == 0) continue; \
-                FILE* __dfc_in = fopen(__src, "rb"); \
-                if (!__dfc_in) { \
-                    char __err2[256]; \
-                    snprintf(__err2, sizeof(__err2), "Error opening %s in DEBUG_FILE_CONCAT", __src); \
-                    perror(__err2); \
-                    continue; \
-                } \
-                for (;;) { \
-                    size_t __n = fread(__dfc_buf, 1, sizeof(__dfc_buf), __dfc_in); \
-                    if (__n > 0) { \
-                        size_t __off = 0; \
-                        while (__off < __n) { \
-                            size_t __m = fwrite(__dfc_buf + __off, 1, __n - __off, __dfc_out); \
-                            if (__m == 0) { \
-                                perror("DEBUG_FILE_CONCAT: write error"); \
-                                break; \
-                            } \
-                            __off += __m; \
-                        } \
-                    } \
-                    if (feof(__dfc_in)) break; \
-                    if (ferror(__dfc_in)) { \
-                        char __err3[256]; \
-                        snprintf(__err3, sizeof(__err3), "DEBUG_FILE_CONCAT: read error on %s", __src); \
-                        perror(__err3); \
-                        break; \
-                    } \
-                } \
-                fclose(__dfc_in); \
-            } \
-            if (fclose(__dfc_out) != 0) { \
-                perror("DEBUG_FILE_CONCAT: error closing destination"); \
-            } \
-        } \
+#ifdef DEBUG_FILE_CONCAT_HDR_BEGIN
+  #define DFC_WRITE_BEGIN_(stream, src, first_flag) \
+      do { if (!(first_flag)) fputc('\n', (stream)); \
+           fprintf((stream), DEBUG_FILE_CONCAT_HDR_BEGIN, (src)); } while (0)
+#else
+  #define DFC_WRITE_BEGIN_(stream, src, first_flag) \
+      do { (void)(stream); (void)(src); (void)(first_flag); } while (0)
+#endif
+
+#ifdef DEBUG_FILE_CONCAT_HDR_END
+  #define DFC_WRITE_END_(stream, src) \
+      do { fputc('\n', (stream)); \
+           fprintf((stream), DEBUG_FILE_CONCAT_HDR_END, (src)); } while (0)
+#else
+  #define DFC_WRITE_END_(stream, src) \
+      do { (void)(stream); (void)(src); } while (0)
+#endif
+
+#define DEBUG_FILE_CONCAT_FROM_ARRAY_MODE_(out_path_expr, mode_expr, arr_expr, count_expr)     \
+    do {                                                                                       \
+        const char* const* dfc_arr_  = (const char* const*)(arr_expr);                         \
+        size_t             dfc_cnt_  = (size_t)(count_expr);                                   \
+        const char*        dfc_out_  = (out_path_expr);                                        \
+        const char*        dfc_mode_ = (mode_expr);                                            \
+        FILE* dfc_ofp_ = fopen(dfc_out_, dfc_mode_);                                           \
+        if (!dfc_ofp_) {                                                                       \
+            char dfc_err_[256];                                                                \
+            snprintf(dfc_err_, sizeof(dfc_err_),                                               \
+                     "Error opening %s in DEBUG_FILE_CONCAT", dfc_out_);                       \
+            perror(dfc_err_);                                                                  \
+        } else {                                                                               \
+            unsigned char dfc_buf_[64 * 1024];                                                 \
+            int dfc_first_ = 1;                                                                \
+            for (size_t dfc_i_ = 0; dfc_i_ < dfc_cnt_; ++dfc_i_) {                             \
+                const char* dfc_src_ = dfc_arr_ ? dfc_arr_[dfc_i_] : NULL;                     \
+                if (!dfc_src_ || !*dfc_src_ || strcmp(dfc_src_, dfc_out_) == 0) continue;      \
+                FILE* dfc_ifp_ = fopen(dfc_src_, "rb");                                        \
+                if (!dfc_ifp_) {                                                               \
+                    char dfc_err2_[256];                                                       \
+                    snprintf(dfc_err2_, sizeof(dfc_err2_),                                     \
+                             "Error opening %s in DEBUG_FILE_CONCAT", dfc_src_);               \
+                    perror(dfc_err2_);                                                         \
+                    continue;                                                                  \
+                }                                                                              \
+                DFC_WRITE_BEGIN_(dfc_ofp_, dfc_src_, dfc_first_);                              \
+                for (;;) {                                                                     \
+                    size_t dfc_n_ = fread(dfc_buf_, 1, sizeof(dfc_buf_), dfc_ifp_);            \
+                    if (dfc_n_ > 0) {                                                          \
+                        size_t dfc_off_ = 0;                                                   \
+                        while (dfc_off_ < dfc_n_) {                                            \
+                            size_t dfc_m_ = fwrite(dfc_buf_ + dfc_off_, 1,                     \
+                                                   dfc_n_ - dfc_off_, dfc_ofp_);               \
+                            if (dfc_m_ == 0) {                                                 \
+                                perror("DEBUG_FILE_CONCAT: write error");                      \
+                                break;                                                         \
+                            }                                                                  \
+                            dfc_off_ += dfc_m_;                                                \
+                        }                                                                      \
+                    }                                                                          \
+                    if (feof(dfc_ifp_)) break;                                                 \
+                    if (ferror(dfc_ifp_)) {                                                    \
+                        char dfc_err3_[256];                                                   \
+                        snprintf(dfc_err3_, sizeof(dfc_err3_),                                 \
+                                 "DEBUG_FILE_CONCAT: read error on %s", dfc_src_);             \
+                        perror(dfc_err3_);                                                     \
+                        break;                                                                 \
+                    }                                                                          \
+                }                                                                              \
+                fclose(dfc_ifp_);                                                              \
+                DFC_WRITE_END_(dfc_ofp_, dfc_src_);                                            \
+                dfc_first_ = 0;                                                                \
+            }                                                                                  \
+            if (fclose(dfc_ofp_) != 0) {                                                       \
+                perror("DEBUG_FILE_CONCAT: error closing destination");                        \
+            }                                                                                  \
+        }                                                                                      \
     } while (0)
+
+#define DEBUG_FILE_WCONCATF(out_path, ...) \
+    do { \
+        const char* const dfc_va_arr_[] = { __VA_ARGS__ }; \
+        DEBUG_FILE_CONCAT_FROM_ARRAY_MODE_((out_path), "wb", \
+                                           dfc_va_arr_, \
+                                           sizeof(dfc_va_arr_) / sizeof(dfc_va_arr_[0])); \
+    } while (0)
+
+#define DEBUG_FILE_ACONCATF(out_path, ...) \
+    do { \
+        const char* const dfc_va_arr_[] = { __VA_ARGS__ }; \
+        DEBUG_FILE_CONCAT_FROM_ARRAY_MODE_((out_path), "ab", \
+                                           dfc_va_arr_, \
+                                           sizeof(dfc_va_arr_) / sizeof(dfc_va_arr_[0])); \
+    } while (0)
+
+#define DEBUG_FILE_WCONCAT(out_path, filesArr, filesArrSize) \
+    DEBUG_FILE_CONCAT_FROM_ARRAY_MODE_((out_path), "wb", (filesArr), (filesArrSize))
+
+#define DEBUG_FILE_ACONCAT(out_path, filesArr, filesArrSize) \
+    DEBUG_FILE_CONCAT_FROM_ARRAY_MODE_((out_path), "ab", (filesArr), (filesArrSize))
 
 #define DEBUG_READ_BUF(filename, buf, bufSize, startLine, lineCount) \
     do { \
@@ -3078,6 +3128,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
