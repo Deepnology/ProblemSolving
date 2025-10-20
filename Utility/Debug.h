@@ -1651,7 +1651,7 @@ namespace Debug
 		explicit Print3D(bool printInline = true): mPrintInline(printInline) {}
 		~Print3D() {}
 
-		void operator()(const std::vector<std::vector<std::vector<T>>>& vvv, bool colXrowYdepthZ = true)
+		std::string operator()(const std::vector<std::vector<std::vector<T>>>& vvv, bool colXrowYdepthZ = true)
 		{
 			std::ostringstream oss;
 			if (vvv.empty())
@@ -3128,6 +3128,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
