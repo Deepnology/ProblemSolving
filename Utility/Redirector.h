@@ -41,6 +41,12 @@ static const std::filesystem::path kNullDevice = L"NUL";
 static const std::filesystem::path kNullDevice = "/dev/null";
 #endif
 
+#if defined(_WIN32) || defined(_WIN64)
+using KeyString = std::wstring;
+#else
+using KeyString = std::string;
+#endif
+
 // ---------- Stream mask for std:: streams ----------
 using StreamMask = unsigned;
 constexpr StreamMask CoutBit  = 1u << 0;
@@ -58,14 +64,18 @@ constexpr CStreamMask CStderrBit = 1u << 1;
 constexpr CStreamMask CAllBits   = CStdoutBit | CStderrBit;
 
 // ---------- Path normalization (shared sink for different spellings) ----------
-static inline std::wstring norm_key(const std::filesystem::path& p) {
+static inline KeyString norm_key(const std::filesystem::path& p) {
     namespace fs = std::filesystem;
     std::error_code ec;
     fs::path q = fs::weakly_canonical(p, ec);
     if (ec || q.empty()) { q = fs::absolute(p, ec); if (ec || q.empty()) q = p; }
-    std::wstring k = q.make_preferred().native();
+    q.make_preferred();
+
 #if defined(_WIN32) || defined(_WIN64)
+    KeyString k = q.native();
     std::transform(k.begin(), k.end(), k.begin(), [](wchar_t c){ return std::towlower(c); });
+#else
+    KeyString k = q.native();
 #endif
     return k;
 }
@@ -379,7 +389,7 @@ public:
                     const std::filesystem::path& filename,
                     bool truncate,
                     QtMask level_mask,
-                    QtFormat fmt = {}) {
+                    QtFormat fmt = { false, false, false, true }) {
         std::lock_guard<std::mutex> cfg_lock(reconfig_mu_);
         ensure_qt_installed_();
         auto sink = get_or_make_sink_nolock_(mode, filename, truncate);
@@ -402,7 +412,7 @@ public:
                         const std::filesystem::path& filename,
                         bool truncate,
                         QtMask level_mask,
-                        QtFormat fmt = {}) {
+                        QtFormat fmt = { false, false, false, true }) {
         removeQtRoutes(level_mask);
         return addQtRoute(mode, filename, truncate, level_mask, fmt);
     }
@@ -413,7 +423,7 @@ public:
                     bool truncate,
                     bool also_to_stderr,
                     QtMask level_mask,
-                    QtFormat fmt = {}) {
+                    QtFormat fmt = { false, false, false, true }) {
         setQtForwardToStderr(also_to_stderr);
         return replaceQtRoute(mode, filename, truncate, level_mask, fmt);
     }
@@ -541,7 +551,7 @@ public:
 private:
     // ========== DEADLOCK-SAFE HELPERS (NO LOCKING HERE) ==========
     std::shared_ptr<std::mutex>
-    get_or_create_path_mutex_nolock_(const std::wstring& key, const std::filesystem::path& filename) {
+    get_or_create_path_mutex_nolock_(const KeyString& key, const std::filesystem::path& filename) {
         auto it = path_mutexes_.find(key);
         if (it != path_mutexes_.end()) {
             if (auto sp = it->second.lock()) return sp;
@@ -910,8 +920,8 @@ private:
 
     // Sink registry
     std::shared_ptr<SharedSink> null_sink_;
-    std::unordered_map<std::wstring, std::shared_ptr<SharedSink>> file_sinks_;
-    std::unordered_map<std::wstring, std::weak_ptr<std::mutex>>   path_mutexes_; // per-file intra-process mutexes
+    std::unordered_map<KeyString, std::shared_ptr<SharedSink>> file_sinks_;
+    std::unordered_map<KeyString, std::weak_ptr<std::mutex>>   path_mutexes_; // per-file intra-process mutexes
 
     // C stdio routers
     CRouter cstdout_;
