@@ -266,6 +266,10 @@
     char DEBUG_READ_BUF_[4096] = {0}; \
     DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), 1, 1)
 
+#define DEBUG_READ_BUF_N(filename, lineCount) \
+    char DEBUG_READ_BUF_[4096] = {0}; \
+    DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), 1, lineCount)
+
 #define DEBUG_READ_BUF_RANGE(filename, startLine, lineCount) \
     char DEBUG_READ_BUF_[4096] = {0}; \
     DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), startLine, lineCount)
@@ -492,6 +496,8 @@
 #include <unordered_map>
 #include <map>
 #include <set>
+#undef min
+#undef max
 #include <algorithm>
 #include <functional>
 #include <numeric>
@@ -523,22 +529,23 @@
 #define stringify(name)#name
 namespace Debug
 {
-	class RedirectCout
+	template<auto& stdc>
+	class Redirect
 	{
 		inline static std::once_flag m_onceFlag;
-		inline static std::streambuf* m_coutBuf = nullptr;
-		inline static const std::ofstream m_nullStream = std::ofstream("/dev/null");
+		inline static std::streambuf* m_stdcBuf = nullptr;
+		inline static std::ofstream m_nullStream = std::ofstream("/dev/null");
 		inline static std::ofstream m_ofstream;
 		static void backup()
 		{
-			if (!m_coutBuf)
-				m_coutBuf = std::cout.rdbuf();
+			if (!m_stdcBuf)
+				m_stdcBuf = stdc.rdbuf();
 		}
 	public:
-		static void toCout()
+		static void toStdC()
 		{
-			if (m_coutBuf && m_coutBuf != std::cout.rdbuf())
-				std::cout.rdbuf(m_coutBuf);
+			if (m_stdcBuf && m_stdcBuf != stdc.rdbuf())
+				stdc.rdbuf(m_stdcBuf);
 		}
 		static void toFile(const std::string& file)
 		{
@@ -546,12 +553,12 @@ namespace Debug
 			m_ofstream.clear();
 			m_ofstream.close();
 			m_ofstream.open(file);
-			std::cout.rdbuf(m_ofstream.rdbuf());
+			stdc.rdbuf(m_ofstream.rdbuf());
 		}
 		static void toNullSink()
 		{
 			std::call_once(m_onceFlag, backup);
-			std::cout.rdbuf(m_nullStream.rdbuf());
+			stdc.rdbuf(m_nullStream.rdbuf());
 		}
 	};
 	typedef std::map<int, const char*> EnumNameMap;
@@ -3128,6 +3135,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
