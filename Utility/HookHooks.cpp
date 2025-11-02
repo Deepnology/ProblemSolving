@@ -1,308 +1,448 @@
-// IMPORTANT:
-// 1) Compile *your app code* with /Gh /GH
-// 2) EXCLUDE *this file* from /Gh /GH so the hooks don't instrument themselves.
+// ---------------------------------------------------------
+// UnifiedHookHooks.cpp
+// See header for supported modes.
+// Build hints are at the bottom.
+// ---------------------------------------------------------
 
-#include "HookHooks.h"
-#include <windows.h>
-#include <dbghelp.h>
-#include <string>
-#include <mutex>
+#include "UnifiedHookHooks.h"
+
 #include <atomic>
+#include <mutex>
+#include <string>
 #include <vector>
 #include <cstdio>
-#include <climits>
+#include <cstdint>
+#include <cstddef>
 
-// Link with DbgHelp
+// ------------------------------------------------------------------
+// Common state (OS-agnostic): TLS depth/gates, re-entrancy guard
+// ------------------------------------------------------------------
+struct HH_TraceGate { int baseDepth; int maxRelDepth; };
+
+static thread_local int  hh_t_depth   = 0;
+static thread_local bool hh_t_inHook  = false;
+static thread_local std::vector<HH_TraceGate> hh_t_gates;
+
+// forward decls for platform bits
+static HH_ATTR_NOINSTR void hh_LogEnterPlatform(void* fnAddr);
+static HH_ATTR_NOINSTR void hh_LogExitPlatform();
+
+// Should we emit this entry?
+static HH_ATTR_NOINSTR bool hh_ShouldLog(int currentDepth)
+{
+    if (hh_t_gates.empty()) return false;
+    const HH_TraceGate& g = hh_t_gates.back();
+    const int rel = currentDepth - g.baseDepth;     // first child -> 0
+    return (rel >= 0) && (rel <= g.maxRelDepth);
+}
+
+// Shared top-level enter/exit (called by platform hook shims)
+static HH_ATTR_NOINSTR void hh_LogEnter(void* fnAddr)
+{
+    if (hh_t_inHook) { ++hh_t_depth; return; } // avoid recursion loops
+    hh_t_inHook = true;
+
+    if (hh_ShouldLog(hh_t_depth)) {
+        hh_LogEnterPlatform(fnAddr);  // does the real work + writes a line
+    }
+
+    ++hh_t_depth;   // children indent deeper
+    hh_t_inHook = false;
+}
+static HH_ATTR_NOINSTR void hh_LogExit()
+{
+    if (hh_t_depth > 0) --hh_t_depth;
+}
+
+// Public gating API
+HH_EXTERN_C_BEGIN
+HH_DECL(void) HH_BeginTrace(int maxRelativeDepth) HH_NOEXCEPT
+{
+    if (maxRelativeDepth < 0) maxRelativeDepth = 0;
+    hh_t_gates.push_back(HH_TraceGate{ hh_t_depth, maxRelativeDepth });
+}
+HH_DECL(void) HH_EndTrace(void) HH_NOEXCEPT
+{
+    if (!hh_t_gates.empty()) hh_t_gates.pop_back();
+}
+HH_EXTERN_C_END
+
+// ==================================================================
+//            Platform-specific backends start here
+// ==================================================================
+
+#if HH_OS_WINDOWS
+// =========================== WINDOWS ==============================
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <dbghelp.h>
 #pragma comment(lib, "Dbghelp.lib")
 
-// ------------------------------------------------------------------
-// Config (override via preprocessor or env):
-// ------------------------------------------------------------------
 #ifndef HH_LOG_PATH
 #  define HH_LOG_PATH "trace.log"
 #endif
 #ifndef HH_LOG_FILELINE
-#  define HH_LOG_FILELINE 1      // 1=try to print file:line
+#  define HH_LOG_FILELINE 1     // try to append file:line when PDBs present
 #endif
 
-// ------------------------------------------------------------------
-// Globals
-// ------------------------------------------------------------------
-static HANDLE g_logFile = INVALID_HANDLE_VALUE;
-static std::mutex g_dbghelpMutex;              // DbgHelp is NOT thread-safe
-static std::atomic<bool> g_symInit{false};
-static DWORD g_pid = 0;
+// File sink + DbgHelp serialisation
+static HH_ATTR_NOINSTR HANDLE hh_log = INVALID_HANDLE_VALUE;
+static std::once_flag        hh_openOnce;
+static std::mutex            hh_dbghelpMtx;
+static std::atomic<bool>     hh_symInit{false};
+static DWORD                 hh_pid = 0;
 
-// Per-thread call depth for pretty indent; and re-entrancy guard
-static __declspec(thread) int  t_depth = 0;
-static __declspec(thread) bool t_inHook = false;
-
-// -------- Per-thread gating (region control) --------
-struct TraceGate {
-    int baseDepth;         // depth at HH_BeginTrace time (children start at relDepth 0)
-    int maxRelDepth;       // inclusive cap for relative depth
-};
-static __declspec(thread) std::vector<TraceGate> t_gateStack; // small, grows only on BeginTrace
-
-// ------------------------------------------------------------------
-// Utilities
-// ------------------------------------------------------------------
-static void OpenLogOnce()
+static HH_ATTR_NOINSTR void hh_OpenLogOnce()
 {
-    static std::once_flag once;
-    std::call_once(once, [] {
-        // Path: env HH_LOG_PATH wins, else default
-        char path[MAX_PATH];
+    std::call_once(hh_openOnce, [] {
+        char path[MAX_PATH]{};
         DWORD n = GetEnvironmentVariableA("HH_LOG_PATH", path, MAX_PATH);
         const char* use = (n && n < MAX_PATH) ? path : HH_LOG_PATH;
 
-        // Mode: overwrite each run (truncate). If you ever want append, add an env like HH_LOG_MODE.
-        g_logFile = CreateFileA(
-            use,
-            GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE,
-            nullptr,
-            CREATE_ALWAYS,                 // truncates any existing file
-            FILE_ATTRIBUTE_NORMAL,
-            nullptr);
-
-        g_pid = GetCurrentProcessId();
+        hh_log = CreateFileA(use, GENERIC_WRITE,
+                             FILE_SHARE_READ | FILE_SHARE_WRITE,
+                             nullptr, CREATE_ALWAYS,
+                             FILE_ATTRIBUTE_NORMAL, nullptr);
+        hh_pid = GetCurrentProcessId();
     });
 }
-
-static void WriteRaw(const char* s, size_t len)
+static HH_ATTR_NOINSTR void hh_WriteRaw(const char* s, size_t len)
 {
-    if (g_logFile == INVALID_HANDLE_VALUE) return;
-    DWORD bw = 0;
-    WriteFile(g_logFile, s, (DWORD)len, &bw, nullptr);
+    if (hh_log == INVALID_HANDLE_VALUE) return;
+    DWORD bw=0; WriteFile(hh_log, s, (DWORD)len, &bw, nullptr);
 }
-
-static void InitSymbolsOnce()
+static HH_ATTR_NOINSTR void hh_InitDbgHelpOnce()
 {
-    if (g_symInit.load(std::memory_order_acquire)) return;
-
-    std::scoped_lock lk(g_dbghelpMutex);
-    if (g_symInit.load(std::memory_order_relaxed)) return;
-
+    if (hh_symInit.load(std::memory_order_acquire)) return;
+    std::scoped_lock lk(hh_dbghelpMtx);
+    if (hh_symInit.load(std::memory_order_relaxed)) return;
     SymSetOptions(SYMOPT_UNDNAME | SYMOPT_LOAD_LINES | SYMOPT_DEFERRED_LOADS);
     (void)SymInitialize(GetCurrentProcess(), nullptr, TRUE);
-    g_symInit.store(true, std::memory_order_release);
+    hh_symInit.store(true, std::memory_order_release);
 }
 
-struct Resolved
-{
-    std::string module;
-    std::string decorated;
-    std::string signature;   // undecorated, UNDNAME_COMPLETE when possible
-    DWORD64     displacement = 0;
+struct HH_ResolvedW {
+    std::string module, decorated, signature;
+    DWORD64 disp = 0;
 #if HH_LOG_FILELINE
-    std::string file;
-    DWORD       line = 0;
+    std::string file; DWORD line = 0;
 #endif
 };
-
-// Best effort demangle + module name + line
-static Resolved ResolveAddr(DWORD_PTR ip /* an address inside the current function */)
+static HH_ATTR_NOINSTR HH_ResolvedW hh_ResolveW(void* fn)
 {
-    Resolved r;
+    HH_ResolvedW R;
+    std::scoped_lock lk(hh_dbghelpMtx);
 
-    // serialize all DbgHelp calls
-    std::scoped_lock lk(g_dbghelpMutex);
-
-    // 1) symbol
-    constexpr DWORD kMaxName = 2048;
-    char symbuf[sizeof(SYMBOL_INFO) + kMaxName];
+    constexpr DWORD MAXN = 2048;
+    char symbuf[sizeof(SYMBOL_INFO) + MAXN];
     auto* si = reinterpret_cast<PSYMBOL_INFO>(symbuf);
     si->SizeOfStruct = sizeof(SYMBOL_INFO);
-    si->MaxNameLen = kMaxName;
+    si->MaxNameLen   = MAXN;
 
-    if (SymFromAddr(GetCurrentProcess(), (DWORD64)ip, &r.displacement, si)) {
-        r.decorated.assign(si->Name, si->NameLen);
-
-        // undecorate to full signature if possible
-        char undec[kMaxName];
-        if (UnDecorateSymbolName(si->Name, undec, kMaxName, UNDNAME_COMPLETE)) {
-            r.signature = undec;
-        } else {
-            r.signature = r.decorated; // fallback
-        }
+    DWORD64 disp=0;
+    if (SymFromAddr(GetCurrentProcess(), (DWORD64)fn, &disp, si)) {
+        R.decorated.assign(si->Name, si->NameLen);
+        R.disp = disp;
+        char undec[MAXN];
+        if (UnDecorateSymbolName(si->Name, undec, MAXN, UNDNAME_COMPLETE))
+            R.signature = undec;
+        else
+            R.signature = R.decorated;
     } else {
-        char tmp[64];
-        sprintf_s(tmp, "0x%p", (void*)ip);
-        r.decorated = tmp;
-        r.signature = tmp;
+        char tmp[32]; _snprintf_s(tmp, sizeof tmp, _TRUNCATE, "0x%p", fn);
+        R.decorated = tmp; R.signature = tmp;
     }
 
-    // 2) module
-    IMAGEHLP_MODULE64 mi{};
-    mi.SizeOfStruct = sizeof(mi);
-    if (SymGetModuleInfo64(GetCurrentProcess(), (DWORD64)ip, &mi) && mi.ImageName) {
-        // shorten to just file name
+    IMAGEHLP_MODULE64 mi{}; mi.SizeOfStruct = sizeof mi;
+    if (SymGetModuleInfo64(GetCurrentProcess(), (DWORD64)fn, &mi) && mi.ImageName) {
         const char* base = mi.ImageName;
-        for (const char* p = mi.ImageName; *p; ++p) {
-            if (*p == '\\' || *p == '/') base = p + 1;
-        }
-        r.module = base;
+        for (const char* p=mi.ImageName; *p; ++p) if (*p=='\\' || *p=='/') base = p+1;
+        R.module = base;
     }
 
 #if HH_LOG_FILELINE
-    // 3) file:line (optional)
-    IMAGEHLP_LINE64 line{};
-    line.SizeOfStruct = sizeof(line);
-    DWORD dwDis = 0;
-    if (SymGetLineFromAddr64(GetCurrentProcess(), (DWORD64)ip, &dwDis, &line)) {
-        if (line.FileName) {
-            const char* base = line.FileName;
-            for (const char* p = line.FileName; *p; ++p) {
-                if (*p == '\\' || *p == '/') base = p + 1;
-            }
-            r.file = base;
-            r.line = line.LineNumber;
-        }
+    IMAGEHLP_LINE64 ln{}; ln.SizeOfStruct = sizeof ln; DWORD d=0;
+    if (SymGetLineFromAddr64(GetCurrentProcess(), (DWORD64)fn, &d, &ln) && ln.FileName) {
+        const char* base = ln.FileName;
+        for (const char* p=ln.FileName; *p; ++p) if (*p=='\\' || *p=='/') base = p+1;
+        R.file = base; R.line = ln.LineNumber;
     }
 #endif
-    return r;
+    return R;
 }
 
-// Decide whether we should log the current entry, given TLS state.
-// NOTE: We always update t_depth in LogEnter/LogExit so the gating math works,
-// but we only emit when at least one gate is active and the relative depth fits.
-static bool ShouldLogThisEntry(/* current absolute depth before increment */ int currentDepth)
+static HH_ATTR_NOINSTR void hh_LogEnterPlatform(void* fnAddr)
 {
-    if (t_gateStack.empty()) return false;
-    const TraceGate& gate = t_gateStack.back();
-    const int rel = currentDepth - gate.baseDepth; // first child => rel = 0
-    return (rel >= 0) && (rel <= gate.maxRelDepth);
-}
+    hh_OpenLogOnce();
+    hh_InitDbgHelpOnce();
 
-// Emit one nicely formatted line
-static void LogEnterInternal(DWORD_PTR ipInsideFunction)
-{
-    OpenLogOnce();
-    InitSymbolsOnce();
+    char buf[4096]; char* out=buf; char* end=buf+sizeof buf;
 
-    char buf[4096];
-    char* out = buf;
-    char* end = buf + sizeof(buf);
-
-    // indent for pretty tree
-    for (int i = 0; i < t_depth && out + 2 < end; ++i) { *out++ = ' '; *out++ = ' '; }
+    // indent
+    for (int i=0;i<hh_t_depth && out+2<end;++i){*out++=' ';*out++=' ';}
 
     // [pid:tid]
-    const DWORD tid = GetCurrentThreadId();
-    int n = _snprintf_s(out, (size_t)(end - out), _TRUNCATE, "[%lu:%lu] ", (unsigned long)g_pid, (unsigned long)tid);
-    out += (n > 0 ? n : 0);
+    DWORD tid = GetCurrentThreadId();
+    int n = _snprintf_s(out, end-out, _TRUNCATE, "[%lu:%lu] ",
+                        (unsigned long)hh_pid, (unsigned long)tid);
+    out += (n>0?n:0);
 
-    // Resolve
-    Resolved R = ResolveAddr(ipInsideFunction);
+    HH_ResolvedW R = hh_ResolveW(fnAddr);
 
-    // module!ShortName+disp — FullSignature
     if (!R.module.empty()) {
-        n = _snprintf_s(out, (size_t)(end - out), _TRUNCATE, "%s!", R.module.c_str());
-        out += (n > 0 ? n : 0);
+        n = _snprintf_s(out, end-out, _TRUNCATE, "%s!", R.module.c_str());
+        out += (n>0?n:0);
     }
 
-    // Try to get a short "Class::Func" for the left side
-    char shortName[2048];
+    // short name
+    char shortN[2048];
     if (!R.decorated.empty() &&
-        UnDecorateSymbolName(R.decorated.c_str(), shortName, (DWORD)sizeof(shortName), UNDNAME_NAME_ONLY)) {
-        n = _snprintf_s(out, (size_t)(end - out), _TRUNCATE, "%s", shortName);
-        out += (n > 0 ? n : 0);
-    } else {
-        n = _snprintf_s(out, (size_t)(end - out), _TRUNCATE, "%s", R.decorated.c_str());
-        out += (n > 0 ? n : 0);
-    }
+        UnDecorateSymbolName(R.decorated.c_str(), shortN, (DWORD)sizeof shortN, UNDNAME_NAME_ONLY))
+        n = _snprintf_s(out, end-out, _TRUNCATE, "%s", shortN);
+    else
+        n = _snprintf_s(out, end-out, _TRUNCATE, "%s", R.decorated.c_str());
+    out += (n>0?n:0);
 
-    if (R.displacement) {
-        n = _snprintf_s(out, (size_t)(end - out), _TRUNCATE, "+0x%llx", (unsigned long long)R.displacement);
-        out += (n > 0 ? n : 0);
+    if (R.disp) {
+        n = _snprintf_s(out, end-out, _TRUNCATE, "+0x%llx", (unsigned long long)R.disp);
+        out += (n>0?n:0);
     }
 
     if (!R.signature.empty()) {
-        n = _snprintf_s(out, (size_t)(end - out), _TRUNCATE, " — %s", R.signature.c_str());
-        out += (n > 0 ? n : 0);
+        n = _snprintf_s(out, end-out, _TRUNCATE, " — %s", R.signature.c_str());
+        out += (n>0?n:0);
     }
 
 #if HH_LOG_FILELINE
     if (!R.file.empty()) {
-        n = _snprintf_s(out, (size_t)(end - out), _TRUNCATE, "  @ %s:%lu", R.file.c_str(), (unsigned long)R.line);
-        out += (n > 0 ? n : 0);
+        n = _snprintf_s(out, end-out, _TRUNCATE, "  @ %s:%lu",
+                        R.file.c_str(), (unsigned long)R.line);
+        out += (n>0?n:0);
     }
 #endif
 
-    if (out + 1 < end) { *out++ = '\n'; }
-
-    WriteRaw(buf, (size_t)(out - buf));
+    if (out+1<end) *out++='\n';
+    hh_WriteRaw(buf, (size_t)(out-buf));
 }
+static HH_ATTR_NOINSTR void hh_LogExitPlatform(){ /* nothing extra */ }
 
-static void LogEnter(DWORD_PTR ipInsideFunction)
-{
-    // prevent recursion if logging calls trigger instrumentation paths
-    if (t_inHook) { ++t_depth; return; }
-    t_inHook = true;
+// ----- Windows instrumentation entry points -----
+// Windows x64 clang-cl OR Linux-like path on Windows (clang-cl):
+#if (HH_OS_WINDOWS) && defined(__clang__)
+HH_EXTERN_C_BEGIN
+HH_DECL(void) __cyg_profile_func_enter(void* this_fn, void* /*call_site*/) HH_NOEXCEPT
+{ hh_LogEnter(this_fn); }
+HH_DECL(void) __cyg_profile_func_exit (void* /*this_fn*/, void* /*call_site*/) HH_NOEXCEPT
+{ hh_LogExit(); }
+HH_EXTERN_C_END
+#endif
 
-    // Only emit when a gate is active *and* the relative depth fits
-    if (ShouldLogThisEntry(/* currentDepth */ t_depth)) {
-        LogEnterInternal(ipInsideFunction);
-    }
-
-    // We increment absolute depth after deciding whether to print *this* frame.
-    // Children will see a greater t_depth, which matches our gating math.
-    ++t_depth;
-
-    t_inHook = false;
-}
-
-static void LogExit()
-{
-    if (t_depth > 0) --t_depth;
-}
-
-// ------------------------------------------------------------------
-// Naked hooks (stack math notes below)
-// ------------------------------------------------------------------
-extern "C" __declspec(naked) void __cdecl _penter()
+// Windows x86 MSVC: /Gh /GH
+#if (HH_OS_WINDOWS) && defined(_MSC_VER) && !defined(__clang__) && defined(_M_IX86)
+HH_EXTERN_C_BEGIN
+__declspec(naked) void __cdecl _penter()
 {
     __asm {
-        // Save regs & flags. pushad pushes: eax, ecx, edx, ebx, esp, ebp, esi, edi  (32 bytes)
         pushad
-        pushfd                                         // +4  => total saved = 36 bytes
-
-        // The original return address (to instruction after call _penter)
-        // sits at [esp + 36]. That's an address *inside the instrumented function*,
-        // suitable for SymFromAddr().
-        mov   eax, [esp + 36]                          // eax = ip-inside-function
+        pushfd
+        // ip-inside-function at [esp+36]
+        mov   eax, [esp + 36]
         push  eax
-
-        call  LogEnter
-
-        add   esp, 4                                   // pop param
+        call  hh_LogEnter
+        add   esp, 4
         popfd
         popad
         ret
     }
 }
-
-extern "C" __declspec(naked) void __cdecl _pexit()
+__declspec(naked) void __cdecl _pexit()
 {
-    __asm {
-        call LogExit
-        ret
+    __asm { call hh_LogExit ; ret }
+}
+HH_EXTERN_C_END
+#endif
+
+#else // =========================== LINUX ==============================
+
+#include <dlfcn.h>
+#include <cxxabi.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <pthread.h>
+
+#ifndef HH_LOG_PATH
+#  define HH_LOG_PATH "trace.log"
+#endif
+#ifndef HH_LOG_FILELINE
+#  define HH_LOG_FILELINE 1
+#endif
+#ifndef HH_USE_LIBBACKTRACE
+#  define HH_USE_LIBBACKTRACE 0
+#endif
+
+#if HH_LOG_FILELINE && HH_USE_LIBBACKTRACE
+  #include <backtrace.h>
+  static backtrace_state* hh_btState = nullptr;
+  static std::atomic<bool> hh_btInited{false};
+  static HH_ATTR_NOINSTR void hh_btErr(void*, const char* m, int){ if(m) ::write(2,m,strlen(m)); }
+#endif
+
+static int              hh_fd = -1;
+static std::once_flag   hh_openOnce;
+static std::mutex       hh_symMtx;
+
+static HH_ATTR_NOINSTR void hh_OpenLogOnce()
+{
+    std::call_once(hh_openOnce, []{
+        const char* path = ::getenv("HH_LOG_PATH");
+        if (!path || !*path) path = HH_LOG_PATH;
+        hh_fd = ::open(path, O_CREAT|O_TRUNC|O_WRONLY, 0644);
+        if (hh_fd < 0) hh_fd = 2; // stderr fallback
+#if HH_LOG_FILELINE && HH_USE_LIBBACKTRACE
+        hh_btState = backtrace_create_state(nullptr, 1, hh_btErr, nullptr);
+        hh_btInited.store(true, std::memory_order_release);
+#endif
+    });
+}
+static HH_ATTR_NOINSTR void hh_WriteRaw(const char* s, size_t n){ if (hh_fd>=0) (void)::write(hh_fd, s, n); }
+
+static HH_ATTR_NOINSTR std::string hh_Base(const char* p){
+    if(!p) return {};
+    const char* b=p; for (const char* q=p; *q; ++q) if (*q=='/') b=q+1;
+    return std::string(b);
+}
+
+struct HH_ResolvedL {
+    std::string module, shortName, signature;
+    uintptr_t disp = 0;
+#if HH_LOG_FILELINE && HH_USE_LIBBACKTRACE
+    std::string file; unsigned line = 0;
+#endif
+};
+
+#if HH_LOG_FILELINE && HH_USE_LIBBACKTRACE
+struct HH_PcInfo { std::string file; unsigned line=0; std::string func; };
+static HH_ATTR_NOINSTR int hh_btPc(void* data, uintptr_t, const char* f, int ln, const char* fn)
+{
+    auto* o = static_cast<HH_PcInfo*>(data);
+    if (f)  o->file = f;
+    if (ln) o->line = (unsigned)ln;
+    if (fn) o->func = fn;
+    return 0;
+}
+static HH_ATTR_NOINSTR void hh_ResolveFileLine(void* pc, std::string& file, unsigned& line)
+{
+    if (!hh_btInited.load(std::memory_order_acquire) || !hh_btState) return;
+    HH_PcInfo info;
+    backtrace_pcinfo(hh_btState, (uintptr_t)pc, hh_btPc, hh_btErr, &info);
+    if (!info.file.empty()) { file = hh_Base(info.file.c_str()); line = info.line; }
+}
+#endif
+
+static HH_ATTR_NOINSTR HH_ResolvedL hh_ResolveL(void* fn)
+{
+    HH_ResolvedL R;
+    std::scoped_lock lk(hh_symMtx);
+
+    Dl_info di{};
+    if (dladdr(fn, &di) && di.dli_sname) {
+        int st=0;
+        char* dem = abi::__cxa_demangle(di.dli_sname, nullptr, nullptr, &st);
+        if (st==0 && dem) { R.shortName = dem; std::free(dem); }
+        else              { R.shortName = di.dli_sname; }
+        R.signature = R.shortName; // best effort on ELF
+        R.module = hh_Base(di.dli_fname);
+        if (di.dli_saddr) R.disp = (uintptr_t)fn - (uintptr_t)di.dli_saddr;
+    } else {
+        char tmp[32]; std::snprintf(tmp,sizeof tmp,"0x%p",fn);
+        R.shortName = tmp; R.signature = tmp;
     }
+
+#if HH_LOG_FILELINE && HH_USE_LIBBACKTRACE
+    hh_ResolveFileLine(fn, R.file, R.line);
+#endif
+    return R;
 }
 
-// ------------------------------------------------------------------
-// Public gating API
-// ------------------------------------------------------------------
-extern "C" void __cdecl HH_BeginTrace(int maxRelativeDepth)
+static HH_ATTR_NOINSTR void hh_LogEnterPlatform(void* fnAddr)
 {
-    if (maxRelativeDepth <= 0) maxRelativeDepth = 0; // only direct children if <=0 passed
-    // Push a new gate with current absolute depth as the base
-    t_gateStack.push_back(TraceGate{ t_depth, maxRelativeDepth });
-}
+    hh_OpenLogOnce();
 
-extern "C" void __cdecl HH_EndTrace()
-{
-    if (!t_gateStack.empty())
-        t_gateStack.pop_back();
+    char buf[4096]; char* out=buf; char* end=buf+sizeof buf;
+
+    for (int i=0;i<hh_t_depth && out+2<end;++i){*out++=' ';*out++=' ';}
+
+    pid_t pid = getpid();
+    unsigned long tid = (unsigned long)pthread_self();
+    int n = std::snprintf(out, end-out, "[%ld:%lu] ", (long)pid, tid);
+    out += (n>0?n:0);
+
+    HH_ResolvedL R = hh_ResolveL(fnAddr);
+
+    if (!R.module.empty()) {
+        n = std::snprintf(out, end-out, "%s!", R.module.c_str());
+        out += (n>0?n:0);
+    }
+
+    n = std::snprintf(out, end-out, "%s", R.shortName.c_str());
+    out += (n>0?n:0);
+
+    if (R.disp) {
+        n = std::snprintf(out, end-out, "+0x%zx", (size_t)R.disp);
+        out += (n>0?n:0);
+    }
+
+    if (!R.signature.empty()) {
+        n = std::snprintf(out, end-out, " — %s", R.signature.c_str());
+        out += (n>0?n:0);
+    }
+
+#if HH_LOG_FILELINE && HH_USE_LIBBACKTRACE
+    if (!R.file.empty()) {
+        n = std::snprintf(out, end-out, "  @ %s:%u", R.file.c_str(), R.line);
+        out += (n>0?n:0);
+    }
+#endif
+
+    if (out+1<end) *out++='\n';
+    hh_WriteRaw(buf, (size_t)(out-buf));
 }
+static HH_ATTR_NOINSTR void hh_LogExitPlatform(){ /* nothing extra */ }
+
+// Linux/Clang/GCC entry points
+HH_EXTERN_C_BEGIN
+HH_DECL(void) __cyg_profile_func_enter(void* this_fn, void* /*call_site*/) HH_NOEXCEPT
+{ hh_LogEnter(this_fn); }
+HH_DECL(void) __cyg_profile_func_exit (void* /*this_fn*/, void* /*call_site*/) HH_NOEXCEPT
+{ hh_LogExit(); }
+HH_EXTERN_C_END
+
+#endif // OS switch
+
+// ==================================================================
+//                         Build quick reference
+// ==================================================================
+//
+// Linux (GCC/Clang):
+//   g++ -std=c++17 -g -O2 -finstrument-functions \
+//       UnifiedHookHooks.cpp your_sources.cpp \
+//       -ldl -pthread \
+//       -o your_app
+//   # optional file:line (needs libbacktrace):
+//   g++ ... -DHH_USE_LIBBACKTRACE=1 -lbacktrace ...
+//
+// Windows x64 (clang-cl toolset in VS):
+//   Project -> C/C++ -> Command Line -> Additional Options:
+//      /clang:-finstrument-functions
+//   (Add UnifiedHookHooks.* to the project; link DbgHelp.lib)
+//
+// Windows x86 (MSVC cl.exe, NOT clang):
+//   Enable /Gh /GH for *your* code (the TUs you want traced).
+//   EXCLUDE UnifiedHookHooks.cpp from /Gh /GH.
+//   Link DbgHelp.lib.
+//
+// Runtime:
+//   - By default writes to "trace.log"; override with env var HH_LOG_PATH
+//   - Call HH_BeginTrace(INT_MAX) / HH_EndTrace() to scope capture.
+//   - Only functions compiled with the instrumentation flag are recorded.
+//   - Inlining removes functions from traces; mark hot ones noinline if needed.
