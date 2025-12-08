@@ -4,6 +4,7 @@
 #pragma warning (disable : 4996) //fopen
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include <errno.h>
 #define DEBUG_MDUMP(filename, mode, addnl, str) \
     do { \
@@ -432,6 +433,27 @@
             (DEBUG_PUSH_BUF_)[DEBUG_PUSH_BUF_POS_] = '\0'; \
     } while (0)
 
+#define DEBUG_PUSH_BUF_TIME() do { \
+    time_t dbg_now_; \
+    time(&dbg_now_); \
+    char *dbg_ctime_str_ = ctime(&dbg_now_); \
+    if (!dbg_ctime_str_) { \
+        fprintf(stderr, "DEBUG_PUSH_BUF_TIME: ctime() failed\n"); \
+        break; \
+    } \
+    size_t dbg_len_ = strlen(dbg_ctime_str_); \
+    if (dbg_len_ > 0 && dbg_ctime_str_[dbg_len_ - 1] == '\n') { \
+        dbg_len_--; \
+    } \
+    if (DEBUG_PUSH_BUF_POS_ + dbg_len_ < DEBUG_PUSH_BUF_CAP_) { \
+        memcpy(DEBUG_PUSH_BUF_ + DEBUG_PUSH_BUF_POS_, dbg_ctime_str_, dbg_len_); \
+        DEBUG_PUSH_BUF_POS_ += dbg_len_; \
+        DEBUG_PUSH_BUF_[DEBUG_PUSH_BUF_POS_] = '\0'; \
+    } else { \
+        fprintf(stderr, "DEBUG_PUSH_BUF_TIME: Buffer overflow prevented\n"); \
+    } \
+} while (0)
+
 #define DEBUG_PUSH_BUF_CLR() \
     do { \
         memset(DEBUG_PUSH_BUF_, 0, sizeof(DEBUG_PUSH_BUF_CAP_)); \
@@ -525,6 +547,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QDateTime>
+#include <QEvent>
 #endif
 #define stringify(name)#name
 namespace Debug
@@ -2957,6 +2980,15 @@ namespace Debug
 	};
 #if defined(QT_VERSION)
 	template<>
+	class ToStr1D<QEvent::Type>
+	{
+	public:
+		std::string operator()(QEvent::Type evtT)
+		{
+			return QVariant::fromValue(evtT).toString().toStdString();
+		}
+	};
+	template<>
 	class ToStr1D<QMenuBar*>
 	{
 		static std::string toStr(QAction* act, int level)
@@ -3007,6 +3039,35 @@ namespace Debug
 			return oss.str();
 		}
 	};
+	template<>
+	class ToStr1D<QObject*>
+	{
+		static void traverseRecur(QObject* cur, int level, QTextStream & ts)
+		{
+			if (!cur) return;
+			const QString indent(level * 2, QLatin1Char(' '));
+			qDebug().noquote() << indent << cur;
+			ts << indent << cur << Qt::endl;
+			const QObjectList& children = cur->children();
+			for (QObject* child : children)
+				traverseRecur(child, level + 1, ts);
+		}
+	public:
+		std::string operator()(QObject* cur, bool startFromRoot = false)
+		{
+			QString s;
+			QTextStream ts(&s);
+
+			QObject* root = cur;
+			if (startFromRoot)
+			{
+				while (root && root->parent())
+					root = root->parent();
+			}
+			traverseRecur(root, 0, ts);
+			return s.toStdString();
+		}
+    };
 	class QtUtil
 	{
 	public:
@@ -3135,6 +3196,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
