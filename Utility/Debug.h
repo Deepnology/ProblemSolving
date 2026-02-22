@@ -6,6 +6,9 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
+#include <stdint.h>
+#include <inttypes.h>
+
 #define DEBUG_MDUMP(filename, mode, addnl, str) \
     do { \
         FILE *__file = fopen((filename), (mode)); \
@@ -36,6 +39,11 @@
 
 #define DEBUG_ADUMP(filename, str)   DEBUG_MDUMP((filename), "a", 1, (str))
 #define DEBUG_ADUMPF(filename, ...)  DEBUG_MDUMPF((filename), "a", 1, __VA_ARGS__)
+#define FPRINTF_STDERR(...) \
+    do { \
+        DEBUG_MDUMPF("StdErr.txt", "a", 0, __VA_ARGS__); \
+        fprintf(stderr, __VA_ARGS__); \
+	} while(0)
 #define DEBUG_WDUMP(filename, str)   DEBUG_MDUMP((filename), "w", 1, (str))
 #define DEBUG_WDUMPF(filename, ...)  DEBUG_MDUMPF((filename), "w", 1, __VA_ARGS__)
 
@@ -55,6 +63,11 @@
 
 #define DEBUG_VADUMPF(filename, fmt, ap)  DEBUG_VMDUMPF((filename), "a", 1, (fmt), (ap))
 #define DEBUG_VWDUMPF(filename, fmt, ap)  DEBUG_VMDUMPF((filename), "w", 1, (fmt), (ap))
+#define VFPRINTF_STDERR(fmt, ap) \
+    do { \
+        DEBUG_VMDUMPF("StdErr.txt", "a", 0, (fmt), (ap)); \
+        vfprintf(stderr, fmt, ap); \
+	} while(0)
 
 #define DEBUG_CLRDUMP(filename) \
     do { \
@@ -179,7 +192,7 @@
         if (__rbr_start < 1) __rbr_start = 1; \
         FILE* __rbr_f = fopen(__rbr_fn, "r"); \
         if (!__rbr_f) { \
-            perror("READ_BUF: fopen"); \
+            /*perror("READ_BUF: fopen");*/ \
         } else { \
             if (__rbr_cap > 0) __rbr_buf[0] = '\0'; \
             size_t __rbr_written = 0; \
@@ -263,21 +276,26 @@
         } \
     } while (0)
 
-#define DEBUG_READ_BUF_1(filename) \
-    char DEBUG_READ_BUF_[4096] = {0}; \
+#define DEBUG_READ_BUF_1(filename, bufSize) \
+    char DEBUG_READ_BUF_[bufSize] = {0}; \
     DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), 1, 1)
 
-#define DEBUG_READ_BUF_N(filename, lineCount) \
-    char DEBUG_READ_BUF_[4096] = {0}; \
+#define DEBUG_READ_BUF_1_8(filename) DEBUG_READ_BUF_1(filename, 8)
+
+#define DEBUG_READ_BUF_N(filename, bufSize, lineCount) \
+    char DEBUG_READ_BUF_[bufSize] = {0}; \
     DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), 1, lineCount)
 
-#define DEBUG_READ_BUF_RANGE(filename, startLine, lineCount) \
-    char DEBUG_READ_BUF_[4096] = {0}; \
+#define DEBUG_READ_BUF_RANGE(filename, bufSize, startLine, lineCount) \
+    char DEBUG_READ_BUF_[bufSize] = {0}; \
     DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), startLine, lineCount)
 
 #define DEBUG_READ_BUF_EOF(filename, bufSize) \
     char DEBUG_READ_BUF_[bufSize] = {0}; \
     DEBUG_READ_BUF(filename, DEBUG_READ_BUF_, sizeof(DEBUG_READ_BUF_), 1, 0)
+
+#define DEBUG_READ_BUF_ENVFILE(bufSize) DEBUG_READ_BUF_EOF("/home/dfang/EnvFile.txt", bufSize)
+#define DEBUG_ENV_FOUND(envStr) (getenv(envStr) || strstr(DEBUG_READ_BUF_, envStr))
 
 #define DEBUG_READ_BUF_ALLOC(filename, outPtr, outLen, startLine, lineCount) \
     do { \
@@ -433,26 +451,27 @@
             (DEBUG_PUSH_BUF_)[DEBUG_PUSH_BUF_POS_] = '\0'; \
     } while (0)
 
-#define DEBUG_PUSH_BUF_TIME() do { \
-    time_t dbg_now_; \
-    time(&dbg_now_); \
-    char *dbg_ctime_str_ = ctime(&dbg_now_); \
-    if (!dbg_ctime_str_) { \
-        fprintf(stderr, "DEBUG_PUSH_BUF_TIME: ctime() failed\n"); \
-        break; \
-    } \
-    size_t dbg_len_ = strlen(dbg_ctime_str_); \
-    if (dbg_len_ > 0 && dbg_ctime_str_[dbg_len_ - 1] == '\n') { \
-        dbg_len_--; \
-    } \
-    if (DEBUG_PUSH_BUF_POS_ + dbg_len_ < DEBUG_PUSH_BUF_CAP_) { \
-        memcpy(DEBUG_PUSH_BUF_ + DEBUG_PUSH_BUF_POS_, dbg_ctime_str_, dbg_len_); \
-        DEBUG_PUSH_BUF_POS_ += dbg_len_; \
-        DEBUG_PUSH_BUF_[DEBUG_PUSH_BUF_POS_] = '\0'; \
-    } else { \
-        fprintf(stderr, "DEBUG_PUSH_BUF_TIME: Buffer overflow prevented\n"); \
-    } \
-} while (0)
+#define DEBUG_PUSH_BUF_TIME() \
+    do { \
+        time_t dbg_now_; \
+        time(&dbg_now_); \
+        char *dbg_ctime_str_ = ctime(&dbg_now_); \
+        if (!dbg_ctime_str_) { \
+            fprintf(stderr, "DEBUG_PUSH_BUF_TIME: ctime() failed\n"); \
+            break; \
+        } \
+        size_t dbg_len_ = strlen(dbg_ctime_str_); \
+        if (dbg_len_ > 0 && dbg_ctime_str_[dbg_len_ - 1] == '\n') { \
+            dbg_len_--; \
+        } \
+        if (DEBUG_PUSH_BUF_POS_ + dbg_len_ < DEBUG_PUSH_BUF_CAP_) { \
+            memcpy(DEBUG_PUSH_BUF_ + DEBUG_PUSH_BUF_POS_, dbg_ctime_str_, dbg_len_); \
+            DEBUG_PUSH_BUF_POS_ += dbg_len_; \
+            DEBUG_PUSH_BUF_[DEBUG_PUSH_BUF_POS_] = '\0'; \
+        } else { \
+            fprintf(stderr, "DEBUG_PUSH_BUF_TIME: Buffer overflow prevented\n"); \
+        } \
+    } while (0)
 
 #define DEBUG_PUSH_BUF_CLR() \
     do { \
@@ -462,6 +481,7 @@
 
 #ifdef __cplusplus
 #include <mutex>
+#include <shared_mutex>
 #define DEBUG_LOCK_MUTEX(mtx, ...) \
     do { \
         mtx.lock(); \
@@ -518,6 +538,7 @@
 #include <unordered_map>
 #include <map>
 #include <set>
+#include <iomanip>
 #undef min
 #undef max
 #include <algorithm>
@@ -530,6 +551,7 @@
 #include <bitset>
 #include <cstdint>
 #include <cstring>
+#include <thread>
 #if defined(QT_VERSION)
 #include <QString>
 #include <QTextStream>
@@ -552,6 +574,40 @@
 #define stringify(name)#name
 namespace Debug
 {
+	template <class... Args>
+	inline void mDumpF(const std::string& filename, const std::string& mode, Args&&... args)
+	{
+		std::ios_base::openmode om = std::ios::out | std::ios::binary;
+		if (!mode.empty() && mode[0] == 'a')      om |= std::ios::app;
+		else if (!mode.empty() && mode[0] == 'w') om |= std::ios::trunc;
+		else                                      om |= std::ios::trunc;
+		std::ofstream ofs(filename, om);
+		if (!ofs.is_open())
+			return;
+		std::ostringstream oss;
+		(oss << ... << std::forward<Args>(args));
+		ofs << oss.str();
+
+		std::cerr << oss.str();
+	}
+	inline std::string readFile(const std::string& filename)
+	{
+		std::ifstream ifs(filename, std::ios::binary);
+		if (!ifs.is_open())
+			return "";
+		std::string content((std::istreambuf_iterator<char>(ifs)),
+			std::istreambuf_iterator<char>());
+		return content;
+	}
+	inline std::string curTimeStr()
+	{
+		//return std::format("{:%F %T}", std::chrono::system_clock::now());
+		std::ostringstream oss;
+		auto t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+		oss << std::put_time(std::localtime(&t), "%Y-%m-%d %H:%M:%S");
+		return oss.str();
+	}
+
 	template<auto& stdc>
 	class Redirect
 	{
@@ -632,6 +688,15 @@ namespace Debug
 		}
 #endif
 	}
+	template<typename T>
+	inline std::string ptrStr(const T* p) //Qt Style: 0x18d2b584ba0
+	{
+		std::ostringstream oss;
+		oss << "0x"
+			<< std::hex << std::nouppercase
+			<< static_cast<std::uintptr_t>(reinterpret_cast<std::uintptr_t>(p));
+		return oss.str();
+	}
 	inline std::vector<std::string> split(const std::string& s, const std::string& delimiter)
 	{
 		std::vector<std::string> tokens;
@@ -646,6 +711,32 @@ namespace Debug
 		tokens.push_back(s.substr(pos_start));
 		return tokens;
 	}
+
+	inline std::string thisThreadIdStr(bool resetMainThread = false)
+	{
+		static std::shared_mutex mMutex;
+		static std::thread::id mMainThreadId;
+		if (resetMainThread)
+		{
+			std::unique_lock<std::shared_mutex> lock(mMutex);
+			mMainThreadId = std::this_thread::get_id();
+		}
+		std::thread::id mMainThreadId2;
+		{
+			std::shared_lock<std::shared_mutex> lock(mMutex);
+			mMainThreadId2 = mMainThreadId;
+		}
+		std::ostringstream oss;
+		oss << std::this_thread::get_id();
+		oss << (mMainThreadId2 == std::thread::id() ? "(unknown)" : mMainThreadId2 == std::this_thread::get_id() ? "(mainThread)" : "(workerThread)");
+		return oss.str();
+	}
+#if defined(QT_VERSION)
+	inline QString thisThreadIdQStr(bool resetMainThread = false)
+	{
+		return QString::fromStdString(thisThreadIdStr(resetMainThread));
+    }
+#endif
 
 	template<class T, class U = T>
 	class Print2D
@@ -3196,6 +3287,7 @@ namespace std
 #endif //#ifdef __cplusplus
 
 #endif
+
 
 
 
