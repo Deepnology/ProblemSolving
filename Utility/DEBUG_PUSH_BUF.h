@@ -39,17 +39,6 @@ maxElems  : max elements per buffer
     size_t DEBUG_PUSH_BUF_N_[(slotCount)] = {0};                                    \
     const size_t DEBUG_PUSH_BUF_SLOT_CAP_ = (size_t)(slotCount)
 
-/* Backward-ish single-slot init */
-#define DEBUG_PUSH_BUF_INIT_1(buf_cap, max_elems)                                   \
-    DEBUG_PUSH_BUF_INIT_I(1, (buf_cap), (max_elems))
-
-/* Legacy compat init(size) with derived max elems */
-#ifndef DEBUG_PUSH_BUF_DEFAULT_MAX_ELEMS
-#define DEBUG_PUSH_BUF_DEFAULT_MAX_ELEMS(buf_cap) (((buf_cap) < 256) ? (buf_cap) : 256u)
-#endif
-#define DEBUG_PUSH_BUF_INIT(size)                                                   \
-    DEBUG_PUSH_BUF_INIT_I(1, (size), DEBUG_PUSH_BUF_DEFAULT_MAX_ELEMS(size))
-
 /* ========================= per-slot helpers ========================= */
 
 #define DEBUG__PB_SLOT_OK(i_) ((size_t)(i_) < DEBUG_PUSH_BUF_SLOT_CAP_)
@@ -60,15 +49,12 @@ maxElems  : max elements per buffer
 #define DEBUG__PB_HAS_ELEM_ROOM_I(i_)                                               \
     ((DEBUG_PUSH_BUF_N_[(size_t)(i_)] < DEBUG_PUSH_BUF_LENS_CAP_) ? 1 : 0)
 
-#define DEBUG__PB_TERM_I(i_)                                                        \
+#define DEBUG__PB_TERM_I(si)                                                        \
     do {                                                                            \
-        size_t DEBUG__PB_MKNAME(__si_,__LINE__) = (size_t)(i_);                     \
         if (DEBUG_PUSH_BUF_CAP_ > 0) {                                              \
-            if (DEBUG_PUSH_BUF_POS_[DEBUG__PB_MKNAME(__si_,__LINE__)] >= DEBUG_PUSH_BUF_CAP_) \
-                DEBUG_PUSH_BUF_POS_[DEBUG__PB_MKNAME(__si_,__LINE__)] = DEBUG_PUSH_BUF_CAP_ - 1; \
-            DEBUG_PUSH_BUF_[DEBUG__PB_MKNAME(__si_,__LINE__)][                      \
-                DEBUG_PUSH_BUF_POS_[DEBUG__PB_MKNAME(__si_,__LINE__)]               \
-            ] = '\0';                                                               \
+            if (DEBUG_PUSH_BUF_POS_[(size_t)(si)] >= DEBUG_PUSH_BUF_CAP_)           \
+                DEBUG_PUSH_BUF_POS_[(size_t)(si)] = DEBUG_PUSH_BUF_CAP_ - 1;        \
+            DEBUG_PUSH_BUF_[(size_t)(si)][DEBUG_PUSH_BUF_POS_[(size_t)(si)]] = '\0'; \
         }                                                                           \
     } while (0)
 
@@ -1253,6 +1239,9 @@ maxElems  : max elements per buffer
 
 
 /* single slot */
+#define DEBUG_PUSH_BUF_DEFAULT_MAX_ELEMS(buf_cap)      (((buf_cap) < 256) ? (buf_cap) : 256u)
+#define DEBUG_PUSH_BUF_INIT(size)                      DEBUG_PUSH_BUF_INIT_I(1, (size), DEBUG_PUSH_BUF_DEFAULT_MAX_ELEMS(size))
+
 #define DEBUG_PUSH_BUF_BACK_STR(str)                   DEBUG_PUSH_BUF_BACK_STR_I(0, (str))
 #define DEBUG_PUSH_BUF_FRONT_STR(str)                  DEBUG_PUSH_BUF_FRONT_STR_I(0, (str))
 #define DEBUG_PUSH_BUF_BACK_FMT(fmt, ...)              DEBUG_PUSH_BUF_BACK_FMT_I(0, (fmt), ##__VA_ARGS__)
@@ -1281,6 +1270,7 @@ maxElems  : max elements per buffer
 #define DEBUG_SET_BUF_PTR(elemIndex, ptr)              DEBUG_SET_BUF_PTR_I(0, (elemIndex), (ptr))
 #define DEBUG_POP_BUF()                                DEBUG_POP_BUF_BACK_I(0)
 #define DEBUG_PUSH_BUF_CLR()                           DEBUG_PUSH_BUF_CLR_I(0)
+
 #define DEBUG_PUSH_BUF_AT(elemIndex, out_ptr, out_len) DEBUG_PUSH_BUF_AT_I(0, (elemIndex), (out_ptr), (out_len))
 #define DEBUG_PUSH_BUF_AT_DUMP(elemIndex, bufLen)      DEBUG_PUSH_BUF_AT_DUMP_I(0, (elemIndex), (bufLen))
 
@@ -1293,6 +1283,7 @@ maxElems  : max elements per buffer
 #define DEBUG_PUSH_BUF_TIME()                          DEBUG_PUSH_BUF_BACK_TIME_I(0)
 
 #define DEBUG_PUSH_BUF0_                               (DEBUG_PUSH_BUF_[0])
+
 
 
 #endif /* DEBUG_PUSH_BUF_INDEXED_H_ */
