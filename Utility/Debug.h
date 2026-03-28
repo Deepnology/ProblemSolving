@@ -386,100 +386,13 @@
         } \
     } while(0)
 
-#define DEBUG_PUSH_BUF_INIT(size) \
-    char DEBUG_PUSH_BUF_[size] = {0}; \
-	size_t DEBUG_PUSH_BUF_POS_ = 0; \
-	const size_t DEBUG_PUSH_BUF_CAP_ = size;
-
-#define DEBUG_PUSH_BUF_STR(str) \
-    do { \
-        size_t __len = strlen(str); \
-        if (DEBUG_PUSH_BUF_POS_ + __len < DEBUG_PUSH_BUF_CAP_) { \
-	        memcpy(DEBUG_PUSH_BUF_ + DEBUG_PUSH_BUF_POS_, str, __len); \
-		    DEBUG_PUSH_BUF_POS_ += __len; \
-		    DEBUG_PUSH_BUF_[DEBUG_PUSH_BUF_POS_] = '\0'; \
-	    } else { \
-		    fprintf(stderr, "DEBUG_PUSH_BUF_STR: Buffer overflow prevented\n"); \
-	    } \
-	} while(0)
-
-#define DEBUG_PUSH_BUF_INT(num) \
-    do { \
-        char __intStr[32]; \
-        int __intLen = snprintf(__intStr, sizeof(__intStr), "%d", (num)); \
-        if (__intLen < 0 || (size_t)__intLen >= sizeof(__intStr)) { \
-            fprintf(stderr, "DEBUG_PUSH_BUF_INT: Integer formatting failed or truncated\n"); \
-        } \
-        if (DEBUG_PUSH_BUF_POS_ + (size_t)__intLen < DEBUG_PUSH_BUF_CAP_) { \
-            memcpy(DEBUG_PUSH_BUF_ + DEBUG_PUSH_BUF_POS_, __intStr, __intLen); \
-            DEBUG_PUSH_BUF_POS_ += (size_t)__intLen; \
-            DEBUG_PUSH_BUF_[DEBUG_PUSH_BUF_POS_] = '\0'; \
-        } else { \
-            fprintf(stderr, "DEBUG_PUSH_BUF_INT: Buffer overflow prevented\n"); \
-        } \
-    } while(0)
-
-#define DEBUG_PUSH_BUF_FMT(fmt, ...) \
-    do { \
-        if ((DEBUG_PUSH_BUF_POS_) < (DEBUG_PUSH_BUF_CAP_) - 1) { \
-            size_t __avail = (DEBUG_PUSH_BUF_CAP_) - (DEBUG_PUSH_BUF_POS_); \
-            int __n = snprintf((DEBUG_PUSH_BUF_) + (DEBUG_PUSH_BUF_POS_), __avail, (fmt), ##__VA_ARGS__); \
-            if (__n > 0) { \
-                size_t __written = (__n < (int)__avail ? (size_t)__n : __avail - 1); \
-                (DEBUG_PUSH_BUF_POS_) += __written; \
-            } \
-        } \
-        if ((DEBUG_PUSH_BUF_CAP_) > 0) \
-            (DEBUG_PUSH_BUF_)[(DEBUG_PUSH_BUF_POS_)] = '\0'; \
-    } while (0)
-
-#define DEBUG_PUSH_BUF_ARGV(argc, argv) \
-    do { \
-        for (int __i = 0; __i < (argc); ++__i) { \
-            const char *__arg = (argv)[__i]; \
-            size_t __len = strlen(__arg); \
-            if (DEBUG_PUSH_BUF_POS_ + __len + 1 >= (DEBUG_PUSH_BUF_CAP_)) \
-                __len = (DEBUG_PUSH_BUF_CAP_) - DEBUG_PUSH_BUF_POS_ - 1; \
-            memcpy((DEBUG_PUSH_BUF_) + DEBUG_PUSH_BUF_POS_, __arg, __len); \
-            DEBUG_PUSH_BUF_POS_ += __len; \
-            if (__i < (argc) - 1 && DEBUG_PUSH_BUF_POS_ < (DEBUG_PUSH_BUF_CAP_) - 1) \
-                (DEBUG_PUSH_BUF_)[DEBUG_PUSH_BUF_POS_++] = ' '; \
-            if (DEBUG_PUSH_BUF_POS_ >= (DEBUG_PUSH_BUF_CAP_) - 1) \
-                break; \
-        } \
-        if (DEBUG_PUSH_BUF_CAP_ > 0) \
-            (DEBUG_PUSH_BUF_)[DEBUG_PUSH_BUF_POS_] = '\0'; \
-    } while (0)
-
-#define DEBUG_PUSH_BUF_TIME() \
-    do { \
-        time_t dbg_now_; \
-        time(&dbg_now_); \
-        char *dbg_ctime_str_ = ctime(&dbg_now_); \
-        if (!dbg_ctime_str_) { \
-            fprintf(stderr, "DEBUG_PUSH_BUF_TIME: ctime() failed\n"); \
-            break; \
-        } \
-        size_t dbg_len_ = strlen(dbg_ctime_str_); \
-        if (dbg_len_ > 0 && dbg_ctime_str_[dbg_len_ - 1] == '\n') { \
-            dbg_len_--; \
-        } \
-        if (DEBUG_PUSH_BUF_POS_ + dbg_len_ < DEBUG_PUSH_BUF_CAP_) { \
-            memcpy(DEBUG_PUSH_BUF_ + DEBUG_PUSH_BUF_POS_, dbg_ctime_str_, dbg_len_); \
-            DEBUG_PUSH_BUF_POS_ += dbg_len_; \
-            DEBUG_PUSH_BUF_[DEBUG_PUSH_BUF_POS_] = '\0'; \
-        } else { \
-            fprintf(stderr, "DEBUG_PUSH_BUF_TIME: Buffer overflow prevented\n"); \
-        } \
-    } while (0)
-
-#define DEBUG_PUSH_BUF_CLR() \
-    do { \
-        memset(DEBUG_PUSH_BUF_, 0, sizeof(DEBUG_PUSH_BUF_CAP_)); \
-        DEBUG_PUSH_BUF_POS_ = 0; \
-	} while (0)
+#include "DEBUG_PUSH_BUF.h"
+#include "DEBUG_FILE_SORT_LINE.h"
 
 #ifdef __cplusplus
+
+#define GET_INDENT(level) std::string((level)*2, ' ')
+
 #include <mutex>
 #include <shared_mutex>
 #define DEBUG_LOCK_MUTEX(mtx, ...) \
